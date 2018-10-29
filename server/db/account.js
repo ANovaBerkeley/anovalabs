@@ -2,19 +2,22 @@
 const knex = require('./knex'); 
 
 module.exports = {
-    getAll() {
+    getAll: function() {
         return knex('account');
     },
-    getOne(id) {
+    getOneById: function(id) {
         return knex('account').where('accountId',id).first();
     },
-    create(account){
+    getOneByEmail: function(email) {
+        return knex('account').where('email',email).first();
+    },
+    create: function(account){
         return knex('account').insert(account, '*');
     },
-    update(id, account) {
+    update: function(id, account) {
         return knex('account').where('accountId', id).update(account, '*');
     },
-    delete(id) {
+    delete: function (id) {
         return knex('account').where('accountId',id).del();
     }
 }

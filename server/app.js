@@ -6,6 +6,8 @@ const logger = require('morgan');
 
 const app = express();
 
+const auth = require('./api/auth/index');
+
 const lessons = require('./api/routes/lessons');
 const accounts = require('./api/routes/accounts');
 
@@ -16,6 +18,8 @@ app.use(cookieParser());
 
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/accounts', accounts);
+app.use('/auth', auth);
+
 
 
 
