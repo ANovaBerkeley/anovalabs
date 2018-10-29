@@ -12,12 +12,17 @@
 - [ ] deploy to heroku
 
 ## 🏓 Tables
+
 - [ ] create user table
+  - [ ] create user test data
 - [ ] create role table
+  - [ ] create role test data
 - [ ] create user_role table
+  - [ ] create user_role test data
 
 ## 🔐 Authentication & Authorization
-- [ ] user can sign up with unique email with password  
+
+- [ ] user can sign up with unique email with password
 
 ## 🥅 Goals for ANova Labs MVP 1.0
 
