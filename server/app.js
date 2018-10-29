@@ -6,7 +6,8 @@ const logger = require('morgan');
 
 const app = express();
 
-const lessons = require('./api/lessons');
+const lessons = require('./api/routes/lessons');
+const accounts = require('./api/routes/accounts');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/v1/lessons', lessons);
+app.use('/api/v1/accounts', accounts);
 
 
 

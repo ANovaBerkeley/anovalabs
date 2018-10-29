@@ -2,20 +2,20 @@ const express = require('express');
 
 const router = express.Router();
 
-const queries = require('../db/queries');
+const Lessons = require('../../db/lesson');
 
 //need to create a validation function for id
 
 //need to create a validation function for lesson
 
 router.get('/', (req, res) => {
-    queries.getAll().then(lessons => {
+    Lessons.getAll().then(lessons => {
         res.json(lessons);
     });
 });
 
 router.get('/:id', (req, res, next) => {
-    queries.getOne(req.params.id).then(lesson => {
+    Lessons.getOne(req.params.id).then(lesson => {
         if(lesson){
             res.json(lesson);
         } else {
@@ -27,20 +27,20 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) =>{
     //validateLesson paramaters 
-    queries.create(req.body).then(lessons => {
+    Lessons.create(req.body).then(lessons => {
         res.json(lessons[0]);
     })
 });
 
 router.put('/:id', (req,res,next) => {
     //check that contents are valid through another fn
-    queries.update(req.params.id, req.body).then(lessons =>{
+    Lessons.update(req.params.id, req.body).then(lessons =>{
         res.json(lessons[0]);
     })
 })
 
 router.delete('/:id', (req,res,next) =>{
-    queries.delete(req.params.id).then(() => {
+    Lessons.delete(req.params.id).then(() => {
         res.json({
             deleted: true
         });
