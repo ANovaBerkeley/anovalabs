@@ -1,11 +1,10 @@
 // Update with your config settings.
 
 module.exports = {
-
   development: {
-    client: 'pg',
-    connection: 'postgres://localhost/anovalabs-db'
-    },
+    client: "pg",
+    connection: "postgres://localhost/anovalabs-db"
+  },
 
   // staging: {
   //   client: 'postgresql',
@@ -38,5 +37,4 @@ module.exports = {
   //     tableName: 'knex_migrations'
   //   }
   // }
-
 };
