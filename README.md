@@ -12,8 +12,11 @@
   - This file will describe in general how to run and start the application and provide developer notes on tests and database management
 - TODO.md
   - This file will describe the tasks that are still work in progress and need to be done
-- /server
+- /anovalabs_server
   - This folder contains logic for accessing DATABASE information and AUTHENTICATION and AUTHERIZATION logic
+
+- /anovalabs_client
+  - This folder contains the front-end components for ANova Labs
 
 ## 📝 Requirements to Run ANova Labs
 
@@ -30,18 +33,27 @@
 - Knex.js
   - npm install -g knex
 
-## 📝 Commands to Install ANova Labs
+## 📝 Mac Commands to Install ANova Labs
 
 - Run the following command in your terminal to initalize the Postgres DB
   - createdb anovalabs-db
-- Inside /server run the following command to install all dependencies
+- Inside /anovalabs_server run the following command to install all dependencies
   - npm -i
+- Inside /anovalabs_client run the following command to install all dependencies
+  - npm -i
+
 
 ## 🧠 Commands to Run ANova Labs
 
-- Inside /server run the following command to start ANova Labs server
+- /anovalabs_server 
+  - run the following command to start ANova Labs server
+  - npm run dev 
+- Go to http://localhost:5000/api/v1/lessons
+  - You will see a json output of lessons 
+- /anovalabs_client 
   - npm start
-- Go to http://localhost:3000/ and you will currently see a error page
+    - This will take you to http://localhost:8080/ 
+      - You will see the main page
 
 # 💻 Developer's Notes
 
@@ -66,6 +78,8 @@
   - \x
 
 ## ✨ Seeding the Database
+- Seeding the Database with the following command after running the knex migrate:latest command
+  -  knex seed:run 
 
 - Files can be found in server/seeds and server/seedData for reference in regards to seeding the DB
 
