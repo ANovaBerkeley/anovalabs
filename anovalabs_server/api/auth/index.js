@@ -8,7 +8,7 @@ require('dotenv').config();
 
 router.get('/', (req, res) => {
   res.json({
-    message: 'wow'
+    message: 'auth route'
   });
 });
 
@@ -79,35 +79,6 @@ router.post('/login', (req, res, next) => {
                 }
               }
             );
-          } else {
-            next(new Error('Invalid login'));
-          }
-        });
-      } else {
-        next(new Error('Invalid login'));
-      }
-    });
-  } else {
-    next(new Error('Invalid login'));
-  }
-});
-
-router.post('/cookie', (req, res, next) => {
-  const validAccount = validatorAccount(req.body);
-  if (validAccount) {
-    Account.getOneByEmail(req.body.email.trim()).then(account => {
-      if (account) {
-        bcrypt.compare(req.body.password.trim(), account.password).then(result => {
-          if (result) {
-            const isSecure = req.app.get('env') != 'development';
-            res.cookie('account_id', account.accountId, {
-              httpOnly: true,
-              secure: isSecure,
-              signed: true
-            });
-            res.json({
-              message: 'its lit'
-            });
           } else {
             next(new Error('Invalid login'));
           }
