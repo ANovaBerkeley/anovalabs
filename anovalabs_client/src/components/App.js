@@ -1,12 +1,17 @@
-import React, {Component } from 'react';
+import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Auth from './Auth';
 
 class App extends Component {
-    render(){
-        return( <div>
-            <h1>ANova Labs App!</h1>
-        </div>
-        );
-    }
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={Auth} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
