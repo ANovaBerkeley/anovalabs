@@ -7,6 +7,7 @@ class Auth extends Component {
       user: undefined
     };
   }
+
   render() {
     return (
       <div>

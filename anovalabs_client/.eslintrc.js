@@ -13,35 +13,15 @@ module.exports = {
     }
   },
   parser: 'babel-eslint',
-  plugins: ['react', 'prettier'],
-  extends: [
-    'plugin:react/recommended',
-    'airbnb-base',
-    'prettier',
-    'plugin:prettier/recommended'
-  ],
-
+  plugins: ['prettier', 'react'],
+  extends: ['airbnb', 'prettier', 'prettier/react'],
   rules: {
-    'max-len': [
-      'error',
-      {
-        code: 80,
-        ignoreComments: true,
-        ignoreUrls: true,
-        ignoreTrailingComments: false
-      }
-    ],
-    'react/jsx-filename-extension': [
-      'error',
-      {
-        extensions: ['.js', '.jsx']
-      }
-    ],
-    'prettier/prettier': 'error'
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'prettier/prettier': ['error']
   },
   settings: {
     react: {
-      version: '16'
+      version: '16.6.0'
     }
   }
 };

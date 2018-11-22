@@ -9,12 +9,14 @@ class Login extends Component {
     };
     this.change = this.change.bind(this);
   }
-  //takes an event and creates a key,value pair
+
+  // takes an event and creates a key,value pair
   change(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
+
   render() {
     return (
       <div>

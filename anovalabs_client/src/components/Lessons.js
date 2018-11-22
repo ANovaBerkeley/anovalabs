@@ -10,6 +10,7 @@ class Lessons extends Component {
       items: []
     };
   }
+
   componentDidMount() {
     fetch('http://localhost:5000/api/v1/lessons')
       .then(res => res.json())
@@ -37,21 +38,21 @@ class Lessons extends Component {
   render() {
     const { error, isLoaded, items } = this.state;
     if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <ul>
-          {items.map(item => (
-            <li key={item.lessonId}>
-              <div>{item.title}</div>
-              <div>{item.siteLeader}</div>
-            </li>
-          ))}
-        </ul>
-      );
+      return <div>Error:{error.message}</div>;
     }
+    if (!isLoaded) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <ul>
+        {items.map(item => (
+          <li key={item.lessonId}>
+            <div>{item.title}</div>
+            <div>{item.siteLeader}</div>
+          </li>
+        ))}
+      </ul>
+    );
   }
 }
 export default Lessons;
