@@ -13,9 +13,18 @@ module.exports = {
     }
   },
   parser: 'babel-eslint',
-  plugins: ['prettier', 'react'],
+  plugins: ['react', 'prettier'],
   extends: ['airbnb', 'prettier', 'prettier/react'],
   rules: {
+    'no-underscore-dangle': ['error', { allowAfterThis: true }],
+    'no-use-before-define': ['error', { variables: false }],
+    'no-const-assign': 'warn',
+    'no-this-before-super': 'warn',
+    'no-undef': 'warn',
+    'no-unreachable': 'warn',
+    'no-unused-vars': 'warn',
+    'constructor-super': 'warn',
+    'valid-typeof': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'prettier/prettier': ['error']
   },

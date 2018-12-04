@@ -1,23 +1,31 @@
 //this is the connection to the database
-const knex = require('./knex'); 
+const knex = require('./knex');
 
 module.exports = {
-    getAll: function() {
-        return knex('account');
-    },
-    getOneById: function(id) {
-        return knex('account').where('accountId',id).first();
-    },
-    getOneByEmail: function(email) {
-        return knex('account').where('email',email).first();
-    },
-    create: function(account){
-        return knex('account').insert(account, '*');
-    },
-    update: function(id, account) {
-        return knex('account').where('accountId', id).update(account, '*');
-    },
-    delete: function (id) {
-        return knex('account').where('accountId',id).del();
-    }
-}
+  getAll: () => {
+    return knex('account');
+  },
+  getOneById: id => {
+    return knex('account')
+      .where('accountId', id)
+      .first();
+  },
+  getOneByEmail: email => {
+    return knex('account')
+      .where('email', email)
+      .first();
+  },
+  create: account => {
+    return knex('account').insert(account, '*');
+  },
+  update: (id, account) => {
+    return knex('account')
+      .where('accountId', id)
+      .update(account, '*');
+  },
+  delete: id => {
+    return knex('account')
+      .where('accountId', id)
+      .del();
+  }
+};

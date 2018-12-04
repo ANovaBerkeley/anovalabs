@@ -15,7 +15,6 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
-          emitError: true,
           emitWarning: true,
           configFile: './.eslintrc.js'
         }
@@ -23,7 +22,12 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
       }
     ]
   },
@@ -33,6 +37,12 @@ module.exports = {
     })
   ],
   devServer: {
-    historyApiFallback: true
-  }
+    historyApiFallback: true,
+    proxy: {
+      '/api/v1': 'http://localhost:5000',
+      secure: false
+    }
+  },
+  devtool: 'inline-source-map',
+  watch: true
 };

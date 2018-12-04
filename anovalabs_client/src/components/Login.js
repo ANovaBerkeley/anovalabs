@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Login extends Component {
   constructor(props) {
@@ -7,25 +8,48 @@ class Login extends Component {
       email: '',
       password: ''
     };
-    this.change = this.change.bind(this);
+
+    this._change = this._change.bind(this);
+
+    this._submit = this._submit.bind(this);
   }
 
   // takes an event and creates a key,value pair
-  change(e) {
+  _change(event) {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
+  }
+
+  _submit(event) {
+    event.preventDefault();
+    axios
+      .post('api/v1/auth/login', {
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(res => localStorage.setItem('anovaToken', res.data.token));
   }
 
   render() {
     return (
       <div>
-        <form>
+        <form onSubmit={this._submit}>
           <label>email</label>
-          <input type="text" name="email" onChange={e => this.change(e)} />
-
+          <input
+            type="text"
+            name="email"
+            onChange={this._change}
+            value={this.state.email}
+          />
           <label>password</label>
-          <input type="text" name="password" onChange={e => this.change(e)} />
+          <input
+            type="password"
+            name="password"
+            onChange={this._change}
+            value={this.state.password}
+          />
+          <input type="submit" value="submit" />
         </form>
       </div>
     );

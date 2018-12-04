@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
-import Auth from './Auth';
+import AuthComponent from './AuthComponent';
 import Lessons from './Lessons';
 import Home from './Home';
+import Protected from './Protected';
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/lessons" component={Lessons} />
+          <Route path="/" exact component={Home} />
+          <Route path="/Login" component={Login} />
+          <AuthComponent>
+            <Route path="/Protected" component={Protected} />
+          </AuthComponent>
+          <Route path="/Lessons" component={Lessons} />
         </Switch>
       </BrowserRouter>
     );

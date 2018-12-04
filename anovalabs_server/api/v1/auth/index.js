@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const validator = require('validator');
-const Account = require('../../db/account');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Account = require('../../../db/account');
+
 require('dotenv').config();
 
 router.get('/', (req, res) => {
   res.json({
-    message: 'auth route'
+    message: 'authenticate'
   });
 });
 

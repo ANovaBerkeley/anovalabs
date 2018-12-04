@@ -8,11 +8,11 @@ require('dotenv').config();
 
 const app = express();
 
-const auth = require('./api/auth/index');
-const authMiddleware = require('./api/auth/middleware');
+const auth = require('./api/v1/auth/index');
+const authMiddleware = require('./api/v1/auth/middleware');
 
-const lessons = require('./api/routes/lessons');
-const accounts = require('./api/routes/accounts');
+const lessons = require('./api/v1/routes/lessons');
+const accounts = require('./api/v1/routes/accounts');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -26,7 +26,7 @@ app.use(
 );
 
 app.use(authMiddleware.checkTokenSetAccount);
-app.use('/auth', auth);
+app.use('/api/v1/auth', auth);
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/accounts', accounts);
 
