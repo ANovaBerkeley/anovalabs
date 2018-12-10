@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Protected = () => {
-  return <h1>This Component is Protected Through Authentication</h1>;
-};
+const Protected = () => (
+  <h1>This Component is Protected Through Authentication</h1>
+);
 export default Protected;

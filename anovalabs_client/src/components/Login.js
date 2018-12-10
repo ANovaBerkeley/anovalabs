@@ -6,11 +6,11 @@ class Login extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMsg: ''
     };
 
     this._change = this._change.bind(this);
-
     this._submit = this._submit.bind(this);
   }
 
@@ -28,27 +28,38 @@ class Login extends Component {
         email: this.state.email,
         password: this.state.password
       })
-      .then(res => localStorage.setItem('anovaToken', res.data.token));
+      .then(res => {
+        localStorage.setItem('anovaToken', res.data.token);
+        this.props.history.push('/lessons');
+      })
+      .catch(error => {
+        this.setState({ errorMsg: 'Invalid Login' });
+      });
   }
 
   render() {
     return (
       <div>
         <form onSubmit={this._submit}>
-          <label>email</label>
-          <input
-            type="text"
-            name="email"
-            onChange={this._change}
-            value={this.state.email}
-          />
-          <label>password</label>
-          <input
-            type="password"
-            name="password"
-            onChange={this._change}
-            value={this.state.password}
-          />
+          <div>
+            <label>email</label>
+            <input
+              type="text"
+              name="email"
+              onChange={this._change}
+              value={this.state.email}
+            />
+          </div>
+          <div>
+            <label>password</label>
+            <input
+              type="password"
+              name="password"
+              onChange={this._change}
+              value={this.state.password}
+            />
+            <div>{this.state.errorMsg}</div>
+          </div>
           <input type="submit" value="submit" />
         </form>
       </div>

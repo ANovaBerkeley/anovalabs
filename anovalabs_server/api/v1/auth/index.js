@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const validator = require('validator');
+const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Account = require('../../../db/account');
@@ -13,18 +13,22 @@ router.get('/', (req, res) => {
   });
 });
 
+const schema = Joi.object().keys({
+  email: Joi.string().email({ minDomainAtoms: 2 }),
+  password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+});
+
 function validatorAccount(account) {
-  const validEmail = validator.isEmail(account.email.trim());
-  const validPassword = validator.isLength(account.password.trim(), {
-    min: 10,
-    max: undefined
-  });
-  return validEmail && validPassword;
+  const result = Joi.validate(
+    { email: account.email.trim(), password: account.password.trim() },
+    schema
+  );
+  return result;
 }
 
 router.post('/signup', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
-  if (validAccount) {
+  if (validAccount.error === null) {
     Account.getOneByEmail(req.body.email.trim()).then(account => {
       if (!account) {
         // technique #2 of bycrypt
@@ -55,7 +59,7 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
-  if (validAccount) {
+  if (validAccount.error === null) {
     Account.getOneByEmail(req.body.email.trim()).then(account => {
       if (account) {
         bcrypt.compare(req.body.password.trim(), account.password).then(result => {
@@ -89,7 +93,8 @@ router.post('/login', (req, res, next) => {
       }
     });
   } else {
-    next(new Error('Invalid login'));
+    res.status(401);
+    next(new Error('Invalid Login'));
   }
 });
 

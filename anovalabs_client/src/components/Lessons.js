@@ -16,8 +16,6 @@ class Lessons extends Component {
       .then(res => res.json())
       .then(
         result => {
-          // console.log(result);
-
           this.setState({
             isLoaded: true,
             items: result
