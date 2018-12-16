@@ -14,28 +14,20 @@ function updateTimestampTrigger(knex, tableName) {
             EXECUTE PROCEDURE update_modified_column();
           `);
 }
-//  this is an associate table to allow us to assign multiple sites to an account in the future
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable('account_site', function(table) {
+    .createTable('year', function(table) {
       table.increments();
-      table
-        .integer('account')
-        .unsigned()
-        .notNullable();
-      table
-        .integer('site')
-        .unsigned()
-        .notNullable();
-
+      table.integer('year');
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
-      table.foreign('account').references('account.accountId');
-      table.foreign('site').references('site.id');
     })
-    .then(() => updateTimestampTrigger(knex, 'account_site'));
+    .then(() => updateTimestampTrigger(knex, 'year'))
+    .then(() => {
+      return knex('year').insert([{ year: 2018 }, { year: 2019 }]);
+    });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('account_site');
+  return knex.schema.dropTableIfExists('year');
 };
