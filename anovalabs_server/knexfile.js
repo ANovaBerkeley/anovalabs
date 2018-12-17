@@ -2,8 +2,11 @@
 
 module.exports = {
   development: {
-    client: "pg",
-    connection: "postgres://localhost/anovalabs-db"
+    client: 'pg',
+    connection: 'postgres://localhost/anovalabs-db',
+    seeds: {
+      directory: './seeds/dev'
+    }
   }
 
   // staging: {

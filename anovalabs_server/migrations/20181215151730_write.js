@@ -16,33 +16,18 @@ function updateTimestampTrigger(knex, tableName) {
 }
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable('semester', function(table) {
+    .createTable('write', function(table) {
       table.increments();
-      table
-        .integer('term_id')
-        .notNullable()
-        .unsigned();
-      table
-        .integer('year_id')
-        .notNullable()
-        .unsigned();
+      table.string('status').comment('status on writing entity - draft or publish');
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
-      table
-        .foreign('term_id')
-        .references('term.id')
-        .onDelete('CASCADE');
-      table
-        .foreign('year_id')
-        .references('year.id')
-        .onDelete('CASCADE');
     })
-    .then(() => updateTimestampTrigger(knex, 'semester'))
-    .catch(function(error) {
-      console.error(error);
+    .then(() => updateTimestampTrigger(knex, 'write'))
+    .then(() => {
+      return knex('write').insert([{ status: 'Draft' }, { status: 'Publish' }]);
     });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('semester');
+  return knex.schema.dropTableIfExists('write');
 };

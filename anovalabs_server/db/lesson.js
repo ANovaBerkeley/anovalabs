@@ -7,7 +7,7 @@ module.exports = {
   },
   getOne: id => {
     return knex('lesson')
-      .where('lessonId', id)
+      .where('id', id)
       .first();
   },
   create: lesson => {
@@ -15,12 +15,12 @@ module.exports = {
   },
   update: (id, lesson) => {
     return knex('lesson')
-      .where('lessonId', id)
+      .where('id', id)
       .update(lesson, '*');
   },
   delete: id => {
     return knex('lesson')
-      .where('lessonId', id)
+      .where('id', id)
       .del();
   }
 };

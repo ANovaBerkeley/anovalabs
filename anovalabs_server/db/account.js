@@ -7,7 +7,7 @@ module.exports = {
   },
   getOneById: id => {
     return knex('account')
-      .where('accountId', id)
+      .where('id', id)
       .first();
   },
   getOneByEmail: email => {

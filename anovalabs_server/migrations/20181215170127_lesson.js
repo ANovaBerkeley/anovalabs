@@ -22,7 +22,14 @@ exports.up = function(knex, Promise) {
       table.string('summary').comment('summary of what the lesson will be about');
       table.text('guide').comment('guide for mentors - written in markdown');
       table.text('plan').comment('lesson plan for students - written in markdown');
-      table.integer('week_id');
+      table
+        .integer('week_id')
+        .notNullable()
+        .unsigned();
+      table
+        .integer('write_id')
+        .notNullable()
+        .unsigned();
 
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
@@ -30,6 +37,10 @@ exports.up = function(knex, Promise) {
       table
         .foreign('week_id')
         .references('week.id')
+        .onDelete('CASCADE');
+      table
+        .foreign('write_id')
+        .references('write.id')
         .onDelete('CASCADE');
     })
     .then(() => updateTimestampTrigger(knex, 'lesson'))

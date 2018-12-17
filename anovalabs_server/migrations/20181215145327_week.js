@@ -25,7 +25,6 @@ exports.up = function(knex, Promise) {
     .then(() => updateTimestampTrigger(knex, 'week'))
     .then(() => {
       return knex('week').insert([
-        { week: 0 },
         { week: 1 },
         { week: 2 },
         { week: 3 },
@@ -36,8 +35,8 @@ exports.up = function(knex, Promise) {
         { week: 8 },
         { week: 9 },
         { week: 10 },
-        { week: 12 },
-        { week: 13 }
+        { week: 11 },
+        { week: 12 }
       ]);
     });
 };

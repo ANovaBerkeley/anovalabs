@@ -5,6 +5,95 @@
 - [x] setup Knex project
 - [x] setup PostgreSQL
 - [x] setup API routes
+## 🌱 Migration File Creates The Following
+#### authentication
+
+* Google
+* Local
+
+#### level
+
+* Middle School
+* High School
+* Adult School
+
+#### permission
+
+* 1 Admin
+* 2 Mentor
+*  3 Site Leader
+* 4 Student
+
+#### role
+
+* 1 Admin
+* 2 Mentor
+* 3 Site Leader
+*  4 Student
+
+#### school
+
+* 1 College Track
+* 2 Downtown Charter Academy
+* 3 Montera
+* 4 Oakland Technical
+* 5 REALM Charter
+* 6 Root
+* 7 Rudsdale
+
+#### status
+
+* 1 Approved
+* 2 Pending
+* 3 Rejected
+
+#### style
+
+* 1 Teaching
+* 2 Lab Assisting
+
+#### term
+
+* 1 Fall
+* 2 Spring
+
+#### week
+
+* 1
+* 2
+* 3
+* 4
+* 5
+* 6
+* 7
+* 8
+* 9
+* 10
+
+#### weekday
+
+1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+
+#### Year
+
+-2018
+-2019
+
+
+- [ ] Semester
+  * table.integer('term_id');
+  * table.integer('year_id');
+  * table.timestamp('created_at').defaultTo(knex.fn.now());
+  * table.timestamp('updated_at').defaultTo(knex.fn.now());
+  * table.foreign('term_id').references('term.id').onDelete('CASCADE');
+  * table.foreign('year_id').references('year.id').onDelete('CASCADE');
+
 
 ## 🏓 Tables
 Order of creation of tables
@@ -18,6 +107,7 @@ Order of creation of tables
 - [x] School - Reference
 
 - [x] Level  - Reference
+
 - [x] Style - Reference
 
 - [x] Week - Reference
@@ -31,46 +121,36 @@ Order of creation of tables
 - [x] Semester -primary
 
 - [x] Time - primary
-
 - [x] Lesson - primary
-
 - [x] Resource - Primary
-
 - [x] Authentication - Reference
-
 - [x] Account - primary
-
 - [x] local - primary
-
 - [x] google - primary
-
 - [x] Site - primary (join table)
-
 - [x] exit_ticket - primary
 
 
+
+
+
+
 Join Tables
-- [x] site_time
-- [x] account_time
-- [x] lesson_time
-- [x] site_lesson
-- [x] account_lesson
+- [x] site_time -
+- [x] account_time -
+- [x] lesson_time -
+- [x] site_lesson -
+- [x] account_lesson 
 
 - [x] account_site
-- [x] account_role
 - [x] account_request
 
-- [x] role_permission
+- [x] account_role_permission
 
-- [x] account table
+
 - [x] role table
 
 - [x] semester table
-- [x] site table
-- [x] lesson table
-
-- [x] account_role table
-- [x] account_site table
 
 
 
