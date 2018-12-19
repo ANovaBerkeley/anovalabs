@@ -18,9 +18,13 @@ exports.up = function(knex, Promise) {
   return knex.schema
     .createTable('local', function(table) {
       table.increments();
-      table.string('email').notNullable();
+      table
+        .string('email')
+        .unique()
+        .notNullable();
 
       table.string('password').notNullable();
+
       table
         .integer('account_id')
         .unique()

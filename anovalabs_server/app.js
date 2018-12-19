@@ -29,6 +29,11 @@ app.use(authMiddleware.checkTokenSetAccount);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/accounts', accounts);
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Hello this server is on 🔥'
+  });
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

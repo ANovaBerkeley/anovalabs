@@ -30,8 +30,8 @@ exports.up = function(knex, Promise) {
     .then(() => {
       return knex('permission').insert([
         { role: 'Admin', create: 1, read: 1, update: 1, delete: 1 },
-        { role: 'Mentor', create: 1, read: 1, update: 1, delete: 1 },
         { role: 'Site Leader', create: 1, read: 1, update: 1, delete: 1 },
+        { role: 'Mentor', create: 1, read: 1, update: 1, delete: 1 },
         { role: 'Student', create: 1, read: 1, update: 1, delete: 1 }
       ]);
     });
