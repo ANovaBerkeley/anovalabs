@@ -1,27 +1,27 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable('user_attendance', function(table) {
+    .createTable('attendance_site', function(table) {
     	table.increments();
     	table
-        .integer('user_id')
+        .integer('attendance_id')
         .notNullable()
         .unsigned();
       table
-        .integer('attendance_id')
+        .integer('site_id')
         .notNullable()
-        .unsigned();	
+        .unsigned();
     	table
-        .foreign('user_id')
-        .references('user.id')
-        .onDelete('CASCADE');
-      table
         .foreign('attendance_id')
         .references('attendance.id')
         .onDelete('CASCADE');
+      table
+        .foreign('site_id')
+        .references('site.id')
+        .onDelete('CASCADE');
 	});
-};
+}
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('user_attendance');
+  return knex.schema.dropTableIfExists('attendance_site');
 };

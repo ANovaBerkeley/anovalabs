@@ -1,14 +1,14 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable('lesson_user', function(table) {
+    .createTable('lesson_site', function(table) {
     	table.increments();
     	table
         .integer('lesson_id')
         .notNullable()
         .unsigned();
       table
-        .integer('user_id')
+        .integer('site_id')
         .notNullable()
         .unsigned();
     	table
@@ -16,12 +16,12 @@ exports.up = function(knex, Promise) {
         .references('lesson.id')
         .onDelete('CASCADE');
       table
-        .foreign('user_id')
-        .references('user.id')
+        .foreign('site_id')
+        .references('site.id')
         .onDelete('CASCADE');
-    });
+});
 }
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('lesson_user');
+  return knex.schema.dropTableIfExists('lesson_site');
 };

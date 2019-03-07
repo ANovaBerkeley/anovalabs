@@ -19,7 +19,8 @@ exports.up = function(knex, Promise) {
         .foreign('site_id')
         .references('site.id')
         .onDelete('CASCADE');
-};
+    });
+}
 
 exports.down = function(knex, Promise) {
   return knex.schema.dropTableIfExists('semester_site');
