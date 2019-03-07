@@ -7,6 +7,21 @@ exports.up = function(knex, Promise) {
         .string('email')
         .unique()
         .notNullable();
+      table
+      	.string('picture');
+      table
+      	.string('password')
+      	.notNullable();
+      table
+      	.integer('grade')
+      	.notNullable();
+      table
+      	.string('name')
+      	.notNullable();
+      table
+      	.string('bio');
+      table
+      	.string('notes');
     });
 };
 
