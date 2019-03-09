@@ -10,19 +10,53 @@
 }
 
 .loginBox {
-  width: 30%;
-  height: 70%;
+
+  width: 350px;
+  height: 450px;
   background-color: rgba(247, 247, 247, 0.86);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
+  border-radius: 16px;
 
 }
+.linktext{
+  text-decoration: underline;
+  padding-bottom: 5px;
+  color: black;
+}
+.links{
+  font-family: 'Lato';
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
+  text-decoration: none;
+  padding-bottom: 8px;
+}
+
+.error{
+  font-family: 'Lato';
+  font-size: 12px;
+  color: red;
+  padding-bottom: 5px;
+}
+
+.anova{
+  color: #155FC2;
+}
+.labs{
+  padding-left: 4px;
+}
 .title{
   font-family: 'Lato';
   font-size: 20px;
+  display: flex;
+  flex-direction: row;
 }
 
 label{
@@ -30,6 +64,20 @@ label{
   font-size: 11px;
 }
 
+.logo{
+  width: 10%;
+  height: 15%;
+  padding-bottom: 5px;
+  padding-bottom: 8px;
+}
+
+.remember{
+  font-family: 'Lato';
+  font-size: 10px;
+}
+input[type=checkbox], select{
+  border-color: #D2EDFC;
+}
 input[type=text], select {
   width: 100%;
   padding: 12px 20px;
@@ -38,17 +86,32 @@ input[type=text], select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  border-color: #D2EDFC;
+}
+
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-color: #D2EDFC;
 }
 
 input[type=submit] {
   width: 100%;
   background-color: #9ED8DF;
   color: white;
-  padding: 14px 20px;
+  padding: 10px 20px;
   margin: 8px 0;
   border: none;
   border-radius: 4px;
+  font-size: 14px;
+
   cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(31, 137, 139, 0.5);
 }
 
 input[type=submit]:hover {
