@@ -26,8 +26,8 @@ exports.up = function(knex, Promise) {
     .then(() => {
       return knex('role').insert([
         { role: 'Admin' },
-        { role: 'Site Leader' },
         { role: 'Mentor' },
+        { role: 'Site Leader' },
         { role: 'Student' }
       ]);
     });
