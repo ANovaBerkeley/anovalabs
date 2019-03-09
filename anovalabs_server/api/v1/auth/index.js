@@ -6,7 +6,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Account = require('../../../db/account');
 const Local = require('../../../db/local');
+const User = require('../../../db/user');
 const ARP = require('../../../db/accountRolePermission');
+const uuidv4 = require('uuid/v4');
 
 require('dotenv').config();
 
@@ -58,6 +60,42 @@ function validatorLogin(local) {
 }
 
 router.post('/signup', (req, res, next) => {
+  const validAccount = validatorAccount(req.body);
+  const accountId = uuidv4();
+  console.log(validAccount.error);
+  if (validAccount.error === null) {
+    User.getOneByEmail(req.body.email.trim()).then(user => {
+      if (!user) {
+        // technique #2 of bycrypt
+        bcrypt.hash(
+          req.body.password.trim(),
+          parseInt(process.env.SALT_ROUNDS, 10),
+          (err, hash) => {
+            // Store hash in your password DB.
+            const newUser = {
+              first_name: req.body.firstName.trim(),
+              last_name: req.body.lastName.trim(),
+              email: req.body.email.trim(),
+              password: hash,
+              account_id: accountId
+            };
+            User.create(newUser).then(retUser => {
+              res.json({
+                user: retUser
+              });
+            })
+          }
+        );
+      } else {
+        next(new Error('Email in use'));
+      }
+    });
+  } else {
+    next(new Error('Invalid Account'));
+  }
+});
+
+router.post('/signup2', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
   console.log(validAccount.error);
   if (validAccount.error === null) {
