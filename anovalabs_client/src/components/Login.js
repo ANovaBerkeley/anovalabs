@@ -48,7 +48,11 @@ class Login extends Component {
 
       <div className="container">
         <div className= "loginBox">
-          <div className = "title"> ANova Labs </div>
+          <img src = "../public/img/logo-lower.png" className = "logo"/>
+          <div className = "title">
+            <div className = "anova">ANova </div>
+            <div className = "labs">Labs </div>
+          </div>
           <form onSubmit={this._submit}>
             <div>
               <label for = "email">Email</label>
@@ -62,15 +66,22 @@ class Login extends Component {
             <div>
               <label for = "password">Password</label>
               <input
-                type="text"
+                type="password"
                 name="password"
                 onChange={this._change}
                 value={this.state.password}
               />
-              <div>{this.state.errorMsg}</div>
+              <div className = "error">{this.state.errorMsg}</div>
             </div>
+            <div className = "remember"> <input type="checkbox"/> Remember Me</div>
             <input type="submit" value="Submit" />
           </form>
+          <div className = "links">
+            <a href="" className = "linktext">Register</a>
+
+            <a href="" className = "linktext">Forgot Password?</a>
+
+          </div>
         </div>
       </div>
     );
