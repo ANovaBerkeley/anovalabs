@@ -116,6 +116,31 @@ class Login extends Component {
             />
             <div>{this.state.passwordStatus}</div>
           </div>
+          <div>
+            <label>first name</label>
+            <input type="text" name="first_name" onChange={this._change} />
+          </div>
+          <div>
+            <label>last name</label>
+            <input type="text" name="last_name" onChange={this._change} />
+          </div>
+          <div>
+            <label>grade</label>
+            <select name="grade">
+              <option value="1">1</option>
+              <option value="1">2</option>
+              <option value="1">3</option>
+              <option value="1">4</option>
+              <option value="1">5</option>
+              <option value="1">6</option>
+              <option value="1">7</option>
+              <option value="1">8</option>
+              <option value="1">9</option>
+              <option value="1">10</option>
+              <option value="1">11</option>
+              <option value="1">12</option>
+            </select>
+          </div>
           <input type="submit" value="submit" />
         </form>
       </div>

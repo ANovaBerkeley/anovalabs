@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 const Account = require('../../../db/account');
-const Local = require('../../../db/local');
+//const Local = require('../../../db/local');
 const User = require('../../../db/user');
-const ARP = require('../../../db/accountRolePermission');
+//const ARP = require('../../../db/accountRolePermission');
 
 require('dotenv').config();
 
@@ -54,7 +54,7 @@ router.post('/signup', (req, res, next) => {
               res.json({
                 user: retUser
               });
-            })
+            });
           }
         );
       } else {
@@ -99,6 +99,47 @@ router.post('/signup2', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+  const validAccount = validatorAccount(req.body);
+  if (validAccount.error === null) {
+    User.getOneByEmail(req.body.email.trim()).then(user => {
+      if (user) {
+        bcrypt.compare(req.body.password.trim(), user.password).then(result => {
+          if (result) {
+            const payload = {
+              email: user.email,
+              roles: 'this will be a list of roles from account_role table'
+            };
+            jwt.sign(
+              payload,
+              process.env.JWT_SECRET,
+              {
+                expiresIn: '2d'
+              },
+              (err, token) => {
+                if (err) {
+                  next(new Error('Invalid login'));
+                } else {
+                  res.json({
+                    token
+                  });
+                }
+              }
+            );
+          } else {
+            next(new Error('Invalid login'));
+          }
+        });
+      } else {
+        next(new Error('Invalid login'));
+      }
+    });
+  } else {
+    res.status(401);
+    next(new Error('Invalid Login'));
+  }
+});
+
+router.post('/login2', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
   if (validAccount.error === null) {
     Account.getOneByEmail(req.body.email.trim()).then(account => {
