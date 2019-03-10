@@ -1,0 +1,21 @@
+
+.container {
+  background-color: #E6F4FC;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signUpBox {
+  width: 350px;
+  height: 450px;
+  background-color: rgba(247, 247, 247, 0.86);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
+  border-radius: 16px;
+}
