@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+
+import './Login.css';
+
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -37,31 +41,37 @@ class Login extends Component {
       });
   }
 
+
+
   render() {
     return (
-      <div>
-        <form onSubmit={this._submit}>
-          <div>
-            <label>email</label>
-            <input
-              type="text"
-              name="email"
-              onChange={this._change}
-              value={this.state.email}
-            />
-          </div>
-          <div>
-            <label>password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={this._change}
-              value={this.state.password}
-            />
-            <div>{this.state.errorMsg}</div>
-          </div>
-          <input type="submit" value="submit" />
-        </form>
+
+      <div className="container">
+        <div className= "loginBox">
+          <div className = "title"> ANova Labs </div>
+          <form onSubmit={this._submit}>
+            <div>
+              <label for = "email">Email</label>
+              <input
+                type="text"
+                name="email"
+                onChange={this._change}
+                value={this.state.email}
+              />
+            </div>
+            <div>
+              <label for = "password">Password</label>
+              <input
+                type="text"
+                name="password"
+                onChange={this._change}
+                value={this.state.password}
+              />
+              <div>{this.state.errorMsg}</div>
+            </div>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
       </div>
     );
   }
