@@ -16,11 +16,10 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/SignUp" component={SignUp} />
           <Route path="/Login" component={Login} />
-          <AuthComponent>
-            <Route path="/Protected" component={Protected} />
-            <Route path="/Lessons" component={Lessons} />
-            <Route path="/Logout" component={LogOut} />
-          </AuthComponent>
+          <Route path="/Protected" component={Protected} />
+          <Route path="/Lessons" component={Lessons} />
+          <Route path="/Logout" component={LogOut} />
+
         </Switch>
       </BrowserRouter>
     );
