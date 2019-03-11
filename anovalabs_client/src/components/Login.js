@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {NavLink} from "react-router"
 
 
 import './Login.css';
@@ -77,7 +78,7 @@ class Login extends Component {
             <input type="submit" value="Submit" />
           </form>
           <div className = "links">
-            <a href="" className = "linktext">Register</a>
+            <NavLink to = "/SignUp"><a href="" className = "linktext">Register</a></NavLink>
 
             <a href="" className = "linktext">Forgot Password?</a>
 
