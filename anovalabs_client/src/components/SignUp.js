@@ -98,36 +98,53 @@ class Login extends Component {
         <div className="signUpBox">
           <form onSubmit={this._submit}>
             <div>
-              <label>email</label>
-              <input
-                type="text"
-                name="email"
-                onChange={this._change}
-                value={this.state.email}
+              <label htmlFor="email">
+                email
+                <input
+                  id="email"
+                  type="text"
+                  name="email"
+                  onChange={this._change}
+                  value={this.state.email}
               />
+              </label>
             </div>
             <div>{this.state.emailStatus}</div>
             <div>
-              <label>password</label>
+              <label htmlFor="password">password
               <input
-                type="password"
-                name="password"
-                onChange={this._change}
-                value={this.state.password}
+                  id="password"
+                  type="password"
+                  name="password"
+                  onChange={this._change}
+                  value={this.state.password}
               />
+              </label>
               <div>{this.state.passwordStatus}</div>
             </div>
             <div>
-              <label>first name</label>
-              <input type="text" name="first_name" onChange={this._change} />
+              <label htmlFor="first_name">first name
+              <input
+                  id="first_name"
+                  type="text"
+                  name="first_name"
+                  onChange={this._change}
+              />
+              </label>
             </div>
             <div>
-              <label>last name</label>
-              <input type="text" name="last_name" onChange={this._change} />
+              <label htmlFor="last_name">last name
+              <input
+                  id="last_name"
+                  type="text"
+                  name="last_name"
+                  onChange={this._change}
+              />
+              </label>
             </div>
             <div>
-              <label>grade</label>
-              <select name="grade">
+              <label> grade
+              <select id="grade" name="grade">
                 <option value="1">1</option>
                 <option value="1">2</option>
                 <option value="1">3</option>
@@ -141,6 +158,7 @@ class Login extends Component {
                 <option value="1">11</option>
                 <option value="1">12</option>
               </select>
+              </label>
             </div>
             <input type="submit" value="submit" />
           </form>
