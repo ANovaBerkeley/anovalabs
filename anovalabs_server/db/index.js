@@ -1,5 +1,5 @@
 const knex = require('knex')({
-	client: 'psql',
+	client: 'pg',
 	connection : {
 		host: 'localhost',
 		database: 'anovalabs-db'
