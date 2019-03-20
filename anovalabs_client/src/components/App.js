@@ -7,6 +7,7 @@ import Home from './Home';
 import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
+import Profile from './Profile';
 
 class App extends Component {
   render() {
@@ -19,7 +20,7 @@ class App extends Component {
           <Route path="/Protected" component={Protected} />
           <Route path="/Lessons" component={Lessons} />
           <Route path="/Logout" component={LogOut} />
-
+          <Route path="/Profile" component={Profile} />
         </Switch>
       </BrowserRouter>
     );
