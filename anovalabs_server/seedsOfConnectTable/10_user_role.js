@@ -1,10 +1,10 @@
-const seed = require('../../seedData/03_site_time_seed');
+const seed = require('../../newseedData/10_user_role_seed');
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('site_time')
+  return knex('user_role')
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex('site_time').insert(seed);
+      return knex('user_role').insert(seed);
     });
 };
