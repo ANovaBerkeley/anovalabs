@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+// import {NavLink} from "react-router"
+
+import './Login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -24,7 +27,7 @@ class Login extends Component {
   _submit(event) {
     event.preventDefault();
     axios
-      .post('api/v1/auth/login', {
+      .post('http://localhost:5000/api/v1/auth/login', {
         email: this.state.email,
         password: this.state.password
       })
@@ -37,31 +40,47 @@ class Login extends Component {
       });
   }
 
+
+
   render() {
     return (
-      <div>
-        <form onSubmit={this._submit}>
-          <div>
-            <label>email</label>
-            <input
-              type="text"
-              name="email"
-              onChange={this._change}
-              value={this.state.email}
-            />
+
+      <div className="container">
+        <div className= "loginBox">
+          <img src = "../public/img/logo-lower.png" className = "logo"/>
+          <div className = "title">
+            <div className = "anova">ANova </div>
+            <div className = "labs">Labs </div>
           </div>
-          <div>
-            <label>password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={this._change}
-              value={this.state.password}
-            />
-            <div>{this.state.errorMsg}</div>
+          <form onSubmit={this._submit}>
+            <div>
+              <label for = "email">Email</label>
+              <input
+                type="text"
+                name="email"
+                onChange={this._change}
+                value={this.state.email}
+              />
+            </div>
+            <div>
+              <label for = "password">Password</label>
+              <input
+                type="password"
+                name="password"
+                onChange={this._change}
+                value={this.state.password}
+              />
+              <div className = "error">{this.state.errorMsg}</div>
+            </div>
+            <div className = "remember"> <input type="checkbox"/> Remember Me</div>
+            <input type="submit" value="Submit" />
+          </form>
+          <div className = "links">
+            <a href="" className = "linktext">Register</a>
+            <a href="" className = "linktext">Forgot Password?</a>
+
           </div>
-          <input type="submit" value="submit" />
-        </form>
+        </div>
       </div>
     );
   }

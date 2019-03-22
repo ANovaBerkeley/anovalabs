@@ -4,28 +4,28 @@ const knex = require('./knex');
 
 module.exports = {
   getAll: () => {
-    return knex('local');
+    return knex('user');
   },
   getOneById: id => {
-    return knex('local')
+    return knex('user')
       .where('id', id)
       .first();
   },
   getOneByEmail: email => {
-    return knex('local')
+    return knex('user')
       .where('email', email)
       .first();
   },
-  create: local => {
-    return knex('local').insert(local, '*');
+  create: user => {
+    return knex('user').insert(user, '*');
   },
-  update: (id, local) => {
-    return knex('local')
+  update: (id, user) => {
+    return knex('user')
       .where('id', id)
-      .update(local, '*');
+      .update(user, '*');
   },
   delete: id => {
-    return knex('local')
+    return knex('user')
       .where('id', id)
       .del();
   }

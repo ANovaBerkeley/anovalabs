@@ -26,7 +26,8 @@ module.exports = {
     'constructor-super': 'warn',
     'valid-typeof': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-    'prettier/prettier': ['error']
+    'prettier/prettier': ['error'],
+    "linebreak-style": 0
   },
   settings: {
     react: {
