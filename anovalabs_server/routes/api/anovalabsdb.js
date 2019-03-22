@@ -4,9 +4,9 @@ const db = require('../../db');
 
 router.get('/', function (req, res) {
 	res.send('hello')
-	// db.select().from('lesson').then(function(data){
-	// 	res.send('data');
-	// });
+	db.select().from('lesson').then(function(data){
+		res.send(data);
+	});
 });
 
 module.exports= router;
