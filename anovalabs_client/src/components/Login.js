@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {NavLink} from "react-router"
-
+// import {NavLink} from "react-router"
 
 import './Login.css';
-
 
 class Login extends Component {
   constructor(props) {
@@ -29,7 +27,7 @@ class Login extends Component {
   _submit(event) {
     event.preventDefault();
     axios
-      .post('api/v1/auth/login', {
+      .post('http://localhost:5000/api/v1/auth/login', {
         email: this.state.email,
         password: this.state.password
       })
@@ -78,8 +76,7 @@ class Login extends Component {
             <input type="submit" value="Submit" />
           </form>
           <div className = "links">
-            <NavLink to = "/SignUp"><a href="" className = "linktext">Register</a></NavLink>
-
+            <a href="" className = "linktext">Register</a>
             <a href="" className = "linktext">Forgot Password?</a>
 
           </div>

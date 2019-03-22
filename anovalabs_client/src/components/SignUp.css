@@ -10,7 +10,7 @@
 
 .signUpBox {
   width: 350px;
-  height: 450px;
+  height: 480px;
   background-color: rgba(247, 247, 247, 0.86);
   display: flex;
   flex-direction: column;
@@ -18,4 +18,18 @@
   align-items: center;
   box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
   border-radius: 16px;
+}
+
+.anova{
+  color: #155FC2;
+}
+.labs{
+  padding-left: 4px;
+}
+
+.logo{
+  width: 10%;
+  height: auto;
+  padding-bottom: 5px;
+  padding-bottom: 8px;
 }

@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 
+import './SignUp.css';
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       email: '',
       password: '',
       emailStatus: '',
@@ -73,15 +76,17 @@ class Login extends Component {
     event.preventDefault();
     const isValid = await this._validateUser();
     if (isValid) {
+      console.log("posting info");
       axios
-        .post('api/v1/auth/signup', {
+        .post('http://localhost:5000/api/v1/auth/signup', {
+          name: this.state.name,
           email: this.state.email,
           password: this.state.password
         })
         .then(res => {
           // storing token from server
           localStorage.setItem('anovaToken', res.data.token);
-          this.props.history.push('/login');
+          this.props.history.push('/Login');
         })
         .catch(err => {
           localStorage.removeItem('anovaToken');
@@ -96,6 +101,11 @@ class Login extends Component {
     return (
       <div className="container">
         <div className="signUpBox">
+          <img src = "../public/img/logo-lower.png" className = "logo"/>
+          <div className = "title">
+            <div className = "anova">ANova </div>
+            <div className = "labs">Labs </div>
+          </div>
           <form onSubmit={this._submit}>
             <div>
               <label htmlFor="email">
@@ -123,22 +133,13 @@ class Login extends Component {
               <div>{this.state.passwordStatus}</div>
             </div>
             <div>
-              <label htmlFor="first_name">first name
+              <label htmlFor="name">name
               <input
-                  id="first_name"
+                  id="name"
                   type="text"
-                  name="first_name"
+                  name="name"
                   onChange={this._change}
-              />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="last_name">last name
-              <input
-                  id="last_name"
-                  type="text"
-                  name="last_name"
-                  onChange={this._change}
+                  value={this.state.name}
               />
               </label>
             </div>
@@ -146,17 +147,17 @@ class Login extends Component {
               <label> grade
               <select id="grade" name="grade">
                 <option value="1">1</option>
-                <option value="1">2</option>
-                <option value="1">3</option>
-                <option value="1">4</option>
-                <option value="1">5</option>
-                <option value="1">6</option>
-                <option value="1">7</option>
-                <option value="1">8</option>
-                <option value="1">9</option>
-                <option value="1">10</option>
-                <option value="1">11</option>
-                <option value="1">12</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
               </select>
               </label>
             </div>

@@ -33,6 +33,7 @@ function validatorAccount(account) {
 router.post('/signup', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
   const accountId = uuidv4();
+  console.log("heyo")
   console.log(validAccount.error);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
@@ -44,11 +45,11 @@ router.post('/signup', (req, res, next) => {
           (err, hash) => {
             // Store hash in your password DB.
             const newUser = {
-              first_name: req.body.firstName.trim(),
-              last_name: req.body.lastName.trim(),
+              name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
-              account_id: accountId
+              grade: 1 // temporary value NEED TO CHANGE
+              //account_id: accountId
             };
             User.create(newUser).then(retUser => {
               res.json({
