@@ -100,7 +100,7 @@ input[type=password], select {
   border-color: #D2EDFC;
 }
 
-input[type=submit] {
+input[type=button] {
   width: 100%;
   background-color: #9ED8DF;
   color: white;
@@ -114,6 +114,6 @@ input[type=submit] {
   box-shadow: 0px 4px 4px rgba(31, 137, 139, 0.5);
 }
 
-input[type=submit]:hover {
+input[type=button], select {
   opacity: .8;
 }

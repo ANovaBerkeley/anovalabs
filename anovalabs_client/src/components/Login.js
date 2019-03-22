@@ -74,7 +74,7 @@ class Login extends Component {
               <div className = "error">{this.state.errorMsg}</div>
             </div>
             <div className = "remember"> <input type="checkbox"/> Remember Me</div>
-            <input type="submit" value="Submit" />
+            <div><input type="button" value="Submit" /></div>
           </form>
           <div className = "links">
             <a href="" className = "linktext">Register</a>

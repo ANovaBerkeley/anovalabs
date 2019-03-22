@@ -35,7 +35,7 @@ class Lessons extends Component {
         siteLeader: "Peter",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla consequat neque nec placerat. ",
         date: "3/3/18"
-      }, {
+      },{
         title: "Lesson 2",
         siteLeader: "Peter",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla consequat neque nec placerat. ",
