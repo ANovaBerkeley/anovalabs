@@ -1,50 +1,32 @@
 const express = require('express');
-
 const router = express.Router();
+const db = require('../../../db');
 
-const Lessons = require('../../../db/lesson');
+router.get('/', function (req, res) {
+  const userid = 2  
 
-// need to create a validation function for id
+  const semid = db.select('semester.id')
+    .from('user')
+    .join('semester_user', 'semester_user.user_id', 'user.id')
+    .join('semester', 'semester_user.semester_id', 'semester.id')
+    .where('user.id', userid )
 
-// need to create a validation function for lesson
 
-router.get('/', (req, res) => {
-  Lessons.getAll().then(lessons => {
-    res.json(lessons);
+  const siteid = db.select('site.id')
+    .from('semester')
+    .join('user_semester_site','user_semester_site.semester_id','semester.id')
+    .join('site','user_semester_site.site_id','site.id')
+    .where('user_semester_site.user_id',userid)
+    .where('semester.id',semid) 
+
+  db.select('lesson.title', 'lesson.summary','lesson.link').from('site')
+    .join('lesson_site','lesson_site.site_id','site.id')
+    .join('lesson','lesson_site.lesson_id','lesson.id')
+    .where('site.id',siteid)
+
+  .then(function(data){
+    res.send(data);
   });
 });
 
-router.get('/:id', (req, res, next) => {
-  Lessons.getOne(req.params.id).then(lesson => {
-    if (lesson) {
-      res.json(lesson);
-    } else {
-      res.status(404);
-      next();
-    }
-  });
-});
-
-router.post('/', (req, res, next) => {
-  // validateLesson paramaters
-  Lessons.create(req.body).then(lessons => {
-    res.json(lessons[0]);
-  });
-});
-
-router.put('/:id', (req, res, next) => {
-  // check that contents are valid through another fn
-  Lessons.update(req.params.id, req.body).then(lessons => {
-    res.json(lessons[0]);
-  });
-});
-
-router.delete('/:id', (req, res, next) => {
-  Lessons.delete(req.params.id).then(() => {
-    res.json({
-      deleted: true
-    });
-  });
-});
-
-module.exports = router;
+module.exports= router;
