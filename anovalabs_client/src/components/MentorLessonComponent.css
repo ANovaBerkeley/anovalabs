@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+.card{
+  width: 300px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows:   20% 15% 35% 40%;
+  /*align-items: center;*/
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0px -4px 0px #D2EDFC;
+  border-radius: 5px;
+  padding: 20px 20px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.deleteButton{
+  width: 30px;
+  height: 30px;
+  border: none;
+  position: absolute;
+  right:10px;
+  top:0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+.titleContainer{
+  position: relative;
+}
+
+
+.lessonTitle{
+  font-family: Lato;
+  font-size: 20px;
+  color: #155FC2;
+
+}
+.date{
+  font-family: Lato;
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+.description{
+  font-family: Lato;
+  font-size: 11px;
+  padding-bottom: 8px;
+}
+.descriptionContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttonContainer{
+  width: 100%;
+  position: relative;
+
+}
+.viewAssignment{
+  text-align: center;
+}
+.viewAssignment a {
+  width: 40%;
+  height: 20px;
+  color: white;
+  padding: 10px 10px;
+  margin: 8px 0;
+  border: none;
+  font-family: Lato;
+  cursor: pointer;
+  background: #03A9F4;
+  box-shadow: 0px 2px 2px rgba(3, 169, 244, 0.2);
+  border-radius: 3px;
+
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  font-size: 14px;
+  text-decoration: none;
+
+
+
+
+}
+
+
+
+
+.viewAssignment a:hover {
+  opacity: .8;
+}

@@ -25,14 +25,18 @@ class LessonComponent extends Component {
           //
           // </li>
           <div className = "card">
+            
             <div className = "lessonTitle">{this.props.lessonDetails.title}</div>
             <div className = "date">{this.props.lessonDetails.date}</div>
             <div className = "descriptionContainer">
-              <div className = "description">{this.props.lessonDetails.description}</div>
+              <div className = "description">{this.props.lessonDetails.summary}</div>
             </div>
             <div className = "buttonContainer">
-              <input type="submit" value="View Assignment" />
+              <div className = "viewAssignment">
+                <a href={this.props.lessonDetails.link}>View Assignment</a>
+              </div>
             </div>
+
           </div>
 
 

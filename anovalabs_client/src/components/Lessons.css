@@ -11,6 +11,25 @@
   padding-bottom: 200px;
 
 }
+.plusCard{
+  width: 300px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 20% 15% 35% 40%;
+  /*align-items: center;*/
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0px -4px 0px #D2EDFC;
+  border-radius: 5px;
+  padding: 20px 20px;
+  position: relative;
+  padding-bottom: 20px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+
+}
 
 .lessonsContainer:after {
   content: "";
