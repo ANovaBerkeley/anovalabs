@@ -7,7 +7,7 @@ module.exports = {
     path: path.join(__dirname, '/build'),
     filename: 'index_bundle.js'
   },
-  
+
   module: {
 
     rules: [

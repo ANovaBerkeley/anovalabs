@@ -41,13 +41,37 @@ class Lessons extends Component {
   // }
 
   render() {
-    const { error, isLoaded, items, mentor } = this.state;
-    if (error) {
-      return <div>Error:{error.message}</div>;
-    }
-    if (!isLoaded) {
-      return <div>Loading...</div>;
-    }
+    // const { error, isLoaded, items } = this.state;
+    // if (error) {
+    //   return <div>Error:{error.message}</div>;
+    // }
+    // if (!isLoaded) {
+    //   return <div>Loading...</div>;
+    // }
+
+
+
+
+
+    // <ul>
+    //   {items.map(item => (
+    //     <li key={item.lessonId}>
+    //       <div>{item.title}</div>
+    //       <div>{item.siteLeader}</div>
+    //     </li>
+    //   ))}
+    // </ul>
+    return (
+
+      // <ul>
+      //   {items.map(item => (
+      //     <li key={123}>
+      //       <div>{"week 1"}</div>
+      //       <div>{"item.siteLeader"}</div>
+      //     </li>
+      //   ))}
+      // </ul>
+
 
     if (!mentor){
       return (
@@ -94,6 +118,8 @@ class Lessons extends Component {
         </div>
       );
     }
+      </div>
+    );
   }
 }
 export default Lessons;

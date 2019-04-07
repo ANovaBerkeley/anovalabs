@@ -31,12 +31,16 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/runtime": "^7.2.0",
+    "antd": "^3.15.1",
     "axios": "^0.18.0",
+    "css-loader": "^2.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-icons": "^3.5.0",
     "react-router-dom": "^4.3.1",
+    "style-loader": "^0.23.1",
+    "tachyon": "0.0.11",
     "yup": "^0.26.6"
   },
   "devDependencies": {
@@ -59,7 +63,7 @@
     "html-webpack-plugin": "^3.2.0",
     "prettier": "^1.15.2",
     "style-loader": "^0.23.1",
-    "webpack": "^4.26.1",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.2.1"
   }
