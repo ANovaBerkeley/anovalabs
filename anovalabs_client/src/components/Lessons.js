@@ -68,14 +68,28 @@ class Lessons extends Component {
   // }
 
   render() {
-    const { error, isLoaded, items } = this.state;
-    if (error) {
-      return <div>Error:{error.message}</div>;
-    }
-    if (!isLoaded) {
-      return <div>Loading...</div>;
-    }
+    // const { error, isLoaded, items } = this.state;
+    // if (error) {
+    //   return <div>Error:{error.message}</div>;
+    // }
+    // if (!isLoaded) {
+    //   return <div>Loading...</div>;
+    // }
+
+
+
+
+
+    // <ul>
+    //   {items.map(item => (
+    //     <li key={item.lessonId}>
+    //       <div>{item.title}</div>
+    //       <div>{item.siteLeader}</div>
+    //     </li>
+    //   ))}
+    // </ul>
     return (
+<<<<<<< HEAD
       // <ul>
       //   {items.map(item => (
       //     <li key={123}>
@@ -93,6 +107,9 @@ class Lessons extends Component {
 
 
         </div>
+=======
+      <div>
+>>>>>>> melody
       </div>
     );
   }
