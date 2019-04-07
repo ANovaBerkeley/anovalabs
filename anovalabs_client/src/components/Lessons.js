@@ -89,27 +89,7 @@ class Lessons extends Component {
     //   ))}
     // </ul>
     return (
-<<<<<<< HEAD
-      // <ul>
-      //   {items.map(item => (
-      //     <li key={123}>
-      //       <div>{"week 1"}</div>
-      //       <div>{"item.siteLeader"}</div>
-      //     </li>
-      //   ))}
-      // </ul>
-      <div className = "container">
-        <div className = "lessonsContainer">
-
-          {items.map(item => (
-            <LessonComponent lessonDetails={item}></LessonComponent>
-          ))}
-
-
-        </div>
-=======
       <div>
->>>>>>> melody
       </div>
     );
   }

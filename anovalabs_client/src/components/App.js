@@ -8,6 +8,7 @@ import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
 import Profile from './Profile';
+import Roster from './Roster';
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
           <Route path="/Lessons" component={Lessons} />
           <Route path="/Logout" component={LogOut} />
           <Route path="/Profile" component={Profile} />
+          <Route path="/Roster" component={Roster} />
         </Switch>
       </BrowserRouter>
     );
