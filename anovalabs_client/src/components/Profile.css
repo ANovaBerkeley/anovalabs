@@ -9,19 +9,25 @@
   align-items: center;
 }
 
-.loginBox {
+.profileBox {
 
-  width: 350px;
+  width: 700px;
   height: 450px;
   background-color: rgba(247, 247, 247, 0.86);
   display: flex;
   flex-direction: column;
   justify-content: center;
+  vertical-align: middle;
   align-items: center;
   box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
   border-radius: 16px;
 
 }
+
+.profileBox p{
+     padding-right: 20px;
+}
+
 .linktext{
   text-decoration: underline;
   padding-bottom: 5px;
@@ -56,7 +62,15 @@
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+p {
+          font-family: 'Lato';
+          font-size: 15px;
+          display: flex;
+          flex-direction: row;
+          color: #3b3b3b
 }
 
 label{
@@ -80,19 +94,37 @@ input[type=checkbox], select{
 }
 input[type=text], select {
   width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 20px 10px;
+  margin-top: 0px;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   border-color: #D2EDFC;
 }
+
+input {
+     width: 100%;
+     padding: 20px 10px;
+     display: inline-block;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     box-sizing: border-box;
+     border-color: #D2EDFC;
+}
+input[type=email], select {
+     width: 100%;
+     padding: 20px 10px;
+     display: inline-block;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     box-sizing: border-box;
+     border-color: #D2EDFC;
+   }
 
 input[type=password], select {
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -100,12 +132,11 @@ input[type=password], select {
   border-color: #D2EDFC;
 }
 
-input[type=button] {
+input[type=submit] {
   width: 100%;
   background-color: #9ED8DF;
   color: white;
   padding: 10px 20px;
-  margin: 8px 0;
   border: none;
   border-radius: 4px;
   font-size: 14px;
@@ -114,6 +145,19 @@ input[type=button] {
   box-shadow: 0px 4px 4px rgba(31, 137, 139, 0.5);
 }
 
-input[type=button], select {
+input[type=submit]:hover {
   opacity: .8;
+}
+
+
+.editModal {
+     padding: 10px 10px;
+}
+/* button {
+     border-style: solid;
+     border-radius: 10px 10px; 
+} */
+
+.editFields .ant-row {
+     padding: 20 0px;
 }
