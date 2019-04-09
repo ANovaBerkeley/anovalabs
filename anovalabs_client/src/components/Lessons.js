@@ -40,40 +40,18 @@ class Lessons extends Component {
   //     );
   // }
 
-  render() {
-    // const { error, isLoaded, items } = this.state;
-    // if (error) {
-    //   return <div>Error:{error.message}</div>;
-    // }
-    // if (!isLoaded) {
-    //   return <div>Loading...</div>;
-    // }
-
-
-
-
-
+  renderLessons = () => {
     // <ul>
     //   {items.map(item => (
-    //     <li key={item.lessonId}>
-    //       <div>{item.title}</div>
-    //       <div>{item.siteLeader}</div>
+    //     <li key={123}>
+    //       <div>{"week 1"}</div>
+    //       <div>{"item.siteLeader"}</div>
     //     </li>
     //   ))}
     // </ul>
-    return (
-
-      // <ul>
-      //   {items.map(item => (
-      //     <li key={123}>
-      //       <div>{"week 1"}</div>
-      //       <div>{"item.siteLeader"}</div>
-      //     </li>
-      //   ))}
-      // </ul>
 
 
-    if (!mentor){
+    if (!this.state.mentor) {
       return (
         // <ul>
         //   {items.map(item => (
@@ -98,8 +76,7 @@ class Lessons extends Component {
           </div>
         </div>
       );
-    }
-    if (mentor){
+    } else {
       // return <h3> Lets go for a < GoPlus/>? </h3>
       return (
         <div className = "container">
@@ -113,11 +90,36 @@ class Lessons extends Component {
               <GoPlus size = {100} color='grey'/>
             </div>
 
-
           </div>
         </div>
       );
     }
+  }
+
+  render() {
+    // const { error, isLoaded, items } = this.state;
+    // if (error) {
+    //   return <div>Error:{error.message}</div>;
+    // }
+    // if (!isLoaded) {
+    //   return <div>Loading...</div>;
+    // }
+
+
+
+
+
+    // <ul>
+    //   {items.map(item => (
+    //     <li key={item.lessonId}>
+    //       <div>{item.title}</div>
+    //       <div>{item.siteLeader}</div>
+    //     </li>
+    //   ))}
+    // </ul>
+    return (
+      <div>
+      {this.renderLessons}
       </div>
     );
   }

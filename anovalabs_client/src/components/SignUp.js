@@ -12,7 +12,7 @@ class Login extends Component {
       email: '',
       password: '',
       emailStatus: '',
-      passwordStatus: ''
+      passwordStatus: '',
     };
 
     this._change = this._change.bind(this);
@@ -40,7 +40,7 @@ class Login extends Component {
       );
       if (isValid) {
         this.setState({
-          emailStatus: '',ss
+          emailStatus: '',
           passwordStatus: ''
         });
         return true;
