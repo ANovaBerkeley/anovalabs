@@ -1,3 +1,18 @@
 .navbar_menu {
   background: #F7F7F7;
 }
+.navbar-options {
+  display: flex;
+  float: right;
+  margin-right: 10px;
+  height: 65px;
+  width: 550px;
+  font-size: 20px;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.logo {
+  width: 180px;
+  height: 65px;
+}

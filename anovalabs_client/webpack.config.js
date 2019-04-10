@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require('webpack')
 
 module.exports = {
   entry: './src/index.js',
@@ -32,8 +33,15 @@ module.exports = {
       },
       {
           test:/\.css$/,
-          use:['style-loader','css-loader']
-      }
+          use:['style-loader','css-loader'],
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        loaders: [
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack-loader',
+        ],
+      },
     ]
   },
   plugins: [
