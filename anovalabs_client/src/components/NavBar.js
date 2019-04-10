@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Icon, Switch } from 'antd';
 import 'antd/dist/antd.css';
 import '../stylesheets/navbar.css'
-var logo = require('../stylesheets/anovalabs_icon.png');
+var logo = require('../stylesheets/logo.png');
 
 class NavBar extends Component {
 
@@ -18,6 +18,7 @@ class NavBar extends Component {
     this.setState({ current: e.key });
   }
 
+
   render() {
     return (
       <Menu className="navbar_menu"
@@ -29,12 +30,14 @@ class NavBar extends Component {
         <Menu.Item key="home">
           <img src={logo} className="logo"></img>
         </Menu.Item>
-        <Menu.Item key="lessons">
-          <a href="/Lessons">Lessons</a>
-        </Menu.Item>
-        <Menu.Item key="signup">
-          <a href="/Signup">Sign Up</a>
-        </Menu.Item>
+        <div className="navbar-options">
+            <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <a href="/Lessons" style={{ color: "black" }}>Lessons</a>
+            </Menu.Item>
+            <Menu.Item key="signup" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <a href="/Signup" style={{ color: "black" }}>Sign Up</a>
+            </Menu.Item>
+        </div>
       </Menu>
     );
   }
