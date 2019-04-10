@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
 
-import './LessonPool.css';
+import '../stylesheets/LessonPool.css';
 import { GoPlus } from 'react-icons/go';
 import { GoX } from 'react-icons/go';
 

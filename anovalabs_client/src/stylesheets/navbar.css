@@ -8,11 +8,33 @@
   height: 65px;
   width: 550px;
   font-size: 20px;
-  justify-content: flex-start;
+  justify-content: flex-end;
   text-align: center;
+
 }
 
 .logo {
   width: 180px;
   height: 65px;
+}
+
+#navbar-dialog {
+  height: 120px;
+  width: 200px;
+  border: 1px solid #EEEEEE;
+  z-index: 5;
+  right:0;
+  transform: translate(-32px, 58px);
+  border-radius: 4px;
+  position: fixed;
+  background-color: white;
+  padding: 16px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.10);
+  display: none;
+}
+
+.navbar-dialog-button {
+  display: block;
+  width: 100%;
+  margin: 4px 0px 4px 0px;
 }

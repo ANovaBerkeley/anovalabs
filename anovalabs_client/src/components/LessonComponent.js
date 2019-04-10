@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './LessonComponent.css';
+import '../stylesheets/LessonComponent.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
 class LessonComponent extends Component {
@@ -25,7 +25,7 @@ class LessonComponent extends Component {
           //
           // </li>
           <div className = "card">
-            
+
             <div className = "lessonTitle">{this.props.lessonDetails.title}</div>
             <div className = "date">{this.props.lessonDetails.date}</div>
             <div className = "descriptionContainer">

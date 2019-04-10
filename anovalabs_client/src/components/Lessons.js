@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
 
-import './Lessons.css';
+import '../stylesheets/Lessons.css';
 import { GoPlus } from 'react-icons/go';
 
 // TODO: Need to show lessons based on user's assigned ID'
@@ -64,7 +64,7 @@ class Lessons extends Component {
         <div className = "container">
           <div className = "lessonsContainer">
 
-            {items.map(item => (
+            {this.state.items.map(item => (
               <LessonComponent lessonDetails={item}></LessonComponent>
             ))}
 
@@ -82,7 +82,7 @@ class Lessons extends Component {
         <div className = "container">
           <div className = "lessonsContainer">
 
-            {items.map(item => (
+            {this.state.items.map(item => (
               <MentorLessonComponent lessonDetails={item}></MentorLessonComponent>
             ))}
 
@@ -97,6 +97,7 @@ class Lessons extends Component {
   }
 
   render() {
+    let component = this.renderLessons();
     // const { error, isLoaded, items } = this.state;
     // if (error) {
     //   return <div>Error:{error.message}</div>;
@@ -119,7 +120,7 @@ class Lessons extends Component {
     // </ul>
     return (
       <div>
-      {this.renderLessons}
+      {component}
       </div>
     );
   }

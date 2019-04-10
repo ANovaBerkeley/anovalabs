@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 
-import './MentorLessonComponent.css';
+import '../stylesheets/MentorLessonComponent.css';
 
 
 

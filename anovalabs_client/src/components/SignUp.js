@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-import './SignUp.css';
+import '../stylesheets/SignUp.css';
 
 class Login extends Component {
   constructor(props) {

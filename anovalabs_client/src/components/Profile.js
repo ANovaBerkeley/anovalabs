@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import './Profile.css';
+import '../stylesheets/Profile.css';
 import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 import "antd/dist/antd.css";
 export default class Profile extends Component {

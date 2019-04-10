@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Switch } from 'antd';
+import { Menu, Icon, Switch, Button } from 'antd';
 import 'antd/dist/antd.css';
 import '../stylesheets/navbar.css'
 var logo = require('../stylesheets/logo.png');
@@ -18,6 +18,22 @@ class NavBar extends Component {
     this.setState({ current: e.key });
   }
 
+  returnHome = () => {
+    window.location = "/";
+  }
+
+  goToProfile = () => {
+    window.location = "/Profile";
+  }
+
+  toggleDialog = () => {
+    if (document.querySelector("#navbar-dialog").style.display != "block") {
+      document.querySelector("#navbar-dialog").style.display = "block";
+    } else {
+      document.querySelector("#navbar-dialog").style.display = "none";
+    }
+  }
+
 
   render() {
     return (
@@ -28,15 +44,19 @@ class NavBar extends Component {
         theme="light"
       >
         <Menu.Item key="home">
-          <img src={logo} className="logo"></img>
+          <img onClick={this.returnHome} src={logo} className="logo" style={{ width: 180, height: 65 }}></img>
         </Menu.Item>
         <div className="navbar-options">
             <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
-              <a href="/Lessons" style={{ color: "black" }}>Lessons</a>
+              <a href="/Lessons">Lessons</a>
             </Menu.Item>
-            <Menu.Item key="signup" style={{ paddingRight: 20, paddingTop: 10 }}>
-              <a href="/Signup" style={{ color: "black" }}>Sign Up</a>
+            <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <img onClick={this.toggleDialog} src={"https://image.flaticon.com/icons/png/128/1141/1141771.png"} className="profile-logo" style={{ width: 20, height: 20 }}></img>
             </Menu.Item>
+            <div id="navbar-dialog">
+              <Button key="edit" type="default" className="navbar-dialog-button" onClick={this.goToProfile}>Profile</Button>
+              <Button key="logout" type="danger" className="navbar-dialog-button">Logout</Button>
+            </div>
         </div>
       </Menu>
     );
