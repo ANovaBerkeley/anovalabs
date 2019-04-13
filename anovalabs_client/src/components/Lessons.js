@@ -11,68 +11,59 @@ class Lessons extends Component {
     super(props);
     this.state = {
       error: null,
-      isLoaded: true,
+      isLoaded: false,
       mentor: true,
-      items: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
+      items: [
+        {"id":1,
+        "title":"Python 1 for inexperienced",
+        "summary":"1st Python lesson",
+        "link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405",
+        "created_at":"2019-03-11T01:40:56.187Z",
+        "updated_at":"2019-03-11T01:40:56.187Z",
+        "date": "3/11"},
+        {"id":1,
+        "title":"Python 1 for inexperienced",
+        "summary":"1st Python lesson",
+        "link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405",
+        "created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"},
+        {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
     ]
     };
   }
 
-  // componentDidMount() {
-  //   fetch('http://localhost:5000/api/v1/lessons')
-  //     .then(res => res.json())
-  //     .then(
-  //       result => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           items: result
-  //         });
-  //       },
-  //       // Note: it's important to handle errors here
-  //       // instead of a catch() block so that we don't swallow
-  //       // exceptions from actual bugs in components.
-  //       error => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           error
-  //         });
-  //       }
-  //     );
-  // }
+  componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons')
+      .then(res => res.json())
+      .then(
+        result => {
+          console.log(result);
+          this.setState({
+            isLoaded: true,
+            items: result
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+  }
 
   renderLessons = () => {
-    // <ul>
-    //   {items.map(item => (
-    //     <li key={123}>
-    //       <div>{"week 1"}</div>
-    //       <div>{"item.siteLeader"}</div>
-    //     </li>
-    //   ))}
-    // </ul>
-
-
     if (!this.state.mentor) {
       return (
-        // <ul>
-        //   {items.map(item => (
-        //     <li key={123}>
-        //       <div>{"week 1"}</div>
-        //       <div>{"item.siteLeader"}</div>
-        //     </li>
-        //   ))}
-        // </ul>
         <div className = "container">
           <div className = "lessonsContainer">
 
             {this.state.items.map(item => (
-              <LessonComponent lessonDetails={item}></LessonComponent>
+              <LessonComponent lessonDetails={item} />
             ))}
 
             <div className = "plusCard">
               <GoPlus size = {100} color='grey'/>
             </div>
-
-
           </div>
         </div>
       );
@@ -97,27 +88,16 @@ class Lessons extends Component {
   }
 
   render() {
+    // TODO: these show behind the nav bar currently
+    console.log(this.state.items);
+    if (this.state.error) {
+      return (<div>Error: {this.state.error.message}</div>);
+    }
+    if (!this.state.isLoaded) {
+      return (<div>Loading...</div>);
+    }
+
     let component = this.renderLessons();
-    // const { error, isLoaded, items } = this.state;
-    // if (error) {
-    //   return <div>Error:{error.message}</div>;
-    // }
-    // if (!isLoaded) {
-    //   return <div>Loading...</div>;
-    // }
-
-
-
-
-
-    // <ul>
-    //   {items.map(item => (
-    //     <li key={item.lessonId}>
-    //       <div>{item.title}</div>
-    //       <div>{item.siteLeader}</div>
-    //     </li>
-    //   ))}
-    // </ul>
     return (
       <div>
       {component}
