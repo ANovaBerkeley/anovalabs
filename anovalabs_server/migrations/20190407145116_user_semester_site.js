@@ -20,7 +20,7 @@ exports.up = function(knex, Promise) {
         .foreign('user_id')
         .references('user.id')
         .onDelete('CASCADE');
-    	tables
+    	table
         .foreign('semester_id')
         .references('semester.id')
         .onDelete('CASCADE');
