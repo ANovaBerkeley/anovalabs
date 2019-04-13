@@ -9,8 +9,6 @@ class Home extends Component {
     return (
       <div>
         <h1>Welcome to Anova Labs</h1>
-        <NavLink to = "/SignUp"><button className = "signupButton">Sign Up</button></NavLink>
-        //<NavLink to = "/SignUp"><Button>Sign Up</Button></NavLink>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 
-import './SignUp.css';
+import '../stylesheets/SignUp.css';
 
 class Login extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class Login extends Component {
       email: '',
       password: '',
       emailStatus: '',
-      passwordStatus: ''
+      passwordStatus: '',
     };
 
     this._change = this._change.bind(this);
@@ -40,7 +40,7 @@ class Login extends Component {
       );
       if (isValid) {
         this.setState({
-          emailStatus: '',ss
+          emailStatus: '',
           passwordStatus: ''
         });
         return true;

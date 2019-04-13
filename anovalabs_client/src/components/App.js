@@ -7,22 +7,35 @@ import Home from './Home';
 import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
+import NavBar from './NavBar';
+
+import LessonPool from './LessonPool';
+
+
+import Profile from './Profile';
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/SignUp" component={SignUp} />
-          <Route path="/Login" component={Login} />
-          <AuthComponent>
+      <div>
+        <NavBar/>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={Lessons} />
+            <Route path="/SignUp" component={SignUp} />
+            <Route path="/Login" component={Login} />
             <Route path="/Protected" component={Protected} />
             <Route path="/Lessons" component={Lessons} />
             <Route path="/Logout" component={LogOut} />
-          </AuthComponent>
-        </Switch>
-      </BrowserRouter>
+
+            <Route path="/LessonPool" component={LessonPool} />
+
+
+            <Route path="/Profile" component={Profile} />
+
+          </Switch>
+        </BrowserRouter>
+      </div>
     );
   }
 }
