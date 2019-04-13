@@ -6,9 +6,6 @@ exports.up = function(knex, Promise) {
       table.integer('year')
       		.notNullable()
         	.unsigned();
-      table.integer('semesterID')
-      		.notNullable()
-        	.unsigned();
       table.string('semester')
       		.notNullable();
 

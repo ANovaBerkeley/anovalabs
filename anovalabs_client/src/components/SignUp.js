@@ -40,7 +40,7 @@ class Login extends Component {
       );
       if (isValid) {
         this.setState({
-          emailStatus: '',
+          emailStatus: '',ss
           passwordStatus: ''
         });
         return true;
