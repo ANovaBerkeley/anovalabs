@@ -48,15 +48,18 @@
 
 .anova{
   color: #155FC2;
+  font-size: 20px;
 }
 .labs{
   padding-left: 4px;
+  font-size: 20px;
 }
 .title{
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
   flex-direction: row;
+  
 }
 
 label{
@@ -80,6 +83,7 @@ input[type=checkbox], select{
 }
 input[type=text], select {
   width: 100%;
+  height: 10px;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
