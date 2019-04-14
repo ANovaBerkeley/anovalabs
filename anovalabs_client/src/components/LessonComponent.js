@@ -21,13 +21,10 @@ class LessonComponent extends Component {
       return <div>Loading...</div>;
     }
     return (
-          // <li key={123}>
-          //
-          // </li>
           <div className = "card">
 
             <div className = "lessonTitle">{this.props.lessonDetails.title}</div>
-            <div className = "date">{this.props.lessonDetails.date}</div>
+            // <div className = "date">{this.props.lessonDetails.date}</div>
             <div className = "descriptionContainer">
               <div className = "description">{this.props.lessonDetails.summary}</div>
             </div>
@@ -36,7 +33,6 @@ class LessonComponent extends Component {
                 <a href={this.props.lessonDetails.link}>View Assignment</a>
               </div>
             </div>
-
           </div>
 
 
