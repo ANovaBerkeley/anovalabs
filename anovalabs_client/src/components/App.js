@@ -13,6 +13,7 @@ import LessonPool from './LessonPool';
 
 
 import Profile from './Profile';
+import Roster from './Roster';
 
 class App extends Component {
   render() {
