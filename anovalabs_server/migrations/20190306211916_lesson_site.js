@@ -11,7 +11,10 @@ exports.up = function(knex, Promise) {
         .integer('site_id')
         .notNullable()
         .unsigned();
-    	table
+      table
+        .string('date')
+        .notNullable();
+      table
         .foreign('lesson_id')
         .references('lesson.id')
         .onDelete('CASCADE');
