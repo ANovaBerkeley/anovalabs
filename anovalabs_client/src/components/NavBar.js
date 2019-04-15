@@ -25,6 +25,9 @@ class NavBar extends Component {
   goToProfile = () => {
     window.location = "/Profile";
   }
+  goToRoster = () => {
+    window.location = "/Roster";
+  }
 
   toggleDialog = () => {
     if (document.querySelector("#navbar-dialog").style.display != "block") {
@@ -49,6 +52,9 @@ class NavBar extends Component {
         <div className="navbar-options">
             <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
               <a href="/Lessons">Lessons</a>
+            </Menu.Item>
+            <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <a href="/Roster">Roster</a>
             </Menu.Item>
             <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 10 }}>
               <img onClick={this.toggleDialog} src={"https://image.flaticon.com/icons/png/128/1141/1141771.png"} className="profile-logo" style={{ width: 20, height: 20 }}></img>

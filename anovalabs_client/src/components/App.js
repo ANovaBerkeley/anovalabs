@@ -8,7 +8,7 @@ import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
 import NavBar from './NavBar';
-
+import Roster from './Roster';
 import LessonPool from './LessonPool';
 
 
@@ -32,6 +32,8 @@ class App extends Component {
 
 
             <Route path="/Profile" component={Profile} />
+            <Route path="/Roster" component={Roster} />
+
 
           </Switch>
         </BrowserRouter>
