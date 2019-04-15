@@ -1,50 +1,37 @@
 const express = require('express');
-
 const router = express.Router();
+const Lesson = require('../../../db/lesson');
+const db = require('../../../db');
 
-const Lessons = require('../../../db/lesson');
+router.get('/', function (req, res) {
+  const userid = 1
+  const semid = 1
 
-// need to create a validation function for id
+  const siteid = db.select('site.id')
+    .from('semester')
+    .join('user_semester_site','user_semester_site.semester_id','semester.id')
+    .join('site','user_semester_site.site_id','site.id')
+    .where('user_semester_site.user_id',userid)
+    .where('semester.id',semid)
 
-// need to create a validation function for lesson
+  db.select('lesson.title', 'lesson.summary','lesson.link', 'lesson_site.date')
+    .from('site')
+    .join('lesson_site','lesson_site.site_id','site.id')
+    .join('lesson','lesson_site.lesson_id','lesson.id')
+    .where('site.id',siteid)
 
-router.get('/', (req, res) => {
-  Lessons.getAll().then(lessons => {
-    res.json(lessons);
-  });
-});
-
-router.get('/:id', (req, res, next) => {
-  Lessons.getOne(req.params.id).then(lesson => {
-    if (lesson) {
-      res.json(lesson);
-    } else {
-      res.status(404);
-      next();
-    }
+  .then(function(data){
+    res.send(data);
   });
 });
 
 router.post('/', (req, res, next) => {
-  // validateLesson paramaters
-  Lessons.create(req.body).then(lessons => {
-    res.json(lessons[0]);
+    Lesson.insert(req.body).returning('*').then(function(data) {
+        res.send(data);
+    })
+  // validate account paramaters
+  // Lesson.create(req.body).then(Lesson => {
+  //   res.json(Lesson[0]);
   });
-});
 
-router.put('/:id', (req, res, next) => {
-  // check that contents are valid through another fn
-  Lessons.update(req.params.id, req.body).then(lessons => {
-    res.json(lessons[0]);
-  });
-});
-
-router.delete('/:id', (req, res, next) => {
-  Lessons.delete(req.params.id).then(() => {
-    res.json({
-      deleted: true
-    });
-  });
-});
-
-module.exports = router;
+module.exports= router;

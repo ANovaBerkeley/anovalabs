@@ -7,7 +7,9 @@ module.exports = {
     path: path.join(__dirname, '/build'),
     filename: 'index_bundle.js'
   },
+
   module: {
+
     rules: [
       {
         enforce: 'pre',
@@ -18,6 +20,7 @@ module.exports = {
           emitWarning: true,
           configFile: './.eslintrc.js'
         }
+
       },
       {
         test: /\.js$/,
@@ -31,8 +34,9 @@ module.exports = {
         }
       },
       {
-        test:/\.css$/,
-        use:['style-loader', 'css-loader']
+
+          test:/\.css$/,
+          use:['style-loader','css-loader']
       }
     ]
   },

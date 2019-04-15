@@ -12,6 +12,9 @@ const auth = require('./api/v1/auth/index');
 const authMiddleware = require('./api/v1/auth/middleware');
 
 const lessons = require('./api/v1/routes/lessons');
+const rosterMentor = require('./api/v1/routes/rosterMentor');
+const rosterStudent = require('./api/v1/routes/rosterStudent');
+const allLessons = require('./api/v1/routes/allLessons');
 const accounts = require('./api/v1/routes/accounts');
 
 app.use(logger('dev'));
@@ -28,6 +31,9 @@ app.use(
 app.use(authMiddleware.checkTokenSetAccount);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/lessons', lessons);
+app.use('/api/v1/rosterMentor', rosterMentor);
+app.use('/api/v1/rosterStudent', rosterStudent);
+app.use('/api/v1/allLessons', allLessons);
 app.use('/api/v1/accounts', accounts);
 
 // catch 404 and forward to error handler
