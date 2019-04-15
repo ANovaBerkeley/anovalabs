@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Lesson = require('../../../db/lesson');
 const db = require('../../../db');
+const knex = require('../../../db/knex');
 
 router.get('/', function (req, res) {
   const userid = 1
@@ -26,12 +27,13 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', (req, res, next) => {
-    Lesson.insert(req.body).returning('*').then(function(data) {
-        res.send(data);
+    knex('lesson').insert(req.body)
+    .then(function(data){
+        res.status(201).json({title: req.body.title})
     })
-  // validate account paramaters
-  // Lesson.create(req.body).then(Lesson => {
-  //   res.json(Lesson[0]);
+    .catch(error => {
+        res.status(500).json({error});
+    })
   });
 
 module.exports= router;
