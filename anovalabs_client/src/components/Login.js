@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import * as decode from 'jwt-decode';
 
 
 import '../stylesheets/Login.css';
@@ -38,6 +39,9 @@ class Login extends Component {
       .catch(error => {
         this.setState({ errorMsg: 'Invalid Login' });
       });
+      const anovaToken = localStorage.getItem('anovaToken');
+      const anovaPayload = decode(anovaToken);
+      console.log("payload:", anovaPayload);
   }
 
 
@@ -73,7 +77,7 @@ class Login extends Component {
               <div className = "error">{this.state.errorMsg}</div>
             </div>
             <div className = "remember"> <input type="checkbox"/> Remember Me</div>
-            <div><input type="button" value="Submit" /></div>
+            <div><input type="submit" value="submit" /></div>
           </form>
           <div className = "links">
             <a href="" className = "linktext">Register</a>

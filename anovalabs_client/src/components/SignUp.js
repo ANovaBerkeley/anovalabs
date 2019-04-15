@@ -76,9 +76,8 @@ class Login extends Component {
     event.preventDefault();
     const isValid = await this._validateUser();
     if (isValid) {
-      console.log("posting info");
       axios
-        .post('http://localhost:5000/api/v1/auth/', {
+        .post('http://localhost:5000/api/v1/auth/signup', {
           name: this.state.name,
           email: this.state.email,
           password: this.state.password

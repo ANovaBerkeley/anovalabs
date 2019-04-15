@@ -67,16 +67,19 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+  console.log("logging in");
   const validAccount = validatorAccount(req.body);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
       if (user) {
+        console.log("user exists");
         bcrypt.compare(req.body.password.trim(), user.password).then(result => {
           if (result) {
             const payload = {
               email: user.email,
               roles: user.role
             };
+            console.log(payload);
             jwt.sign(
               payload,
               process.env.JWT_SECRET,
