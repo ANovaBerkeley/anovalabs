@@ -9,6 +9,7 @@ require('dotenv').config();
 const app = express();
 
 const auth = require('./api/v1/auth/index');
+const profile = require('./api/v1/profile/index');
 const authMiddleware = require('./api/v1/auth/middleware');
 
 const lessons = require('./api/v1/routes/lessons');
@@ -27,6 +28,7 @@ app.use(
 
 app.use(authMiddleware.checkTokenSetAccount);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/profile', profile);
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/accounts', accounts);
 

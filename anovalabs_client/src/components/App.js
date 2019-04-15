@@ -30,9 +30,8 @@ class App extends Component {
 
             <Route path="/LessonPool" component={LessonPool} />
 
-
-            <Route path="/Profile" component={Profile} />
-
+            <Route path="/:id" component={Profile} />
+            
           </Switch>
         </BrowserRouter>
       </div>

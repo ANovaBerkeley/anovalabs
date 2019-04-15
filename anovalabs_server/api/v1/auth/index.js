@@ -75,7 +75,7 @@ router.post('/login', (req, res, next) => {
           if (result) {
             const payload = {
               email: user.email,
-              roles: 'this will be a list of roles from account_role table'
+              roles: user.role
             };
             jwt.sign(
               payload,

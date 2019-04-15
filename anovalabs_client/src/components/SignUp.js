@@ -78,7 +78,7 @@ class Login extends Component {
     if (isValid) {
       console.log("posting info");
       axios
-        .post('http://localhost:5000/api/v1/auth/signup', {
+        .post('http://localhost:5000/api/v1/auth/', {
           name: this.state.name,
           email: this.state.email,
           password: this.state.password

@@ -3,22 +3,34 @@ import axios from 'axios';
 import '../stylesheets/Profile.css';
 import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 import "antd/dist/antd.css";
+
 export default class Profile extends Component {
-     state = {
-          // profileimage: '../images/student.png',
-          profileimage: "https://image.flaticon.com/icons/png/128/1141/1141771.png",
-          username: "John Smith",
-          email: "potatofries@gmail.com",
-          grade: "Senior",
-          bio: "Once upon a time",
-          candy: "Twix",
-          showEdit: false
-     }
 
      constructor(props) {
           super(props)
+          this.state = {
+               // profileimage: '../images/student.png',
+               profileimage: "https://image.flaticon.com/icons/png/128/1141/1141771.png",
+               username: "",
+               email: "",
+               grade: "",
+               bio: "Once upon a time",
+               candy: "Twix",
+               showEdit: false
+          }
           // this.handleClick = this.handleClick.bind(this);
      }
+
+     componentDidMount() {
+          const { id } = this.props.match.params
+          var get_url = 'http://localhost:5000/api/v1/profile/'
+          var id_str = id.toString()
+          axios.get(get_url+id_str)
+          .then(res => {
+               this.setState(res.data)
+          })
+     }
+
      handleChange(e) {
           var editInput = e.currentTarget;
           var inputText = e.currentTarget.value;
