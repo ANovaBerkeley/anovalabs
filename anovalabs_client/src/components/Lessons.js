@@ -61,7 +61,6 @@ class Lessons extends Component {
 
   renderLessons = () => {
 
-<<<<<<< HEAD
     if (!this.state.mentor) {
       return (
         <div className = "container">
@@ -121,18 +120,6 @@ class Lessons extends Component {
     return (
       <div>
       {component}
-=======
-    // <ul>
-    //   {items.map(item => (
-    //     <li key={item.lessonId}>
-    //       <div>{item.title}</div>
-    //       <div>{item.siteLeader}</div>
-    //     </li>
-    //   ))}
-    // </ul>
-    return (
-      <div>
->>>>>>> 17813017e9780c706c00e0926bab8d543c4ee511
       </div>
     );
   }
