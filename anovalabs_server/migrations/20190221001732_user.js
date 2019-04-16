@@ -23,7 +23,7 @@ exports.up = function(knex, Promise) {
       table
       	.string('notes');
       table
-        .string('role');
+        .string('role')
         .notNullable();
     });
 };
