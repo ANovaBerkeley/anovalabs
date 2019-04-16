@@ -30,6 +30,9 @@
 
 }
 
+.ant-avatar.ant-avatar-icon {
+  padding-top: 20%
+}
 .lessonsContainer:after {
   content: "";
   display: block;

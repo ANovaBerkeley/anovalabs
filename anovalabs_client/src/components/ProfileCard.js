@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import './Roster.css';
+import '../stylesheets/Roster.css';
 import { Icon, Card, Avatar } from 'antd';
 import "antd/dist/antd.css";
 const { Meta } = Card;
