@@ -27,6 +27,14 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', (req, res, next) => {
+    for (let requiredParameter of ['title', 'link', 'summary']) {
+        if (!req.body[requiredParameter]) {
+          return res
+            .status(422)
+            .send({ error: `Expected format: { title: <String>, link: <String>, summary: <String> }. You're missing a "${requiredParameter}" property.` });
+        }
+      }
+
     knex('lesson').insert(req.body)
     .then(function(data){
         res.status(201).json({title: req.body.title})
@@ -35,5 +43,41 @@ router.post('/', (req, res, next) => {
         res.status(500).json({error});
     })
   });
+
+  router.post('/delete', (req, res, next) => {
+      for (let requiredParameter of ['title']) {
+          if (!req.body[requiredParameter]) {
+            return res
+              .status(422)
+              .send({ error: `Expected format: { title: <String>}. You're missing a "${requiredParameter}" property.` });
+          }
+        }
+
+      knex('lesson').where({title: req.body.title}).del()
+      .then(function(data){
+          res.status(201).json({title: req.body.title})
+      })
+      .catch(error => {
+          res.status(500).json({error});
+      })
+    });
+
+    router.post('/addLessonSite', (req, res, next) => {
+        for (let requiredParameter of ['lesson_id', 'site_id']) {
+            if (!req.body[requiredParameter]) {
+              return res
+                .status(422)
+                .send({ error: `Expected format: { lesson_id: <int>, site_id: <int>}. You're missing a "${requiredParameter}" property.` });
+            }
+          }
+
+        knex('lesson_site').insert({lesson_id: lesson_id, site_id: site_id})
+        .then(function(data){
+            res.status(201).json({title: req.body.title})
+        })
+        .catch(error => {
+            res.status(500).json({error});
+        })
+      });
 
 module.exports= router;
