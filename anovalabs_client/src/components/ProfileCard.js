@@ -20,37 +20,20 @@ class ProfileDescription extends React.Component {
 
 export default class ProfileCard extends Component {
      render() {
-          if (this.props.mentor) {
-               return (
-                    <div>
-                    <Card
-                         style={{ width: 300 }}
-                         cover={<img alt="" src={this.props.student.profileimage} />}
-                         actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-                    >
-                         <Meta
-                              avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                              title={this.props.student.username}
-                              description= {<ProfileDescription student = {this.props.student} />}
-                         />
-                    </Card>
-                    </div>
-               )
-          } else {
-               return (
-                    <div>
-                    <Card
-                         style={{ width: 300 }}
-                         cover={<img alt="" src={this.props.student.profileimage} />}
-                    >
-                         <Meta
-                              avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                              title={this.props.student.username}
-                              description= {<ProfileDescription student = {this.props.student} />}
-                         />
-                    </Card>
-                    </div>
-               )
-          }
+          return (
+               <div>
+               <Card
+                    style={{ width: 300 }}
+                    cover={<img alt="" src={this.props.student.profileimage} />}
+                    actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+               >
+                    <Meta
+                         avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
+                         title={this.props.student.username}
+                         description= {<ProfileDescription student = {this.props.student} />}
+                    />
+               </Card>
+               </div>
+          )
      }
 }

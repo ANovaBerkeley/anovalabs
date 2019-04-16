@@ -5,6 +5,7 @@ import ProfileCard from './ProfileCard'
 import { Icon, Card, Avatar, Col, Row } from 'antd';
 import "antd/dist/antd.css";
 
+
 var students = [
      {
           key : "1",
@@ -72,14 +73,11 @@ var students = [
 ]
 
 export default class Roster extends Component {
-     state = {
-          mentor : false
-     }
      render() {
           return (
                <div className="container">
                <div className="containerGrid">
-               {students.map((student) => <ProfileCard key = {student.key} student = {student} mentor = {this.state.mentor}/>)}
+               {students.map((student) => <ProfileCard key = {student.key} student = {student}/>)}
                </div>
                </div>
           )
