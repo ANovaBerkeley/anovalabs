@@ -11,6 +11,7 @@ import NavBar from './NavBar';
 import Roster from './Roster';
 import LessonPool from './LessonPool';
 import Profile from './Profile';
+import Roster from './Roster';
 
 class App extends Component {
   render() {
