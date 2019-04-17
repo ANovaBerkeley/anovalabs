@@ -22,7 +22,6 @@ class NavBar extends Component {
   returnHome = () => {
     window.location = "/";
   }
-
   goToProfile = () => {
     window.location = "/Profile";
   }
@@ -31,7 +30,9 @@ class NavBar extends Component {
     removeJWT();
     window.location = "/Login";
   }
-
+  goToRoster = () => {
+    window.location = "/Roster";
+  }
   toggleDialog = () => {
     if (document.querySelector("#navbar-dialog").style.display != "block") {
       document.querySelector("#navbar-dialog").style.display = "block";
@@ -54,7 +55,13 @@ class NavBar extends Component {
         </Menu.Item>
         <div className="navbar-options">
             <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
-              <a href="/Lessons">Lessons</a>
+              <a href="/Lessons">Site Material</a>
+            </Menu.Item>
+            <Menu.Item key="lessonpool" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <a href="/LessonPool">Lesson Pool</a>
+            </Menu.Item>
+            <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
+              <a href="/Roster">Roster</a>
             </Menu.Item>
             <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 10 }}>
               <img onClick={this.toggleDialog} src={"https://image.flaticon.com/icons/png/128/1141/1141771.png"} className="profile-logo" style={{ width: 20, height: 20 }}></img>

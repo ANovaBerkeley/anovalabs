@@ -7,16 +7,15 @@
   grid-column-gap: 50px;
   grid-row-gap: 50px;
   height: 80%;
-  padding-top: 100px;
+
   padding-bottom: 200px;
 
 }
 .plusCard{
   width: 300px;
   height: 200px;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 20% 15% 35% 40%;
+  
+
   /*align-items: center;*/
   border-radius: 16px;
   background: #FFFFFF;
@@ -31,6 +30,9 @@
 
 }
 
+.ant-avatar.ant-avatar-icon {
+  padding-top: 20%
+}
 .lessonsContainer:after {
   content: "";
   display: block;

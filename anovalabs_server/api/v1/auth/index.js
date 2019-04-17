@@ -56,13 +56,32 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
+              role: 'mentor',
               grade: 1 // temporary value NEED TO CHANGE
               //account_id: accountId
             };
             User.create(newUser).then(retUser => {
-              res.json({
-                user: retUser
-              });
+              const payload = {
+                id: retUser[0].id,
+                email: retUser[0].email,
+                roles: retUser[0].role
+                };
+              jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: '2d'
+                },
+                (err, token) => {
+                  if (err) {
+                    next(new Error('Invalid login'));
+                  } else {
+                    res.json({
+                      token
+                    });
+                  }
+                }
+              );
             });
           }
         );

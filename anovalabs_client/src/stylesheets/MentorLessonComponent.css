@@ -37,7 +37,7 @@
 
 .lessonTitle{
   font-family: Lato;
-  font-size: 20px;
+  font-size: 18px;
   color: #155FC2;
 
 }
@@ -67,8 +67,8 @@
   text-align: center;
 }
 .viewAssignment a {
-  width: 40%;
-  height: 20px;
+  width: 150px;
+  height: 40px;
   color: white;
   padding: 10px 10px;
   margin: 8px 0;
@@ -82,7 +82,7 @@
   position: absolute;
   bottom: 20px;
   right: 10px;
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: none;
 
 

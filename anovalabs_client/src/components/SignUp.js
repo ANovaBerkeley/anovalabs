@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { getJWT } from '../utils/utils';
 
 import '../stylesheets/SignUp.css';
 
@@ -13,6 +14,7 @@ class Login extends Component {
       password: '',
       emailStatus: '',
       passwordStatus: '',
+      redirect: false
     };
 
     this._change = this._change.bind(this);
@@ -20,6 +22,12 @@ class Login extends Component {
     this._submit = this._submit.bind(this);
 
     this._validateUser = this._validateUser.bind(this);
+  }
+
+  componentDidMount() {
+    if (getJWT() !== null) {
+      this.setState({ redirect: true })
+    }
   }
 
   async _validateUser() {
@@ -97,6 +105,10 @@ class Login extends Component {
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      this.props.history.push('/profile');
+    }
     return (
       <div className="container">
         <div className="signUpBox">

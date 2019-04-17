@@ -8,8 +8,7 @@ import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
 import NavBar from './NavBar';
-
-import LessonPool from './LessonPool';
+import Roster from './Roster';
 
 class App extends Component {
   render() {
@@ -22,10 +21,9 @@ class App extends Component {
             <Route path="/SignUp" component={SignUp} />
             <Route path="/Login" component={Login} />
             <AuthComponent path="/Lessons" type="lessons" />
-            <AuthComponent path="/LessonPool" component={LessonPool} />
-
+            <AuthComponent path="/LessonPool" type="lessonpool"/>
             <AuthComponent path="/profile" type="profile" />
-
+            <Route path="/Roster" component={Roster} />
           </Switch>
         </BrowserRouter>
       </div>

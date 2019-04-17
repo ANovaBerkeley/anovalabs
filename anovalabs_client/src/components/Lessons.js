@@ -1,74 +1,108 @@
 import React, { Component } from 'react';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
+import { Avatar, List, Button, Modal, Row, Col } from 'antd';
 
 import '../stylesheets/Lessons.css';
 import { GoPlus } from 'react-icons/go';
 
 // TODO: Need to show lessons based on user's assigned ID'
+// TODO: display site name at top 
 class Lessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: null,
-      isLoaded: false,
+      isLoaded: true,
       mentor: true,
-      items: [
-        {"id":1,
-        "title":"Python 1 for inexperienced",
-        "summary":"1st Python lesson",
-        "link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405",
-        "created_at":"2019-03-11T01:40:56.187Z",
-        "updated_at":"2019-03-11T01:40:56.187Z",
-        "date": "3/11"},
-        {"id":1,
-        "title":"Python 1 for inexperienced",
-        "summary":"1st Python lesson",
-        "link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405",
-        "created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"},
-        {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
+      showModal: false,
+      items: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
+    ],
+      newLessons: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
     ]
     };
   }
+  //NOTE newLessons should be a list of all the lessons which are NOT currently
+  //present in items. (not displayed on /Lessons) Only these should show up as
+  //options on the plus modal.
 
   componentDidMount() {
     fetch('http://localhost:5000/api/v1/lessons')
       .then(res => res.json())
-      .then(
-        result => {
-          console.log(result);
+      .then(siteLessons => {
           this.setState({
-            isLoaded: true,
-            items: result
+            items: siteLessons
           });
+          fetch('http://localhost:5000/api/v1/allLessons')
+            .then(res => res.json())
+            .then(allLessons => {
+                this.setState({
+                  isLoaded: true,
+                  newLessons: allLessons
+                });
+              },
+              error => {
+                this.setState({
+                  isLoaded: true,
+                  error //TODO differentiate errors of diff fetch calls?
+                });
+              }
+            );
         },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
         error => {
           this.setState({
             isLoaded: true,
             error
           });
         }
-      );
+      )
+
+  }
+
+  showModal(bool) {
+    this.setState({ showModal: bool });
+  }
+
+  addLesson(item) {
+    fetch('http://localhost:5000/api/v1/lessons/add',
+      { method: 'POST',
+        body: JSON.stringify(item),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+      })
+      .then(res => res.json())
+      .then(
+        addedLesson => {
+          console.log(addedLesson);
+          this.setState(state => {
+          // const items = state.items.concat(item);
+          this.showModal(false);
+          // return {
+          //   items
+          // }
+        })
+      }); //unclear
+
+
   }
 
   renderLessons = () => {
+
     if (!this.state.mentor) {
       return (
         <div className = "container">
           <div className = "lessonsContainer">
-
             {this.state.items.map(item => (
-              <LessonComponent lessonDetails={item} />
+              <LessonComponent lessonDetails={item}></LessonComponent>
             ))}
-
-            <div className = "plusCard">
-              <GoPlus size = {100} color='grey'/>
-            </div>
           </div>
         </div>
       );
     } else {
-      // return <h3> Lets go for a < GoPlus/>? </h3>
       return (
         <div className = "container">
           <div className = "lessonsContainer">
@@ -78,7 +112,32 @@ class Lessons extends Component {
             ))}
 
             <div className = "plusCard">
-              <GoPlus size = {100} color='grey'/>
+              <GoPlus onClick={() => this.showModal(true)}size = {100} color='grey'/>
+              <Modal
+                  className="addModal"
+                  title="Add a Lesson"
+                  centered
+                  visible={this.state.showModal}
+                  onOk={() => this.applyChanges()}
+                  onCancel={() => this.showModal(false)}
+              >
+                  <div className="addLesson">
+                        <List
+                          dataSource = {this.state.newLessons}
+                          renderItem={item => (
+                            <List.Item >
+                              <List.Item.Meta
+                                title={<p>{item.title}</p>}
+                                description={item.summary}
+                              />
+                              <div>
+                                <Avatar className = "addButton" onClick = {()=> this.addLesson(item)} icon = "plus-circle"></Avatar>
+                              </div>
+                            </List.Item>
+                          )}
+                        />
+                  </div>
+              </Modal>
             </div>
 
           </div>
@@ -87,16 +146,8 @@ class Lessons extends Component {
     }
   }
 
+// TODO: display loading/error message
   render() {
-    // TODO: these show behind the nav bar currently
-    console.log(this.state.items);
-    if (this.state.error) {
-      return (<div>Error: {this.state.error.message}</div>);
-    }
-    if (!this.state.isLoaded) {
-      return (<div>Loading...</div>);
-    }
-
     let component = this.renderLessons();
     return (
       <div>

@@ -88,7 +88,7 @@ class Login extends Component {
             <div><input type="submit" value="submit" /></div>
           </form>
           <div className = "links">
-            <a href="" className = "linktext">Register</a>
+            <a href="./SignUp" className = "linktext">Register</a>
             <a href="" className = "linktext">Forgot Password?</a>
 
           </div>

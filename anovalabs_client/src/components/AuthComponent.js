@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { getJWT } from '../utils/utils';
 import Lessons from './Lessons';
 import Profile from './Profile';
+import LessonPool from './LessonPool';
 
 class AuthComponent extends Component {
   constructor(props) {
@@ -47,6 +48,12 @@ class AuthComponent extends Component {
     else if (this.state.type == "profile") {
       return (
         <Profile/>
+      );
+    }
+
+    else if (this.state.type == "lessonpool") {
+      return (
+        <LessonPool/>
       );
     }
 

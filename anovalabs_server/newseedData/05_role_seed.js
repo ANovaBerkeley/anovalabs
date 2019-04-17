@@ -1,5 +1,11 @@
 module.exports = [
   {
-      roleName: "site leader"
+      roleName: "mentor"
+  },
+  {
+      roleName: "student"
+  },
+  {
+      roleName: "student"
   }
 ];
