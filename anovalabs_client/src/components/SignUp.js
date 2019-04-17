@@ -85,7 +85,7 @@ class Login extends Component {
         .then(res => {
           // storing token from server
           localStorage.setItem('anovaToken', res.data.token);
-          this.props.history.push('/Login');
+          this.props.history.push('/');
         })
         .catch(err => {
           localStorage.removeItem('anovaToken');

@@ -11,27 +11,21 @@ import NavBar from './NavBar';
 
 import LessonPool from './LessonPool';
 
-
-import Profile from './Profile';
-
 class App extends Component {
   render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar />
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact component={Lessons} />
+            <AuthComponent exact path="/" type="lessons" />
             <Route path="/SignUp" component={SignUp} />
             <Route path="/Login" component={Login} />
-            <Route path="/Protected" component={Protected} />
-            <Route path="/Lessons" component={Lessons} />
-            <Route path="/Logout" component={LogOut} />
+            <AuthComponent path="/Lessons" type="lessons" />
+            <AuthComponent path="/LessonPool" component={LessonPool} />
 
-            <Route path="/LessonPool" component={LessonPool} />
+            <AuthComponent path="/profile" type="profile" />
 
-            <Route path="/:id" component={Profile} />
-            
           </Switch>
         </BrowserRouter>
       </div>

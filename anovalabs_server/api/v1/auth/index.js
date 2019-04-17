@@ -11,9 +11,18 @@ const User = require('../../../db/user');
 
 require('dotenv').config();
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'authenticate'
+router.post('/', (req, res) => {
+  const { token } = req.body;
+  jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.json({
+        user: decoded,
+        message: "authenticate"
+      })
+    }
   });
 });
 
@@ -76,6 +85,7 @@ router.post('/login', (req, res, next) => {
         bcrypt.compare(req.body.password.trim(), user.password).then(result => {
           if (result) {
             const payload = {
+              id: user.id,
               email: user.email,
               roles: user.role
             };

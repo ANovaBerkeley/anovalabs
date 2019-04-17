@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as decode from 'jwt-decode';
-
+import { getJWT } from '../utils/utils';
 
 import '../stylesheets/Login.css';
 
@@ -11,7 +11,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      errorMsg: ''
+      errorMsg: '',
+      redirect: false
     };
 
     this._change = this._change.bind(this);
@@ -34,19 +35,26 @@ class Login extends Component {
       })
       .then(res => {
         localStorage.setItem('anovaToken', res.data.token);
-        this.props.history.push('/lessons');
+        this.props.history.push('/');
       })
       .catch(error => {
         this.setState({ errorMsg: 'Invalid Login' });
       });
       const anovaToken = localStorage.getItem('anovaToken');
       const anovaPayload = decode(anovaToken);
-      console.log("payload:", anovaPayload);
   }
 
-
+  componentDidMount() {
+    if (getJWT() !== null) {
+      this.setState({ redirect: true })
+    }
+  }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      this.props.history.push('/profile');
+    }
     return (
 
       <div className="container">

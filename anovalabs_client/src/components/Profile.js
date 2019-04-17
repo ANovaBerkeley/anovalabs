@@ -3,6 +3,8 @@ import axios from 'axios';
 import '../stylesheets/Profile.css';
 import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 import "antd/dist/antd.css";
+import * as decode from 'jwt-decode';
+import { getJWT } from '../utils/utils';
 
 export default class Profile extends Component {
 
@@ -22,9 +24,9 @@ export default class Profile extends Component {
      }
 
      componentDidMount() {
-          const { id } = this.props.match.params
-          var get_url = 'http://localhost:5000/api/v1/profile/'
-          var id_str = id.toString()
+          var { id } = decode(getJWT());
+          var get_url = 'http://localhost:5000/api/v1/profile/';
+          var id_str = id.toString();
           axios.get(get_url+id_str)
           .then(res => {
                this.setState(res.data)
