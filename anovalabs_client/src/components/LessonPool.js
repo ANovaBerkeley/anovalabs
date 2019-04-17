@@ -7,6 +7,7 @@ import { GoPlus } from 'react-icons/go';
 import { GoX } from 'react-icons/go';
 
 // TODO: Need to show lessons based on user's assigned ID'
+// TODO: this should not differ from the lesson componenent in that it should not show a date
 class LessonPool extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,23 @@ class LessonPool extends Component {
     };
     this.showModal = this.showModal.bind(this);
     this.applyChanges = this.applyChanges.bind(this);
+  }
+  componentDidMount() {
+    fetch('http://localhost:5000/api/v1/allLessons')
+      .then(res => res.json())
+      .then(allLessons => {
+          this.setState({
+            isLoaded: true,
+            items: allLessons
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
   }
 
   showModal(){
@@ -62,6 +80,20 @@ class LessonPool extends Component {
     }
     var nextId = this.generateId(usedIds)
 
+    fetch('http://localhost:5000/api/v1/lessons/add',
+      { method: 'POST',
+        body: JSON.stringify({ title: titleAdd.value, summary: summaryAdd.value, link: linkAdd.value }),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+      })
+      .then(res => res.json())
+      .then(
+        addedLesson => {
+          console.log(addedLesson);
+          this.setState({ showModal: false });
+      }); 
+
     this.setState(state => {
       const items = state.items.concat({
         id: nextId,
@@ -79,28 +111,6 @@ class LessonPool extends Component {
   })
   }
 
-  // componentDidMount() {
-  //   fetch('http://localhost:5000/api/v1/lessons')
-  //     .then(res => res.json())
-  //     .then(
-  //       result => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           items: result
-  //         });
-  //       },
-  //       // Note: it's important to handle errors here
-  //       // instead of a catch() block so that we don't swallow
-  //       // exceptions from actual bugs in components.
-  //       error => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           error
-  //         });
-  //       }
-  //     );
-  // }
-
   render() {
     const { error, isLoaded, items, mentor } = this.state;
     if (error) {
@@ -112,23 +122,11 @@ class LessonPool extends Component {
 
     if (!mentor){
       return (
-        // <ul>
-        //   {items.map(item => (
-        //     <li key={123}>
-        //       <div>{"week 1"}</div>
-        //       <div>{"item.siteLeader"}</div>
-        //     </li>
-        //   ))}
-        // </ul>
         <div className = "container">
           <div className = "lessonPoolContainer">
-
             {items.map(item => (
               <LessonComponent lessonDetails={item}></LessonComponent>
             ))}
-
-
-
           </div>
         </div>
       );
@@ -151,9 +149,9 @@ class LessonPool extends Component {
               centered
               visible={this.state.showModal}
               onOk={() => this.applyChanges()}
-              onCancel={() => this.showModal(false)}
+              onCancel={() => this.setState({showModal:false})}
           >
-              <div className="addFields"> 
+              <div className="addFields">
                     <Row>
                         <Col>
                               <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= "Python for Beginners"></Input>

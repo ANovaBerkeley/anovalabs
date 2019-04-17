@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
+
+//TODO: order by date, return date in readable format
 router.get('/', function (req, res) {
 
 	db.select()

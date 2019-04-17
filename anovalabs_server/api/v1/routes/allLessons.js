@@ -4,7 +4,7 @@ const db = require('../../../db');
 
 router.get('/', function (req, res) {
 
-  db.select('lesson.title')
+  db.select('lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
 
 

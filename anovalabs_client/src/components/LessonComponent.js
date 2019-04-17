@@ -24,7 +24,7 @@ class LessonComponent extends Component {
           <div className = "card">
 
             <div className = "lessonTitle">{this.props.lessonDetails.title}</div>
-            // <div className = "date">{this.props.lessonDetails.date}</div>
+            <div className = "date">{this.props.lessonDetails.date}</div> //TODO parse date
             <div className = "descriptionContainer">
               <div className = "description">{this.props.lessonDetails.summary}</div>
             </div>

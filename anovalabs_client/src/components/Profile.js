@@ -19,6 +19,30 @@ export default class Profile extends Component {
           super(props)
           // this.handleClick = this.handleClick.bind(this);
      }
+
+     componentDidMount() {
+       fetch('http://localhost:5000/api/v1/profile')
+         .then(res => res.json())
+         .then(profile => {
+             this.setState({
+               isLoaded: true,
+               username: profile[0].name,
+               //TODO: picture, candy
+               bio: profile[0].notes,
+               email: profile[0].email,
+               grade: profile[0].grade,
+
+             });
+           },
+           error => {
+             this.setState({
+               isLoaded: true,
+               error
+             });
+           }
+         )
+     }
+
      handleChange(e) {
           var editInput = e.currentTarget;
           var inputText = e.currentTarget.value;
@@ -43,16 +67,21 @@ export default class Profile extends Component {
           var gradeEdit = document.getElementById("gradeEdit");
           var bioEdit = document.getElementById("bioEdit");
           var candyEdit = document.getElementById("candyEdit");
-
-          this.setState({
-               username: userEdit.value,
-               email: emailEdit.value,
-               grade: gradeEdit.value,
-               bio: bioEdit.value,
-               candy: candyEdit.value
-          })
-
-          this.showModal(false)
+          // TODO: incorporate other editable values other than notes
+          // TODO: not hardcode id xd
+          fetch('http://localhost:5000/api/v1/profile/update',
+            { method: 'POST',
+              body: JSON.stringify({ notes: bioEdit.value, id: 1 }),
+              headers: new Headers({
+                'Content-Type': 'application/json'
+              }),
+            })
+            .then(
+              addedLesson => {
+                console.log(addedLesson);
+                this.setState({ showEdit: false });
+            });
+            // TODO: why doesn't this re render?
      }
      showModal(bool) {
           this.setState({ showEdit: bool });
@@ -75,6 +104,9 @@ export default class Profile extends Component {
      //           alert("Something is amiss")
      //      }
      // }
+
+
+     //TODO: decide what values should be editable
 
      render() {
           return (
@@ -106,7 +138,7 @@ export default class Profile extends Component {
                          </Row>
                          <Row type="flex">
                          <Col>
-                                   <p>Candy:</p>
+                                   <p>Favorite Candy:</p>
                               </Col>
                               <Col>
                                    <p id="candy">{this.state.candy}</p>

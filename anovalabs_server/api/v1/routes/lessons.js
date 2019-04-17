@@ -26,7 +26,7 @@ router.get('/', function (req, res) {
   });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/add', (req, res, next) => {
     for (let requiredParameter of ['title', 'link', 'summary']) {
         if (!req.body[requiredParameter]) {
           return res

@@ -25,7 +25,7 @@ class LessonComponent extends Component {
     if (!isLoaded) {
       return <div>Loading...</div>;
     }
-
+    //TODO: popup for confirmation + onclick call delete api
         return (
               // <li key={123}>
               // <GoPlus/>

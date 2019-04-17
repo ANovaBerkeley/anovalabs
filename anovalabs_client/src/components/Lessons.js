@@ -7,6 +7,7 @@ import '../stylesheets/Lessons.css';
 import { GoPlus } from 'react-icons/go';
 
 // TODO: Need to show lessons based on user's assigned ID'
+// TODO: display site name at top 
 class Lessons extends Component {
   constructor(props) {
     super(props);
@@ -21,42 +22,72 @@ class Lessons extends Component {
     ]
     };
   }
-  //NOTE newLessons should be a list of all the lessons which are NOT currently present in items. (not displayed on /Lessons) Only these should show up as options on the plus modal.
+  //NOTE newLessons should be a list of all the lessons which are NOT currently
+  //present in items. (not displayed on /Lessons) Only these should show up as
+  //options on the plus modal.
 
-  // componentDidMount() {
-  //   fetch('http://localhost:5000/api/v1/lessons')
-  //     .then(res => res.json())
-  //     .then(
-  //       result => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           items: result
-  //         });
-  //       },
-  //       // Note: it's important to handle errors here
-  //       // instead of a catch() block so that we don't swallow
-  //       // exceptions from actual bugs in components.
-  //       error => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           error
-  //         });
-  //       }
-  //     );
-  // }
+  componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons')
+      .then(res => res.json())
+      .then(siteLessons => {
+          this.setState({
+            items: siteLessons
+          });
+          fetch('http://localhost:5000/api/v1/allLessons')
+            .then(res => res.json())
+            .then(allLessons => {
+                this.setState({
+                  isLoaded: true,
+                  newLessons: allLessons
+                });
+              },
+              error => {
+                this.setState({
+                  isLoaded: true,
+                  error //TODO differentiate errors of diff fetch calls?
+                });
+              }
+            );
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+
+  }
+
   showModal(bool) {
     this.setState({ showModal: bool });
   }
 
   addLesson(item) {
-    this.setState(state => {
-    const items = state.items.concat(item)
-    this.showModal(false)
-    return {
-      items
-    }
-    }
-    )
+    fetch('http://localhost:5000/api/v1/lessons/add',
+      { method: 'POST',
+        body: JSON.stringify(item),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+      })
+      .then(res => res.json())
+      .then(
+        addedLesson => {
+          console.log(addedLesson);
+          this.setState(state => {
+          // const items = state.items.concat(item);
+          this.showModal(false);
+          // return {
+          //   items
+          // }
+        })
+      }); //unclear
+
+
   }
 
   renderLessons = () => {
@@ -91,7 +122,7 @@ class Lessons extends Component {
                   onCancel={() => this.showModal(false)}
               >
                   <div className="addLesson">
-                        <List 
+                        <List
                           dataSource = {this.state.newLessons}
                           renderItem={item => (
                             <List.Item >
@@ -115,6 +146,7 @@ class Lessons extends Component {
     }
   }
 
+// TODO: display loading/error message
   render() {
     let component = this.renderLessons();
     return (
