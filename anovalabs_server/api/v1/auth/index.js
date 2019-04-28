@@ -66,6 +66,7 @@ router.post('/signup', (req, res, next) => {
                 email: retUser[0].email,
                 roles: retUser[0].role
                 };
+              console.log(payload);
               jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
