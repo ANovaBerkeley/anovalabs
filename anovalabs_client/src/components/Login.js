@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import * as decode from 'jwt-decode';
+import { getJWT } from '../utils/utils';
 
 import '../stylesheets/Login.css';
 
@@ -10,7 +11,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      errorMsg: ''
+      errorMsg: '',
+      redirect: false
     };
 
     this._change = this._change.bind(this);
@@ -33,16 +35,26 @@ class Login extends Component {
       })
       .then(res => {
         localStorage.setItem('anovaToken', res.data.token);
-        this.props.history.push('/lessons');
+        this.props.history.push('/');
       })
       .catch(error => {
         this.setState({ errorMsg: 'Invalid Login' });
       });
+      const anovaToken = localStorage.getItem('anovaToken');
+      const anovaPayload = decode(anovaToken);
   }
 
-
+  componentDidMount() {
+    if (getJWT() !== null) {
+      this.setState({ redirect: true })
+    }
+  }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      this.props.history.push('/profile');
+    }
     return (
 
       <div className="container">
@@ -73,10 +85,10 @@ class Login extends Component {
               <div className = "error">{this.state.errorMsg}</div>
             </div>
             <div className = "remember"> <input type="checkbox"/> Remember Me</div>
-            <div><input type="button" value="Submit" /></div>
+            <div><input type="submit" value="submit" /></div>
           </form>
           <div className = "links">
-            <a href="" className = "linktext">Register</a>
+            <a href="./SignUp" className = "linktext">Register</a>
             <a href="" className = "linktext">Forgot Password?</a>
 
           </div>

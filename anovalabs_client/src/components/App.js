@@ -9,30 +9,21 @@ import SignUp from './SignUp';
 import LogOut from './LogOut';
 import NavBar from './NavBar';
 import Roster from './Roster';
-import LessonPool from './LessonPool';
-import Profile from './Profile';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar />
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact component={Lessons} />
+            <AuthComponent exact path="/" type="lessons" />
             <Route path="/SignUp" component={SignUp} />
             <Route path="/Login" component={Login} />
-            <Route path="/Protected" component={Protected} />
-            <Route path="/Lessons" component={Lessons} />
-            <Route path="/Logout" component={LogOut} />
-
-            <Route path="/LessonPool" component={LessonPool} />
-
-
-            <Route path="/Profile" component={Profile} />
+            <AuthComponent path="/Lessons" type="lessons" />
+            <AuthComponent path="/LessonPool" type="lessonpool"/>
+            <AuthComponent path="/profile" type="profile" />
             <Route path="/Roster" component={Roster} />
-
-
           </Switch>
         </BrowserRouter>
       </div>

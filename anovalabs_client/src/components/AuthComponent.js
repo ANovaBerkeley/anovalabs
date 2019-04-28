@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { getJWT } from '../utils/utils';
+import Lessons from './Lessons';
+import Profile from './Profile';
+import LessonPool from './LessonPool';
 
 class AuthComponent extends Component {
   constructor(props) {
     super(props);
+    console.log("authenticating");
     this.state = {
-      message: undefined
+      message: undefined,
+      type: this.props.type
     };
   }
 
@@ -17,12 +22,14 @@ class AuthComponent extends Component {
       this.props.history.push('/login');
     }
     axios
-      .get('/api/v1/auth', {
-        headers: { Authorization: `Bearer ${jwt}` }
+      .post('http://localhost:5000/api/v1/auth', {
+        token: jwt
       })
       .then(res => {
         // as long as the bearer is authorized, all the children props will render
-        this.setState({ message: res.data.message });
+        this.setState({ 
+          message: res.data.message
+        });
       })
       .catch(err => {
         localStorage.removeItem('anovaToken');
@@ -31,14 +38,33 @@ class AuthComponent extends Component {
   }
 
   render() {
-    if (this.state.message === undefined) {
+    console.log("this is authcomponent");
+    if (this.state.type == "lessons") {
       return (
-        <div>
-          <h1>Loading . . . </h1>
-        </div>
+        <Lessons/>
       );
     }
-    return <div>{this.props.children}</div>;
+
+    else if (this.state.type == "profile") {
+      return (
+        <Profile/>
+      );
+    }
+
+    else if (this.state.type == "lessonpool") {
+      return (
+        <LessonPool/>
+      );
+    }
+
+    // if (this.state.message === undefined) {
+    //   return (
+    //     <div>
+    //       <h1>Loading . . . </h1>
+    //     </div>
+    //   );
+    // }
+    // return (<div>{this.props.children}</div>);
   }
 }
 

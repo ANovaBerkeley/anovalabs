@@ -11,9 +11,18 @@ const User = require('../../../db/user');
 
 require('dotenv').config();
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'authenticate'
+router.post('/', (req, res) => {
+  const { token } = req.body;
+  jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.json({
+        user: decoded,
+        message: "authenticate"
+      })
+    }
   });
 });
 
@@ -33,7 +42,6 @@ function validatorAccount(account) {
 router.post('/signup', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
   const accountId = uuidv4();
-  console.log("heyo")
   console.log(validAccount.error);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
@@ -48,45 +56,33 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
+              role: 'mentor',
               grade: 1 // temporary value NEED TO CHANGE
               //account_id: accountId
             };
             User.create(newUser).then(retUser => {
-              res.json({
-                user: retUser
-              });
-            });
-          }
-        );
-      } else {
-        next(new Error('Email in use'));
-      }
-    });
-  } else {
-    next(new Error('Invalid Account'));
-  }
-});
-
-router.post('/signup2', (req, res, next) => {
-  const validAccount = validatorAccount(req.body);
-  console.log(validAccount.error);
-  if (validAccount.error === null) {
-    Account.getOneByEmail(req.body.email.trim()).then(account => {
-      if (!account) {
-        // technique #2 of bycrypt
-        bcrypt.hash(
-          req.body.password.trim(),
-          parseInt(process.env.SALT_ROUNDS, 10),
-          (err, hash) => {
-            // Store hash in your password DB.
-            const newAccount = {
-              email: req.body.email.trim(),
-              password: hash
-            };
-            Account.create(newAccount).then(accountId => {
-              res.json({
-                message: `defintely some #️⃣ ${accountId}`
-              });
+              const payload = {
+                id: retUser[0].id,
+                email: retUser[0].email,
+                roles: retUser[0].role
+                };
+              console.log(payload);
+              jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: '2d'
+                },
+                (err, token) => {
+                  if (err) {
+                    next(new Error('Invalid login'));
+                  } else {
+                    res.json({
+                      token
+                    });
+                  }
+                }
+              );
             });
           }
         );
@@ -100,57 +96,20 @@ router.post('/signup2', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+  console.log("logging in");
   const validAccount = validatorAccount(req.body);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
       if (user) {
+        console.log("user exists");
         bcrypt.compare(req.body.password.trim(), user.password).then(result => {
           if (result) {
             const payload = {
+              id: user.id,
               email: user.email,
-              roles: 'this will be a list of roles from account_role table'
+              roles: user.role
             };
-            jwt.sign(
-              payload,
-              process.env.JWT_SECRET,
-              {
-                expiresIn: '2d'
-              },
-              (err, token) => {
-                if (err) {
-                  next(new Error('Invalid login'));
-                } else {
-                  res.json({
-                    token
-                  });
-                }
-              }
-            );
-          } else {
-            next(new Error('Invalid login'));
-          }
-        });
-      } else {
-        next(new Error('Invalid login'));
-      }
-    });
-  } else {
-    res.status(401);
-    next(new Error('Invalid Login'));
-  }
-});
-
-router.post('/login2', (req, res, next) => {
-  const validAccount = validatorAccount(req.body);
-  if (validAccount.error === null) {
-    Account.getOneByEmail(req.body.email.trim()).then(account => {
-      if (account) {
-        bcrypt.compare(req.body.password.trim(), account.password).then(result => {
-          if (result) {
-            const payload = {
-              email: account.email,
-              roles: 'this will be a list of roles from account_role table'
-            };
+            console.log(payload);
             jwt.sign(
               payload,
               process.env.JWT_SECRET,

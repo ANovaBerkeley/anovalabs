@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Switch, Button } from 'antd';
 import 'antd/dist/antd.css';
-import '../stylesheets/navbar.css'
+import '../stylesheets/navbar.css';
+import { removeJWT } from '../utils/utils';
 var logo = require('../stylesheets/logo.png');
 
 class NavBar extends Component {
@@ -23,6 +24,11 @@ class NavBar extends Component {
   }
   goToProfile = () => {
     window.location = "/Profile";
+  }
+
+  goToLogout = () => {
+    removeJWT();
+    window.location = "/Login";
   }
   goToRoster = () => {
     window.location = "/Roster";
@@ -62,7 +68,7 @@ class NavBar extends Component {
             </Menu.Item>
             <div id="navbar-dialog">
               <Button key="edit" type="default" className="navbar-dialog-button" onClick={this.goToProfile}>Profile</Button>
-              <Button key="logout" type="danger" className="navbar-dialog-button">Logout</Button>
+              <Button key="logout" type="danger" className="navbar-dialog-button" onClick={this.goToLogout}>Logout</Button>
             </div>
         </div>
       </Menu>

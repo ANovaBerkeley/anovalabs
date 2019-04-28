@@ -13,7 +13,7 @@ class LogOut extends Component {
   }
 
   render() {
-    return <div>{this._logOut()}</div>;
+    return (<div>{this._logOut()}</div>);
   }
 }
 export default LogOut;

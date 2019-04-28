@@ -32,11 +32,11 @@ app.use(
 
 app.use(authMiddleware.checkTokenSetAccount);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/profile', profile);
 app.use('/api/v1/lessons', lessons);
 app.use('/api/v1/rosterMentor', rosterMentor);
 app.use('/api/v1/rosterStudent', rosterStudent);
 app.use('/api/v1/allLessons', allLessons);
-app.use('/api/v1/profile', profile);
 app.use('/api/v1/lesson_site', lesson_site);
 app.use('/api/v1/accounts', accounts);
 

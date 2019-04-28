@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
-router.get('/', function (req, res) {
-	const userid = 1
+router.get('/:id', function (req, res) {
+	const userid = req.params.id;
 
 	db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes')
 		.from('user')

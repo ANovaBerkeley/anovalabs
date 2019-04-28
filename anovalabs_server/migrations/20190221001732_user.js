@@ -22,6 +22,9 @@ exports.up = function(knex, Promise) {
       	.string('bio');
       table
       	.string('notes');
+      table
+        .string('role')
+        .notNullable();
     });
 };
 

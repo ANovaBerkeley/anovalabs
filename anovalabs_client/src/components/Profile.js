@@ -3,25 +3,33 @@ import axios from 'axios';
 import '../stylesheets/Profile.css';
 import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 import "antd/dist/antd.css";
+import * as decode from 'jwt-decode';
+import { getJWT } from '../utils/utils';
+
 export default class Profile extends Component {
-     state = {
-          // profileimage: '../images/student.png',
-          profileimage: "https://image.flaticon.com/icons/png/128/1141/1141771.png",
-          username: "John Smith",
-          email: "potatofries@gmail.com",
-          grade: "Senior",
-          bio: "Once upon a time",
-          candy: "Twix",
-          showEdit: false
-     }
 
      constructor(props) {
+          console.log("hey it's profile");
           super(props)
+          this.state = {
+               // profileimage: '../images/student.png',
+               profileimage: "https://image.flaticon.com/icons/png/128/1141/1141771.png",
+               username: "",
+               email: "",
+               grade: "",
+               bio: "Once upon a time",
+               candy: "Twix",
+               showEdit: false
+          }
           // this.handleClick = this.handleClick.bind(this);
      }
 
      componentDidMount() {
-       fetch('http://localhost:5000/api/v1/profile')
+       console.log(decode(getJWT()));
+       var { id } = decode(getJWT());
+       var get_url = 'http://localhost:5000/api/v1/profile/';
+       var id_str = id.toString();
+       fetch(get_url + id_str)
          .then(res => res.json())
          .then(profile => {
              this.setState({
@@ -71,7 +79,7 @@ export default class Profile extends Component {
           // TODO: not hardcode id xd
           fetch('http://localhost:5000/api/v1/profile/update',
             { method: 'POST',
-              body: JSON.stringify({ notes: bioEdit.value, id: 1 }),
+              body: JSON.stringify({ notes: bioEdit.value, id: decode(getJWT()).id }),
               headers: new Headers({
                 'Content-Type': 'application/json'
               }),
