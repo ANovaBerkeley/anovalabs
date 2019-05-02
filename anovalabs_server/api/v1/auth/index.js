@@ -5,9 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 const Account = require('../../../db/account');
-//const Local = require('../../../db/local');
 const User = require('../../../db/user');
-//const ARP = require('../../../db/accountRolePermission');
 
 require('dotenv').config();
 
@@ -99,8 +97,8 @@ router.post('/login', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
+      console.log(user);
       if (user) {
-        console.log("user exists");
         bcrypt.compare(req.body.password.trim(), user.password).then(result => {
           if (result) {
             const payload = {
@@ -117,6 +115,7 @@ router.post('/login', (req, res, next) => {
               },
               (err, token) => {
                 if (err) {
+                  console.log("error jwt not creatd");
                   next(new Error('Invalid login'));
                 } else {
                   res.json({
@@ -126,10 +125,12 @@ router.post('/login', (req, res, next) => {
               }
             );
           } else {
+            res.status(401);
             next(new Error('Invalid login'));
           }
         });
       } else {
+        res.status(401);
         next(new Error('Invalid login'));
       }
     });
