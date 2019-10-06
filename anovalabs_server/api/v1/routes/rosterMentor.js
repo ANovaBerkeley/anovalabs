@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../../db');
 
+/* Retrieve the list of mentors for a specific site. */
 router.get('/', function (req, res) {
 	const userid = 1
 	const semesterid = 1
@@ -27,4 +28,4 @@ router.get('/', function (req, res) {
 	});
 });
 
-module.exports= router;
+module.exports = router;

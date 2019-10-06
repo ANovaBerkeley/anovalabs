@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import AuthComponent from './AuthComponent';
 import Lessons from './Lessons';
-import Home from './Home';
+import LessonPool from './LessonPool';
 import Protected from './Protected';
 import SignUp from './SignUp';
 import LogOut from './LogOut';
