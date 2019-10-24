@@ -6,7 +6,7 @@ import '../stylesheets/LessonPool.css';
 import { GoPlus } from 'react-icons/go';
 import { GoX } from 'react-icons/go';
 
-// TODO: Need to show lessons based on user's assigned ID
+// TODO: Need to show lessons based on user's assigned ID'
 // TODO: this should not differ from the lesson componenent in that it should not show a date
 class LessonPool extends Component {
   constructor(props) {

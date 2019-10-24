@@ -4,8 +4,7 @@ const knex = require('../../../db/knex');
 
 const router = express.Router();
 
-/* TODO: (1) sort by date, return date in readable format
-(2)  */
+/* TODO: (1) sort by date, return date in readable format */
 
 router.get('/', (req, res) => {
   db.select()
