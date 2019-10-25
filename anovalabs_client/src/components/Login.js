@@ -7,6 +7,7 @@ import '../stylesheets/Login.css';
 
 class Login extends Component {
   constructor(props) {
+    console.log("login constructor");
     super(props);
     this.state = {
       email: '',
@@ -27,6 +28,7 @@ class Login extends Component {
   }
 
   _submit(event) {
+    console.log("submit event");
     event.preventDefault();
     axios
       .post('http://localhost:5000/api/v1/auth/login', {
@@ -35,6 +37,7 @@ class Login extends Component {
       })
       .then(res => {
         localStorage.setItem('anovaToken', res.data.token);
+        console.log(res.data.token);
         this.props.history.push('/');
       })
       .catch(error => {
@@ -42,6 +45,8 @@ class Login extends Component {
       });
       const anovaToken = localStorage.getItem('anovaToken');
       const anovaPayload = decode(anovaToken);
+      console.log("anovaToken: " + anovaToken);
+      console.log("anovaPayload: " + anovaPayload);
   }
 
   componentDidMount() {

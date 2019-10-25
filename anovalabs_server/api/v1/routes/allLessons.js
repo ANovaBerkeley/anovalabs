@@ -1,16 +1,17 @@
 const express = require('express');
-const router = express.Router();
 const db = require('../../../db');
 
-router.get('/', function (req, res) {
+const router = express.Router();
 
+/* TODO: move this to the lessons file. */
+
+/* Retrieve all lessons from the lesson pool. */
+router.get('/', (req, res) => {
   db.select('lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
-
-
-  .then(function(data){
-    res.send(data);
-  });
+    .then(data => {
+      res.send(data);
+    });
 });
 
-module.exports= router;
+module.exports = router;

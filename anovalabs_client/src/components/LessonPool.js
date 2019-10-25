@@ -92,7 +92,7 @@ class LessonPool extends Component {
         addedLesson => {
           console.log(addedLesson);
           this.setState({ showModal: false });
-      }); 
+      });
 
     this.setState(state => {
       const items = state.items.concat({
