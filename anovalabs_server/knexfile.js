@@ -2,11 +2,17 @@
 
 module.exports = {
   development: {
-    client: 'pg',
+    client: 'postgresql',
     connection: 'postgres://localhost/anovalabs-db',
     seeds: {
       directory: './seeds/dev'
-    }
+    },
+  test: {
+        client: 'postgresql',
+        connection: 'postgres://localhost/test-anovalabs-db',
+        seeds: {
+          directory: './seeds/dev'
+        }
   }
 
   // staging: {
@@ -40,4 +46,5 @@ module.exports = {
   //     tableName: 'knex_migrations'
   //   }
   // }
-};
+}
+}
