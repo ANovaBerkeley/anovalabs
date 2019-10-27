@@ -26,6 +26,12 @@ class Lessons extends Component {
   //present in items. (not displayed on /Lessons) Only these should show up as
   //options on the plus modal.
 
+  // TODO
+  // add protocol for when component doesn't mount
+  // add is loaded: false handling in comopnent did mount
+  // add documentation for each function
+  
+  // calls API setting state + preparing lessons
   componentDidMount() {
     fetch('http://localhost:5000/api/v1/lessons')
       .then(res => res.json())
@@ -67,9 +73,14 @@ class Lessons extends Component {
   }
 
   addLesson(item) {
-    fetch('http://localhost:5000/api/v1/lessons/add',
+    fetch('http://localhost:5000/api/v1/lesson_site/addLessonSite',
       { method: 'POST',
-        body: JSON.stringify(item),
+        body: JSON.stringify(
+          {
+            lesson_id: 1,
+            // TODO: figure out site id
+            site_id: 1
+          }),
         headers: new Headers({
           'Content-Type': 'application/json'
         }),
@@ -90,6 +101,8 @@ class Lessons extends Component {
 
   }
 
+  // TODO: make items more descriptions .mentor should be is mentor (make smol function)
+  // eg site lessons
   renderLessons = () => {
 
     if (!this.state.mentor) {
@@ -147,6 +160,8 @@ class Lessons extends Component {
   }
 
 // TODO: display loading/error message
+// reevaluate structure of using render and renderLessons
+// maybe combine the two 
   render() {
     let component = this.renderLessons();
     return (

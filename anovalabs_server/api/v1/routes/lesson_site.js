@@ -17,13 +17,13 @@ router.get('/', function (req, res) {
 
     router.post('/addLessonSite', (req, res, next) => {
         for (let requiredParameter of ['lesson_id', 'site_id']) {
-            if (!req.body[requiredParameter]) {
+            if (!(requiredParameter in req.body)) {
               return res
                 .status(422)
-                .send({ error: `Expected format: { lesson_site.lesson_id: <int>, lesson_site.site_id: <int>}. You're missing a "${requiredParameter}" property.` });
+                .send({ error: `${(req.body)} Expected format: { lesson_site.lesson_id: <int>, lesson_site.site_id: <int>}. You're missing a "${requiredParameter}" property.` });
             }
           }
-
+        req.body = JSON.parse(req.body);
         knex('lesson_site').insert({site_id: req.body.site_id, lesson_id: req.body.lesson_id})
         .then(function(data){
             res.status(201).json({title: req.body.title})
