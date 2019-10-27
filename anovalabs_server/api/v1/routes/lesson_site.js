@@ -37,34 +37,28 @@ router.get('/all', (req, res) => {
 
 /* TODO: Add a lesson to a specific site. */
 router.post('/addLessonSite', (req, res, next) => {
-  for (let requiredParameter of ['id']) {
+  for (let requiredParameter of ['lesson_id', 'site_id']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
-          .send({ error: `Expected format: { lesson_id: <int> }. You're missing a "${requiredParameter}" property.` });
+          .send({ error: `Expected format: { lesson_id: <int>, site_id: <int>}. You're missing a "${requiredParameter}" property.` });
       }
     }
-    const userid = 1;
-
-    const site_id = db
-      .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
 
   if (req.body.date) {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.id, site_id, date: req.body.date })
+      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id, date: req.body.date })
       .then(data => {
-        res.status(201).json({ lesson_id: req.body.id });
+        res.status(201).json({ lesson_id: req.body.lesson_id });
       })
       .catch(error => {
         res.status(500).json({ error });
       });
   } else {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.id, site_id })
+      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id })
       .then(data => {
-        res.status(201).json({ lesson_id: req.body.id });
+        res.status(201).json({ lesson_id: req.body.lesson_id });
       })
       .catch(error => {
         res.status(500).json({ error });
