@@ -5,6 +5,9 @@ exports.seed = function(knex, Promise) {
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex('user_attendance').insert(seed);
+      return knex.raw('ALTER SEQUENCE user_attendance_id_seq RESTART WITH 1').then(function(){
+        // Inserts seed entries
+            	return knex('user_attendance').insert(seed);
+        		})
     });
 };

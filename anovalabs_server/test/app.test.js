@@ -102,20 +102,36 @@ describe('DB Test', () =>{
 
     });
 
-//
-//        it('AddSiteLesson', (done) =>{
-//            request(app)
-//            .post('/api/v1/addLessonSite')
-//            .send(fixtures.newSiteLesson)
-//            .expect(200)
-//            .then((response) =>{
-//                console.log(response.body);
-//                 done();
-//            }).catch(function(error) {
-//                console.error(error);
-//                done();
-//            });
-//
-//        });
+
+        it('AddSiteLesson', (done) =>{
+            request(app)
+            .post('/api/v1/addLessonSite')
+            .send(fixtures.newSiteLesson)
+            .expect(200)
+            .then((response) =>{
+                console.log(response.body);
+                 done();
+            }).catch(function(error) {
+                console.error(error);
+                done();
+            });
+
+        });
+
+
+
+    it('AllLessons', (done) =>{
+        request(app)
+        .get('/api/v1/lesson_site')
+        .expect(200)
+        .then((response) =>{
+            expect(response.body).to.deep.equal(fixtures.);
+             done();
+        }).catch(function(error) {
+            console.error(error);
+            done();
+        });
+
+    });
 
 });
