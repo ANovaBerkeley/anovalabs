@@ -1,5 +1,4 @@
-const site_seed = require('../../newseedData/01_site_seed');
-
+const seed = require('../../newseedData/01_site_seed');
 exports.seed = function(knex, Promise) {
 
   // Deletes ALL existing entries
@@ -7,7 +6,7 @@ exports.seed = function(knex, Promise) {
   //reset autoincrement
     return knex.raw('ALTER SEQUENCE site_id_seq RESTART WITH 1').then(function(){
   // Inserts seed entries
-      	return knex('site').insert(site_seed);
+      	return knex('site').insert(seed);
   		})
     });
 };
