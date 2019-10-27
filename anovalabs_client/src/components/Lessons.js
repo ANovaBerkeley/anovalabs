@@ -16,18 +16,18 @@ class Lessons extends Component {
       isLoaded: true,
       mentor: true,
       showModal: false,
-      items: [],
-      newLessons: []
+      siteLessons: [],
+      allLessons: []
     };
   }
 
 
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/lessons')
+    fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
       .then(siteLessons => {
           this.setState({
-            items: siteLessons
+            siteLessons
           });
         },
         // Note: it's important to handle errors here
@@ -40,6 +40,23 @@ class Lessons extends Component {
           });
         }
       )
+      fetch('http://localhost:5000/api/v1/lessons/all')
+        .then(res => res.json())
+        .then(allLessons => {
+            this.setState({
+              allLessons
+            });
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          error => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
 
   }
 
@@ -48,7 +65,7 @@ class Lessons extends Component {
   }
 
   addLesson(item) {
-    fetch('http://localhost:5000/api/v1/lessons/add',
+    fetch('http://localhost:5000/api/v1/lesson_site/addLessonSite',
       { method: 'POST',
         body: JSON.stringify(item),
         headers: new Headers({
@@ -77,7 +94,7 @@ class Lessons extends Component {
       return (
         <div className = "container">
           <div className = "lessonsContainer">
-            {this.state.items.map(item => (
+            {this.state.siteLessons.map(item => (
               <LessonComponent lessonDetails={item}></LessonComponent>
             ))}
           </div>
@@ -88,7 +105,7 @@ class Lessons extends Component {
         <div className = "container">
           <div className = "lessonsContainer">
 
-            {this.state.items.map(item => (
+            {this.state.siteLessons.map(item => (
               <MentorLessonComponent lessonDetails={item}></MentorLessonComponent>
             ))}
 
@@ -104,7 +121,7 @@ class Lessons extends Component {
               >
                   <div className="addLesson">
                         <List
-                          dataSource = {this.state.newLessons}
+                          dataSource = {this.state.allLessons}
                           renderItem={item => (
                             <List.Item >
                               <List.Item.Meta

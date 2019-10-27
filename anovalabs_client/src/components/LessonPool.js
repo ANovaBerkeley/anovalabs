@@ -23,7 +23,7 @@ class LessonPool extends Component {
     this.applyChanges = this.applyChanges.bind(this);
   }
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/allLessons')
+    fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(allLessons => {
           this.setState({
