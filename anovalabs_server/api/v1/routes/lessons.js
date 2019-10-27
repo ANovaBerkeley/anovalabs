@@ -6,19 +6,16 @@ const router = express.Router();
 
 /* Class interacting with the lesson pool. */
 
-/* Get a lesson from the lesson pool. */
+/* Get all lessons from the semester and site of that user.
+TODO: replace hardcoded userid */
 
 router.get('/', (req, res) => {
   const userid = 1;
-  const semid = 1;
 
   const siteid = db
-    .select('site.id')
-    .from('semester')
-    .join('user_semester_site', 'user_semester_site.semester_id', 'semester.id')
-    .join('site', 'user_semester_site.site_id', 'site.id')
-    .where('user_semester_site.user_id', userid)
-    .where('semester.id', semid);
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
 
   db.select('lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date')
     .from('site')
