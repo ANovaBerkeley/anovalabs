@@ -110,7 +110,7 @@ describe('DB Test', () =>{
         .expect(201)
         .then((response) =>{
             console.log(response.body);
-                done();
+            done();
         }).catch(function(error) {
             console.error(error);
             done();
