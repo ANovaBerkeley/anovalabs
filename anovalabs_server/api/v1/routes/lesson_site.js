@@ -37,7 +37,7 @@ router.get('/all', (req, res) => {
 
 /* TODO: Add a lesson to a specific site. */
 router.post('/addLessonSite', (req, res, next) => {
-  for (let requiredParameter of ['lesson_id']) {
+  for (let requiredParameter of ['id']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
