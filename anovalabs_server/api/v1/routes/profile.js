@@ -18,8 +18,9 @@ router.get('/:id', (req, res) => {
 });
 
 /* Update a user's profile. */
+// TODO: Change to update photo in knex statement once adding pictures work
 router.post('/update', (req, res, next) => {
-  for (let requiredParameter of ['notes', 'id']) {
+  for (let requiredParameter of ['id']) {
     if (!req.body[requiredParameter]) {
       return res
         .status(422)
@@ -29,9 +30,9 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
     .where({ id: req.body.id })
-    .update({ notes: req.body.notes })
+    .update({ notes: req.body.notes, grade: req.body.grade, bio: req.body.bio })
     .then(data => {
-      res.status(201).json({ title: req.body.title });
+      res.status(201).json({ id: req.body.id });
     })
     .catch(error => {
       res.status(500).json({ error });
