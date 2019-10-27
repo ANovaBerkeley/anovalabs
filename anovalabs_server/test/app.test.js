@@ -134,4 +134,18 @@ describe('DB Test', () =>{
 
     });
 
+    it('Getting Correct Roster', (done) =>{
+        request(app)
+        .get('/api/v1/rosterMentor')
+        .expect(200)
+        .then((response) =>{
+            expect(response.body).to.deep.equal(fixtures.rosterMentor);
+             done();
+        }).catch(function(error) {
+            console.error(error);
+            done();
+        });
+
+    });
+
 });
