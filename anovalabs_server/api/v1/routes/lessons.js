@@ -69,7 +69,7 @@ router.post('/delete', (req, res, next) => {
 
 /* TODO: figure out what this does */
 router.post('/addLessonSite', (req, res, next) => {
-  for (let requiredParameter of ['lesson_id', 'site_id']) {
+  for (let requiredParameter of ['lesson_id', 'site_id', 'date']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -78,9 +78,9 @@ router.post('/addLessonSite', (req, res, next) => {
     }
 
   knex('lesson_site')
-    .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id })
+    .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id, date: req.body.date })
     .then(data => {
-      res.status(201).json({ title: req.body.title });
+      res.status(201).json({ lesson_id: req.body.lesson_id });
     })
     .catch(error => {
       res.status(500).json({ error });
