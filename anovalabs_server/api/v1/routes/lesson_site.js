@@ -37,7 +37,14 @@ router.get('/all', (req, res) => {
 
 /* TODO: Add a lesson to a specific site. */
 router.post('/addLessonSite', (req, res, next) => {
-  for (let requiredParameter of ['lesson_id', 'site_id']) {
+  const userid = 1;
+
+    const siteid = db
+      .select('site_id')
+      .from('user_semester_site')
+      .where('user_semester_site.user_id', userid);
+
+  for (let requiredParameter of ['lesson_id']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -47,7 +54,7 @@ router.post('/addLessonSite', (req, res, next) => {
 
   if (req.body.date) {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id, date: req.body.date })
+      .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
       .then(data => {
         res.status(201).json({ lesson_id: req.body.lesson_id });
       })
@@ -56,7 +63,7 @@ router.post('/addLessonSite', (req, res, next) => {
       });
   } else {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id })
+      .insert({ lesson_id: req.body.lesson_id, site_id: siteid })
       .then(data => {
         res.status(201).json({ lesson_id: req.body.lesson_id });
       })

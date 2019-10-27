@@ -109,7 +109,6 @@ describe('DB Test', () =>{
             .send(fixtures.newSiteLesson)
             .expect(201)
             .then((response) =>{
-                console.log(response.body);
                  done();
             }).catch(function(error) {
                 console.error(error);
