@@ -105,9 +105,9 @@ describe('DB Test', () =>{
 
         it('AddSiteLesson', (done) =>{
             request(app)
-            .post('/api/v1/addLessonSite')
+            .post('/api/v1/lessons/addLessonSite')
             .send(fixtures.newSiteLesson)
-            .expect(200)
+            .expect(201)
             .then((response) =>{
                 console.log(response.body);
                  done();
@@ -125,7 +125,7 @@ describe('DB Test', () =>{
         .get('/api/v1/lesson_site')
         .expect(200)
         .then((response) =>{
-            expect(response.body).to.deep.equal(fixtures.);
+            expect(response.body).to.deep.equal(fixtures.newSLessons);
              done();
         }).catch(function(error) {
             console.error(error);
