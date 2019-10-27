@@ -30,7 +30,7 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
     .where({ id: req.body.id })
-    .update({ notes: req.body.notes, grade: req.body.grade, bio: req.body.bio })
+    .update({ notes: req.body.notes, bio: req.body.bio, grade: req.body.grade })
     .then(data => {
       res.status(201).json({ id: req.body.id });
     })

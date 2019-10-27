@@ -19,5 +19,5 @@ module.exports = {
     newSLessons,
     profile1,
     updatedNotes,
-    updatedProfile,
+    updatedProfile
 }
