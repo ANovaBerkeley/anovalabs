@@ -1,18 +1,20 @@
 const express = require('express');
+const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
-const router = express.Router();
 
-/* TODO: (1) sort by date, return date in readable format */
+//TODO: order by date, return date in readable format
+router.get('/', function (req, res) {
 
-router.get('/', (req, res) => {
-  db.select()
-    .from('lesson_site')
-    .then(data => {
-      res.send(data);
-    });
+	db.select()
+		.from('lesson_site')
+
+	.then(function(data){
+		res.send(data);
+	});
 });
+
 
 /* Get all lessons from the semester and site of that user.
 TODO: replace hardcoded userid */
@@ -35,9 +37,17 @@ router.get('/all', (req, res) => {
     });
 });
 
+
 /* TODO: Add a lesson to a specific site. */
 router.post('/addLessonSite', (req, res, next) => {
-  for (let requiredParameter of ['lesson_id', 'site_id']) {
+  const userid = 1;
+
+    const siteid = db
+      .select('site_id')
+      .from('user_semester_site')
+      .where('user_semester_site.user_id', userid);
+
+  for (let requiredParameter of ['lesson_id']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -47,7 +57,7 @@ router.post('/addLessonSite', (req, res, next) => {
 
   if (req.body.date) {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id, date: req.body.date })
+      .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
       .then(data => {
         res.status(201).json({ lesson_id: req.body.lesson_id });
       })
@@ -56,7 +66,7 @@ router.post('/addLessonSite', (req, res, next) => {
       });
   } else {
     knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: req.body.site_id })
+      .insert({ lesson_id: req.body.lesson_id, site_id: siteid })
       .then(data => {
         res.status(201).json({ lesson_id: req.body.lesson_id });
       })
@@ -97,4 +107,5 @@ router.post('/deleteLessonSite', (req, res, next) => {
     });
 });
 
-module.exports = router;
+
+module.exports= router;

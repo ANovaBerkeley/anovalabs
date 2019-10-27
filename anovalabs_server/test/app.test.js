@@ -109,7 +109,6 @@ describe('DB Test', () =>{
             .send(fixtures.newSiteLesson)
             .expect(201)
             .then((response) =>{
-                console.log(response.body);
                  done();
             }).catch(function(error) {
                 console.error(error);
@@ -117,6 +116,7 @@ describe('DB Test', () =>{
             });
 
         });
+
 
 
 
@@ -161,5 +161,44 @@ describe('DB Test', () =>{
         });
 
     });
+
+    it('First Profile Accessed', (done) => {
+            request(app)
+            .get('/api/v1/profile/:id')
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.deep.equal(fixtures.profile1);
+                done();
+            }).catch(function(error) {
+                console.error(error);
+                done();
+            });
+        });
+
+        it('Profile Updated', (done) => {
+            request(app)
+            .post('/api/v1/profile/update')
+            .send(fixtures.updatedNotes)
+            .expect(201)
+            .then((response) => {
+                done();
+            }).catch(function(error) {
+                console.error(error);
+                done();
+            });
+        });
+
+        it('First Profile Updated Successfully', (done) => {
+            request(app)
+            .get('/api/v1/profile/:id')
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.deep.equal(fixtures.updatedProfile);
+                done();
+            }).catch(function(error) {
+                console.error(error);
+                done();
+            });
+        });
 
 });
