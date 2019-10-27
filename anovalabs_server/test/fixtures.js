@@ -6,7 +6,7 @@ const newret = {"title":"Lesson 5 for site1fa18"};
 const newSiteLesson = {"lesson_id" : 7, "site_id" : 1, "date":"2019-01-07T08:00:00.000Z" };
 const newSLessons = [{"id":1,"lesson_id":1,"site_id":1,"date":"2019-01-01T08:00:00.000Z"},{"id":2,"lesson_id":2,"site_id":1,"date":"2019-01-02T08:00:00.000Z"},{"id":3,"lesson_id":3,"site_id":2,"date":"2019-01-03T08:00:00.000Z"},{"id":4,"lesson_id":4,"site_id":2,"date":"2019-01-04T08:00:00.000Z"},{"id":5,"lesson_id":5,"site_id":3,"date":"2019-01-05T08:00:00.000Z"},{"id":6,"lesson_id":6,"site_id":3,"date":"2019-01-06T08:00:00.000Z"},{"id":7,"lesson_id":7,"site_id":3,"date":"2019-01-07T08:00:00.000Z"}, {"id":8, "lesson_id" : 7, "site_id" : 1, "date":"2019-01-07T08:00:00.000Z"}]
 const rosterMentor = [{"name":"user1","email":"user1@email.com","picture":null,"grade":12,"bio":null,"notes":"Fall 2018, Site1"}]
-
+const rosterStudent = [{"name":"user2","email":"user2@email.com","picture":null,"grade":12,"bio":null,"notes":"Sp19,Site1"},{"name":"user3","email":"user3@email.com","picture":null,"grade":12,"bio":null,"notes":"sp19,site2"}]
 
 module.exports = {
     lessons,
@@ -15,5 +15,7 @@ module.exports = {
     newret,
     newLessons,
     newSiteLesson,
-    newSLessons
+    newSLessons,
+    rosterMentor,
+    rosterStudent
 }

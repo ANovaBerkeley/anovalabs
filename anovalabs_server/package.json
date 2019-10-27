@@ -9,7 +9,7 @@
     "test": "(dropdb --if-exists test-anovalabs-db && createdb test-anovalabs-db) && mocha --exit"
   },
   "dependencies": {
-    "bcrypt": "^3.0.2",
+    "bcrypt": "^3.0.6",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "css-loader": "^2.1.1",

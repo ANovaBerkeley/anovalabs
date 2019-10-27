@@ -134,12 +134,26 @@ describe('DB Test', () =>{
 
     });
 
-    it('Getting Correct Roster', (done) =>{
+    it('Getting Correct Mentor Roster', (done) =>{
         request(app)
         .get('/api/v1/rosterMentor')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.rosterMentor);
+             done();
+        }).catch(function(error) {
+            console.error(error);
+            done();
+        });
+
+    });
+
+    it('Getting Correct Student Roster', (done) =>{
+        request(app)
+        .get('/api/v1/rosterStudent')
+        .expect(200)
+        .then((response) =>{
+            expect(response.body).to.deep.equal(fixtures.rosterStudent);
              done();
         }).catch(function(error) {
             console.error(error);
