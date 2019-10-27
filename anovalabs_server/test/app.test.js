@@ -103,20 +103,20 @@ describe('DB Test', () =>{
     });
 
 
-        it('AddSiteLesson', (done) =>{
-            request(app)
-            .post('/api/v1/lesson_site/addLessonSite')
-            .send(fixtures.newSiteLesson)
-            .expect(201)
-            .then((response) =>{
-                console.log(response.body);
-                 done();
-            }).catch(function(error) {
-                console.error(error);
+    it('AddSiteLesson', (done) =>{
+        request(app)
+        .post('/api/v1/lesson_site/addLessonSite')
+        .send(fixtures.newSiteLesson)
+        .expect(201)
+        .then((response) =>{
+            console.log(response.body);
                 done();
-            });
-
+        }).catch(function(error) {
+            console.error(error);
+            done();
         });
+
+    });
 
 
 
@@ -132,6 +132,19 @@ describe('DB Test', () =>{
             done();
         });
 
+    });
+
+    if('Profile Created', (done) => {
+        request(app)
+        .get('/api/v1/profile/:id')
+        .expect(200)
+        .then((response) => {
+            expect(response.body).to.deep.equal(fixtures.profile1);
+            done();
+        }).catch(function(error) {
+            console.error(error);
+            done();
+        });
     });
 
 });
