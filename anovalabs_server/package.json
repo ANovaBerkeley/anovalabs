@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon",
     "server": "nodemon index.js",
-    "test": "(dropdb --if-exists test-anovalabs-db && createdb test-anovalabs-db) && ./node_modules/mocha/bin/mocha --exit"
+    "test": "(dropdb --if-exists test-anovalabs-db && createdb test-anovalabs-db) && mocha --exit"
   },
   "dependencies": {
     "bcrypt": "^3.0.2",

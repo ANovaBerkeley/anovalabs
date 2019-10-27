@@ -15,7 +15,7 @@ describe('DB Test', () =>{
 
     it('AllLessons', (done) =>{
         request(app)
-        .get('/api/v1/allLessons')
+        .get('/api/v1/lessons/all')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.lessons);
@@ -29,7 +29,7 @@ describe('DB Test', () =>{
 
     it('SiteLessons1', (done) =>{
         request(app)
-        .get('/api/v1/lessons')
+        .get('/api/v1/lesson_site/all')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.sitelessons);
@@ -58,7 +58,7 @@ describe('DB Test', () =>{
 
     it('VerifyDatabase', (done) =>{
         request(app)
-        .get('/api/v1/allLessons')
+        .get('/api/v1/lessons/all')
         .expect(200)
         .then((response) =>{
 
@@ -90,7 +90,7 @@ describe('DB Test', () =>{
 
     it('VerifyDatabase2', (done) =>{
         request(app)
-        .get('/api/v1/allLessons')
+        .get('/api/v1/lessons/all')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.lessons);
@@ -105,7 +105,7 @@ describe('DB Test', () =>{
 
         it('AddSiteLesson', (done) =>{
             request(app)
-            .post('/api/v1/lessons/addLessonSite')
+            .post('/api/v1/lesson_site/addLessonSite')
             .send(fixtures.newSiteLesson)
             .expect(201)
             .then((response) =>{
@@ -120,7 +120,7 @@ describe('DB Test', () =>{
 
 
 
-    it('AllLessons', (done) =>{
+    it('Verify Site Lesson Added', (done) =>{
         request(app)
         .get('/api/v1/lesson_site')
         .expect(200)
