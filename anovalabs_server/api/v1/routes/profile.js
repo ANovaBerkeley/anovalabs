@@ -7,7 +7,7 @@ const router = express.Router();
 /* Retrieve a user's profile based on their id.
 TODO: ensure that this cannot be called from a different user's account. */
 router.get('/:id', (req, res) => {
-  const userid = req.params.id;
+  const userid = 1;
 
   db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes')
     .from('user')
@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
 
 /* Update a user's profile. */
 router.post('/update', (req, res, next) => {
-  for (let requiredParameter of ['notes', 'id']) {
+  for (let requiredParameter of ['id']) {
     if (!req.body[requiredParameter]) {
       return res
         .status(422)
@@ -29,7 +29,7 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
     .where({ id: req.body.id })
-    .update({ notes: req.body.notes })
+    .update({ notes: req.body.notes, bio: req.body.bio, grade: req.body.grade })
     .then(data => {
       res.status(201).json({ title: req.body.title });
     })
