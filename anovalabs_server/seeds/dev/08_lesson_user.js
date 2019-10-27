@@ -4,7 +4,10 @@ exports.seed = function(knex, Promise) {
   return knex('lesson_user')
     .del()
     .then(function() {
+      //reset autoincrement
+        return knex.raw('ALTER SEQUENCE lesson_user_id_seq RESTART WITH 1').then(function(){
       // Inserts seed entries
-      return knex('lesson_user').insert(seed);
+          	return knex('lesson_user').insert(seed);
+      		})
     });
 };
