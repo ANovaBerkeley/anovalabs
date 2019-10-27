@@ -1,18 +1,20 @@
 const express = require('express');
+const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
-const router = express.Router();
 
-/* TODO: (1) sort by date, return date in readable format */
+//TODO: order by date, return date in readable format
+router.get('/', function (req, res) {
 
-router.get('/', (req, res) => {
-  db.select()
-    .from('lesson_site')
-    .then(data => {
-      res.send(data);
-    });
+	db.select()
+		.from('lesson_site')
+
+	.then(function(data){
+		res.send(data);
+	});
 });
+
 
 /* Get all lessons from the semester and site of that user.
 TODO: replace hardcoded userid */
@@ -34,6 +36,7 @@ router.get('/all', (req, res) => {
       res.send(data);
     });
 });
+
 
 /* TODO: Add a lesson to a specific site. */
 router.post('/addLessonSite', (req, res, next) => {
@@ -104,4 +107,5 @@ router.post('/deleteLessonSite', (req, res, next) => {
     });
 });
 
-module.exports = router;
+
+module.exports= router;
