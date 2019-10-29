@@ -8,7 +8,7 @@ const router = express.Router();
 
 /* Retrieve all lessons from the lesson pool. */
 router.get('/all', (req, res) => {
-  db.select('lesson.title', 'lesson.summary', 'lesson.link')
+  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
     .then(data => {
       res.send(data);

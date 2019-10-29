@@ -1,4 +1,4 @@
-const seed = require('../../newseedData/12_permission_role_seed');
+const seed = require('../../seed_data/12_permission_role_seed');
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex('role_permission')

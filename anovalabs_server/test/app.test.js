@@ -105,7 +105,7 @@ describe('DB Test', () =>{
 
         it('AddSiteLesson', (done) =>{
             request(app)
-            .post('/api/v1/lesson_site/addLessonSite')
+            .post('/api/v1/lesson_site/add')
             .send(fixtures.newSiteLesson)
             .expect(201)
             .then((response) =>{
