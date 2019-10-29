@@ -150,7 +150,7 @@ class LessonPool extends Component {
               visible={this.state.showModal}
               onOk={() => this.applyChanges()}
               onCancel={() => this.setState({showModal:false})}
-          >
+            >
               <div className="addFields">
                     <Row>
                         <Col>
