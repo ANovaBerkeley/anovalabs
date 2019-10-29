@@ -22,7 +22,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -36,7 +36,7 @@ describe('DB Test', () =>{
             done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -51,7 +51,7 @@ describe('DB Test', () =>{
         done();
       }).catch(function(error) {
            console.error(error);
-           done();
+
       });
 
   });
@@ -66,7 +66,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -83,7 +83,7 @@ describe('DB Test', () =>{
         done();
       }).catch(function(error) {
            console.error(error);
-           done();
+
       });
 
   });
@@ -97,7 +97,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -112,7 +112,7 @@ describe('DB Test', () =>{
                  done();
             }).catch(function(error) {
                 console.error(error);
-                done();
+
             });
 
         });
@@ -129,7 +129,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -143,7 +143,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -157,7 +157,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-            done();
+
         });
 
     });
@@ -171,7 +171,7 @@ describe('DB Test', () =>{
                 done();
             }).catch(function(error) {
                 console.error(error);
-                done();
+
             });
         });
 
@@ -184,7 +184,7 @@ describe('DB Test', () =>{
                 done();
             }).catch(function(error) {
                 console.error(error);
-                done();
+
             });
         });
 
@@ -197,7 +197,6 @@ describe('DB Test', () =>{
                 done();
             }).catch(function(error) {
                 console.error(error);
-                done();
             });
         });
 
