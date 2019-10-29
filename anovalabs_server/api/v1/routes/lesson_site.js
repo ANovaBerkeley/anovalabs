@@ -34,7 +34,6 @@ router.get('/all', (req, res) => {
     });
 });
 
-
 /* Add a lesson to a specific site. */
 router.post('/add', (req, res, next) => {
   const userid = 1;

@@ -21,6 +21,12 @@ class Lessons extends Component {
     };
   }
 
+  // TODO
+  // add protocol for when component doesn't mount
+  // add is loaded: false handling in comopnent did mount
+  // add documentation for each function
+
+  // calls API setting state + preparing lessons
   componentDidMount() {
     fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
@@ -75,6 +81,8 @@ class Lessons extends Component {
       });
   }
 
+  // TODO: make items more descriptions .mentor should be is mentor (make smol function)
+  // eg site lessons
   renderLessons = () => {
     const {
       mentor,
