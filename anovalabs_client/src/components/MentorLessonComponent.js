@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import '../stylesheets/MentorLessonComponent.css';
-
+import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 
 
 import { GoPlus } from 'react-icons/go';
@@ -14,7 +14,37 @@ class LessonComponent extends Component {
     this.state = {
       error: null,
       isLoaded: true,
+      showModal: false
     };
+    this.showModal = this.showModal.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
+  showModal(){
+    this.setState({showModal:true});
+  }
+
+  delete() {
+    var showModal = false;
+    console.log(this.props.lessonDetails.title);
+
+
+    fetch('http://localhost:5000/api/v1/lessons/delete',
+      { method: 'POST',
+        body: JSON.stringify({ title: this.props.lessonDetails.title}),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+      })
+      .then(res => res.json())
+      .then(
+        deleteLesson => {
+          this.setState({ showModal: false });
+      }); 
+
+    return {
+      showModal
+    }
   }
 
   render() {
@@ -37,9 +67,21 @@ class LessonComponent extends Component {
                   {this.props.lessonDetails.title}
 
                   </div>
-                  <button className = "deleteButton">
+                  <button className = "deleteButton" onClick = {() => this.showModal(true)} >
                     <GoTrashcan size="20"/>
                   </button>
+                  <Modal
+                    className="deleteModal"
+                    title="Delete this Lesson?"
+                    centered
+                    visible={this.state.showModal}
+                    onOk={() => this.delete()}
+                    onCancel={() => this.setState({showModal:false})}
+                  >
+                  </Modal>
+                  
+
+
                 </div>
                 <div className = "date">{this.props.lessonDetails.date}</div>
                 <div className = "descriptionContainer">
@@ -48,7 +90,6 @@ class LessonComponent extends Component {
                 <div className = "buttonContainer">
                   <div className = "viewAssignment">
                     <a href={this.props.lessonDetails.link}>View Assignment</a>
-
                   </div>
 
 
@@ -56,11 +97,7 @@ class LessonComponent extends Component {
                 </div>
 
               </div>
-
-
         );
-
-
   }
 }
 export default LessonComponent;
