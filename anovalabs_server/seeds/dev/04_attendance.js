@@ -1,4 +1,4 @@
-const seed = require('../../newseedData/04_attendance_seed');
+const seed = require('../../seed_data/04_attendance_seed');
 exports.seed = function(knex, Promise) {
 
   // Deletes ALL existing entries

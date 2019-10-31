@@ -8,9 +8,8 @@ exports.up = function(knex, Promise) {
         .notNullable()
         .unsigned();
     	table
-        .integer('semester_id')
+        .string('semester')
         .notNullable()
-        .unsigned();
       table
         .integer('site_id')
         .notNullable()
@@ -19,10 +18,6 @@ exports.up = function(knex, Promise) {
         table
         .foreign('user_id')
         .references('user.id')
-        .onDelete('CASCADE');
-    	table
-        .foreign('semester_id')
-        .references('semester.id')
         .onDelete('CASCADE');
       table
         .foreign('site_id')

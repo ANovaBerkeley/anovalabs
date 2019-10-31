@@ -23,7 +23,7 @@ class LessonPool extends Component {
     this.applyChanges = this.applyChanges.bind(this);
   }
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/allLessons')
+    fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(allLessons => {
           this.setState({
@@ -92,7 +92,7 @@ class LessonPool extends Component {
         addedLesson => {
           console.log(addedLesson);
           this.setState({ showModal: false });
-      }); 
+      });
 
     this.setState(state => {
       const items = state.items.concat({
@@ -150,7 +150,7 @@ class LessonPool extends Component {
               visible={this.state.showModal}
               onOk={() => this.applyChanges()}
               onCancel={() => this.setState({showModal:false})}
-          >
+            >
               <div className="addFields">
                     <Row>
                         <Col>

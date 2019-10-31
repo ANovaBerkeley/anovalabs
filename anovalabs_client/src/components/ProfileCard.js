@@ -25,7 +25,7 @@ export default class ProfileCard extends Component {
                     <div>
                     <Card
                          style={{ width: 300 }}
-                         cover={<img alt="" src={this.props.student.profileimage} />}
+                         cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
                          actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                     >
                          <Meta
@@ -41,7 +41,7 @@ export default class ProfileCard extends Component {
                     <div>
                     <Card
                          style={{ width: 300 }}
-                         cover={<img alt="" src={this.props.student.profileimage} />}
+                         cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg"/>}
                     >
                          <Meta
                               avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}

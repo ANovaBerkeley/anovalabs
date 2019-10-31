@@ -1,0 +1,2 @@
+2019-10-08 22:39:07.690 PDT [39688] FATAL:  data directory "/Users/juliedeng/Documents/anova/anovalabs/anovalabs_server/anovalabs-db" has invalid permissions
+2019-10-08 22:39:07.690 PDT [39688] DETAIL:  Permissions should be u=rwx (0700) or u=rwx,g=rx (0750).

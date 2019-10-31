@@ -12,6 +12,7 @@ module.exports = {
       .first();
   },
   getOneByEmail: email => {
+    console.log(email);
     return knex('user')
       .where('email', email)
       .first();
