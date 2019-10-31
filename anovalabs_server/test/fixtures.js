@@ -1,3 +1,10 @@
+const lesson_site =
+  [ { lesson_id: 3, site_id: 2, date: '2019-01-03T08:00:00.000Z' },
+    { lesson_id: 4, site_id: 2, date: '2019-01-04T08:00:00.000Z' },
+    { lesson_id: 5, site_id: 3, date: '2019-01-05T08:00:00.000Z' },
+    { lesson_id: 6, site_id: 3, date: '2019-01-06T08:00:00.000Z' },
+    { lesson_id: 7, site_id: 3, date: '2019-01-07T08:00:00.000Z' }
+]
 const lessons =  [ { id: 1,
        title: 'Lesson 1 for site1fa18',
        summary: 'this is the 1st lesson for s1fa18',
@@ -81,5 +88,6 @@ module.exports = {
   rosterStudent,
   profile1,
   updatedNotes,
-  updatedProfile
+  updatedProfile,
+  lesson_site
 };

@@ -200,4 +200,16 @@ describe('DB Test', () =>{
             });
         });
 
+        it('Show Only Lessons Not From Current Site', (done) => {
+            request(app)
+            .get('/api/v1/lesson_site/all_but_current_site')
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.deep.equal(fixtures.lesson_site);
+                done();
+            }).catch(function(error) {
+                console.error(error);
+            });
+        });
+
 });
