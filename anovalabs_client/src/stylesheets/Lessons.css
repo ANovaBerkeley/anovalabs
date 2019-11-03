@@ -14,7 +14,7 @@
 .plusCard{
   width: 300px;
   height: 200px;
-  
+
 
   /*align-items: center;*/
   border-radius: 16px;
@@ -28,6 +28,14 @@
   align-items: center;
   justify-content: center;
 
+}
+
+.title {
+  padding: 20px 20px;
+  position: absolute;
+  height: 100px;
+  display: block;
+  margin-top:-390px
 }
 
 .ant-avatar.ant-avatar-icon {

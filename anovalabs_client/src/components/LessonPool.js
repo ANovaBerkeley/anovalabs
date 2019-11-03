@@ -123,6 +123,9 @@ class LessonPool extends Component {
     if (!mentor){
       return (
         <div className = "container">
+          <div className='title'>
+            <h1>{this.site} All Lessons</h1>
+          </div>
           <div className = "lessonPoolContainer">
             {items.map(item => (
               <LessonComponent lessonDetails={item}></LessonComponent>
@@ -135,8 +138,10 @@ class LessonPool extends Component {
       // return <h3> Lets go for a < GoPlus/>? </h3>
       return (
         <div className = "container">
+          <div className='title'>
+            <h1>{this.site} All Lessons</h1>
+          </div>
           <div className = "lessonPoolContainer">
-
             {items.map(item => (
               <MentorLessonComponent lessonDetails={item}></MentorLessonComponent>
             ))}

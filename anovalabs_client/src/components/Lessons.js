@@ -17,7 +17,8 @@ class Lessons extends Component {
       mentor: true,
       showModal: false,
       siteLessons: [],
-      allLessons: []
+      allLessons: [],
+      site: "default"
     };
   }
 
@@ -28,6 +29,20 @@ class Lessons extends Component {
 
   // calls API setting state + preparing lessons
   componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons/site')
+      .then(res => res.json())
+      .then(site => {
+          this.setState({
+            site
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
     fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
       .then(siteLessons => {
@@ -89,11 +104,15 @@ class Lessons extends Component {
       siteLessons,
       allLessons,
       addLesson,
-      showModal
+      showModal,
+      site
     } = this.state;
     if (!mentor) {
       return (
         <div className="container">
+        <div className='title'>
+          <h1>All Lessons</h1>
+        </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
               <LessonComponent lessonDetails={item} />
@@ -103,46 +122,51 @@ class Lessons extends Component {
       );
     }
     return (
-      <div className="container">
-        <div className="lessonsContainer">
-          {siteLessons.map(item => (
-            <MentorLessonComponent lessonDetails={item} />
-          ))}
-          <div className="plusCard">
-            <GoPlus
-              onClick={() => this.showModal(true)}
-              size={100}
-              color="grey"
-            />
-            <Modal
-              className="addModal"
-              title="Add a Lesson"
-              centered
-              visible={showModal}
-              onOk={() => this.applyChanges()}
-              onCancel={() => this.showModal(false)}
-            >
-              <div className="addLesson">
-                <List
-                  dataSource={allLessons}
-                  renderItem={item => (
-                    <List.Item>
-                      <List.Item.Meta
-                        title={<p>{item.title}</p>}
-                        description={item.summary}
-                      />
-                      <div>
-                        <Avatar
-                          className="addButton"
-                          onClick={() => this.addLesson(item)}
-                          icon="plus-circle"
+      <div>
+        <div className="container">
+        <div className='title'>
+          <h1>{this.site} All Lessons</h1>
+        </div>
+          <div className="lessonsContainer">
+            {siteLessons.map(item => (
+              <MentorLessonComponent lessonDetails={item} />
+            ))}
+            <div className="plusCard">
+              <GoPlus
+                onClick={() => this.showModal(true)}
+                size={100}
+                color="grey"
+              />
+              <Modal
+                className="addModal"
+                title="Add a Lesson"
+                centered
+                visible={showModal}
+                onOk={() => this.applyChanges()}
+                onCancel={() => this.showModal(false)}
+              >
+                <div className="addLesson">
+                  <List
+                    dataSource={allLessons}
+                    renderItem={item => (
+                      <List.Item>
+                        <List.Item.Meta
+                          title={<p>{item.title}</p>}
+                          description={item.summary}
                         />
-                      </div>
-                    </List.Item>
-                  )}
-                />
-              </div>
-            </Modal>
+                        <div>
+                          <Avatar
+                            className="addButton"
+                            onClick={() => this.addLesson(item)}
+                            icon="plus-circle"
+                          />
+                        </div>
+                      </List.Item>
+                    )}
+                  />
+                </div>
+              </Modal>
+            </div>
           </div>
         </div>
       </div>

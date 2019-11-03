@@ -40,7 +40,7 @@ class LessonComponent extends Component {
       .then(
         deleteLesson => {
           this.setState({ showModal: false });
-      }); 
+      });
 
     return {
       showModal
@@ -49,6 +49,7 @@ class LessonComponent extends Component {
 
   render() {
     const { error, isLoaded, items } = this.state;
+    const readable_date = new Date(this.props.lessonDetails.date).toLocaleDateString();
     if (error) {
       return <div>Error:{error.message}</div>;
     }
@@ -79,11 +80,11 @@ class LessonComponent extends Component {
                     onCancel={() => this.setState({showModal:false})}
                   >
                   </Modal>
-                  
+
 
 
                 </div>
-                <div className = "date">{this.props.lessonDetails.date}</div>
+                <div className = "date">{readable_date}</div>
                 <div className = "descriptionContainer">
                   <div className = "description">{this.props.lessonDetails.summary}</div>
                 </div>
