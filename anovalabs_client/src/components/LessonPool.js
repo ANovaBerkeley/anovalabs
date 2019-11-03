@@ -123,8 +123,8 @@ class LessonPool extends Component {
     if (!mentor){
       return (
         <div className = "container">
-          <div className='title'>
-            <h1>{this.site} All Lessons</h1>
+          <div className='lessons_title'>
+            <h1>All Lessons</h1>
           </div>
           <div className = "lessonPoolContainer">
             {items.map(item => (
@@ -138,8 +138,8 @@ class LessonPool extends Component {
       // return <h3> Lets go for a < GoPlus/>? </h3>
       return (
         <div className = "container">
-          <div className='title'>
-            <h1>{this.site} All Lessons</h1>
+          <div className='lessons_title'>
+            <h1>All Lessons</h1>
           </div>
           <div className = "lessonPoolContainer">
             {items.map(item => (

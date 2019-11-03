@@ -18,6 +18,14 @@ body{
   min-height: 1000px;
 }
 
+.lessons_title {
+  padding: 20px 20px;
+  position: absolute;
+  height: 100px;
+  display: block;
+  margin-top:-390px
+}
+
 .addModal {
   padding: 10px 10px;
 }

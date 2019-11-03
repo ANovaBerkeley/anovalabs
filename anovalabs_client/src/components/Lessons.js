@@ -124,7 +124,7 @@ class Lessons extends Component {
     return (
       <div>
         <div className="container">
-        <div className='title'>
+        <div className='lessons_title'>
           <h1>{this.site} All Lessons</h1>
         </div>
           <div className="lessonsContainer">
