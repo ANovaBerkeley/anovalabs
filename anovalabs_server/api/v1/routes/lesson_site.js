@@ -18,7 +18,6 @@ TODO: order by date, return date in readable format */
 
 router.get('/all', (req, res) => {
   const userid = 1;
-  /*const date = new Date(lesson_site.date).toLocaleDateString();*/
 
   const siteid = db
     .select('site_id')

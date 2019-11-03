@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
         .integer('site_id')
         .notNullable()
         .unsigned();
-    table.timestamp('date').defaultTo(new Date(knex.fn.now()).toLocaleDateString());
+    table.timestamp('date').defaultTo(knex.fn.now());
       table
         .foreign('lesson_id')
         .references('lesson.id')
