@@ -1,51 +1,51 @@
 module.exports = [
   {
-      schoolName: "DCA Fall 2019",
+      schoolName: "DCA",
       time: "M,TH 3:30-5:30PM",
       contact: "Pranav Vachaspati"
   },
   {
-      schoolName: "Montera Fall 2019",
+      schoolName: "Montera",
       time: "T,TH,F 3:20-5:35PM",
       contact: "Emily Wang"
   },
   {
-      schoolName: "Willard Fall 2019",
+      schoolName: "Willard",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Caroline Liu"
   },
   {
-      schoolName: "Fremont High Fall 2019",
+      schoolName: "Fremont High",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Steven Dai"
     },
     {
-      schoolName: "Rudsdale Fall 2019",
+      schoolName: "Rudsdale",
       time: "T,TH,F 3:00-4:30PM",
       contact: "David Ly"
     },
     {
-      schoolName: "Roosevelt Fall 2019",
+      schoolName: "Roosevelt",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Joey Nguyen"
     },
     {
-      schoolName: "Lighthouse Charter Fall 2019",
+      schoolName: "Lighthouse Charter",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Amanuel Yitbarek"
     },
     {
-      schoolName: "College Track Fall 2019",
+      schoolName: "College Track",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Cody Yu"
     },
     {
-      schoolName: "Squash Drive Fall 2019",
+      schoolName: "Squash Drive",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Calvin Chen"
     },
     {
-      schoolName: "Oakland Tech Fall 2019",
+      schoolName: "Oakland Tech",
       time: "T,TH,F 3:00-4:30PM",
       contact: "Iris Chow"
     }
