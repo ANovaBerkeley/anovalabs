@@ -4,8 +4,5 @@ module.exports = [
   },
   {
       roleName: "student"
-  },
-  {
-      roleName: "student"
   }
 ];

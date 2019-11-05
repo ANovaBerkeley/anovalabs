@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 /* Get all lessons from the semester and site of that user.
 TODO: replace hardcoded userid
-TODO: order by date, return date in readable format */
+TODO: return date in readable format */
 
 router.get('/all', (req, res) => {
   const userid = 1;
@@ -29,6 +29,7 @@ router.get('/all', (req, res) => {
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
     .where('site.id', siteid)
+    .orderBy('date', 'asc')
     .then(data => {
       res.send(data);
     });
