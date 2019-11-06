@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import '../stylesheets/MentorLessonComponent.css';
-import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
+import { Modal, Input, Button, Row, Col, Avatar, Popconfirm } from 'antd';
 
 
 import { GoPlus } from 'react-icons/go';
@@ -14,10 +14,32 @@ class LessonComponent extends Component {
     this.state = {
       error: null,
       isLoaded: true,
-      showModal: false
+      showModal: false,
+      items: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}]
+
+
     };
     this.showModal = this.showModal.bind(this);
     this.delete = this.delete.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons/all')
+      .then(res => res.json())
+      .then(allLessons => {
+          this.setState({
+            isLoaded: true,
+            items: allLessons
+          });
+          //console.log(this.state.items);
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
   }
 
   showModal(){
@@ -25,8 +47,8 @@ class LessonComponent extends Component {
   }
 
   delete() {
+    console.log("bonongo");
     var showModal = false;
-    console.log(this.props.lessonDetails.title);
 
 
     fetch('http://localhost:5000/api/v1/lessons/delete',
@@ -40,11 +62,17 @@ class LessonComponent extends Component {
       .then(
         deleteLesson => {
           this.setState({ showModal: false });
-      }); 
 
+      });
+
+    this.setState(state => {
+      console.log(this.props);
+      const items = state.items.filter(item => item.id != this.props.lessonDetails.id);
     return {
+      items,
       showModal
     }
+  })
   }
 
   render() {
@@ -67,18 +95,18 @@ class LessonComponent extends Component {
                   {this.props.lessonDetails.title}
 
                   </div>
-                  <button className = "deleteButton" onClick = {() => this.showModal(true)} >
-                    <GoTrashcan size="20"/>
-                  </button>
-                  <Modal
+                  <Popconfirm
                     className="deleteModal"
                     title="Delete this Lesson?"
                     centered
                     visible={this.state.showModal}
-                    onOk={() => this.delete()}
+                    onConfirm={() => this.delete()}
                     onCancel={() => this.setState({showModal:false})}
                   >
-                  </Modal>
+                    <button className = "deleteButton" onClick = {() => this.showModal(true)} >
+                       <GoTrashcan size="20"/>
+                    </button>
+                  </Popconfirm>
                   
 
 

@@ -107,7 +107,8 @@ router.post('/login', (req, res, next) => {
               email: user.email,
               roles: user.role
             };
-            console.log(payload);
+            console.log("payload" + payload);
+            console.log("secret shh " + process.env.JWT_SECRET);
             jwt.sign(
               payload,
               process.env.JWT_SECRET,

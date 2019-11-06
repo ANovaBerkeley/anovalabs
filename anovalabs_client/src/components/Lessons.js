@@ -78,6 +78,9 @@ class Lessons extends Component {
       .then(res => res.json())
       .then(_ => {
         this.showModal(false);
+        this.setState(prevState => ({
+          siteLessons: [...prevState.siteLessons, item]
+        }));
       });
   }
 
