@@ -4,76 +4,40 @@ import { GoTrashcan } from 'react-icons/go';
 
 import '../stylesheets/MentorLessonComponent.css';
 
-// TODO: Need to show lessons based on user's assigned ID'
-class LessonComponent extends Component {
+// TODO: Need to show lessons based on user's assigned ID
+// TODO: only show date if for site specific lessons page
+// TODO: different delete API calls depending on page
+class MentorLessonComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: true,
-      showModal: false,
-      items: []
+      showModal: false
     };
     this.showModal = this.showModal.bind(this);
-    this.delete = this.delete.bind(this);
-  }
-
-  componentDidMount() {
-    fetch('http://localhost:5000/api/v1/lessons/all')
-      .then(res => res.json())
-      .then(allLessons => {
-          this.setState({
-            isLoaded: true,
-            items: allLessons
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+    this.deleteFromAllLessons = this.deleteFromAllLessons.bind(this);
   }
 
   showModal() {
     this.setState({ showModal: true });
   }
 
-  delete() {
-    const showModal = false;
-
-    fetch('http://localhost:5000/api/v1/lessons/delete',
-      { method: 'POST',
-        body: JSON.stringify({ title: this.props.lessonDetails.title}),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
+  deleteFromAllLessons() {
+    fetch('http://localhost:5000/api/v1/lessons/delete', {
+      method: 'POST',
+      body: JSON.stringify({ title: this.props.lessonDetails.title }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
       })
-      .then(res => res.json())
-      .then(deleteLesson => {
-          this.setState({ showModal: false });
-      });
+    }).then(() => this.showModal(false));
 
-    this.setState(state => {
-      const items = state.items.filter(
-        item => item.id != this.props.lessonDetails.id
-      );
-      return {
-        items,
-        showModal
-      };
-    });
+    this.props.deleteHandler(this.props.lessonDetails);
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
-    const readableDate = new Date(this.props.lessonDetails.date).toLocaleDateString();
-    if (error) {
-      return <div>Error:{error.message}</div>;
-    }
-    if (!isLoaded) {
-      return <div>Loading...</div>;
+    const { showModal } = this.state;
+    let readableDate = '';
+    if (this.props.lessonDetails.date) {
+      readableDate = new Date(this.props.lessonDetails.date).toLocaleDateString();
     }
     return (
       <div className="card">
@@ -83,13 +47,14 @@ class LessonComponent extends Component {
             className="deleteModal"
             title="Delete this Lesson?"
             centered
-            visible={this.state.showModal}
-            onConfirm={() => this.delete()}
-            onCancel={() => this.setState({ showModal: false })}
+            visible={showModal}
+            onConfirm={() => this.deleteFromAllLessons()}
+            onCancel={() => this.showModal(false)}
           >
             <button
               className="deleteButton"
               onClick={() => this.showModal(true)}
+              type="button"
             >
               <GoTrashcan size="20" />
             </button>
@@ -108,4 +73,4 @@ class LessonComponent extends Component {
     );
   }
 }
-export default LessonComponent;
+export default MentorLessonComponent;

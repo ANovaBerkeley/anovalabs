@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import LessonComponent from './LessonComponent';
-import MentorLessonComponent from './MentorLessonComponent';
-import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
+import { Modal, Input, Row, Col } from 'antd';
 import '../stylesheets/LessonPool.css';
 import { GoPlus } from 'react-icons/go';
-import { GoX } from 'react-icons/go';
+import LessonComponent from './LessonComponent';
+import MentorLessonComponent from './MentorLessonComponent';
 
 // TODO: Need to show lessons based on user's assigned ID'
 // TODO: this should not differ from the lesson componenent in that it should not show a date
@@ -16,16 +15,17 @@ class LessonPool extends Component {
       isLoaded: true,
       mentor: true,
       showModal: false,
-      items: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
-    ]
+      items: []
     };
     this.showModal = this.showModal.bind(this);
     this.applyChanges = this.applyChanges.bind(this);
   }
+
   componentDidMount() {
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
-      .then(allLessons => {
+      .then(
+        allLessons => {
           this.setState({
             isLoaded: true,
             items: allLessons
@@ -37,11 +37,11 @@ class LessonPool extends Component {
             error
           });
         }
-      )
+      );
   }
 
-  showModal(){
-    this.setState({showModal:true});
+  showModal() {
+    this.setState({ showModal: true });
   }
 
   generateId(nums) {
@@ -78,7 +78,7 @@ class LessonPool extends Component {
     for (let i = 0; i < this.state.items.length; i++) {
       usedIds = usedIds.concat(this.state.items[i].id)
     }
-    var nextId = this.generateId(usedIds)
+    let nextId = this.generateId(usedIds)
 
     fetch('http://localhost:5000/api/v1/lessons/add',
       { method: 'POST',
