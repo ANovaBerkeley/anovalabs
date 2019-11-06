@@ -147,6 +147,16 @@ const rosterStudent = [ { name: 'user2',
 const profile1 = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": null, "notes": "Fall 2019, Montera"}];
 const updatedNotes = {"notes": "Spring 2020, Montera", "id": 1, "grade": 13, "bio": "this is a new bio"};
 const updatedProfile = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": "this is a new bio", "notes": "Spring 2020, Montera"}];
+const all_sites = [ { schoolName: 'DCA' },
+                       { schoolName: 'Montera' },
+                       { schoolName: 'Willard' },
+                       { schoolName: 'Fremont High' },
+                       { schoolName: 'Rudsdale' },
+                       { schoolName: 'Roosevelt' },
+                       { schoolName: 'Lighthouse Charter' },
+                       { schoolName: 'College Track' },
+                       { schoolName: 'Squash Drive' },
+                       { schoolName: 'Oakland Tech' } ];
 
 module.exports = {
   lessons,
@@ -160,5 +170,6 @@ module.exports = {
   rosterStudent,
   profile1,
   updatedNotes,
-  updatedProfile
+  updatedProfile,
+  all_sites
 };
