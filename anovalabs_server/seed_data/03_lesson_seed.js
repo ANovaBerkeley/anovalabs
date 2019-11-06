@@ -1,37 +1,37 @@
 module.exports = [
   {
-      title: "Lesson 1 for site1fa18",
-      summary: "this is the 1st lesson for s1fa18",
-      link: "http://tinyurl.com/lesson1s1fa18"
+      title: "Variables",
+      summary: "Introduction to variables ",
+      link: "http://tinyurl.com/variables"
   },
   {
-  	title:"Lesson 2 for site 1fa18",
-  	summary:"2nd lesson s1fa18",
-  	link:"http://tinyurl.com/lesson2s1fa18"
+  	title:"Loops",
+  	summary:"For loops and while loops",
+  	link:"http://tinyurl.com/loops"
   },
   {
-      title: "Lesson 1 for site1sp19",
-      summary: "this is the 1st lesson for s1sp19",
-      link: "http://tinyurl.com/lesson1s1sp19"
+      title: "Lists:1",
+      summary: "First lesson on lists",
+      link: "http://tinyurl.com/lists1"
   },
   {
-  	title:"Lesson 2 for site1sp19",
-  	summary:"2nd lesson s1sp19",
-  	link:"http://tinyurl.com/lesson2s1sp19"
+  	title:"Introduction to HTML",
+  	summary:"Create personal websites",
+  	link:"http://tinyurl.com/html_sites"
   },
     {
-  	title:"Lesson 1 for site2sp19",
-  	summary:"1st lesson s2sp19",
-  	link:"http://tinyurl.com/lesson1s2sp19"
+  	title:"CSS",
+  	summary:"Add color changes and more to personal websites",
+  	link:"http://tinyurl.com/css_color"
   },
     {
-  	title:"Lesson 2 for site2sp19",
-  	summary:"2nd lesson s2sp19",
-  	link:"http://tinyurl.com/lesson2s2sp19"
+  	title:"Control Statements",
+  	summary:"Learn If and If Else Statements",
+  	link:"http://tinyurl.com/if_else"
   },
   {
-  	title:"Lesson 3 for site2sp19",
-  	summary:"3rd lesson s2sp19",
-  	link:"http://tinyurl.com/lesson3s2sp19"
+  	title:"Functions",
+  	summary:"Learn to create your own functions",
+  	link:"http://tinyurl.com/functions"
   }
 ];

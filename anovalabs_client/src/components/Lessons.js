@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, List, Button, Modal, Row, Col } from 'antd';
+import { DatePicker, Checkbox } from 'antd';
 import { GoPlus } from 'react-icons/go';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
@@ -70,7 +71,7 @@ class Lessons extends Component {
     console.log(item);
     fetch('http://localhost:5000/api/v1/lesson_site/add', {
       method: 'POST',
-      body: JSON.stringify({ lesson_id: item.id }),
+      body: JSON.stringify({ lesson_id: item.id}),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
@@ -82,6 +83,15 @@ class Lessons extends Component {
           siteLessons: [...prevState.siteLessons, item]
         }));
       });
+  }
+
+  onChange(date, dateString) {
+    console.log(date, dateString);
+  }
+
+  onChangeCheck(e) {
+
+    console.log('checked = ', e.target.checked);
   }
 
   // TODO: make items more descriptions .mentor should be is mentor (make smol function)
@@ -134,6 +144,7 @@ class Lessons extends Component {
                         title={<p>{item.title}</p>}
                         description={item.summary}
                       />
+                      <div> <DatePicker onChange={this.onChange}/> </div>
                       <div>
                         <Avatar
                           className="addButton"

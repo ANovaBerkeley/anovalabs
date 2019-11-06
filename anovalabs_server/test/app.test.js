@@ -9,37 +9,32 @@ describe('DB Test', () =>{
         knex.migrate.latest()
             .then(() =>{
                 return knex.seed.run()
-
             }).then(() => done());
     });
 
-    it('AllLessons', (done) =>{
-        request(app)
-        .get('/api/v1/lessons/all')
-        .expect(200)
-        .then((response) =>{
-            expect(response.body).to.deep.equal(fixtures.lessons);
-             done();
-        }).catch(function(error) {
-            console.error(error);
+  it('AllLessons', (done) =>{
+      request(app)
+      .get('/api/v1/lessons/all')
+      .expect(200)
+      .then((response) =>{
+          expect(response.body).to.deep.equal(fixtures.lessons);
+           done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
-        });
-
-    });
-
-    it('SiteLessons1', (done) =>{
-        request(app)
-        .get('/api/v1/lesson_site/all')
-        .expect(200)
-        .then((response) =>{
-            expect(response.body).to.deep.equal(fixtures.sitelessons);
-            done();
-        }).catch(function(error) {
-            console.error(error);
-
-        });
-
-    });
+  it('SiteLessons1', (done) =>{
+      request(app)
+      .get('/api/v1/lesson_site/all')
+      .expect(200)
+      .then((response) =>{
+          expect(response.body).to.deep.equal(fixtures.sitelessons);
+          done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
   it('AddLesson', (done) => {
     request(app)
@@ -51,25 +46,20 @@ describe('DB Test', () =>{
         done();
       }).catch(function(error) {
            console.error(error);
-
       });
-
   });
 
-    it('VerifyDatabase', (done) =>{
-        request(app)
-        .get('/api/v1/lessons/all')
-        .expect(200)
-        .then((response) =>{
-
-            expect(response.body).to.deep.equal(fixtures.newLessons);
-             done();
-        }).catch(function(error) {
-            console.error(error);
-
-        });
-
-    });
+  it('VerifyDatabase', (done) =>{
+      request(app)
+      .get('/api/v1/lessons/all')
+      .expect(200)
+      .then((response) =>{
+          expect(response.body).to.deep.equal(fixtures.newLessons);
+           done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
 
 
@@ -83,39 +73,33 @@ describe('DB Test', () =>{
         done();
       }).catch(function(error) {
            console.error(error);
-
       });
-
   });
 
-    it('VerifyDatabase2', (done) =>{
-        request(app)
-        .get('/api/v1/lessons/all')
-        .expect(200)
-        .then((response) =>{
-            expect(response.body).to.deep.equal(fixtures.lessons);
-             done();
-        }).catch(function(error) {
-            console.error(error);
-
-        });
-
-    });
+  it('VerifyDatabase2', (done) =>{
+      request(app)
+      .get('/api/v1/lessons/all')
+      .expect(200)
+      .then((response) =>{
+          expect(response.body).to.deep.equal(fixtures.lessons);
+           done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
 
-        it('AddSiteLesson', (done) =>{
-            request(app)
-            .post('/api/v1/lesson_site/add')
-            .send(fixtures.newSiteLesson)
-            .expect(201)
-            .then((response) =>{
-                 done();
-            }).catch(function(error) {
-                console.error(error);
-
-            });
-
-        });
+  it('AddSiteLesson', (done) =>{
+      request(app)
+      .post('/api/v1/lesson_site/add')
+      .send(fixtures.newSiteLesson)
+      .expect(201)
+      .then((response) =>{
+           done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
 
 
@@ -129,9 +113,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-
         });
-
     });
 
     it('Getting Correct Mentor Roster', (done) =>{
@@ -143,9 +125,7 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-
         });
-
     });
 
     it('Getting Correct Student Roster', (done) =>{
@@ -157,59 +137,70 @@ describe('DB Test', () =>{
              done();
         }).catch(function(error) {
             console.error(error);
-
         });
-
     });
 
     it('First Profile Accessed', (done) => {
-            request(app)
-            .get('/api/v1/profile/:id')
-            .expect(200)
-            .then((response) => {
-                expect(response.body).to.deep.equal(fixtures.profile1);
-                done();
-            }).catch(function(error) {
-                console.error(error);
+      request(app)
+      .get('/api/v1/profile/:id')
+      .expect(200)
+      .then((response) => {
+          expect(response.body).to.deep.equal(fixtures.profile1);
+          done();
+      }).catch(function(error) {
+          console.error(error);
 
-            });
-        });
+      });
+  });
 
-        it('Profile Updated', (done) => {
-            request(app)
-            .post('/api/v1/profile/update')
-            .send(fixtures.updatedNotes)
-            .expect(201)
-            .then((response) => {
-                done();
-            }).catch(function(error) {
-                console.error(error);
+  it('Profile Updated', (done) => {
+      request(app)
+      .post('/api/v1/profile/update')
+      .send(fixtures.updatedNotes)
+      .expect(201)
+      .then((response) => {
+          done();
+      }).catch(function(error) {
+          console.error(error);
 
-            });
-        });
+      });
+  });
 
-        it('First Profile Updated Successfully', (done) => {
-            request(app)
-            .get('/api/v1/profile/:id')
-            .expect(200)
-            .then((response) => {
-                expect(response.body).to.deep.equal(fixtures.updatedProfile);
-                done();
-            }).catch(function(error) {
-                console.error(error);
-            });
-        });
+  it('First Profile Updated Successfully', (done) => {
+      request(app)
+      .get('/api/v1/profile/:id')
+      .expect(200)
+      .then((response) => {
+          expect(response.body).to.deep.equal(fixtures.updatedProfile);
+          done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
-        it('Show Only Lessons Not From Current Site', (done) => {
-            request(app)
-            .get('/api/v1/lesson_site/all_but_current_site')
-            .expect(200)
-            .then((response) => {
-                expect(response.body).to.deep.equal(fixtures.lesson_site);
-                done();
-            }).catch(function(error) {
-                console.error(error);
-            });
-        });
+  it('Show Only Lessons Not From Current Site', (done) => {
+    request(app)
+      .get('/api/v1/lesson_site/all_but_current_site')
+      .expect(200)
+      .then(response => {
+        expect(response.body).to.deep.equal(fixtures.lesson_site);
+        done();
+      })
+      .catch(error => {
+          console.error(error);
+      });
+  });
+
+  it('All Sites', done => {
+      request(app)
+      .get('/api/v1/lesson_site/allSites')
+      .expect(200)
+      .then((response) => {
+          expect(response.body).to.deep.equal(fixtures.all_sites);
+          done();
+      }).catch(function(error) {
+          console.error(error);
+      });
+  });
 
 });
