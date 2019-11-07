@@ -26,12 +26,27 @@ class Lessons extends Component {
       mentor: true,
       showModal: false,
       siteLessons: [],
-      allLessons: []
+      allLessons: [],
+      site: "default"
     };
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons/site')
+      .then(res => res.json())
+      .then(site => {
+          this.setState({
+            site
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
     fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
       .then(siteLessons => {
@@ -96,11 +111,15 @@ class Lessons extends Component {
       siteLessons,
       allLessons,
       addLesson,
-      showModal
+      showModal,
+      site
     } = this.state;
     if (!mentor) {
       return (
         <div className="container">
+        <div className='title'>
+          <h1>All Lessons</h1>
+        </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
               <LessonComponent lessonDetails={item} />
@@ -111,6 +130,9 @@ class Lessons extends Component {
     }
     return (
       <div className="container">
+        <div className="lessons_title">
+          <h1>{this.site} All Lessons</h1>
+        </div>
         <div className="lessonsContainer">
           {siteLessons.map(item => (
             <MentorLessonComponent
