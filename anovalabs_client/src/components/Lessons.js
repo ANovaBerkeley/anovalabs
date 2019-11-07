@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, List, Button, Modal, Row, Col } from 'antd';
-import { DatePicker, Checkbox } from 'antd';
+import { DatePicker, Checkbox, Select} from 'antd';
 import { GoPlus } from 'react-icons/go';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
@@ -18,7 +18,9 @@ class Lessons extends Component {
       mentor: true,
       showModal: false,
       siteLessons: [],
-      allLessons: []
+      allLessons: [],
+      modalSelectedValue: "",
+      modalDate: ""
     };
   }
 
@@ -67,11 +69,11 @@ class Lessons extends Component {
     this.setState({ showModal: bool });
   }
 
-  addLesson(item) {
-    console.log(item);
+  addLesson(item, date) {
+    console.log(date);
     fetch('http://localhost:5000/api/v1/lesson_site/add', {
       method: 'POST',
-      body: JSON.stringify({ lesson_id: item.id}),
+      body: JSON.stringify({ lesson_id: item, date: date}),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
@@ -83,12 +85,27 @@ class Lessons extends Component {
   }
 
   onChange(date, dateString) {
-    console.log(date, dateString);
+
+    this.setState({ modalDate: dateString });
+
+
   }
 
-  onChangeCheck(e) {
 
-    console.log('checked = ', e.target.checked);
+  onSelectChange(value) {
+    this.setState({ modalSelectedValue: value });
+  }
+
+  onBlur() {
+    console.log('blur');
+  }
+
+  onFocus() {
+    console.log('focus');
+  }
+
+  onSearch(val) {
+    console.log('search:', val);
   }
 
   // TODO: make items more descriptions .mentor should be is mentor (make smol function)
@@ -112,6 +129,8 @@ class Lessons extends Component {
         </div>
       );
     }
+
+
     return (
       <div className="container">
         <div className="lessonsContainer">
@@ -129,29 +148,28 @@ class Lessons extends Component {
               title="Add a Lesson"
               centered
               visible={showModal}
-              onOk={() => this.applyChanges()}
+              onOk={() => this.addLesson(this.state.modalSelectedValue, this.state.modalDate)}
               onCancel={() => this.showModal(false)}
             >
               <div className="addLesson">
-                <List
-                  dataSource={allLessons}
-                  renderItem={item => (
-                    <List.Item>
-                      <List.Item.Meta
-                        title={<p>{item.title}</p>}
-                        description={item.summary}
-                      />
-                      <div> <DatePicker onChange={this.onChange}/> </div>
-                      <div>
-                        <Avatar
-                          className="addButton"
-                          onClick={() => this.addLesson(item)}
-                          icon="plus-circle"
-                        />
-                      </div>
-                    </List.Item>
-                  )}
-                />
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select a lesson"
+                    optionFilterProp="children"
+                    onChange={this.onSelectChange.bind(this)}
+                    onFocus={this.onFocus}
+                    onBlur={this.onBlur}
+                    onSearch={this.onSearch}
+                    filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {this.state.allLessons.map((item, index) => (
+                       <Option value={index+1}>{item.title}</Option> ))}
+                  </Select>
+                  <br />
+              <div> <DatePicker onChange={this.onChange.bind(this)}/> </div>
               </div>
             </Modal>
           </div>
