@@ -10,16 +10,15 @@
 }
 
 .signUpBox {
-  padding: 20px 40px;
-  background-color: rgba(247, 247, 247, 0.86);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
-  border-radius: 16px;
-  font-family: 'Lato';
-  font-size:15px;
+    width: 350px;
+    height: 550px;
+    background-color: rgba(247, 247, 247, 0.86);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
+    border-radius: 16px;
 }
 
 .anova{

@@ -74,6 +74,14 @@ label{
   padding-bottom: 8px;
 }
 
+.log_logo{
+  max-width:10%;
+  width: auto;
+  height: auto;
+  padding-bottom: 5px;
+  margin:0;
+}
+
 .remember{
   font-family: 'Lato';
   font-size: 10px;

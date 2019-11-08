@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 
-/* Returns all sites */
+/* Returns all site names */
 router.get('/allSites', (req, res) => {
   db.select('schoolName')
     .from('site')

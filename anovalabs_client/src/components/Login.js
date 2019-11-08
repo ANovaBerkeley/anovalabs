@@ -64,7 +64,7 @@ class Login extends Component {
 
       <div className="container">
         <div className= "loginBox">
-          <img src = "../public/img/logo-lower.png" className = "logo"/>
+          <img src = "../public/img/logo-lower.png" className = "log_logo"/>
           <div className = "title">
             <div className = "anova">ANova </div>
             <div className = "labs">Labs </div>

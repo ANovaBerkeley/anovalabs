@@ -14,7 +14,8 @@ class Login extends Component {
       password: '',
       emailStatus: '',
       passwordStatus: '',
-      redirect: false
+      redirect: false,
+      sites: ''
     };
 
     this._change = this._change.bind(this);
@@ -27,7 +28,21 @@ class Login extends Component {
   componentDidMount() {
     if (getJWT() !== null) {
       this.setState({ redirect: true })
-    }
+    };
+    fetch('http://localhost:5000/api/v1/site/allSites')
+          .then(res => res.json())
+          .then(
+            sites => {
+              this.setState({
+                sites
+              });
+            },
+            error => {
+              this.setState({
+                error
+              });
+            }
+          );
   }
 
   async _validateUser() {
@@ -105,10 +120,11 @@ class Login extends Component {
   }
 
   loadSites = () => {
+    console.log(this.state.sites);
     let options = [];
-    let sites = ['site1', 'site2', 'site3'];
-    for (let i = 0; i < sites.length; i++) {
-      options.push(<option value={sites[i]}>{sites[i]}</option>);
+    let sites2 = this.state.sites;
+    for (let i = 0; i < sites2.length; i++) {
+      options.push(<option value={sites2[i].schoolName}>{sites2[i].schoolName}</option>);
     }
     return options;
   }
