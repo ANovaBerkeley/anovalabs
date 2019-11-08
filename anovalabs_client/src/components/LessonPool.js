@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
-import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
+import { Modal, Input, Button, Row, Col, Avatar, Alert } from 'antd';
 import '../stylesheets/LessonPool.css';
 import { GoPlus } from 'react-icons/go';
 import { GoX } from 'react-icons/go';
@@ -16,10 +16,12 @@ class LessonPool extends Component {
       isLoaded: true,
       mentor: true,
       showModal: false,
+      showErrorModal: false,
       items: [{"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}, {"id":1,"title":"Python 1 for inexperienced","summary":"1st Python lesson","link":"https://docs.google.com/presentation/u/2/d/1Ow8eswXrAmz6TGTJs3C5l0kxNubV5PFVy0xVIRm5SLA/edit?usp=drive_web&ouid=107773852241053411405","created_at":"2019-03-11T01:40:56.187Z","updated_at":"2019-03-11T01:40:56.187Z", "date": "3/11"}
     ]
     };
     this.showModal = this.showModal.bind(this);
+    this.showErrorModal = this.showErrorModal.bind(this);
     this.applyChanges = this.applyChanges.bind(this);
   }
   componentDidMount() {
@@ -42,6 +44,10 @@ class LessonPool extends Component {
 
   showModal(){
     this.setState({showModal:true});
+  }
+
+  showErrorModal(){
+    this.setState({showErrorModal:true})
   }
 
   generateId(nums) {
@@ -80,36 +86,47 @@ class LessonPool extends Component {
     }
     var nextId = this.generateId(usedIds)
 
-    fetch('http://localhost:5000/api/v1/lessons/add',
-      { method: 'POST',
-        body: JSON.stringify({ title: titleAdd.value, summary: summaryAdd.value, link: linkAdd.value }),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-      })
-      .then(res => res.json())
-      .then(
-        addedLesson => {
-          console.log(addedLesson);
-          this.setState({ showModal: false });
-      });
+    if (titleAdd.value == "" || summaryAdd.value == "" || linkAdd.value == "") {
+      Modal.error({
+          title: 'Please fill out all fields.',
+          centered: true
+        });
+      return;
+    } else {
 
-    this.setState(state => {
-      const items = state.items.concat({
-        id: nextId,
-        title: titleAdd.value,
-        summary: summaryAdd.value,
-        link: linkAdd.value,
-        created_at: todayStr,
-        updated_at: todayStr,
-        date: today.getMonth()+1 + "/" + today.getDate()
-      })
-    return {
-      items,
-      showModal
+      fetch('http://localhost:5000/api/v1/lessons/add',
+        { method: 'POST',
+          body: JSON.stringify({ title: titleAdd.value, summary: summaryAdd.value, link: linkAdd.value }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          }),
+        })
+        .then(res => res.json())
+        .then(
+          addedLesson => {
+            console.log(addedLesson);
+            this.setState({ showModal: false });
+        });
+
+      this.setState(state => {
+          const items = state.items.concat({
+          id: nextId,
+          title: titleAdd.value,
+          summary: summaryAdd.value,
+          link: linkAdd.value,
+          created_at: todayStr,
+          updated_at: todayStr,
+          date: today.getMonth()+1 + "/" + today.getDate()
+        })
+      return {
+        items,
+        showModal
+      }
     }
-  })
+      )
   }
+}
+
 
   render() {
     const { error, isLoaded, items, mentor } = this.state;
@@ -143,6 +160,7 @@ class LessonPool extends Component {
             <button className = "plusCard" onClick={() => this.showModal(true)}>
               <GoPlus size = {100} color='grey'/>
             </button>
+
             <Modal
               className="addModal"
               title="Add a New Lesson"
@@ -154,17 +172,17 @@ class LessonPool extends Component {
               <div className="addFields">
                     <Row>
                         <Col>
-                              <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= "Python for Beginners"></Input>
+                              <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= ""></Input>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                              <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue="Essential Crash Course on Powerful Ole' Python"></Input>
+                              <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue=""></Input>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                              <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue="https://www.codeacadmy.com"></Input>
+                              <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue=""></Input>
                         </Col>
                     </Row>
               </div>

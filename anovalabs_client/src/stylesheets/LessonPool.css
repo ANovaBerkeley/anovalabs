@@ -21,6 +21,9 @@ body{
 .addModal {
   padding: 10px 10px;
 }
+.ant-modal-close-x {
+  padding: 20px 20px;
+}
 
 .addFields .ant-row {
   padding: 20 0px;

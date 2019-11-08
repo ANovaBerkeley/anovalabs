@@ -95,7 +95,7 @@ class LessonComponent extends Component {
                   {this.props.lessonDetails.title}
 
                   </div>
-                  <Popconfirm
+                  <Modal
                     className="deleteModal"
                     title="Delete this Lesson?"
                     centered
@@ -106,7 +106,7 @@ class LessonComponent extends Component {
                     <button className = "deleteButton" onClick = {() => this.showModal(true)} >
                        <GoTrashcan size="20"/>
                     </button>
-                  </Popconfirm>
+                  </Modal>
                   
 
 
