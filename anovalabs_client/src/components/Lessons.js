@@ -9,64 +9,65 @@ import '../stylesheets/Lessons.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
 // TODO: display site name at top
+
+// TODO
+// add protocol for when component doesn't mount
+// add is loaded: false handling in comopnent did mount
+// add documentation for each function
+
+// calls API setting state + preparing lessons
+
+  // TODO: make items more descriptions .mentor should be is mentor (make smol function)
+  // eg site lessons
 class Lessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: true,
       mentor: true,
       showModal: false,
       siteLessons: [],
       allLessons: [],
+      site: "default",
       modalSelectedValue: "",
       modalDate: ""
     };
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
-  // TODO
-  // add protocol for when component doesn't mount
-  // add is loaded: false handling in comopnent did mount
-  // add documentation for each function
-
-  // calls API setting state + preparing lessons
   componentDidMount() {
+    fetch('http://localhost:5000/api/v1/lessons/site')
+      .then(res => res.json())
+      .then(site => {
+          this.setState({
+            site
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
     fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
       .then(siteLessons => {
-          this.setState({
-            siteLessons
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+        this.setState({
+          siteLessons
+        });
+      });
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
-      .then(
-        allLessons => {
-          this.setState({
-            allLessons
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+      .then(allLessons => {
+        this.setState({
+          allLessons
+        });
+      });
   }
 
-  showModal(bool) {
-    this.setState({ showModal: bool });
+  onChangeCheck(e) {
+
+    console.log('checked = ', e.target.checked);
   }
 
   addLesson(item, date) {
@@ -81,16 +82,27 @@ class Lessons extends Component {
       .then(res => res.json())
       .then(_ => {
         this.showModal(false);
+        this.setState(prevState => ({
+          siteLessons: [...prevState.siteLessons, item]
+        }));
       });
   }
 
-  onChange(date, dateString) {
-
-    this.setState({ modalDate: dateString });
-
-
+  showModal(bool) {
+    this.setState({ showModal: bool });
   }
 
+  deleteHandler(lessonDetails) {
+    this.setState(prevState => ({
+      siteLessons: prevState.siteLessons.filter(
+        item => item.id != lessonDetails.id
+      )
+    }));
+  }
+
+  onChange(date, dateString) {
+    this.setState({ modalDate: dateString });
+  }
 
   onSelectChange(value) {
     this.setState({ modalSelectedValue: value });
@@ -108,19 +120,21 @@ class Lessons extends Component {
     console.log('search:', val);
   }
 
-  // TODO: make items more descriptions .mentor should be is mentor (make smol function)
-  // eg site lessons
   renderLessons = () => {
     const {
       mentor,
       siteLessons,
       allLessons,
       addLesson,
-      showModal
+      showModal,
+      site
     } = this.state;
     if (!mentor) {
       return (
         <div className="container">
+        <div className='title'>
+          <h1>All Lessons</h1>
+        </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
               <LessonComponent lessonDetails={item} />
@@ -133,9 +147,15 @@ class Lessons extends Component {
 
     return (
       <div className="container">
+        <div className="lessons_title">
+          <h1>{this.site} All Lessons</h1>
+        </div>
         <div className="lessonsContainer">
           {siteLessons.map(item => (
-            <MentorLessonComponent lessonDetails={item} />
+            <MentorLessonComponent
+              deleteHandler={this.deleteHandler}
+              lessonDetails={item}
+            />
           ))}
           <div className="plusCard">
             <GoPlus
@@ -178,7 +198,6 @@ class Lessons extends Component {
     );
   };
 
-  // TODO: display loading/error message
   render() {
     const component = this.renderLessons();
     return <div>{component}</div>;

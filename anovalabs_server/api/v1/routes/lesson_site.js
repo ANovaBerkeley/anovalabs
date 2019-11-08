@@ -37,6 +37,23 @@ router.get('/all', (req, res) => {
     });
 });
 
+/*Get all lessons from other sites*/
+router.get('/all_but_current_site', (req, res) => {
+  const userid = 1;
+
+  const siteid = db
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
+
+    db.select('lesson_site.lesson_id', 'lesson_site.site_id', 'lesson_site.date')
+      .from('lesson_site')
+      .whereNot('site_id', siteid)
+      .then(data => {
+        res.send(data);
+    });
+});
+
 /* Add a lesson to a specific site. */
 router.post('/add', (req, res, next) => {
   const userid = 1;

@@ -1,103 +1,76 @@
-
 import React, { Component } from 'react';
+import { Popconfirm } from 'antd';
+import { GoTrashcan } from 'react-icons/go';
 
 import '../stylesheets/MentorLessonComponent.css';
-import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
 
-
-import { GoPlus } from 'react-icons/go';
-import { GoTrashcan } from 'react-icons/go';
-// TODO: Need to show lessons based on user's assigned ID'
-class LessonComponent extends Component {
+// TODO: Need to show lessons based on user's assigned ID
+// TODO: only show date if for site specific lessons page
+// TODO: different delete API calls depending on page
+class MentorLessonComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: true,
       showModal: false
     };
     this.showModal = this.showModal.bind(this);
-    this.delete = this.delete.bind(this);
+    this.deleteFromAllLessons = this.deleteFromAllLessons.bind(this);
   }
 
-  showModal(){
-    this.setState({showModal:true});
+  showModal() {
+    this.setState({ showModal: true });
   }
 
-  delete() {
-    var showModal = false;
-    console.log(this.props.lessonDetails.title);
-
-
-    fetch('http://localhost:5000/api/v1/lessons/delete',
-      { method: 'POST',
-        body: JSON.stringify({ title: this.props.lessonDetails.title}),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
+  deleteFromAllLessons() {
+    fetch('http://localhost:5000/api/v1/lessons/delete', {
+      method: 'POST',
+      body: JSON.stringify({ title: this.props.lessonDetails.title }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
       })
-      .then(res => res.json())
-      .then(
-        deleteLesson => {
-          this.setState({ showModal: false });
-      }); 
+    }).then(() => this.showModal(false));
 
-    return {
-      showModal
-    }
+    this.props.deleteHandler(this.props.lessonDetails);
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
-    if (error) {
-      return <div>Error:{error.message}</div>;
+    const { showModal } = this.state;
+    let readableDate = '';
+    if (this.props.lessonDetails.date) {
+      readableDate = new Date(this.props.lessonDetails.date).toLocaleDateString();
     }
-    if (!isLoaded) {
-      return <div>Loading...</div>;
-    }
-    //TODO: popup for confirmation + onclick call delete api
-        return (
-              // <li key={123}>
-              // <GoPlus/>
-              // </li>
-              <div className = "card">
-
-                <div className = "titleContainer">
-                  <div className = "lessonTitle">
-                  {this.props.lessonDetails.title}
-
-                  </div>
-                  <button className = "deleteButton" onClick = {() => this.showModal(true)} >
-                    <GoTrashcan size="20"/>
-                  </button>
-                  <Modal
-                    className="deleteModal"
-                    title="Delete this Lesson?"
-                    centered
-                    visible={this.state.showModal}
-                    onOk={() => this.delete()}
-                    onCancel={() => this.setState({showModal:false})}
-                  >
-                  </Modal>
-                  
-
-
-                </div>
-                <div className = "date">{this.props.lessonDetails.date}</div>
-                <div className = "descriptionContainer">
-                  <div className = "description">{this.props.lessonDetails.summary}</div>
-                </div>
-                <div className = "buttonContainer">
-                  <div className = "viewAssignment">
-                    <a href={this.props.lessonDetails.link}>View Assignment</a>
-                  </div>
-
-
-
-                </div>
-
-              </div>
-        );
+    return (
+      <div className="card">
+        <div className="titleContainer">
+          <div className="lessonTitle">{this.props.lessonDetails.title}</div>
+          <Popconfirm
+            className="deleteModal"
+            title="Delete this Lesson?"
+            centered
+            visible={showModal}
+            onConfirm={() => this.deleteFromAllLessons()}
+            onCancel={() => this.showModal(false)}
+          >
+            <button
+              className="deleteButton"
+              onClick={() => this.showModal(true)}
+              type="button"
+            >
+              <GoTrashcan size="20" />
+            </button>
+          </Popconfirm>
+        </div>
+        <div className="date">{readableDate}</div>
+        <div className="descriptionContainer">
+          <div className="description">{this.props.lessonDetails.summary}</div>
+        </div>
+        <div className="buttonContainer">
+          <div className="viewAssignment">
+            <a href={this.props.lessonDetails.link}>View Assignment</a>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
-export default LessonComponent;
+export default MentorLessonComponent;

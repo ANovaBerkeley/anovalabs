@@ -26,7 +26,9 @@ export default class Profile extends Component {
 
      componentDidMount() {
        console.log("profile mounted");
+       console.log("jwt: " + getJWT());
        var { id } = decode(getJWT());
+       console.log("HI");
        console.log(id);
        var get_url = 'http://localhost:5000/api/v1/profile/';
        var id_str = id.toString();
