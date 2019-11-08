@@ -15,7 +15,9 @@ class Login extends Component {
       emailStatus: '',
       passwordStatus: '',
       redirect: false,
-      sites: ''
+      sites: [],
+      role: '',
+      site: ''
     };
 
     this._change = this._change.bind(this);
@@ -103,7 +105,8 @@ class Login extends Component {
         .post('http://localhost:5000/api/v1/auth/signup', {
           name: this.state.name,
           email: this.state.email,
-          password: this.state.password
+          password: this.state.password,
+          role: this.state.role
         })
         .then(res => {
           // storing token from server

@@ -54,7 +54,7 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
-              role: 'mentor',
+              role: req.body.role,
               grade: 1 // temporary value NEED TO CHANGE
               //account_id: accountId
             };
