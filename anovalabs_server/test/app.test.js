@@ -191,16 +191,15 @@ describe('DB Test', () =>{
       });
   });
 
-  it('All Sites', done => {
-      request(app)
-      .get('/api/v1/lesson_site/allSites')
+  it('All Sites', (done) => {
+    request(app)
+      .get('/api/v1/site/allSites')
       .expect(200)
-      .then((response) => {
-          expect(response.body).to.deep.equal(fixtures.all_sites);
-          done();
+      .then(response => {
+        expect(response.body).to.deep.equal(fixtures.all_sites);
+        done();
       }).catch(function(error) {
           console.error(error);
       });
   });
-
 });

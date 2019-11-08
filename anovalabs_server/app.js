@@ -17,6 +17,7 @@ const rosterStudent = require('./api/v1/routes/rosterStudent');
 const profile = require('./api/v1/routes/profile');
 const lesson_site = require('./api/v1/routes/lesson_site');
 const accounts = require('./api/v1/routes/accounts');
+const site = require('./api/v1/routes/site');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,6 +38,8 @@ app.use('/api/v1/rosterMentor', rosterMentor);
 app.use('/api/v1/rosterStudent', rosterStudent);
 app.use('/api/v1/lesson_site', lesson_site);
 app.use('/api/v1/accounts', accounts);
+app.use('/api/v1/site', site);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
