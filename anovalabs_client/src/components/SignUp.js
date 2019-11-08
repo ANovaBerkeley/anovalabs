@@ -104,6 +104,15 @@ class Login extends Component {
     }
   }
 
+  loadSites = () => {
+    let options = [];
+    let sites = ['site1', 'site2', 'site3'];
+    for (let i = 0; i < sites.length; i++) {
+      options.push(<option value={sites[i]}>{sites[i]}</option>);
+    }
+    return options;
+  }
+
   render() {
     const { redirect } = this.state;
     if (redirect) {
@@ -112,7 +121,7 @@ class Login extends Component {
     return (
       <div className="container">
         <div className="signUpBox">
-          <img src = "../public/img/logo-lower.png" className = "logo"/>
+          <img src = "../public/img/logo-lower.png" className = "signup-logo"/>
           <div className = "title">
             <div className = "anova">ANova </div>
             <div className = "labs">Labs </div>
@@ -155,21 +164,29 @@ class Login extends Component {
               </label>
             </div>
             <div>
-              <label> grade
-              <select id="grade" name="grade">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
+              <label> site
+              <select onChange={this._change} id="site" name="site">
+                {this.loadSites()}
               </select>
+              </label>
+            </div>
+            <div>
+              <label> role
+              <select onChange={this._change} id="role" name="role">
+                <option value="mentee">mentee</option>
+                <option value="mentor">mentor</option>
+              </select>
+              </label>
+            </div>
+            <div>
+              <label htmlFor="picture">picture
+              <input
+                  id="picture"
+                  type="url"
+                  name="picture"
+                  onChange={this._change}
+                  value={this.state.picture}
+              />
               </label>
             </div>
             <input type="submit" value="submit" />
