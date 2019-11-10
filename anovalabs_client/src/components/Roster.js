@@ -10,71 +10,17 @@ import "antd/dist/antd.css";
 export default class Roster extends Component {
   state = {
     students: [
-         {
-              key : "1",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smith",
-              email: "potatofries@gmail.com",
-              grade: "Senior",
-              bio: "Once upon a time",
-              candy: "Twix",
-         },
-         {
-              key : "2",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         },
-         {
-              key : "3",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         },
-         {
-              key : "4",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         },
-         {
-              key : "5",
-              profileimage: "https://image.flaticon.com/icons/svg/326/326933.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         },
-         {
-              key : "2",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         },
-         {
-              key : "2",
-              profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-              username: "John Smithson",
-              email: "potatopotato@gmail.com",
-              grade: "Freshman",
-              bio: "Once on time",
-              candy: "Candy",
-         }
+       {
+        key: '2',
+        profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
+        username: "John Smithson",
+        email: "potatopotato@gmail.com",
+        grade: "Freshman",
+        bio: "Once on time",
+        candy: "Candy",
+       }
     ],
-    mentors : [],
+    mentors: [],
     mentor: true
   }
   componentDidMount() {
