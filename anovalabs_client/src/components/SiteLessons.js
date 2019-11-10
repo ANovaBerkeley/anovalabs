@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Avatar, List, Button, Modal, Row, Col } from 'antd';
 import { DatePicker, Checkbox, Select} from 'antd';
 import { GoPlus } from 'react-icons/go';
-import LessonComponent from './LessonComponent';
-import MentorLessonComponent from './MentorLessonComponent';
+import LessonCard from './LessonCard';
 
 import '../stylesheets/SiteLessons.css';
 
@@ -137,7 +136,7 @@ class SiteLessons extends Component {
         </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
-              <LessonComponent lessonDetails={item} />
+              <LessonCard lessonDetails={item} />
             ))}
           </div>
         </div>
@@ -152,7 +151,7 @@ class SiteLessons extends Component {
         </div>
         <div className="lessonsContainer">
           {siteLessons.map(item => (
-            <MentorLessonComponent
+            <LessonCard
               deleteHandler={this.deleteHandler}
               lessonDetails={item}
             />

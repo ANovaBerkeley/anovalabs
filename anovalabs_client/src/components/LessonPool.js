@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Input, Button, Row, Col, Avatar, Alert } from 'antd';
 import { GoPlus } from 'react-icons/go';
-import LessonComponent from './LessonComponent';
-import MentorLessonComponent from './MentorLessonComponent';
+import LessonCard from './LessonCard';
 import '../stylesheets/LessonPool.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
@@ -146,7 +145,7 @@ class LessonPool extends Component {
 
 
   render() {
-    const { error, isLoaded, items, mentor } = this.state;
+    const { error, isLoaded, items, mentor, showModal } = this.state;
     if (error) {
       return <div>Error:{error.message}</div>;
     }
@@ -154,69 +153,56 @@ class LessonPool extends Component {
       return <div>Loading...</div>;
     }
 
-    if (!mentor){
-      return (
-        <div className = "container">
-          <div className='lessons_title'>
-            <h1>All Lessons</h1>
-          </div>
-          <div className = "lessonPoolContainer">
-            {items.map(item => (
-              <LessonComponent  lessonDetails={item}></LessonComponent>
-            ))}
-          </div>
+    let maybeAddCard;
+    if (mentor) {
+      maybeAddCard =
+      <div>
+      <button className = "plusCard" onClick={() => this.showModal(true)}>
+        <GoPlus size = {100} color='grey'/>
+      </button>
+
+      <Modal
+        className="addModal"
+        title="Add a New Lesson"
+        centered
+        visible={showModal}
+        onOk={() => this.applyChanges()}
+        onCancel={() => this.setState({showModal:false})}
+      >
+        <div className="addFields">
+              <Row>
+                  <Col>
+                        <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= ""></Input>
+                  </Col>
+              </Row>
+              <Row>
+                  <Col>
+                        <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue=""></Input>
+                  </Col>
+              </Row>
+              <Row>
+                  <Col>
+                        <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue=""></Input>
+                  </Col>
+              </Row>
         </div>
-      );
+    </Modal>
+    </div>
     }
-    if (mentor){
-      // return <h3> Lets go for a < GoPlus/>? </h3>
-      return (
-        <div className = "container">
-          <div className='lessons_title'>
-            <h1>All Lessons</h1>
-          </div>
-          <div className = "lessonPoolContainer">
-            {items.map(item => (
-              <MentorLessonComponent deleteHandler={this.deleteHandler} lessonDetails={item}></MentorLessonComponent>
-            ))}
-            <button className = "plusCard" onClick={() => this.showModal(true)}>
-              <GoPlus size = {100} color='grey'/>
-            </button>
 
-            <Modal
-              className="addModal"
-              title="Add a New Lesson"
-              centered
-              visible={this.state.showModal}
-              onOk={() => this.applyChanges()}
-              onCancel={() => this.setState({showModal:false})}
-            >
-              <div className="addFields">
-                    <Row>
-                        <Col>
-                              <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= ""></Input>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                              <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue=""></Input>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                              <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue=""></Input>
-                        </Col>
-                    </Row>
-              </div>
-          </Modal>
-
-
-
-          </div>
+    return (
+      <div className="container">
+        <div className='lessons_title'>
+          <h1>All Lessons</h1>
         </div>
-
-      );
-    }
+        <div className = "lessonPoolContainer">
+          {items.map(item => (
+            <LessonCard deleteHandler={this.deleteHandler} lessonDetails={item}></LessonCard>
+          ))}
+          {maybeAddCard}
+        </div>
+      </div>
+    );
   }
 }
 export default LessonPool;
