@@ -1,26 +1,21 @@
 const express = require('express');
+const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
-const router = express.Router();
 
-router.get('/', (req, res) => {
-  db.select()
-    .from('lesson_site')
-    .then(data => {
-      res.send(data);
-    });
-});
-
-
+router.get('/', function (req, res) {
+	db.select()
+		.from('lesson_site')
+  	.then(function(data){
+  		res.send(data);
+  	});
+  });
 
 /* Get all lessons from the semester and site of that user.
-TODO: replace hardcoded userid
-TODO: return date in readable format */
-
-router.get('/all', (req, res) => {
-  const userid = 1;
-
+TODO: replace hardcoded userid */
+router.get('/all', function (req, res) {
+  userid = 1
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
@@ -120,4 +115,4 @@ router.post('/delete', (req, res, next) => {
     });
 });
 
-module.exports = router;
+module.exports= router;
