@@ -19,6 +19,7 @@ class LessonPool extends Component {
     };
     this.showModal = this.showModal.bind(this);
     this.applyChanges = this.applyChanges.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +66,14 @@ class LessonPool extends Component {
       }
   }
   return nums.length + 1;
+  }
+
+  deleteHandler(lessonDetails) {
+    this.setState(prevState => ({
+      items: prevState.items.filter(
+        item => item.id != lessonDetails.id
+      )
+    }));
   }
 
   applyChanges() {
@@ -128,7 +137,7 @@ class LessonPool extends Component {
           </div>
           <div className = "lessonPoolContainer">
             {items.map(item => (
-              <LessonComponent lessonDetails={item}></LessonComponent>
+              <LessonComponent  lessonDetails={item}></LessonComponent>
             ))}
           </div>
         </div>
@@ -143,7 +152,7 @@ class LessonPool extends Component {
           </div>
           <div className = "lessonPoolContainer">
             {items.map(item => (
-              <MentorLessonComponent lessonDetails={item}></MentorLessonComponent>
+              <MentorLessonComponent deleteHandler={this.deleteHandler} lessonDetails={item}></MentorLessonComponent>
             ))}
             <button className = "plusCard" onClick={() => this.showModal(true)}>
               <GoPlus size = {100} color='grey'/>
