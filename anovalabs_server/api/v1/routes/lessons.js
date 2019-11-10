@@ -5,6 +5,7 @@ const knex = require('../../../db/knex');
 const router = express.Router();
 
 router.get('/site', (req, res) => {
+
   const userid = 1;
 
   const siteid = db
@@ -24,6 +25,7 @@ router.get('/site', (req, res) => {
 
 /* Retrieve all lessons from the lesson pool. */
 router.get('/all', (req, res) => {
+
   db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
     .then(data => {

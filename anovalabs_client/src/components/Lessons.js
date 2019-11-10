@@ -4,7 +4,7 @@ import { DatePicker, Checkbox, Select} from 'antd';
 import { GoPlus } from 'react-icons/go';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
-
+import * as decode from 'jwt-decode';
 import '../stylesheets/Lessons.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
@@ -29,12 +29,19 @@ class Lessons extends Component {
       allLessons: [],
       site: "default",
       modalSelectedValue: "",
-      modalDate: ""
+      modalDate: "",
+      userid: ''
     };
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    console.log(d_tok.id);
+    this.setState({
+       userid: d_tok.id
+    });
     fetch('http://localhost:5000/api/v1/lessons/site')
       .then(res => res.json())
       .then(site => {

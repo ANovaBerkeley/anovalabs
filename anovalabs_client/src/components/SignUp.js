@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { getJWT } from '../utils/utils';
+import * as decode from 'jwt-decode';
 
 import '../stylesheets/SignUp.css';
 
@@ -95,6 +96,32 @@ class Login extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+
+  }
+
+  add_user_site(d_token) {
+    let curr_date = new Date();
+    let month = curr_date.getMonth();
+    let year = Number(curr_date.getYear()) + 1900;
+    if (month < 7){
+        year = 'Spring ' + year;
+    } else {
+        year = 'Fall ' + year;
+    }
+    console.log(this.state.site);
+    fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
+          method: 'POST',
+          body: JSON.stringify({ user_id: d_token.id, semester: year, site_id: this.state.site}),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        })
+      .then(res => {
+        return
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   async _submit(event) {
@@ -110,10 +137,14 @@ class Login extends Component {
         })
         .then(res => {
           // storing token from server
+
           localStorage.setItem('anovaToken', res.data.token);
           this.props.history.push('/');
+          const tok_payload = decode(res.data.token);
+          this.add_user_site(tok_payload);
         })
         .catch(err => {
+
           localStorage.removeItem('anovaToken');
           console.log(err);
         });
@@ -123,11 +154,11 @@ class Login extends Component {
   }
 
   loadSites = () => {
-    console.log(this.state.sites);
+
     let options = [];
     let sites2 = this.state.sites;
     for (let i = 0; i < sites2.length; i++) {
-      options.push(<option value={sites2[i].schoolName}>{sites2[i].schoolName}</option>);
+      options.push(<option value={sites2[i].id}>{sites2[i].schoolName}</option>);
     }
     return options;
   }
@@ -147,8 +178,19 @@ class Login extends Component {
           </div>
           <form onSubmit={this._submit}>
             <div>
+              <label htmlFor="name">Name
+              <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  onChange={this._change}
+                  value={this.state.name}
+              />
+              </label>
+            </div>
+            <div>
               <label htmlFor="email">
-                email
+                Email
                 <input
                   id="email"
                   type="text"
@@ -160,7 +202,7 @@ class Login extends Component {
             </div>
             <div>{this.state.emailStatus}</div>
             <div>
-              <label htmlFor="password">password
+              <label htmlFor="password">Password
               <input
                   id="password"
                   type="password"
@@ -171,43 +213,23 @@ class Login extends Component {
               </label>
               <div>{this.state.passwordStatus}</div>
             </div>
+
             <div>
-              <label htmlFor="name">name
-              <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  onChange={this._change}
-                  value={this.state.name}
-              />
-              </label>
-            </div>
-            <div>
-              <label> site
+              <label> Site
               <select onChange={this._change} id="site" name="site">
                 {this.loadSites()}
               </select>
               </label>
             </div>
             <div>
-              <label> role
+              <label> Role
               <select onChange={this._change} id="role" name="role">
-                <option value="mentee">mentee</option>
-                <option value="mentor">mentor</option>
+                <option value="student">Student</option>
+                <option value="mentor">Mentor</option>
               </select>
               </label>
             </div>
-            <div>
-              <label htmlFor="picture">picture
-              <input
-                  id="picture"
-                  type="url"
-                  name="picture"
-                  onChange={this._change}
-                  value={this.state.picture}
-              />
-              </label>
-            </div>
+            <br />
             <input type="submit" value="submit" />
           </form>
         </div>

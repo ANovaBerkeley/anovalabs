@@ -9,10 +9,11 @@ class ProfileDescription extends React.Component {
      render() {
        return (
        <div className = "profileDescription">
+            <h2>Name: {this.props.student.name}</h2>
             <p>Email: {this.props.student.email}</p>
-            <p>Grade: {this.props.student.grade}</p>
-            <p>Bio: {this.props.student.bio}</p>
-            <p>Candy: {this.props.student.candy}</p>
+
+            <p>Notes: {this.props.student.notes}</p>
+            <p>Favorite Candy: {this.props.student.candy}</p>
        </div>
        )
      }
