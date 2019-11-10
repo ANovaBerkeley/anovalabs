@@ -14,22 +14,15 @@ class MentorLessonComponent extends Component {
       showModal: false
     };
     this.showModal = this.showModal.bind(this);
-    this.deleteFromAllLessons = this.deleteFromAllLessons.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
-  showModal() {
-    this.setState({ showModal: true });
+  showModal(val) {
+    this.setState({ showModal: val });
   }
 
-  deleteFromAllLessons() {
-    fetch('http://localhost:5000/api/v1/lessons/delete', {
-      method: 'POST',
-      body: JSON.stringify({ title: this.props.lessonDetails.title }),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(() => this.showModal(false));
-
+  delete() {
+    this.showModal(false);
     this.props.deleteHandler(this.props.lessonDetails);
   }
 
@@ -48,7 +41,7 @@ class MentorLessonComponent extends Component {
             title="Delete this Lesson?"
             centered
             visible={showModal}
-            onConfirm={() => this.deleteFromAllLessons()}
+            onConfirm={() => this.delete()}
             onCancel={() => this.showModal(false)}
           >
             <button

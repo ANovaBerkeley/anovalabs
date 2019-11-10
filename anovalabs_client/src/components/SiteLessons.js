@@ -5,7 +5,7 @@ import { GoPlus } from 'react-icons/go';
 import LessonComponent from './LessonComponent';
 import MentorLessonComponent from './MentorLessonComponent';
 
-import '../stylesheets/Lessons.css';
+import '../stylesheets/SiteLessons.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
 // TODO: display site name at top
@@ -19,7 +19,7 @@ import '../stylesheets/Lessons.css';
 
   // TODO: make items more descriptions .mentor should be is mentor (make smol function)
   // eg site lessons
-class Lessons extends Component {
+class SiteLessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,9 +27,9 @@ class Lessons extends Component {
       showModal: false,
       siteLessons: [],
       allLessons: [],
-      site: "default",
-      modalSelectedValue: "",
-      modalDate: ""
+      site: 'default',
+      modalSelectedValue: '',
+      modalDate: ''
     };
     this.deleteHandler = this.deleteHandler.bind(this);
   }
@@ -38,17 +38,10 @@ class Lessons extends Component {
     fetch('http://localhost:5000/api/v1/lessons/site')
       .then(res => res.json())
       .then(site => {
-          this.setState({
-            site
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+        this.setState({
+          site
+        });
+      });
     fetch('http://localhost:5000/api/v1/lesson_site/all')
       .then(res => res.json())
       .then(siteLessons => {
@@ -66,7 +59,6 @@ class Lessons extends Component {
   }
 
   onChangeCheck(e) {
-
     console.log('checked = ', e.target.checked);
   }
 
@@ -93,11 +85,19 @@ class Lessons extends Component {
   }
 
   deleteHandler(lessonDetails) {
-    this.setState(prevState => ({
-      siteLessons: prevState.siteLessons.filter(
-        item => item.id != lessonDetails.id
-      )
-    }));
+    fetch('http://localhost:5000/api/v1/lesson_site/delete', {
+      method: 'POST',
+      body: JSON.stringify({ lesson_id: lessonDetails.id }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(() =>
+      this.setState(prevState => ({
+        siteLessons: prevState.siteLessons.filter(
+          lesson => lesson.id !== lessonDetails.id
+        )
+      }))
+    );
   }
 
   onChange(date, dateString) {
@@ -173,21 +173,21 @@ class Lessons extends Component {
             >
               <div className="addLesson">
                 <Select
-                    showSearch
-                    style={{ width: 200 }}
-                    placeholder="Select a lesson"
-                    optionFilterProp="children"
-                    onChange={this.onSelectChange.bind(this)}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                    onSearch={this.onSearch}
-                    filterOption={(input, option) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {this.state.allLessons.map((item, index) => (
-                       <Option value={index+1}>{item.title}</Option> ))}
-                  </Select>
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select a lesson"
+                  optionFilterProp="children"
+                  onChange={this.onSelectChange.bind(this)}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                  onSearch={this.onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {this.state.allLessons.map((item, index) => (
+                     <Option value={index+1}>{item.title}</Option> ))}
+                </Select>
                   <br />
               <div> <DatePicker onChange={this.onChange.bind(this)}/> </div>
               </div>
@@ -203,4 +203,4 @@ class Lessons extends Component {
     return <div>{component}</div>;
   }
 }
-export default Lessons;
+export default SiteLessons;

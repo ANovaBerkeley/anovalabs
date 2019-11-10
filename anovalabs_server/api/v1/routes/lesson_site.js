@@ -37,7 +37,7 @@ router.get('/all', (req, res) => {
     });
 });
 
-/*Get all lessons from other sites*/
+/* Get all lessons from other sites */
 router.get('/all_but_current_site', (req, res) => {
   const userid = 1;
 
@@ -53,19 +53,12 @@ router.get('/all_but_current_site', (req, res) => {
     .where('site.id', siteid)
     .orderBy('date', 'asc');
 
-    db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
-      .from('lesson')
-      .whereNotIn('id', current_site_lesson_ids)
-      .then(data => {
-        res.send(data);
-      });
-
-    // db.select('lesson_site.lesson_id', 'lesson_site.site_id', 'lesson_site.date')
-    //   .from('lesson_site')
-    //   .whereNot('site_id', siteid)
-    //   .then(data => {
-    //     res.send(data);
-    // });
+  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+    .from('lesson')
+    .whereNotIn('id', current_site_lesson_ids)
+    .then(data => {
+      res.send(data);
+    });
 });
 
 /* Add a lesson to a specific site. */
@@ -106,28 +99,21 @@ router.post('/add', (req, res, next) => {
 });
 
 /* Deletes an existing lesson from a specific site; The lesson remains in the
-lesson pool. UNVERIFIED */
+lesson pool. */
 router.post('/delete', (req, res, next) => {
-  const requiredParameters = ['lesson_id', 'site_id'];
-  let requiredParamError = false;
-  const requiredParamErrors = [];
-  requiredParameters.foreach(requiredParameter => {
-    if (!req.body[requiredParameter]) {
-      requiredParamError = true;
-      requiredParamErrors.append(requiredParameter);
-    }
-  });
-  if (requiredParamError) {
-    return res.status(422).send({
-      error: `Missing the following properties: "${requiredParamErrors}"`
-    });
-  }
+
+  const userid = 1;
+  const siteid = db
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
 
   return knex('lesson_site')
-    .where({ site_id: req.body.site_id, lesson_id: req.body.lesson_id })
+    .where('site_id', siteid)
+    .where('lesson_id', req.body.lesson_id)
     .del()
-    .then(() => {
-      res.status(201).json({ title: req.body.title });
+    .then(data => {
+      res.status(201).json({ id: req.body.id });
     })
     .catch(error => {
       res.status(500).json({ error });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import AuthComponent from './AuthComponent';
-import Lessons from './Lessons';
+import SiteLessons from './SiteLessons';
 import LessonPool from './LessonPool';
 import Protected from './Protected';
 import SignUp from './SignUp';
@@ -19,7 +19,7 @@ class App extends Component {
             <AuthComponent exact path="/" type="lessons" />
             <Route path="/SignUp" component={SignUp} />
             <Route path="/Login" component={Login} />
-            <AuthComponent path="/Lessons" type="lessons" />
+            <AuthComponent path="/SiteLessons" type="lessons" />
             <AuthComponent path="/LessonPool" type="lessonpool"/>
             <AuthComponent path="/profile" type="profile" />
             <AuthComponent path="/Roster" type="roster" />

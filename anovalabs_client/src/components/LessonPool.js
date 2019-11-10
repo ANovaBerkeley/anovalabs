@@ -14,7 +14,9 @@ class LessonPool extends Component {
       error: null,
       isLoaded: true,
       mentor: true,
-      showModal: false
+      showModal: false,
+      items: [],
+      usedIds:  []
     };
     this.showModal = this.showModal.bind(this);
     this.showErrorModal = this.showErrorModal.bind(this);
@@ -49,17 +51,19 @@ class LessonPool extends Component {
     this.setState({showErrorModal:true})
   }
 
-  generateId(nums) {
-    var swap = function(i, j) {
-      var tmp = nums[i];
+  generateId = nums => {
+    const swap = (i, j) => {
+      const tmp = nums[i];
       nums[i] = nums[j];
       nums[j] = tmp;
   };
 
   for (let i = 0; i < nums.length; i++) {
-      while (0 < nums[i] && nums[i] - 1 < nums.length
-              && nums[i] != i + 1
-              && nums[i] != nums[nums[i] - 1]) {
+      while (
+        0 < nums[i] &&
+        nums[i] - 1 < nums.length &&
+        nums[i] != i + 1 &&
+        nums[i] != nums[nums[i] - 1]) {
           swap(i, nums[i] - 1);
       }
   }
@@ -73,11 +77,17 @@ class LessonPool extends Component {
   }
 
   deleteHandler(lessonDetails) {
-    this.setState(prevState => ({
-      items: prevState.items.filter(
-        item => item.id != lessonDetails.id
-      )
-    }));
+    fetch('http://localhost:5000/api/v1/lessons/delete', {
+      method: 'POST',
+      body: JSON.stringify({ id: lessonDetails.id }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(() =>
+      this.setState(prevState => ({
+        items: prevState.items.filter(item => item.id !== lessonDetails.id)
+      }))
+    );
   }
 
   applyChanges() {
