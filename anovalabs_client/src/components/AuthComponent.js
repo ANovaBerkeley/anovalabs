@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { getJWT } from '../utils/utils';
-import Lessons from './Lessons';
+import SiteLessons from './SiteLessons';
 import Profile from './Profile';
 import LessonPool from './LessonPool';
 import Roster from './Roster';
@@ -48,7 +48,7 @@ class AuthComponent extends Component {
     } else {
       if (this.state.type == "lessons") {
         return (
-          <Lessons/>
+          <SiteLessons/>
         );
       }
 

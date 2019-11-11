@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Input, Row, Col } from 'antd';
-import '../stylesheets/LessonPool.css';
+import { Modal, Input, Button, Row, Col, Avatar, Alert } from 'antd';
 import { GoPlus } from 'react-icons/go';
-import LessonComponent from './LessonComponent';
-import MentorLessonComponent from './MentorLessonComponent';
+import LessonCard from './LessonCard';
+import '../stylesheets/LessonPool.css';
 
 // TODO: Need to show lessons based on user's assigned ID'
 // TODO: this should not differ from the lesson componenent in that it should not show a date
@@ -15,10 +14,13 @@ class LessonPool extends Component {
       isLoaded: true,
       mentor: true,
       showModal: false,
-      items: []
+      items: [],
+      usedIds:  []
     };
     this.showModal = this.showModal.bind(this);
+    this.showErrorModal = this.showErrorModal.bind(this);
     this.applyChanges = this.applyChanges.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
@@ -44,17 +46,23 @@ class LessonPool extends Component {
     this.setState({ showModal: true });
   }
 
-  generateId(nums) {
-    var swap = function(i, j) {
-      var tmp = nums[i];
+  showErrorModal(){
+    this.setState({showErrorModal:true})
+  }
+
+  generateId = nums => {
+    const swap = (i, j) => {
+      const tmp = nums[i];
       nums[i] = nums[j];
       nums[j] = tmp;
   };
 
   for (let i = 0; i < nums.length; i++) {
-      while (0 < nums[i] && nums[i] - 1 < nums.length
-              && nums[i] != i + 1
-              && nums[i] != nums[nums[i] - 1]) {
+      while (
+        0 < nums[i] &&
+        nums[i] - 1 < nums.length &&
+        nums[i] != i + 1 &&
+        nums[i] != nums[nums[i] - 1]) {
           swap(i, nums[i] - 1);
       }
   }
@@ -65,6 +73,20 @@ class LessonPool extends Component {
       }
   }
   return nums.length + 1;
+  }
+
+  deleteHandler(lessonDetails) {
+    fetch('http://localhost:5000/api/v1/lessons/delete', {
+      method: 'POST',
+      body: JSON.stringify({ id: lessonDetails.id }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(() =>
+      this.setState(prevState => ({
+        items: prevState.items.filter(item => item.id !== lessonDetails.id)
+      }))
+    );
   }
 
   applyChanges() {
@@ -80,39 +102,50 @@ class LessonPool extends Component {
     }
     let nextId = this.generateId(usedIds)
 
-    fetch('http://localhost:5000/api/v1/lessons/add',
-      { method: 'POST',
-        body: JSON.stringify({ title: titleAdd.value, summary: summaryAdd.value, link: linkAdd.value }),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-      })
-      .then(res => res.json())
-      .then(
-        addedLesson => {
-          console.log(addedLesson);
-          this.setState({ showModal: false });
-      });
+    if (titleAdd.value == "" || summaryAdd.value == "" || linkAdd.value == "") {
+      Modal.error({
+          title: 'Please fill out all fields.',
+          centered: true
+        });
+      return;
+    } else {
 
-    this.setState(state => {
-      const items = state.items.concat({
-        id: nextId,
-        title: titleAdd.value,
-        summary: summaryAdd.value,
-        link: linkAdd.value,
-        created_at: todayStr,
-        updated_at: todayStr,
-        date: today.getMonth()+1 + "/" + today.getDate()
-      })
-    return {
-      items,
-      showModal
+      fetch('http://localhost:5000/api/v1/lessons/add',
+        { method: 'POST',
+          body: JSON.stringify({ title: titleAdd.value, summary: summaryAdd.value, link: linkAdd.value }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          }),
+        })
+        .then(res => res.json())
+        .then(
+          addedLesson => {
+            console.log(addedLesson);
+            this.setState({ showModal: false });
+        });
+
+      this.setState(state => {
+          const items = state.items.concat({
+          id: nextId,
+          title: titleAdd.value,
+          summary: summaryAdd.value,
+          link: linkAdd.value,
+          created_at: todayStr,
+          updated_at: todayStr,
+          date: today.getMonth()+1 + "/" + today.getDate()
+        })
+      return {
+        items,
+        showModal
+      }
     }
-  })
+      )
   }
+}
+
 
   render() {
-    const { error, isLoaded, items, mentor } = this.state;
+    const { error, isLoaded, items, mentor, showModal } = this.state;
     if (error) {
       return <div>Error:{error.message}</div>;
     }
@@ -120,68 +153,56 @@ class LessonPool extends Component {
       return <div>Loading...</div>;
     }
 
-    if (!mentor){
-      return (
-        <div className = "container">
-          <div className='lessons_title'>
-            <h1>All Lessons</h1>
-          </div>
-          <div className = "lessonPoolContainer">
-            {items.map(item => (
-              <LessonComponent lessonDetails={item}></LessonComponent>
-            ))}
-          </div>
+    let maybeAddCard;
+    if (mentor) {
+      maybeAddCard =
+      <div>
+      <button className = "plusCard" onClick={() => this.showModal(true)}>
+        <GoPlus size = {100} color='grey'/>
+      </button>
+
+      <Modal
+        className="addModal"
+        title="Add a New Lesson"
+        centered
+        visible={showModal}
+        onOk={() => this.applyChanges()}
+        onCancel={() => this.setState({showModal:false})}
+      >
+        <div className="addFields">
+              <Row>
+                  <Col>
+                        <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= ""></Input>
+                  </Col>
+              </Row>
+              <Row>
+                  <Col>
+                        <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue=""></Input>
+                  </Col>
+              </Row>
+              <Row>
+                  <Col>
+                        <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue=""></Input>
+                  </Col>
+              </Row>
         </div>
-      );
+    </Modal>
+    </div>
     }
-    if (mentor){
-      // return <h3> Lets go for a < GoPlus/>? </h3>
-      return (
-        <div className = "container">
-          <div className='lessons_title'>
-            <h1>All Lessons</h1>
-          </div>
-          <div className = "lessonPoolContainer">
-            {items.map(item => (
-              <MentorLessonComponent lessonDetails={item}></MentorLessonComponent>
-            ))}
-            <button className = "plusCard" onClick={() => this.showModal(true)}>
-              <GoPlus size = {100} color='grey'/>
-            </button>
-            <Modal
-              className="addModal"
-              title="Add a New Lesson"
-              centered
-              visible={this.state.showModal}
-              onOk={() => this.applyChanges()}
-              onCancel={() => this.setState({showModal:false})}
-            >
-              <div className="addFields">
-                    <Row>
-                        <Col>
-                              <Input id="titleAdd" allowClear={true} addonBefore="Title:" autosize={true} defaultValue= "Python for Beginners"></Input>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                              <Input id="summaryAdd" allowClear={true} addonBefore="Summary:" autosize="true" defaultValue="Essential Crash Course on Powerful Ole' Python"></Input>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                              <Input id="linkAdd" allowClear={true} addonBefore="Link:" autosize="true" defaultValue="https://www.codeacadmy.com"></Input>
-                        </Col>
-                    </Row>
-              </div>
-          </Modal>
 
-
-
-          </div>
+    return (
+      <div className="container">
+        <div className='lessons_title'>
+          <h1>All Lessons</h1>
         </div>
-
-      );
-    }
+        <div className = "lessonPoolContainer">
+          {items.map(item => (
+            <LessonCard deleteHandler={this.deleteHandler} lessonDetails={item}></LessonCard>
+          ))}
+          {maybeAddCard}
+        </div>
+      </div>
+    );
   }
 }
 export default LessonPool;

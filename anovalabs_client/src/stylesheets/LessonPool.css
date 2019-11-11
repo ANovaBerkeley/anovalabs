@@ -18,16 +18,11 @@ body{
   min-height: 1000px;
 }
 
-.lessons_title {
-  padding: 20px 20px;
-  position: relative;
-  height: 100px;
-  display: block;
-  /*margin-top:-390px*/
-}
-
 .addModal {
   padding: 10px 10px;
+}
+.ant-modal-close-x {
+  padding: 20px 20px;
 }
 
 .addFields .ant-row {

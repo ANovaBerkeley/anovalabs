@@ -1,24 +1,19 @@
 const express = require('express');
+const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
-const router = express.Router();
 
-router.get('/', (req, res) => {
-  db.select()
-    .from('lesson_site')
-    .then(data => {
-      res.send(data);
-    });
-});
+router.get('/', function (req, res) {
+	db.select()
+		.from('lesson_site')
+  	.then(function(data){
+  		res.send(data);
+  	});
+  });
 
-
-
-/* Get all lessons from the semester and site of that user.
-TODO: replace hardcoded userid
-TODO: return date in readable format */
-
-router.get('/all', (req, res) => {
+/* Get all lessons from the semester and site of that user. */
+router.get('/all', function (req, res) => {
   const userid = req.query.uid;
 
   const siteid = db
@@ -26,7 +21,7 @@ router.get('/all', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date')
+  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date')
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
@@ -37,7 +32,7 @@ router.get('/all', (req, res) => {
     });
 });
 
-/*Get all lessons from other sites*/
+/* Get all lessons from other sites */
 router.get('/all_but_current_site', (req, res) => {
   const userid = req.query.uid;
 
@@ -46,11 +41,18 @@ router.get('/all_but_current_site', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-    db.select('lesson_site.lesson_id', 'lesson_site.site_id', 'lesson_site.date')
-      .from('lesson_site')
-      .whereNot('site_id', siteid)
-      .then(data => {
-        res.send(data);
+  const current_site_lesson_ids = db.select('lesson.id')
+    .from('site')
+    .join('lesson_site', 'lesson_site.site_id', 'site.id')
+    .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
+    .where('site.id', siteid)
+    .orderBy('date', 'asc');
+
+  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+    .from('lesson')
+    .whereNotIn('id', current_site_lesson_ids)
+    .then(data => {
+      res.send(data);
     });
 });
 
@@ -92,32 +94,25 @@ router.post('/add', (req, res, next) => {
 });
 
 /* Deletes an existing lesson from a specific site; The lesson remains in the
-lesson pool. UNVERIFIED */
+lesson pool. */
 router.post('/delete', (req, res, next) => {
-  const requiredParameters = ['lesson_id', 'site_id'];
-  let requiredParamError = false;
-  const requiredParamErrors = [];
-  requiredParameters.foreach(requiredParameter => {
-    if (!req.body[requiredParameter]) {
-      requiredParamError = true;
-      requiredParamErrors.append(requiredParameter);
-    }
-  });
-  if (requiredParamError) {
-    return res.status(422).send({
-      error: `Missing the following properties: "${requiredParamErrors}"`
-    });
-  }
+
+  const userid = 1;
+  const siteid = db
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
 
   return knex('lesson_site')
-    .where({ site_id: req.body.site_id, lesson_id: req.body.lesson_id })
+    .where('site_id', siteid)
+    .where('lesson_id', req.body.lesson_id)
     .del()
-    .then(() => {
-      res.status(201).json({ title: req.body.title });
+    .then(data => {
+      res.status(201).json({ id: req.body.id });
     })
     .catch(error => {
       res.status(500).json({ error });
     });
 });
 
-module.exports = router;
+module.exports= router;

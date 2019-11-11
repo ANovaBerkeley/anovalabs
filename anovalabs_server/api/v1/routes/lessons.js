@@ -55,7 +55,7 @@ router.post('/add', (req, res, next) => {
 
 /* Delete a lesson from the lesson pool. */
 router.post('/delete', (req, res, next) => {
-  for (let requiredParameter of ['title']) {
+  for (let requiredParameter of ['id']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -64,10 +64,10 @@ router.post('/delete', (req, res, next) => {
     }
 
   knex('lesson')
-    .where({ title: req.body.title })
+    .where({ id: req.body.id })
     .del()
     .then(data => {
-      res.status(201).json({ title: req.body.title });
+      res.status(201).json({ id: req.body.id });
     })
     .catch(error => {
       res.status(500).json({ error });
