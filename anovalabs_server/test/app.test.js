@@ -38,7 +38,7 @@ describe('DB Test', () =>{
 
   it('Show Only Lessons Not From Current Site', (done) => {
     request(app)
-      .get('/api/v1/lesson_site/all_but_current_site')
+      .get('/api/v1/lesson_site/all_but_current_site?uid=1')
       .expect(200)
       .then(response => {
         expect(response.body).to.deep.equal(fixtures.all_but_current_site);
@@ -79,10 +79,10 @@ describe('DB Test', () =>{
   it('DeleteLesson', (done) => {
     request(app)
       .post('/api/v1/lessons/delete')
-      .send(fixtures.newret)
+      .send(fixtures.delless)
       .expect(201)
       .then((response) => {
-        expect(response.body).to.deep.equal(fixtures.newret);
+        expect(response.body).to.deep.equal(fixtures.delless);
         done();
       }).catch(function(error) {
            console.error(error);
@@ -191,18 +191,6 @@ describe('DB Test', () =>{
       });
   });
 
-  it('Show Only Lessons Not From Current Site', (done) => {
-    request(app)
-      .get('/api/v1/lesson_site/all_but_current_site?uid=1')
-      .expect(200)
-      .then(response => {
-        expect(response.body).to.deep.equal(fixtures.lesson_site);
-        done();
-      })
-      .catch(error => {
-          console.error(error);
-      });
-  });
 
   it('All Sites', (done) => {
     request(app)

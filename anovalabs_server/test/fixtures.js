@@ -92,6 +92,7 @@ const newLessons = [ { id: 1,
                                               summary: 'Face Off Activity',
                                               link: 'http://tinyurl.com/algorithms' }];
 const newret = {"title":"Algorithms"};
+const delless = {id : 8};
 const newSiteLesson = {"lesson_id" : 7, "site_id" : 1, "date":"2019-01-07T08:00:00.000Z" };
 const newSLessons = [ { id: 1,
                            lesson_id: 4,
@@ -285,5 +286,6 @@ module.exports = {
   updatedNotes,
   updatedProfile,
   all_but_current_site,
-  all_sites
+  all_sites,
+  delless
 };

@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
   });
 
 /* Get all lessons from the semester and site of that user. */
-router.get('/all', function (req, res) => {
+router.get('/all', function (req, res) {
   const userid = req.query.uid;
 
   const siteid = db
