@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../../../db');
+const knex = require('../../../db/knex');
 
 const router = express.Router();
 
@@ -35,10 +36,17 @@ router.post('/update', (req, res, next) => {
   }
 
   knex('user')
-  .where({ id: req.body.id })
+  .where({ name: req.body.name })
   .update({ name: req.body.name })
   .update({ email: req.body.email })
   .update({ notes: req.body.notes })
+  .then(data => {
+    res.status(201).json({ name: req.body.name });
+  })
+  .catch(error => {
+    console.log(req.body);
+    res.status(500).json({ error });
+  });
 });
 
 module.exports = router;
