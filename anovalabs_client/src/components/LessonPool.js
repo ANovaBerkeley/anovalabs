@@ -3,6 +3,7 @@ import { Modal, Input, Button, Row, Col, Avatar, Alert } from 'antd';
 import { GoPlus } from 'react-icons/go';
 import LessonCard from './LessonCard';
 import '../stylesheets/LessonPool.css';
+import * as decode from 'jwt-decode';
 
 // TODO: Need to show lessons based on user's assigned ID'
 // TODO: this should not differ from the lesson componenent in that it should not show a date
@@ -24,6 +25,19 @@ class LessonPool extends Component {
   }
 
   componentDidMount() {
+
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+              .then(res => res.json())
+              .then(profile => {
+
+                  this.setState({
+                    mentor: profile[0].role == 'mentor'
+                  });
+                });
+
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(
@@ -40,6 +54,7 @@ class LessonPool extends Component {
           });
         }
       );
+
   }
 
   showModal() {

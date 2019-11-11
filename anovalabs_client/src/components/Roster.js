@@ -4,6 +4,7 @@ import '../stylesheets/Roster.css';
 import ProfileCard from './ProfileCard'
 import { Icon, Card, Avatar, Col, Row } from 'antd';
 import "antd/dist/antd.css";
+import * as decode from 'jwt-decode';
 
 
 

@@ -37,8 +37,15 @@ class SiteLessons extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-    console.log(d_tok.id);
 
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+      .then(res => res.json())
+      .then(profile => {
+
+          this.setState({
+            mentor: profile[0].role == 'mentor'
+          });
+        });
 
     fetch('http://localhost:5000/api/v1/lessons/site?uid='+d_tok.id)
       .then(res => res.json())

@@ -258,9 +258,21 @@ const rosterStudent = [ { name: 'user10',
                              grade: 7,
                              bio: null,
                              notes: 'Fall 2019, Montera' } ];
-const profile1 = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": null, "notes": "Fall 2019, Montera"}];
+const profile1 = [ { email: 'user1@email.com',
+                        picture: null,
+                        grade: 13,
+                        name: 'user1',
+                        bio: null,
+                        notes: 'Fall 2019, Montera',
+                        role: 'mentor' } ];
 const updatedNotes = {"notes": "Spring 2020, Montera", "id": 1, "grade": 13, "bio": "this is a new bio"};
-const updatedProfile = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": "this is a new bio", "notes": "Spring 2020, Montera"}];
+const updatedProfile = [ { email: 'user1@email.com',
+                              picture: null,
+                              grade: 13,
+                              name: 'user1',
+                              bio: 'this is a new bio',
+                              notes: 'Spring 2020, Montera',
+                              role: 'mentor' } ];
 const all_sites = [ { schoolName: 'DCA', id: 1 },
                        { schoolName: 'Montera', id: 2 },
                        { schoolName: 'Willard', id: 3 },
