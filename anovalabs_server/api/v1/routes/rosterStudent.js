@@ -24,4 +24,21 @@ router.get('/', (req, res) => {
     });
 });
 
+/* Update a specific student profile */
+router.post('/update', (req, res, next) => {
+  for (let requiredParameter of ['name', 'email']) {
+    if (!req.body[requiredParameter]) {
+      return res
+        .status(422)
+        .send({ error: `Expected format: { title: <String>}. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  knex('user')
+  .where({ id: req.body.id })
+  .update({ name: req.body.name })
+  .update({ email: req.body.email })
+  .update({ notes: req.body.notes })
+});
+
 module.exports = router;
