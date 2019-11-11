@@ -12,7 +12,7 @@ class LessonPool extends Component {
     this.state = {
       error: null,
       isLoaded: true,
-      mentor: true,
+      mentor: this.props.ismentor,
       showModal: false,
       allLessons: []
     };
@@ -24,13 +24,6 @@ class LessonPool extends Component {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-    fetch(`http://localhost:5000/api/v1/profile/${dTok.id}?uid=${dTok.id}`)
-      .then(res => res.json())
-      .then(profile => {
-        this.setState({
-          mentor: profile[0].role === 'mentor'
-        });
-      });
 
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
@@ -170,6 +163,7 @@ class LessonPool extends Component {
               deleteHandler={this.deleteHandler}
               lessonDetails={item}
               pool
+              isment={this.state.mentor}
             />
           ))}
           {maybeAddCard}

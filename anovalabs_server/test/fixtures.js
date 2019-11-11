@@ -93,7 +93,7 @@ const newLessons = [ { id: 1,
                                               link: 'http://tinyurl.com/algorithms' }];
 const newret = {"title":"Algorithms"};
 const delless = {id : 8};
-const newSiteLesson = {"lesson_id" : 7, "site_id" : 1, "date":"2019-01-07T08:00:00.000Z" };
+const newSiteLesson = {"lesson_id" : 7, "date":"2019-01-07T08:00:00.000Z" };
 const newSLessons = [ { id: 1,
                            lesson_id: 4,
                            site_id: 1,

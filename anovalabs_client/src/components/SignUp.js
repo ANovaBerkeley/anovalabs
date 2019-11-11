@@ -19,7 +19,7 @@ class Login extends Component {
       passwordStatus: '',
       redirect: false,
       sites: [],
-      role: '',
+      role: 'student',
       site: 1
     };
 

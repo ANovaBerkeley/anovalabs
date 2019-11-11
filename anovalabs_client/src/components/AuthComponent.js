@@ -6,17 +6,30 @@ import SiteLessons from './SiteLessons';
 import Profile from './Profile';
 import LessonPool from './LessonPool';
 import Roster from './Roster';
+import * as decode from 'jwt-decode';
 
 class AuthComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: undefined,
-      type: this.props.type
+      type: this.props.type,
+      mentor: null
     };
   }
 
   componentWillMount() {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+      .then(res => res.json())
+      .then(profile => {
+
+          this.setState({
+            mentor: profile[0].role == 'mentor'
+          });
+        });
+
     const jwt = getJWT();
     if (!jwt) {
       this.props.history.replace('/login');
@@ -48,7 +61,7 @@ class AuthComponent extends Component {
     } else {
       if (this.state.type == "lessons") {
         return (
-          <SiteLessons/>
+          <SiteLessons ismentor={this.state.mentor}/>
         );
       }
 
@@ -60,13 +73,13 @@ class AuthComponent extends Component {
 
       else if (this.state.type == "lessonpool") {
         return (
-          <LessonPool/>
+          <LessonPool ismentor={this.state.mentor}/>
         );
       }
 
       else if (this.state.type == "roster") {
         return (
-          <Roster/>
+          <Roster ismentor={this.state.mentor}/>
         )
       }
     }

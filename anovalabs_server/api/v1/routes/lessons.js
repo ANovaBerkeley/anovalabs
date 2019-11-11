@@ -15,6 +15,7 @@ router.get('/site', (req, res) => {
 
   db.select('site.schoolName')
     .from('site')
+    .where('site.id', siteid)
     .then(data => {
       res.send(data);
     });

@@ -23,7 +23,7 @@ class SiteLessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mentor: true,
+      mentor: this.props.ismentor,
       showModal: false,
       siteLessons: [],
       allLessons: [],
@@ -37,16 +37,6 @@ class SiteLessons extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-
-    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
-      .then(res => res.json())
-      .then(profile => {
-
-          this.setState({
-            mentor: profile[0].role == 'mentor'
-          });
-        });
-
     fetch('http://localhost:5000/api/v1/lessons/site?uid='+d_tok.id)
       .then(res => res.json())
       .then(site => {
@@ -161,7 +151,7 @@ class SiteLessons extends Component {
         </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
-              <LessonCard lessonDetails={item} pool={false} />
+              <LessonCard lessonDetails={item} pool={false} isment={this.state.mentor} />
             ))}
           </div>
         </div>
@@ -180,6 +170,7 @@ class SiteLessons extends Component {
               deleteHandler={this.deleteHandler}
               lessonDetails={item}
               pool = {false}
+              isment={this.state.mentor}
             />
           ))}
           <div className="plusCard">
@@ -211,7 +202,7 @@ class SiteLessons extends Component {
                   }
                 >
                   {this.state.allLessons.map((item, index) => (
-                     <Option value={index+1}>{item.title}</Option> ))}
+                     <Option value={item.id}>{item.title}</Option> ))}
                 </Select>
                   <br />
               <div> <DatePicker onChange={this.onChange.bind(this)}/> </div>
