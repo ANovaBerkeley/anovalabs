@@ -8,8 +8,6 @@ exports.up = function(knex, Promise) {
         .unique()
         .notNullable();
       table
-      	.string('picture');
-      table
       	.string('password')
       	.notNullable();
       table
@@ -19,12 +17,14 @@ exports.up = function(knex, Promise) {
       	.string('name')
       	.notNullable();
       table
-      	.string('bio');
-      table
       	.string('notes');
       table
         .string('role')
         .notNullable();
+      table
+        .string('candy')
+      table
+        .string('hobby')
     });
 };
 

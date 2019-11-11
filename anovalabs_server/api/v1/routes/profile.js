@@ -9,7 +9,7 @@ TODO: ensure that this cannot be called from a different user's account. */
 router.get('/:id', (req, res) => {
   const userid = 1;
 
-  db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes')
+  db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.candy', 'user.hobby', 'user.notes')
     .from('user')
     .where('user.id', userid)
     .then(data => {
@@ -30,7 +30,7 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
     .where({ id: req.body.id })
-    .update({ notes: req.body.notes, bio: req.body.bio, grade: req.body.grade })
+    .update({ notes: req.body.notes, candy: req.body.candy, hobby: req.body.hobby})
     .then(data => {
       res.status(201).json({ id: req.body.id });
     })

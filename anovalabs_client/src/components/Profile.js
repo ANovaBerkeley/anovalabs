@@ -19,6 +19,7 @@ export default class Profile extends Component {
                grade: "",
                bio: "Once upon a time",
                candy: "Twix",
+               hobby: "reading",
                showEdit: false
           }
           // this.handleClick = this.handleClick.bind(this);
@@ -39,9 +40,11 @@ export default class Profile extends Component {
                isLoaded: true,
                username: profile[0].name,
                //TODO: picture, candy
-               bio: profile[0].notes,
+               //bio: profile[0].notes,
                email: profile[0].email,
                grade: profile[0].grade,
+               candy: profiel[0].candy,
+               hobby: profile[0].hobby
 
              });
            },
@@ -63,10 +66,10 @@ export default class Profile extends Component {
                this.changeUser(inputText.valueOf())
           } else if (editFieldid == "email") {
                this.changeEmail(inputText.valueOf())
-          } else if (editFieldid == "bio") {
-               this.changeBio(inputText.valueOf())
-          } else if (editFieldid == "grade") {
-               this.changeGrade(inputText.valueOf())
+          } else if (editFieldid == "hobby") {
+               this.changeHobby(inputText.valueOf())
+          } else if (editFieldid == "candy") {
+               this.changeCandy(inputText.valueOf())
           } else {
                alert("Something is amiss")
           }
@@ -76,13 +79,13 @@ export default class Profile extends Component {
           var userEdit = document.getElementById("userEdit");
           var emailEdit = document.getElementById("emailEdit");
           var gradeEdit = document.getElementById("gradeEdit");
-          var bioEdit = document.getElementById("bioEdit");
+          var hobbyEdit = document.getElementById("hobbyEdit");
           var candyEdit = document.getElementById("candyEdit");
           // TODO: incorporate other editable values other than notes
           // TODO: not hardcode id xd
           fetch('http://localhost:5000/api/v1/profile/update',
             { method: 'POST',
-              body: JSON.stringify({ notes: bioEdit.value, id: decode(getJWT()).id }),
+              body: JSON.stringify({ id: decode(getJWT()).id, hobby: hobbyEdit.value, candy: candyEdit.value}),
               headers: new Headers({
                 'Content-Type': 'application/json'
               }),
@@ -156,13 +159,14 @@ export default class Profile extends Component {
                               </Col>
                          </Row>
                          <Row type="flex">
-                              <Col>
-                                   <p>Biography:</p>
+                         <Col>
+                                   <p>Hobby:</p>
                               </Col>
                               <Col>
-                                   <p id="bio">{this.state.bio}</p>
+                                   <p id="hobby">{this.state.hobby}</p>
                               </Col>
                          </Row>
+                         
                          <Row>
                               <Col>
                                    <Avatar size={64} onClick={() => this.showModal(true)} icon="edit" />
@@ -197,9 +201,10 @@ export default class Profile extends Component {
                                              </Row>
                                              <Row>
                                                   <Col>
-                                                       <Input id="bioEdit" allowClear={true} addonBefore="Bio:" autosize="true" defaultValue={this.state.bio}></Input>
+                                                       <Input id="hobbyEdit" allowClear={true} addonBefore="Hobby:" autosize="true" defaultValue={this.state.hobby}></Input>
                                                   </Col>
                                              </Row>
+                  
                                         </div>
                                    </Modal>
                               </Col>
