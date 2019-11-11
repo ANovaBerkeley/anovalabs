@@ -8,7 +8,7 @@ const router = express.Router();
 
 /* Returns all site names */
 router.get('/allSites', (req, res) => {
-  db.select('schoolName')
+  db.select('schoolName', 'id')
     .from('site')
     .then(data => {
       res.send(data);

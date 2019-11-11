@@ -5,7 +5,7 @@ const router = express.Router();
 
 /* Retrieve the list of students for a specific site. */
 router.get('/', (req, res) => {
-  const userid = 2;
+  const userid = 1;
   const roleType = 'student';
 
   const siteid = db
