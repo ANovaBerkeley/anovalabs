@@ -212,7 +212,7 @@ class LessonPool extends Component {
         </div>
         <div className = "lessonPoolContainer">
           {items.map(item => (
-            <LessonCard deleteHandler={this.deleteHandler} lessonDetails={item}></LessonCard>
+            <LessonCard deleteHandler={this.deleteHandler} lessonDetails={item} pool={true}></LessonCard>
           ))}
           {maybeAddCard}
         </div>

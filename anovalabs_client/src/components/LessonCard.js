@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Popconfirm } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
-
+import * as decode from 'jwt-decode';
 import '../stylesheets/LessonCard.css';
 
 // TODO: Need to show lessons based on user's assigned ID
@@ -18,9 +18,24 @@ class LessonCard extends Component {
     this.delete = this.delete.bind(this);
   }
 
+    componentDidMount() {
+        const tok = localStorage.getItem('anovaToken');
+        const d_tok = decode(tok);
+
+        fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+          .then(res => res.json())
+          .then(profile => {
+
+              this.setState({
+                isMentor: profile[0].role == 'mentor'
+              });
+            });
+    }
+
   showModal(val) {
     this.setState({ showModal: val });
   }
+
 
   delete() {
     this.showModal(false);
@@ -30,7 +45,7 @@ class LessonCard extends Component {
   render() {
     const { showModal, isMentor } = this.state;
     let readableDate = '';
-    if (this.props.lessonDetails.date) {
+    if (this.props.lessonDetails.date && !this.props.pool) {
       readableDate = new Date(this.props.lessonDetails.date).toLocaleDateString();
     }
     let maybeDeleteButton;

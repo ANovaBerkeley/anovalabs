@@ -97,7 +97,7 @@ router.post('/add', (req, res, next) => {
 lesson pool. */
 router.post('/delete', (req, res, next) => {
 
-  const userid = 1;
+  const userid = req.query.uid;
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
