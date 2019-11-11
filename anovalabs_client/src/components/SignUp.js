@@ -3,8 +3,10 @@ import axios from 'axios';
 import * as Yup from 'yup';
 import { getJWT } from '../utils/utils';
 import * as decode from 'jwt-decode';
+import { Modal} from 'antd';
 
 import '../stylesheets/SignUp.css';
+
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class Login extends Component {
       redirect: false,
       sites: [],
       role: '',
-      site: ''
+      site: 1
     };
 
     this._change = this._change.bind(this);
@@ -125,32 +127,40 @@ class Login extends Component {
   }
 
   async _submit(event) {
-    event.preventDefault();
-    const isValid = await this._validateUser();
-    if (isValid) {
-      axios
-        .post('http://localhost:5000/api/v1/auth/signup', {
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-          role: this.state.role
-        })
-        .then(res => {
-          // storing token from server
-
-          localStorage.setItem('anovaToken', res.data.token);
-          this.props.history.push('/');
-          const tok_payload = decode(res.data.token);
-          this.add_user_site(tok_payload);
-        })
-        .catch(err => {
-
-          localStorage.removeItem('anovaToken');
-          console.log(err);
+    if (this.state.name == '' || this.state.email == '' ||  this.state.password == '' ||  this.state.role == '') {
+      Modal.error({
+          title: 'Please fill out all fields.',
+          centered: true
         });
+      return;
     } else {
-      console.log(this.state.errorMessage);
-    }
+        event.preventDefault();
+        const isValid = await this._validateUser();
+        if (isValid) {
+          axios
+            .post('http://localhost:5000/api/v1/auth/signup', {
+              name: this.state.name,
+              email: this.state.email,
+              password: this.state.password,
+              role: this.state.role
+            })
+            .then(res => {
+              // storing token from server
+
+              localStorage.setItem('anovaToken', res.data.token);
+              this.props.history.push('/');
+              const tok_payload = decode(res.data.token);
+              this.add_user_site(tok_payload);
+            })
+            .catch(err => {
+
+              localStorage.removeItem('anovaToken');
+              console.log(err);
+            });
+        } else {
+          console.log(this.state.errorMessage);
+        }
+     }
   }
 
   loadSites = () => {

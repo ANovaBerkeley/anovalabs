@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Input, Row, Col } from 'antd';
 import { GoPlus } from 'react-icons/go';
-import LessonCard from './LessonCard';
+import * as decode from 'jwt-decode';
 import '../stylesheets/LessonPool.css';
+import LessonCard from './LessonCard';
 
 // TODO: this should not differ from the lesson componenent in that it should not show a date
 class LessonPool extends Component {
@@ -20,6 +21,17 @@ class LessonPool extends Component {
   }
 
   componentDidMount() {
+    const tok = localStorage.getItem('anovaToken');
+    const dTok = decode(tok);
+
+    fetch(`http://localhost:5000/api/v1/profile/${dTok.id}?uid=${dTok.id}`)
+      .then(res => res.json())
+      .then(profile => {
+        this.setState({
+          mentor: profile[0].role === 'mentor'
+        });
+      });
+
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(allLessons => {
@@ -157,6 +169,7 @@ class LessonPool extends Component {
             <LessonCard
               deleteHandler={this.deleteHandler}
               lessonDetails={item}
+              pool
             />
           ))}
           {maybeAddCard}

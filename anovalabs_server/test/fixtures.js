@@ -92,6 +92,7 @@ const newLessons = [ { id: 1,
                                               summary: 'Face Off Activity',
                                               link: 'http://tinyurl.com/algorithms' }];
 const newret = {"title":"Algorithms"};
+const delless = {id : 8};
 const newSiteLesson = {"lesson_id" : 7, "site_id" : 1, "date":"2019-01-07T08:00:00.000Z" };
 const newSLessons = [ { id: 1,
                            lesson_id: 4,
@@ -257,19 +258,31 @@ const rosterStudent = [ { name: 'user10',
                              grade: 7,
                              bio: null,
                              notes: 'Fall 2019, Montera' } ];
-const profile1 = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": null, "notes": "Fall 2019, Montera"}];
+const profile1 = [ { email: 'user1@email.com',
+                        picture: null,
+                        grade: 13,
+                        name: 'user1',
+                        bio: null,
+                        notes: 'Fall 2019, Montera',
+                        role: 'mentor' } ];
 const updatedNotes = {"notes": "Spring 2020, Montera", "id": 1, "grade": 13, "bio": "this is a new bio"};
-const updatedProfile = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": "this is a new bio", "notes": "Spring 2020, Montera"}];
-const all_sites = [ { schoolName: 'DCA' },
-                       { schoolName: 'Montera' },
-                       { schoolName: 'Willard' },
-                       { schoolName: 'Fremont High' },
-                       { schoolName: 'Rudsdale' },
-                       { schoolName: 'Roosevelt' },
-                       { schoolName: 'Lighthouse Charter' },
-                       { schoolName: 'College Track' },
-                       { schoolName: 'Squash Drive' },
-                       { schoolName: 'Oakland Tech' } ];
+const updatedProfile = [ { email: 'user1@email.com',
+                              picture: null,
+                              grade: 13,
+                              name: 'user1',
+                              bio: 'this is a new bio',
+                              notes: 'Spring 2020, Montera',
+                              role: 'mentor' } ];
+const all_sites = [ { schoolName: 'DCA', id: 1 },
+                       { schoolName: 'Montera', id: 2 },
+                       { schoolName: 'Willard', id: 3 },
+                       { schoolName: 'Fremont High', id: 4 },
+                       { schoolName: 'Rudsdale', id: 5 },
+                       { schoolName: 'Roosevelt', id: 6 },
+                       { schoolName: 'Lighthouse Charter', id: 7 },
+                       { schoolName: 'College Track', id: 8 },
+                       { schoolName: 'Squash Drive', id: 9 },
+                       { schoolName: 'Oakland Tech', id: 10 } ];
 
 module.exports = {
   lessons,
@@ -285,5 +298,6 @@ module.exports = {
   updatedNotes,
   updatedProfile,
   all_but_current_site,
-  all_sites
+  all_sites,
+  delless
 };

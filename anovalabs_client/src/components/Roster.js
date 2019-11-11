@@ -4,6 +4,7 @@ import '../stylesheets/Roster.css';
 import ProfileCard from './ProfileCard'
 import { Icon, Card, Avatar, Col, Row } from 'antd';
 import "antd/dist/antd.css";
+import * as decode from 'jwt-decode';
 
 
 
@@ -24,7 +25,17 @@ export default class Roster extends Component {
     mentor: true
   }
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/rosterStudent')
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+      .then(res => res.json())
+      .then(profile => {
+
+          this.setState({
+            mentor: profile[0].role == 'mentor'
+          });
+        });
+    fetch('http://localhost:5000/api/v1/rosterStudent?uid='+d_tok.id)
       .then(res => res.json())
       .then(students1 => {
           this.setState({
@@ -37,7 +48,7 @@ export default class Roster extends Component {
           });
         }
       )
-      fetch('http://localhost:5000/api/v1/rosterMentor')
+      fetch('http://localhost:5000/api/v1/rosterMentor?uid='+d_tok.id)
         .then(res => res.json())
         .then(mentors1 => {
             this.setState({

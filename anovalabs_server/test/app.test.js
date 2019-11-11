@@ -26,7 +26,7 @@ describe('DB Test', () =>{
 
   it('SiteLessons1', (done) =>{
       request(app)
-      .get('/api/v1/lesson_site/all')
+      .get('/api/v1/lesson_site/all?uid=1')
       .expect(200)
       .then((response) =>{
           expect(response.body).to.deep.equal(fixtures.sitelessons);
@@ -38,7 +38,7 @@ describe('DB Test', () =>{
 
   it('Show Only Lessons Not From Current Site', (done) => {
     request(app)
-      .get('/api/v1/lesson_site/all_but_current_site')
+      .get('/api/v1/lesson_site/all_but_current_site?uid=1')
       .expect(200)
       .then(response => {
         expect(response.body).to.deep.equal(fixtures.all_but_current_site);
@@ -79,10 +79,10 @@ describe('DB Test', () =>{
   it('DeleteLesson', (done) => {
     request(app)
       .post('/api/v1/lessons/delete')
-      .send(fixtures.newret)
+      .send(fixtures.delless)
       .expect(201)
       .then((response) => {
-        expect(response.body).to.deep.equal(fixtures.newret);
+        expect(response.body).to.deep.equal(fixtures.delless);
         done();
       }).catch(function(error) {
            console.error(error);
@@ -104,7 +104,7 @@ describe('DB Test', () =>{
 
   it('AddSiteLesson', (done) =>{
       request(app)
-      .post('/api/v1/lesson_site/add')
+      .post('/api/v1/lesson_site/add?uid=1')
       .send(fixtures.newSiteLesson)
       .expect(201)
       .then((response) =>{
@@ -131,7 +131,7 @@ describe('DB Test', () =>{
 
     it('Getting Correct Mentor Roster', (done) =>{
         request(app)
-        .get('/api/v1/rosterMentor')
+        .get('/api/v1/rosterMentor?uid=1')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.rosterMentor);
@@ -143,7 +143,7 @@ describe('DB Test', () =>{
 
     it('Getting Correct Student Roster', (done) =>{
         request(app)
-        .get('/api/v1/rosterStudent')
+        .get('/api/v1/rosterStudent?uid=1')
         .expect(200)
         .then((response) =>{
             expect(response.body).to.deep.equal(fixtures.rosterStudent);
@@ -155,7 +155,7 @@ describe('DB Test', () =>{
 
     it('First Profile Accessed', (done) => {
       request(app)
-      .get('/api/v1/profile/:id')
+      .get('/api/v1/profile/:id?uid=1')
       .expect(200)
       .then((response) => {
           expect(response.body).to.deep.equal(fixtures.profile1);
@@ -181,7 +181,7 @@ describe('DB Test', () =>{
 
   it('First Profile Updated Successfully', (done) => {
       request(app)
-      .get('/api/v1/profile/:id')
+      .get('/api/v1/profile/:id?uid=1')
       .expect(200)
       .then((response) => {
           expect(response.body).to.deep.equal(fixtures.updatedProfile);
@@ -190,6 +190,7 @@ describe('DB Test', () =>{
           console.error(error);
       });
   });
+
 
   it('All Sites', (done) => {
     request(app)

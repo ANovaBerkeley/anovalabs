@@ -12,10 +12,10 @@ router.get('/', function (req, res) {
   	});
   });
 
-/* Get all lessons from the semester and site of that user.
-TODO: replace hardcoded userid */
+/* Get all lessons from the semester and site of that user. */
 router.get('/all', function (req, res) {
-  userid = 1
+  const userid = req.query.uid;
+
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
@@ -34,7 +34,7 @@ router.get('/all', function (req, res) {
 
 /* Get all lessons from other sites */
 router.get('/all_but_current_site', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
@@ -58,7 +58,7 @@ router.get('/all_but_current_site', (req, res) => {
 
 /* Add a lesson to a specific site. */
 router.post('/add', (req, res, next) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
@@ -97,7 +97,7 @@ router.post('/add', (req, res, next) => {
 lesson pool. */
 router.post('/delete', (req, res, next) => {
 
-  const userid = 1;
+  const userid = req.query.uid;
   const siteid = db
     .select('site_id')
     .from('user_semester_site')

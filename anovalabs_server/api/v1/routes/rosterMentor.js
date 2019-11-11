@@ -5,7 +5,7 @@ const router = express.Router();
 
 /* Retrieve the list of mentors for a specific site. */
 router.get('/', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
   const roleType = 'mentor';
 
   const siteid = db

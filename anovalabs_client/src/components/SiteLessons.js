@@ -29,8 +29,7 @@ class SiteLessons extends Component {
       allLessons: [],
       site: 'default',
       modalSelectedValue: '',
-      modalDate: '',
-      userid: ''
+      modalDate: ''
     };
     this.deleteHandler = this.deleteHandler.bind(this);
   }
@@ -38,18 +37,25 @@ class SiteLessons extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-    console.log(d_tok.id);
-    this.setState({
-       userid: d_tok.id
-    });
-    fetch('http://localhost:5000/api/v1/lessons/site')
+
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+      .then(res => res.json())
+      .then(profile => {
+
+          this.setState({
+            mentor: profile[0].role == 'mentor'
+          });
+        });
+
+    fetch('http://localhost:5000/api/v1/lessons/site?uid='+d_tok.id)
       .then(res => res.json())
       .then(site => {
-        this.setState({
-          site
+          this.setState({
+            site
+          });
         });
-      });
-    fetch('http://localhost:5000/api/v1/lesson_site/all')
+    fetch('http://localhost:5000/api/v1/lesson_site/all?uid='+d_tok.id)
+
       .then(res => res.json())
       .then(siteLessons => {
         this.setState({
@@ -70,21 +76,30 @@ class SiteLessons extends Component {
   }
 
   addLesson(item, date) {
-    console.log(date);
-    fetch('http://localhost:5000/api/v1/lesson_site/add', {
-      method: 'POST',
-      body: JSON.stringify({ lesson_id: item, date: date}),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    })
-      .then(res => res.json())
-      .then(_ => {
-        this.showModal(false);
-        this.setState(prevState => ({
-          siteLessons: [...prevState.siteLessons, item]
-        }));
-      });
+    if (this.state.modalDate == '' || this.state.modalSelectedValue == '') {
+      Modal.error({
+          title: 'Please fill out all fields.',
+          centered: true
+        });
+      return;
+    } else {
+        const tok = localStorage.getItem('anovaToken');
+        const d_tok = decode(tok);
+        fetch('http://localhost:5000/api/v1/lesson_site/add?uid='+d_tok.id, {
+          method: 'POST',
+          body: JSON.stringify({ lesson_id: item, date: date}),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        })
+          .then(res => res.json())
+          .then(_ => {
+            this.showModal(false);
+            this.setState(prevState => ({
+              siteLessons: [...prevState.siteLessons, item]
+            }));
+          });
+      }
   }
 
   showModal(bool) {
@@ -92,7 +107,9 @@ class SiteLessons extends Component {
   }
 
   deleteHandler(lessonDetails) {
-    fetch('http://localhost:5000/api/v1/lesson_site/delete', {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    fetch('http://localhost:5000/api/v1/lesson_site/delete?uid='+ d_tok.id, {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
       headers: new Headers({
@@ -144,7 +161,7 @@ class SiteLessons extends Component {
         </div>
           <div className="lessonsContainer">
             {siteLessons.map(item => (
-              <LessonCard lessonDetails={item} />
+              <LessonCard lessonDetails={item} pool={false} />
             ))}
           </div>
         </div>
@@ -162,6 +179,7 @@ class SiteLessons extends Component {
             <LessonCard
               deleteHandler={this.deleteHandler}
               lessonDetails={item}
+              pool = {false}
             />
           ))}
           <div className="plusCard">

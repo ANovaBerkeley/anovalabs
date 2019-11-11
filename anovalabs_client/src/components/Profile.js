@@ -25,6 +25,8 @@ export default class Profile extends Component {
      }
 
      componentDidMount() {
+       const tok = localStorage.getItem('anovaToken');
+       const d_tok = decode(tok);
        console.log("profile mounted");
        console.log("jwt: " + getJWT());
        var { id } = decode(getJWT());
@@ -32,7 +34,7 @@ export default class Profile extends Component {
        console.log(id);
        var get_url = 'http://localhost:5000/api/v1/profile/';
        var id_str = id.toString();
-       fetch(get_url + id_str)
+       fetch(get_url + id_str + '?uid=' + d_tok.id)
          .then(res => res.json())
          .then(profile => {
              this.setState({

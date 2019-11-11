@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/site', (req, res) => {
 
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')

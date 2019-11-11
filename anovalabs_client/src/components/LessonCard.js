@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Popconfirm } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
 import PropTypes from 'prop-types';
+import * as decode from 'jwt-decode';
 
 import '../stylesheets/LessonCard.css';
 
@@ -17,6 +18,20 @@ class LessonCard extends Component {
     this.delete = this.delete.bind(this);
   }
 
+  componentDidMount() {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+
+    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+      .then(res => res.json())
+      .then(profile => {
+
+          this.setState({
+            isMentor: profile[0].role == 'mentor'
+          });
+        });
+  }
+
   delete() {
     const { lessonDetails, deleteHandler } = this.props;
     this.setState({ showModal: false });
@@ -27,7 +42,7 @@ class LessonCard extends Component {
     const { showModal, isMentor } = this.state;
     const { lessonDetails } = this.props;
     let readableDate = '';
-    if (lessonDetails.date) {
+    if (lessonDetails.date && !this.props.pool) {
       readableDate = new Date(lessonDetails.date).toLocaleDateString();
     }
     let maybeDeleteButton;

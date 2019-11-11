@@ -7,9 +7,9 @@ const router = express.Router();
 /* Retrieve a user's profile based on their id.
 TODO: ensure that this cannot be called from a different user's account. */
 router.get('/:id', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
-  db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes')
+  db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes', 'user.role')
     .from('user')
     .where('user.id', userid)
     .then(data => {
