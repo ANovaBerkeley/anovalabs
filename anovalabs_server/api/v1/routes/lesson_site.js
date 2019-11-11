@@ -19,7 +19,7 @@ TODO: replace hardcoded userid
 TODO: return date in readable format */
 
 router.get('/all', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
@@ -39,7 +39,7 @@ router.get('/all', (req, res) => {
 
 /*Get all lessons from other sites*/
 router.get('/all_but_current_site', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
@@ -56,7 +56,7 @@ router.get('/all_but_current_site', (req, res) => {
 
 /* Add a lesson to a specific site. */
 router.post('/add', (req, res, next) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')

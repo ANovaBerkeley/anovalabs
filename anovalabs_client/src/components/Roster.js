@@ -78,7 +78,9 @@ export default class Roster extends Component {
     mentor: true
   }
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/rosterStudent')
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    fetch('http://localhost:5000/api/v1/rosterStudent?uid='+d_tok.id)
       .then(res => res.json())
       .then(students1 => {
           this.setState({
@@ -91,7 +93,7 @@ export default class Roster extends Component {
           });
         }
       )
-      fetch('http://localhost:5000/api/v1/rosterMentor')
+      fetch('http://localhost:5000/api/v1/rosterMentor?uid='+d_tok.id)
         .then(res => res.json())
         .then(mentors1 => {
             this.setState({

@@ -18,7 +18,7 @@ class Login extends Component {
       redirect: false,
       sites: [],
       role: '',
-      site: ''
+      site: 1
     };
 
     this._change = this._change.bind(this);

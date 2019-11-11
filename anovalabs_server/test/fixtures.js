@@ -243,16 +243,16 @@ const rosterStudent = [ { name: 'user10',
 const profile1 = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": null, "notes": "Fall 2019, Montera"}];
 const updatedNotes = {"notes": "Spring 2020, Montera", "id": 1, "grade": 13, "bio": "this is a new bio"};
 const updatedProfile = [{"email": "user1@email.com", "picture": null, "grade": 13, "name": "user1", "bio": "this is a new bio", "notes": "Spring 2020, Montera"}];
-const all_sites = [ { schoolName: 'DCA' },
-                       { schoolName: 'Montera' },
-                       { schoolName: 'Willard' },
-                       { schoolName: 'Fremont High' },
-                       { schoolName: 'Rudsdale' },
-                       { schoolName: 'Roosevelt' },
-                       { schoolName: 'Lighthouse Charter' },
-                       { schoolName: 'College Track' },
-                       { schoolName: 'Squash Drive' },
-                       { schoolName: 'Oakland Tech' } ];
+const all_sites = [ { schoolName: 'DCA', id: 1 },
+                       { schoolName: 'Montera', id: 2 },
+                       { schoolName: 'Willard', id: 3 },
+                       { schoolName: 'Fremont High', id: 4 },
+                       { schoolName: 'Rudsdale', id: 5 },
+                       { schoolName: 'Roosevelt', id: 6 },
+                       { schoolName: 'Lighthouse Charter', id: 7 },
+                       { schoolName: 'College Track', id: 8 },
+                       { schoolName: 'Squash Drive', id: 9 },
+                       { schoolName: 'Oakland Tech', id: 10 } ];
 
 module.exports = {
   lessons,
