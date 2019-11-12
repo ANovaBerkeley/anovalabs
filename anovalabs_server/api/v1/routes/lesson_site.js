@@ -65,7 +65,7 @@ router.post('/add', (req, res, next) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  for (let requiredParameter of ['lesson_id']) {
+  for (let requiredParameter of ['lesson_id', 'date']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -73,21 +73,16 @@ router.post('/add', (req, res, next) => {
       }
     }
 
-  if (req.body.date) {
-    return knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
-      .then(data => {
-        res.status(201).json({ lesson_id: req.body.lesson_id });
-      })
-      .catch(error => {
-        res.status(500).json({ error });
-      });
-  }
   return knex('lesson_site')
-    .insert({ lesson_id: req.body.lesson_id, site_id: siteid })
-    .then(data => {
-      res.status(201).json({ lesson_id: req.body.lesson_id });
-    })
+    .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
+    .then(() =>
+      db
+        .select('*')
+        .from('lesson')
+        .where('id', req.body.lesson_id)
+        .first()
+        .then(data => res.send(data))
+    )
     .catch(error => {
       res.status(500).json({ error });
     });

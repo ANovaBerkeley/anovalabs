@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import { Avatar, List, Button, Modal, Row, Col } from 'antd';
-import { DatePicker, Checkbox, Select} from 'antd';
+import { Modal, DatePicker, Select } from 'antd';
+import * as decode from 'jwt-decode';
 import { GoPlus } from 'react-icons/go';
 import LessonCard from './LessonCard';
 import '../stylesheets/SiteLessons.css';
-import * as decode from 'jwt-decode';
+
+const { Option } = Select;
 // import '../stylesheets/Lessons.css';
 
-// TODO: Need to show lessons based on user's assigned ID'
-// TODO: display site name at top
+// TODO: retrieve and display site name at top
+// reset modal values onOk
+// add documentation
 
-// TODO
-// add protocol for when component doesn't mount
-// add is loaded: false handling in comopnent did mount
-// add documentation for each function
-
-// calls API setting state + preparing lessons
-
-  // TODO: make items more descriptions .mentor should be is mentor (make smol function)
-  // eg site lessons
 class SiteLessons extends Component {
   constructor(props) {
     super(props);
@@ -26,90 +19,63 @@ class SiteLessons extends Component {
       mentor: true,
       showModal: false,
       siteLessons: [],
-      allLessons: [],
-      site: 'default',
+      site: '',
+      otherLessons: [],
       modalSelectedValue: '',
       modalDate: ''
     };
+    this.onDateChange = this.onDateChange.bind(this);
+    this.onSelectChange = this.onSelectChange.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
-    const d_tok = decode(tok);
+    const dTok = decode(tok);
 
-    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
+    fetch(`http://localhost:5000/api/v1/profile/${dTok.id}?uid=${dTok.id}`)
       .then(res => res.json())
       .then(profile => {
-
-          this.setState({
-            mentor: profile[0].role == 'mentor'
-          });
+        this.setState({
+          mentor: profile[0].role === 'mentor'
         });
+      });
 
-    fetch('http://localhost:5000/api/v1/lessons/site?uid='+d_tok.id)
+    fetch(`http://localhost:5000/api/v1/lessons/site?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
-          this.setState({
-            site
-          });
+        this.setState({
+          site
         });
-    fetch('http://localhost:5000/api/v1/lesson_site/all?uid='+d_tok.id)
-
+      });
+    fetch(`http://localhost:5000/api/v1/lesson_site/all?uid=${dTok.id}`)
       .then(res => res.json())
       .then(siteLessons => {
         this.setState({
           siteLessons
         });
       });
-    fetch('http://localhost:5000/api/v1/lessons/all')
+    fetch(`http://localhost:5000/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
       .then(res => res.json())
-      .then(allLessons => {
+      .then(otherLessons => {
         this.setState({
-          allLessons
+          otherLessons
         });
       });
   }
 
-  onChangeCheck(e) {
-    console.log('checked = ', e.target.checked);
+  onDateChange(date, dateString) {
+    this.setState({ modalDate: date });
   }
 
-  addLesson(item, date) {
-    if (this.state.modalDate == '' || this.state.modalSelectedValue == '') {
-      Modal.error({
-          title: 'Please fill out all fields.',
-          centered: true
-        });
-      return;
-    } else {
-        const tok = localStorage.getItem('anovaToken');
-        const d_tok = decode(tok);
-        fetch('http://localhost:5000/api/v1/lesson_site/add?uid='+d_tok.id, {
-          method: 'POST',
-          body: JSON.stringify({ lesson_id: item, date: date}),
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          })
-        })
-          .then(res => res.json())
-          .then(_ => {
-            this.showModal(false);
-            this.setState(prevState => ({
-              siteLessons: [...prevState.siteLessons, item]
-            }));
-          });
-      }
-  }
-
-  showModal(bool) {
-    this.setState({ showModal: bool });
+  onSelectChange(value) {
+    this.setState({ modalSelectedValue: value });
   }
 
   deleteHandler(lessonDetails) {
     const tok = localStorage.getItem('anovaToken');
-    const d_tok = decode(tok);
-    fetch('http://localhost:5000/api/v1/lesson_site/delete?uid='+ d_tok.id, {
+    const dTok = decode(tok);
+    fetch(`http://localhost:5000/api/v1/lesson_site/delete?uid=${dTok.id}`, {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
       headers: new Headers({
@@ -119,72 +85,91 @@ class SiteLessons extends Component {
       this.setState(prevState => ({
         siteLessons: prevState.siteLessons.filter(
           lesson => lesson.id !== lessonDetails.id
-        )
+        ),
+        otherLessons: [...prevState.otherLessons, lessonDetails]
       }))
     );
   }
 
-  onChange(date, dateString) {
-    this.setState({ modalDate: dateString });
-  }
-
-  onSelectChange(value) {
-    this.setState({ modalSelectedValue: value });
-  }
-
-  onBlur() {
-    console.log('blur');
-  }
-
-  onFocus() {
-    console.log('focus');
-  }
-
-  onSearch(val) {
-    console.log('search:', val);
+  addLessonToSite(lessonId, date) {
+    const { siteLessons } = this.state;
+    if (!lessonId || !date) {
+      Modal.error({
+        title: 'Please fill out all fields.',
+        centered: true
+      });
+    } else {
+      const tok = localStorage.getItem('anovaToken');
+      const dTok = decode(tok);
+      fetch(`http://localhost:5000/api/v1/lesson_site/add?uid=${dTok.id}`, {
+        method: 'POST',
+        body: JSON.stringify({ lesson_id: lessonId, date }),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      })
+        .then(res => res.json())
+        .then(newLesson => {
+          console.log(date);
+          const newSiteLessons = [...siteLessons, { ...newLesson, date}];
+          newSiteLessons.sort(
+            (siteLesson1, siteLesson2) => siteLesson1.date > siteLesson2.date
+          );
+          this.setState(prevState => ({
+            siteLessons: newSiteLessons,
+            otherLessons: prevState.otherLessons.filter(
+              otherLesson => otherLesson.id !== lessonId
+            ),
+            showModal: false,
+            modalSelectedValue: '',
+            modalDate: ''
+          }));
+        });
+    }
   }
 
   renderLessons = () => {
     const {
       mentor,
       siteLessons,
-      allLessons,
-      addLesson,
       showModal,
+      modalSelectedValue,
+      modalDate,
+      otherLessons,
       site
     } = this.state;
     if (!mentor) {
       return (
         <div className="container">
-        <div className='title'>
-          <h1>All Lessons</h1>
-        </div>
+          <div className="title">
+            <h1>All Lessons</h1>
+          </div>
           <div className="lessonsContainer">
-            {siteLessons.map(item => (
-              <LessonCard lessonDetails={item} pool={false} />
+            {siteLessons.map(lesson => (
+              <LessonCard key={lesson.id} lessonDetails={lesson} pool={false} />
             ))}
           </div>
         </div>
       );
     }
 
-
     return (
       <div className="container">
         <div className="lessons_title">
-          <h1>{this.site} All Lessons</h1>
+          <h1>REPLACE W SITE NAME</h1>
         </div>
         <div className="lessonsContainer">
-          {siteLessons.map(item => (
+          {siteLessons.map(lesson => (
             <LessonCard
+              key={lesson.id}
               deleteHandler={this.deleteHandler}
-              lessonDetails={item}
-              pool = {false}
+              lessonDetails={lesson}
+              pool={false}
             />
           ))}
           <div className="plusCard">
             <GoPlus
-              onClick={() => this.showModal(true)}
+              onClick={() => this.setState({ showModal: true })}
               size={100}
               color="grey"
             />
@@ -193,8 +178,8 @@ class SiteLessons extends Component {
               title="Add a Lesson"
               centered
               visible={showModal}
-              onOk={() => this.addLesson(this.state.modalSelectedValue, this.state.modalDate)}
-              onCancel={() => this.showModal(false)}
+              onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
+              onCancel={() => this.setState({ showModal: false })}
             >
               <div className="addLesson">
                 <Select
@@ -202,19 +187,23 @@ class SiteLessons extends Component {
                   style={{ width: 200 }}
                   placeholder="Select a lesson"
                   optionFilterProp="children"
-                  onChange={this.onSelectChange.bind(this)}
-                  onFocus={this.onFocus}
-                  onBlur={this.onBlur}
-                  onSearch={this.onSearch}
+                  onChange={this.onSelectChange}
                   filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
                   }
                 >
-                  {this.state.allLessons.map((item, index) => (
-                     <Option value={index+1}>{item.title}</Option> ))}
+                  {otherLessons.map(lesson => (
+                    <Option key={lesson.id} value={lesson.id}>
+                      {lesson.title}
+                    </Option>
+                  ))}
                 </Select>
-                  <br />
-              <div> <DatePicker onChange={this.onChange.bind(this)}/> </div>
+                <br />
+                <div>
+                  <DatePicker onChange={this.onDateChange} />
+                </div>
               </div>
             </Modal>
           </div>
