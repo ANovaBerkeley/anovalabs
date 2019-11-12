@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { Modal, Select, Form, Icon, Button } from 'antd';
+import { Modal, Select } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 import '../stylesheets/SignUp.css';
@@ -19,16 +19,14 @@ class SignUp extends Component {
       passwordStatus: '',
       redirect: false,
       sites: [],
-      role: 'student',
+      role: '',
       siteId: ''
     };
 
     this._change = this._change.bind(this);
     this.onSelectSiteChange = this.onSelectSiteChange.bind(this);
     this.onSelectRoleChange = this.onSelectRoleChange.bind(this);
-
     this._submit = this._submit.bind(this);
-
     this._validateUser = this._validateUser.bind(this);
   }
 
@@ -50,49 +48,6 @@ class SignUp extends Component {
           });
         }
       );
-  }
-
-  async _validateUser() {
-    const userSchema = Yup.object({
-      email: Yup.string()
-        .email()
-        .required('No email provided'),
-      password: Yup.string()
-        .required('No password provided.')
-        .min(10, 'Password should be 8 chars minimum.')
-        .matches(/[a-zA-Z0-9]/, 'Password must contain numbers or letters')
-    });
-    const { email, password } = this.state;
-    try {
-      const isValid = await userSchema.validate(
-        { email, password },
-        { abortEarly: false }
-      );
-      if (isValid) {
-        this.setState({
-          emailStatus: '',
-          passwordStatus: ''
-        });
-        return true;
-      }
-    } catch (error) {
-      if (error.name === 'ValidationError') {
-        const presentState = { passwordStatus: '', emailStatus: '' };
-        error.inner.map(item => {
-          if (item.path === 'password') {
-            presentState.passwordStatus = item.message;
-          } else if (item.path === 'email') {
-            presentState.emailStatus = item.message;
-          }
-        });
-        this.setState({
-          emailStatus: presentState.emailStatus,
-          passwordStatus: presentState.passwordStatus
-        });
-        return false;
-      }
-    }
-    return false;
   }
 
   _change(event) {
@@ -135,20 +90,17 @@ class SignUp extends Component {
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    })
+    });
   }
 
   async _submit(event) {
-    const { name, email, password, role } = this.state;
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(role);
-    if (!name || !email || !password || !role) {
+    const { name, email, password, role, siteId } = this.state;
+    if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
         centered: true
       });
+      event.preventDefault();
     } else {
       event.preventDefault();
       const isValid = await this._validateUser();
@@ -169,7 +121,6 @@ class SignUp extends Component {
           })
           .catch(err => {
             localStorage.removeItem('anovaToken');
-            console.log(err);
           });
       } else {
         console.log(this.state.errorMessage);
@@ -188,6 +139,50 @@ class SignUp extends Component {
       );
     }
     return options;
+  }
+
+
+  async _validateUser() {
+    const userSchema = Yup.object({
+      email: Yup.string()
+        .email()
+        .required('No email provided'),
+      password: Yup.string()
+        .required('No password provided.')
+        .min(8, 'Password should be 8 chars minimum.')
+        .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters')
+    });
+    const { email, password } = this.state;
+    try {
+      const isValid = await userSchema.validate(
+        { email, password },
+        { abortEarly: false }
+      );
+      if (isValid) {
+        this.setState({
+          emailStatus: '',
+          passwordStatus: ''
+        });
+        return true;
+      }
+    } catch (error) {
+      if (error.name === 'ValidationError') {
+        const presentState = { passwordStatus: '', emailStatus: '' };
+        error.inner.map(item => {
+          if (item.path === 'password') {
+            presentState.passwordStatus = item.message;
+          } else if (item.path === 'email') {
+            presentState.emailStatus = item.message;
+          }
+        });
+        this.setState({
+          emailStatus: presentState.emailStatus,
+          passwordStatus: presentState.passwordStatus
+        });
+        return false;
+      }
+    }
+    return false;
   }
 
   render() {

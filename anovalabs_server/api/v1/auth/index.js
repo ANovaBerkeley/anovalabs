@@ -4,7 +4,6 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
-const Account = require('../../../db/account');
 const User = require('../../../db/user');
 
 require('dotenv').config();
@@ -39,7 +38,7 @@ function validatorAccount(account) {
 
 router.post('/signup', (req, res, next) => {
   const validAccount = validatorAccount(req.body);
-  const accountId = uuidv4();
+  // const accountId = uuidv4();
   console.log(validAccount.error);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
@@ -55,7 +54,7 @@ router.post('/signup', (req, res, next) => {
               email: req.body.email.trim(),
               password: hash,
               role: req.body.role
-              //account_id: accountId
+              // account_id: accountId
             };
             User.create(newUser).then(retUser => {
               const payload = {
@@ -63,8 +62,7 @@ router.post('/signup', (req, res, next) => {
                 email: retUser[0].email,
                 roles: retUser[0].role,
                 candy: ''
-                };
-              console.log(payload);
+              };
               jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
@@ -94,11 +92,9 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  console.log("logging in");
   const validAccount = validatorAccount(req.body);
   if (validAccount.error === null) {
     User.getOneByEmail(req.body.email.trim()).then(user => {
-      console.log(user);
       if (user) {
         bcrypt.compare(req.body.password.trim(), user.password).then(result => {
           if (result) {
@@ -107,8 +103,6 @@ router.post('/login', (req, res, next) => {
               email: user.email,
               roles: user.role
             };
-            console.log("payload" + payload);
-            console.log("secret shh " + process.env.JWT_SECRET);
             jwt.sign(
               payload,
               process.env.JWT_SECRET,
@@ -117,7 +111,7 @@ router.post('/login', (req, res, next) => {
               },
               (err, token) => {
                 if (err) {
-                  console.log("error jwt not creatd");
+                  console.log("error jwt not created");
                   next(new Error('Invalid login'));
                 } else {
                   res.json({

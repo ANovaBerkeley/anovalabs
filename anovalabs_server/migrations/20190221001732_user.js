@@ -16,14 +16,14 @@ exports.up = function(knex, Promise) {
       	.string('name')
       	.notNullable();
       table
-      	.string('bio');
+        .string('role')
+        .notNullable();
       table
       	.string('notes');
       table
         .string('candy');
       table
-        .string('role')
-        .notNullable();
+        .string('hobby');
     });
 };
 

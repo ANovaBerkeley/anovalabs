@@ -13,8 +13,8 @@ export default class Profile extends Component {
       profileimage: 'https://image.flaticon.com/icons/png/128/1141/1141771.png',
       username: '',
       email: '',
-      bio: '',
       candy: '',
+      hobby: '',
       showEdit: false
     };
   }
@@ -32,7 +32,6 @@ export default class Profile extends Component {
             isLoaded: true,
             username: profile[0].name,
             //TODO: picture, candy
-            bio: profile[0].bio,
             email: profile[0].email,
             candy: profile[0].candy
          });
@@ -47,12 +46,10 @@ export default class Profile extends Component {
   }
 
   applyChanges() {
-    const bioEdit = document.getElementById('bioEdit');
     const candyEdit = document.getElementById('candyEdit');
     fetch('http://localhost:5000/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
-        bio: bioEdit.value,
         candy: candyEdit.value,
         id: decode(getJWT()).id
       }),
@@ -101,7 +98,7 @@ export default class Profile extends Component {
                                  <p>Hobbies:</p>
                             </Col>
                             <Col>
-                                 <p id="bio">{this.state.bio}</p>
+                                 <p id="hobby">{this.state.hobby}</p>
                             </Col>
                        </Row>
                        <Row>
@@ -123,7 +120,7 @@ export default class Profile extends Component {
                                            </Row>
                                            <Row>
                                                 <Col>
-                                                     <Input id="bioEdit" allowClear={true} addonBefore="Hobbies:" autosize="true" defaultValue={this.state.bio}></Input>
+                                                     <Input id="hobbyEdit" allowClear={true} addonBefore="Hobbies:" autosize="true" defaultValue={this.state.hobby}></Input>
                                                 </Col>
                                            </Row>
                                       </div>

@@ -32,7 +32,7 @@ class SiteLessons extends Component {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-    fetch(`http://localhost:5000/api/v1/lessons/site?uid=${dTok.id}`)
+    fetch(`http://localhost:5000/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
         this.setState({

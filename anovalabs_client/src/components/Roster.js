@@ -8,16 +8,7 @@ import * as decode from 'jwt-decode';
 
 export default class Roster extends Component {
   state = {
-    students: [
-       {
-        key: '2',
-        profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-        username: "John Smithson",
-        email: "potatopotato@gmail.com",
-        bio: "Once on time",
-        candy: "Candy",
-       }
-    ],
+    students: [],
     mentors: [],
     isMentor: this.props.ismentor
   };
@@ -28,9 +19,9 @@ export default class Roster extends Component {
 
     fetch('http://localhost:5000/api/v1/rosterStudent?uid='+d_tok.id)
       .then(res => res.json())
-      .then(students1 => {
+      .then(students => {
           this.setState({
-            students: students1});
+            students});
         },
         error => {
           this.setState({

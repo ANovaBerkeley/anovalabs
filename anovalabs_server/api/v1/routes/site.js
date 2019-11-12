@@ -15,6 +15,22 @@ router.get('/allSites', (req, res) => {
     });
 });
 
+router.get('/current', (req, res) => {
+  const userid = req.query.uid;
+
+  const siteid = db
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
+
+  db.select('site.schoolName')
+    .from('site')
+    .where('site.id', siteid)
+    .first()
+    .then(data => {
+      res.send(data);
+    });
+});
 
 /* Add user to user semester site. */
 router.post('/addUserSemSite', (req, res, next) => {
