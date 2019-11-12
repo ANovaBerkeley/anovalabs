@@ -37,9 +37,7 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
   .where({ name: req.body.name })
-  .update({ name: req.body.name })
-  .update({ email: req.body.email })
-  .update({ notes: req.body.notes })
+  .update({ name: req.body.name, email: req.body.email, notes: req.body.notes })
   .then(data => {
     res.status(201).json({ name: req.body.name });
   })

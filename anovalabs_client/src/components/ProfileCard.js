@@ -59,6 +59,10 @@ class extends React.Component {
 export default class ProfileCard extends Component {
      state = {
           visible: false,
+          username: this.props.student.name,
+          email: this.props.student.email,
+          notes: this.props.student.notes,
+          candy: this.props.student.candy,
      };
      
      showModal = () => {
@@ -77,7 +81,7 @@ export default class ProfileCard extends Component {
                }
                fetch('http://localhost:5000/api/v1/rosterStudent/update',
                     { method: 'POST',
-                         body: JSON.stringify({ name: values.name, email: values.email, notes: values.notes }),
+                         body: JSON.stringify({ name: values.name, email: values.email, notes: values.notes, candy: values.candy }),
                          headers: new Headers({
                          'Content-Type': 'application/json'
                          }),
@@ -85,11 +89,9 @@ export default class ProfileCard extends Component {
                     .then(res => res.json())
                     .then(
                          values => {
-                         console.log(values);
                          form.resetFields();
-                         this.setState({ visible: false });
+                         this.setState({ visible: false, username: values.name, email: values.email, notes: values.notes, candy: values.candy });
                });
-               
           });
      };
 
@@ -98,6 +100,7 @@ export default class ProfileCard extends Component {
      };
      
      render() {
+          console.log(this.props.student);
           if (this.props.mentor) {
                return (
                     <div>
@@ -106,11 +109,10 @@ export default class ProfileCard extends Component {
                          style={{ width: 300 }}
                          cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
                     >
-                    <Meta
-                         avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                         title={this.props.student.username}
-                         description= {<ProfileDescription student = {this.props.student} />}
-                    />
+                    <h2>Name: {this.state.username}</h2>
+                    <p>Email: {this.state.email}</p>
+                    <p>Notes: {this.state.notes}</p>
+                    <p>Favorite Candy: {this.state.candy}</p>
                     <Button type="primary" onClick={this.showModal}>
                          Edit Profile
                     </Button>
@@ -130,11 +132,10 @@ export default class ProfileCard extends Component {
                          style={{ width: 300 }}
                          cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg"/>}
                     >
-                         <Meta
-                              avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                              title={this.props.student.username}
-                              description= {<ProfileDescription student = {this.props.student} />}
-                         />
+                    <h2>Name: {this.state.username}</h2>
+                    <p>Email: {this.state.email}</p>
+                    <p>Notes: {this.state.notes}</p>
+                    <p>Favorite Candy: {this.state.candy}</p>
                     </Card>
                     </div>
                )

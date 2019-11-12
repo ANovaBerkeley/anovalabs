@@ -9,17 +9,7 @@ import "antd/dist/antd.css";
 
 export default class Roster extends Component {
   state = {
-    students: [
-       {
-        key: '2',
-        profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
-        username: "John Smithson",
-        email: "potatopotato@gmail.com",
-        grade: "Freshman",
-        bio: "Once on time",
-        candy: "Candy",
-       }
-    ],
+    students: [],
     mentors: [],
     mentor: true
   }
