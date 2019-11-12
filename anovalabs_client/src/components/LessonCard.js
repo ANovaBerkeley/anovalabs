@@ -6,14 +6,12 @@ import * as decode from 'jwt-decode';
 
 import '../stylesheets/LessonCard.css';
 
-// TODO: Need to show lessons based on user's assigned ID
-// TODO: only show date if for site specific lessons page
 class LessonCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      isMentor: true
+      isMentor: this.props.isment
     };
     this.delete = this.delete.bind(this);
   }
@@ -22,14 +20,6 @@ class LessonCard extends Component {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
 
-    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
-      .then(res => res.json())
-      .then(profile => {
-
-          this.setState({
-            isMentor: profile[0].role == 'mentor'
-          });
-        });
   }
 
   delete() {

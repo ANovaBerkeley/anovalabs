@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('name', 'email', 'picture', 'grade', 'bio', 'notes')
+  db.select('user.id', 'name', 'email', 'picture', 'notes')
     .from('user_semester_site')
     .rightJoin('user', 'user.id', 'user_semester_site.user_id')
     .where('site_id', siteid)

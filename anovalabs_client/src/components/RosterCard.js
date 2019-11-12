@@ -1,25 +1,25 @@
-import React, { Component } from 'react'
-import axios from 'axios';
+import React, { Component } from 'react';
 import '../stylesheets/Roster.css';
 import { Icon, Card, Avatar } from 'antd';
-import "antd/dist/antd.css";
+import 'antd/dist/antd.css';
+
 const { Meta } = Card;
 
 class ProfileDescription extends React.Component {
      render() {
        return (
        <div className = "profileDescription">
-            <h2>Name: {this.props.student.name}</h2>
-            <p>Email: {this.props.student.email}</p>
+            <h2>Name: {this.props.person.name}</h2>
+            <p>Email: {this.props.person.email}</p>
 
-            <p>Notes: {this.props.student.notes}</p>
-            <p>Favorite Candy: {this.props.student.candy}</p>
+            <p>Notes: {this.props.person.notes}</p>
+            <p>Favorite Candy: {this.props.person.candy}</p>
        </div>
        )
      }
    }
 
-export default class ProfileCard extends Component {
+export default class RosterCard extends Component {
      render() {
           if (this.props.mentor) {
                return (
@@ -31,8 +31,8 @@ export default class ProfileCard extends Component {
                     >
                          <Meta
                               avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                              title={this.props.student.username}
-                              description= {<ProfileDescription student = {this.props.student} />}
+                              title={this.props.person.username}
+                              description= {<ProfileDescription person = {this.props.person} />}
                          />
                     </Card>
                     </div>
@@ -46,8 +46,8 @@ export default class ProfileCard extends Component {
                     >
                          <Meta
                               avatar={<Avatar src="https://image.flaticon.com/icons/svg/148/148767.svg" />}
-                              title={this.props.student.username}
-                              description= {<ProfileDescription student = {this.props.student} />}
+                              title={this.props.person.username}
+                              description= {<ProfileDescription person = {this.props.person} />}
                          />
                     </Card>
                     </div>

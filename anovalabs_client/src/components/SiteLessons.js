@@ -8,15 +8,14 @@ import '../stylesheets/SiteLessons.css';
 const { Option } = Select;
 // import '../stylesheets/Lessons.css';
 
-// TODO: retrieve and display site name at top
-// reset modal values onOk
+// TODO reset modal values onOk
 // add documentation
 
 class SiteLessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mentor: true,
+      isMentor: this.props.ismentor,
       showModal: false,
       siteLessons: [],
       site: '',
@@ -32,14 +31,6 @@ class SiteLessons extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
-
-    fetch(`http://localhost:5000/api/v1/profile/${dTok.id}?uid=${dTok.id}`)
-      .then(res => res.json())
-      .then(profile => {
-        this.setState({
-          mentor: profile[0].role === 'mentor'
-        });
-      });
 
     fetch(`http://localhost:5000/api/v1/lessons/site?uid=${dTok.id}`)
       .then(res => res.json())
@@ -64,7 +55,7 @@ class SiteLessons extends Component {
       });
   }
 
-  onDateChange(date, dateString) {
+  onDateChange(date) {
     this.setState({ modalDate: date });
   }
 
@@ -110,8 +101,7 @@ class SiteLessons extends Component {
       })
         .then(res => res.json())
         .then(newLesson => {
-          console.log(date);
-          const newSiteLessons = [...siteLessons, { ...newLesson, date}];
+          const newSiteLessons = [...siteLessons, { ...newLesson, date }];
           newSiteLessons.sort(
             (siteLesson1, siteLesson2) => siteLesson1.date > siteLesson2.date
           );
@@ -130,7 +120,7 @@ class SiteLessons extends Component {
 
   renderLessons = () => {
     const {
-      mentor,
+      isMentor,
       siteLessons,
       showModal,
       modalSelectedValue,
@@ -138,17 +128,48 @@ class SiteLessons extends Component {
       otherLessons,
       site
     } = this.state;
-    if (!mentor) {
-      return (
-        <div className="container">
-          <div className="title">
-            <h1>All Lessons</h1>
-          </div>
-          <div className="lessonsContainer">
-            {siteLessons.map(lesson => (
-              <LessonCard key={lesson.id} lessonDetails={lesson} pool={false} />
-            ))}
-          </div>
+    let maybeAddCard;
+    if (isMentor) {
+      maybeAddCard = (
+        <div className="plusCard">
+          <GoPlus
+            onClick={() => this.setState({ showModal: true })}
+            size={100}
+            color="grey"
+          />
+          <Modal
+            className="addModal"
+            title="Add a Lesson"
+            centered
+            visible={showModal}
+            onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
+            onCancel={() => this.setState({ showModal: false })}
+          >
+            <div className="addLesson">
+              <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select a lesson"
+                optionFilterProp="children"
+                onChange={this.onSelectChange}
+                filterOption={(input, option) =>
+                  option.props.children
+                    .toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {otherLessons.map(lesson => (
+                  <Option key={lesson.id} value={lesson.id}>
+                    {lesson.title}
+                  </Option>
+                ))}
+              </Select>
+              <br />
+              <div>
+                <DatePicker onChange={this.onDateChange} />
+              </div>
+            </div>
+          </Modal>
         </div>
       );
     }
@@ -156,7 +177,7 @@ class SiteLessons extends Component {
     return (
       <div className="container">
         <div className="lessons_title">
-          <h1>REPLACE W SITE NAME</h1>
+          <h1>{site.schoolName} Lessons</h1>
         </div>
         <div className="lessonsContainer">
           {siteLessons.map(lesson => (
@@ -165,48 +186,10 @@ class SiteLessons extends Component {
               deleteHandler={this.deleteHandler}
               lessonDetails={lesson}
               pool={false}
+              isment={isMentor}
             />
           ))}
-          <div className="plusCard">
-            <GoPlus
-              onClick={() => this.setState({ showModal: true })}
-              size={100}
-              color="grey"
-            />
-            <Modal
-              className="addModal"
-              title="Add a Lesson"
-              centered
-              visible={showModal}
-              onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
-              onCancel={() => this.setState({ showModal: false })}
-            >
-              <div className="addLesson">
-                <Select
-                  showSearch
-                  style={{ width: 200 }}
-                  placeholder="Select a lesson"
-                  optionFilterProp="children"
-                  onChange={this.onSelectChange}
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {otherLessons.map(lesson => (
-                    <Option key={lesson.id} value={lesson.id}>
-                      {lesson.title}
-                    </Option>
-                  ))}
-                </Select>
-                <br />
-                <div>
-                  <DatePicker onChange={this.onDateChange} />
-                </div>
-              </div>
-            </Modal>
-          </div>
+          {maybeAddCard}
         </div>
       </div>
     );

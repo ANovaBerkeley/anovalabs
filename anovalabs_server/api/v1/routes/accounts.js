@@ -17,11 +17,8 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res, next) => {
   Accounts.getOneById(req.params.id).then(account => {
     if (account) {
-      console.log("we're good!");
-      console.log(account);
       res.json(account);
     } else {
-      console.log('we not good');
       res.status(404);
       next();
     }

@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import '../stylesheets/Roster.css';
-import ProfileCard from './ProfileCard'
+import RosterCard from './RosterCard'
 import { Icon, Card, Avatar, Col, Row } from 'antd';
 import "antd/dist/antd.css";
 import * as decode from 'jwt-decode';
-
-
 
 export default class Roster extends Component {
   state = {
@@ -16,25 +14,18 @@ export default class Roster extends Component {
         profileimage: "https://image.flaticon.com/icons/svg/1141/1141771.svg",
         username: "John Smithson",
         email: "potatopotato@gmail.com",
-        grade: "Freshman",
         bio: "Once on time",
         candy: "Candy",
        }
     ],
     mentors: [],
-    mentor: true
-  }
+    isMentor: this.props.ismentor
+  };
+
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-    fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
-      .then(res => res.json())
-      .then(profile => {
 
-          this.setState({
-            mentor: profile[0].role == 'mentor'
-          });
-        });
     fetch('http://localhost:5000/api/v1/rosterStudent?uid='+d_tok.id)
       .then(res => res.json())
       .then(students1 => {
@@ -63,23 +54,23 @@ export default class Roster extends Component {
         )
   }
 
-   render() {
-     if(!this.state.mentor) {
-       return (
-            <div className="container">
-            <div className="containerGrid">
-            {this.state.mentors.map((mentor, index) => <ProfileCard key = {index} student = {mentor} mentor = {this.state.mentor}/>)}
-            </div>
-            </div>
-       )
-     } else {
-       return (
-            <div className="container">
-            <div className="containerGrid">
-            {this.state.students.map((student, index) => <ProfileCard key = {index} student = {student} mentor = {this.state.mentor}/>)}
-            </div>
-            </div>
-       )
-     }
-   }
+  render() {
+    let roster;
+    const { isMentor, students, mentors } = this.state;
+    if (isMentor) {
+      roster = students.map(student => (
+        <RosterCard key={student.id} person={student} mentor={isMentor} />
+      ));
+    } else {
+      roster = mentors.map(mentor => (
+        <RosterCard key={mentor.id} person={mentor} mentor={isMentor} />
+      ));
+    }
+
+    return (
+      <div className="container">
+        <div className="containerGrid">{roster}</div>
+      </div>
+    );
+  }
 }

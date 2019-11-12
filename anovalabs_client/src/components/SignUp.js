@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { getJWT } from '../utils/utils';
+import { Modal, Select, Form, Icon, Button } from 'antd';
 import * as decode from 'jwt-decode';
-import { Modal} from 'antd';
-
+import { getJWT } from '../utils/utils';
 import '../stylesheets/SignUp.css';
 
+const { Option } = Select;
 
-class Login extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,11 +19,13 @@ class Login extends Component {
       passwordStatus: '',
       redirect: false,
       sites: [],
-      role: '',
-      site: 1
+      role: 'student',
+      siteId: ''
     };
 
     this._change = this._change.bind(this);
+    this.onSelectSiteChange = this.onSelectSiteChange.bind(this);
+    this.onSelectRoleChange = this.onSelectRoleChange.bind(this);
 
     this._submit = this._submit.bind(this);
 
@@ -32,22 +34,22 @@ class Login extends Component {
 
   componentDidMount() {
     if (getJWT() !== null) {
-      this.setState({ redirect: true })
-    };
+      this.setState({ redirect: true });
+    }
     fetch('http://localhost:5000/api/v1/site/allSites')
-          .then(res => res.json())
-          .then(
-            sites => {
-              this.setState({
-                sites
-              });
-            },
-            error => {
-              this.setState({
-                error
-              });
-            }
-          );
+      .then(res => res.json())
+      .then(
+        sites => {
+          this.setState({
+            sites
+          });
+        },
+        error => {
+          this.setState({
+            error
+          });
+        }
+      );
   }
 
   async _validateUser() {
@@ -93,109 +95,136 @@ class Login extends Component {
     return false;
   }
 
-  // takes an event and creates a key,value pair
   _change(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
-
   }
 
-  add_user_site(d_token) {
-    let curr_date = new Date();
-    let month = curr_date.getMonth();
-    let year = Number(curr_date.getYear()) + 1900;
-    if (month < 7){
-        year = 'Spring ' + year;
+  onSelectSiteChange(siteId) {
+    this.setState({ siteId });
+  }
+
+  onSelectRoleChange(role) {
+    this.setState({ role });
+  }
+
+  getCurrentSemester = () => {
+    const currDate = new Date();
+    const month = currDate.getMonth();
+    const year = Number(currDate.getYear()) + 1900;
+    let semester;
+    if (month < 7) {
+      semester = `Spring ${year}`;
     } else {
-        year = 'Fall ' + year;
+      semester = `Fall ${year}`;
     }
-    console.log(this.state.site);
+    return semester;
+  };
+
+  addUserSite(decodedToken) {
+    const { siteId } = this.state;
+    const semester = this.getCurrentSemester();
     fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
-          method: 'POST',
-          body: JSON.stringify({ user_id: d_token.id, semester: year, site_id: this.state.site}),
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          })
-        })
-      .then(res => {
-        return
+      method: 'POST',
+      body: JSON.stringify({
+        user_id: decodedToken.id,
+        semester,
+        site_id: siteId
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
       })
-      .catch(err => {
-        console.log(err);
-      });
+    })
   }
 
   async _submit(event) {
-    if (this.state.name == '' || this.state.email == '' ||  this.state.password == '' ||  this.state.role == '') {
+    const { name, email, password, role } = this.state;
+    console.log(name);
+    console.log(email);
+    console.log(password);
+    console.log(role);
+    if (!name || !email || !password || !role) {
       Modal.error({
-          title: 'Please fill out all fields.',
-          centered: true
-        });
-      return;
+        title: 'Please fill out all fields.',
+        centered: true
+      });
     } else {
-        event.preventDefault();
-        const isValid = await this._validateUser();
-        if (isValid) {
-          axios
-            .post('http://localhost:5000/api/v1/auth/signup', {
-              name: this.state.name,
-              email: this.state.email,
-              password: this.state.password,
-              role: this.state.role
-            })
-            .then(res => {
-              // storing token from server
-
-              localStorage.setItem('anovaToken', res.data.token);
-              this.props.history.push('/');
-              const tok_payload = decode(res.data.token);
-              this.add_user_site(tok_payload);
-            })
-            .catch(err => {
-
-              localStorage.removeItem('anovaToken');
-              console.log(err);
-            });
-        } else {
-          console.log(this.state.errorMessage);
-        }
+      event.preventDefault();
+      const isValid = await this._validateUser();
+      if (isValid) {
+        axios
+          .post('http://localhost:5000/api/v1/auth/signup', {
+            name,
+            email,
+            password,
+            role
+          })
+          .then(res => {
+            // storing token from server
+            localStorage.setItem('anovaToken', res.data.token);
+            this.props.history.push('/');
+            const tokPayload = decode(res.data.token);
+            this.addUserSite(tokPayload);
+          })
+          .catch(err => {
+            localStorage.removeItem('anovaToken');
+            console.log(err);
+          });
+      } else {
+        console.log(this.state.errorMessage);
+      }
      }
   }
 
   loadSites = () => {
-
-    let options = [];
-    let sites2 = this.state.sites;
-    for (let i = 0; i < sites2.length; i++) {
-      options.push(<option value={sites2[i].id}>{sites2[i].schoolName}</option>);
+    const { sites } = this.state;
+    const options = [];
+    for (let i = 0; i < sites.length; i += 1) {
+      options.push(
+        <Option key={sites[i].id} value={sites[i].id}>
+          {sites[i].schoolName}
+        </Option>
+      );
     }
     return options;
   }
 
   render() {
-    const { redirect } = this.state;
+    const {
+      redirect,
+      name,
+      email,
+      password,
+      emailStatus,
+      passwordStatus
+    } = this.state;
     if (redirect) {
-      this.props.history.push('/profile');
+      this.props.history.push('/SiteLessons');
     }
     return (
       <div className="container">
         <div className="signUpBox">
-          <img src = "../public/img/logo-lower.png" className = "signup-logo"/>
-          <div className = "title">
-            <div className = "anova">ANova </div>
-            <div className = "labs">Labs </div>
+          <img
+            alt="anova logo"
+            src="../public/img/logo-lower.png"
+            className="signup-logo"
+          />
+          <div className="title">
+            <div className="anova">ANova </div>
+            <div className="labs">Labs </div>
           </div>
           <form onSubmit={this._submit}>
             <div>
-              <label htmlFor="name">Name
-              <input
+              <label htmlFor="name">
+                Name
+                <input
                   id="name"
                   type="text"
                   name="name"
                   onChange={this._change}
-                  value={this.state.name}
-              />
+                  value={name}
+                />
               </label>
             </div>
             <div>
@@ -203,41 +232,50 @@ class Login extends Component {
                 Email
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   name="email"
                   onChange={this._change}
-                  value={this.state.email}
-              />
+                  value={email}
+                />
               </label>
             </div>
-            <div>{this.state.emailStatus}</div>
+            <div>{emailStatus}</div>
             <div>
-              <label htmlFor="password">Password
-              <input
+              <label htmlFor="password">
+                Password
+                <input
                   id="password"
                   type="password"
                   name="password"
                   onChange={this._change}
-                  value={this.state.password}
-              />
+                  value={password}
+                />
               </label>
-              <div>{this.state.passwordStatus}</div>
+              <div>{passwordStatus}</div>
             </div>
 
             <div>
-              <label> Site
-              <select onChange={this._change} id="site" name="site">
+              Site
+              <br/>
+              <Select
+                style={{ width: 250 }}
+                placeholder="Select a site"
+                onChange={this.onSelectSiteChange}
+              >
                 {this.loadSites()}
-              </select>
-              </label>
+              </Select>,
             </div>
             <div>
-              <label> Role
-              <select onChange={this._change} id="role" name="role">
-                <option value="student">Student</option>
-                <option value="mentor">Mentor</option>
-              </select>
-              </label>
+              Role
+              <br/>
+              <Select
+                style={{ width: 250 }}
+                placeholder="Select your role"
+                onChange={this.onSelectRoleChange}
+              >
+                <Option value="student">Student</Option>
+                <Option value="mentor">Mentor</Option>
+              </Select>
             </div>
             <br />
             <input type="submit" value="submit" />
@@ -247,4 +285,4 @@ class Login extends Component {
     );
   }
 }
-export default Login;
+export default SignUp;

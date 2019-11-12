@@ -4,12 +4,11 @@ const knex = require('../../../db/knex');
 
 const router = express.Router();
 
-/* Retrieve a user's profile based on their id.
-TODO: ensure that this cannot be called from a different user's account. */
+/* Retrieve a user's profile based on their id. */
 router.get('/:id', (req, res) => {
   const userid = req.query.uid;
 
-  db.select('user.email', 'user.picture', 'user.grade', 'user.name', 'user.bio', 'user.notes', 'user.role')
+  db.select('user.email', 'user.picture', 'user.candy', 'user.name', 'user.bio', 'user.notes', 'user.role')
     .from('user')
     .where('user.id', userid)
     .then(data => {
@@ -18,7 +17,6 @@ router.get('/:id', (req, res) => {
 });
 
 /* Update a user's profile. */
-// TODO: Change to update photo in knex statement once adding pictures work
 router.post('/update', (req, res, next) => {
   for (let requiredParameter of ['id']) {
     if (!req.body[requiredParameter]) {
@@ -30,7 +28,7 @@ router.post('/update', (req, res, next) => {
 
   knex('user')
     .where({ id: req.body.id })
-    .update({ notes: req.body.notes, bio: req.body.bio, grade: req.body.grade })
+    .update({bio: req.body.bio, candy: req.body.candy, notes: req.body.notes })
     .then(data => {
       res.status(201).json({ id: req.body.id });
     })

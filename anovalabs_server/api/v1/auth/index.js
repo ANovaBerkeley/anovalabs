@@ -54,15 +54,15 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
-              role: req.body.role,
-              grade: 1 // temporary value NEED TO CHANGE
+              role: req.body.role
               //account_id: accountId
             };
             User.create(newUser).then(retUser => {
               const payload = {
                 id: retUser[0].id,
                 email: retUser[0].email,
-                roles: retUser[0].role
+                roles: retUser[0].role,
+                candy: ''
                 };
               console.log(payload);
               jwt.sign(
