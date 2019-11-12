@@ -13,15 +13,14 @@ exports.up = function(knex, Promise) {
       	.string('password')
       	.notNullable();
       table
-      	.integer('grade')
-      	.notNullable();
-      table
       	.string('name')
       	.notNullable();
       table
       	.string('bio');
       table
       	.string('notes');
+      table
+        .string('candy');
       table
         .string('role')
         .notNullable();

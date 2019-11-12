@@ -14,7 +14,8 @@ class AuthComponent extends Component {
     this.state = {
       message: undefined,
       type: this.props.type,
-      mentor: null
+      mentor: null,
+      mounted: false
     };
   }
 
@@ -26,7 +27,8 @@ class AuthComponent extends Component {
       .then(profile => {
 
           this.setState({
-            mentor: profile[0].role == 'mentor'
+            mentor: profile[0].role == 'mentor',
+            mounted: true
           });
         });
 
@@ -49,10 +51,12 @@ class AuthComponent extends Component {
           this.props.history.push('/login');
         });
     }
+
   }
 
   render() {
-    if (!getJWT()) {
+    console.log(this.state.mentor);
+    if (!getJWT() || !this.state.mounted) {
       return (
         <div>
           <h1>Loading . . .</h1>
@@ -73,6 +77,7 @@ class AuthComponent extends Component {
 
       else if (this.state.type == "lessonpool") {
         return (
+
           <LessonPool ismentor={this.state.mentor}/>
         );
       }

@@ -21,6 +21,7 @@ class LessonPool extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.ismentor);
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
