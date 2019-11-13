@@ -115,7 +115,7 @@ class SignUp extends Component {
           .then(res => {
             // storing token from server
             localStorage.setItem('anovaToken', res.data.token);
-            this.props.history.push('/');
+            this.props.history.push('/SiteLessons');
             const tokPayload = decode(res.data.token);
             this.addUserSite(tokPayload);
           })

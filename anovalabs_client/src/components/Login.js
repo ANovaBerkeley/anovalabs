@@ -35,13 +35,11 @@ class Login extends Component {
       })
       .then(res => {
         localStorage.setItem('anovaToken', res.data.token);
-        this.props.history.push('/');
+        this.props.history.push('/SiteLessons');
       })
       .catch(error => {
         this.setState({ errorMsg: 'Invalid Login' });
       });
-    const anovaToken = localStorage.getItem('anovaToken');
-    const anovaPayload = decode(anovaToken);
   }
 
   componentDidMount() {
