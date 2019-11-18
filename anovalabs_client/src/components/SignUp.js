@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { Modal, Select } from 'antd';
+import { Modal, Select, Form, Input, Icon, Checkbox, Button } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 import '../stylesheets/SignUp.css';
@@ -20,14 +20,19 @@ class SignUp extends Component {
       redirect: false,
       sites: [],
       role: '',
-      siteId: ''
+      siteId: '',
+      isMentor: '',
+      siteCode: ''
     };
 
-    this._change = this._change.bind(this);
     this.onSelectSiteChange = this.onSelectSiteChange.bind(this);
     this.onSelectRoleChange = this.onSelectRoleChange.bind(this);
     this._submit = this._submit.bind(this);
     this._validateUser = this._validateUser.bind(this);
+    this._changeName= this._changeName.bind(this);
+    this._changeEmail = this._changeEmail.bind(this);
+    this._changePassword = this._changePassword.bind(this);
+    this._checkAccess = this._checkAccess.bind(this);
   }
 
   componentDidMount() {
@@ -49,10 +54,20 @@ class SignUp extends Component {
         }
       );
   }
-
-  _change(event) {
+  _changeEmail(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      email: event.target.value
+    });
+  }
+  _changeName(event) {
+    this.setState({
+      name: event.target.value
+    });
+  }
+
+  _changePassword(event) {
+    this.setState({
+      password: event.target.value
     });
   }
 
@@ -61,7 +76,19 @@ class SignUp extends Component {
   }
 
   onSelectRoleChange(role) {
+    console.log(role);
     this.setState({ role });
+  }
+
+  _checkAccess(event) {
+    if (this.state.role == 'student') {
+      this.setState({siteCode: event.target.value});
+      console.log(this.state.siteCode);
+    } else {
+      this.setState({isMentor: event.target.value});
+      console.log(this.state.isMentor);
+
+    }
   }
 
   getCurrentSemester = () => {
@@ -94,10 +121,28 @@ class SignUp extends Component {
   }
 
   async _submit(event) {
-    const { name, email, password, role, siteId } = this.state;
+    const { name, email, password, role, siteId, isMentor, siteCode, sites} = this.state;
+    console.log(role);
+    console.log(isMentor);
+    console.log(siteCode);
     if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
+        centered: true
+      });
+      event.preventDefault();
+    } 
+    if (role == 'mentor' && isMentor != 'wazoo!') {
+      Modal.error({
+        title: 'Wrong Mentor Access Code!',
+        centered: true
+      });
+      event.preventDefault();
+    }
+    if (role == 'student' && siteCode != sites[siteId - 1].schoolName + "ANova") {
+      console.log(sites[siteId - 1]);
+      Modal.error({
+        title: 'Wrong Site Access Code!',
         centered: true
       });
       event.preventDefault();
@@ -209,72 +254,66 @@ class SignUp extends Component {
             <div className="anova">ANova </div>
             <div className="labs">Labs </div>
           </div>
-          <form onSubmit={this._submit}>
-            <div>
-              <label htmlFor="name">
-                Name
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  onChange={this._change}
-                  value={name}
+          <Form onSubmit={this._submit} className="login-form">
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Name"
+                  onChange = {this._changeName}                  
                 />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="email">
-                Email
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  onChange={this._change}
-                  value={email}
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Email"
+                  onChange = {this._changeEmail}                  
                 />
-              </label>
-            </div>
-            <div>{emailStatus}</div>
-            <div>
-              <label htmlFor="password">
-                Password
-                <input
-                  id="password"
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   type="password"
-                  name="password"
-                  onChange={this._change}
-                  value={password}
+                  placeholder="Password"
+                  onChange = {this._changePassword}
+                  
                 />
-              </label>
-              <div>{passwordStatus}</div>
-            </div>
-
-            <div>
-              Site
-              <br/>
-              <Select
-                style={{ width: 250 }}
-                placeholder="Select a site"
-                onChange={this.onSelectSiteChange}
-              >
-                {this.loadSites()}
+            </Form.Item>
+            <Form.Item>
+                <Select
+                  style={{ width: 270}}
+                  placeholder="Select a site"
+                  onChange={this.onSelectSiteChange}
+                >
+                  {this.loadSites()}
               </Select>,
-            </div>
-            <div>
-              Role
-              <br/>
-              <Select
-                style={{ width: 250 }}
-                placeholder="Select your role"
-                onChange={this.onSelectRoleChange}
-              >
-                <Option value="student">Student</Option>
-                <Option value="mentor">Mentor</Option>
+            </Form.Item>
+            <Form.Item>
+                <Select
+                  style={{ width: 270}}
+                  placeholder="Select your role"
+                  onChange={this.onSelectRoleChange}
+                >
+                  <Option value="student">Student</Option>
+                  <Option value="mentor">Mentor</Option>
               </Select>
-            </div>
-            <br />
-            <input type="submit" value="submit" />
-          </form>
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  type="access"
+                  placeholder="Mentor/Site Access Code"
+                  onChange = {this._checkAccess}
+                  
+                />
+            </Form.Item>
+            <div className = "error">{this.state.errorMsg}</div>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  Sign Up
+                </Button>
+                <a href="./LogIn">Back to Log In</a>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     );

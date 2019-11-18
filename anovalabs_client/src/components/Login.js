@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Form, Input, Icon, Checkbox, Button} from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 
@@ -15,18 +16,28 @@ class Login extends Component {
       redirect: false
     };
 
-    this._change = this._change.bind(this);
     this._submit = this._submit.bind(this);
+    this._changeEmail = this._changeEmail.bind(this);
+    this._changePassword = this._changePassword.bind(this);
   }
 
   // takes an event and creates a key,value pair
-  _change(event) {
+
+  _changeEmail(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      email: event.target.value
+    });
+  }
+
+  _changePassword(event) {
+    this.setState({
+      password: event.target.value
     });
   }
 
   _submit(event) {
+    console.log(this.state.email);
+    console.log(this.state.password);
     event.preventDefault();
     axios
       .post('http://localhost:5000/api/v1/auth/login', {
@@ -62,34 +73,31 @@ class Login extends Component {
             <div className = "anova">ANova </div>
             <div className = "labs">Labs </div>
           </div>
-          <form onSubmit={this._submit}>
-            <div>
-              <label for = "email">Email</label>
-              <input
-                type="text"
-                name="email"
-                onChange={this._change}
-                value={this.state.email}
-              />
-            </div>
-            <div>
-              <label for = "password">Password</label>
-              <input
-                type="password"
-                name="password"
-                onChange={this._change}
-                value={this.state.password}
-              />
-              <div className = "error">{this.state.errorMsg}</div>
-            </div>
-            <div className = "remember"> <input type="checkbox"/> Remember Me</div>
-            <div><input type="submit" value="submit" /></div>
-          </form>
-          <div className = "links">
-            <a href="./SignUp" className = "linktext">Register</a>
-            <a href="" className = "linktext">Forgot Password?</a>
-
-          </div>
+          <Form onSubmit={this._submit} className="login-form">
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Username"
+                  onChange = {this._changeEmail}                  
+                />
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  type="password"
+                  placeholder="Password"
+                  onChange = {this._changePassword}
+                  
+                />
+            </Form.Item>
+            <div className = "error">{this.state.errorMsg}</div>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  Log in
+                </Button>
+                <a href="./SignUp">Register here!</a>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     );
