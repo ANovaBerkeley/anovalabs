@@ -26,7 +26,7 @@ class AuthComponent extends Component {
       .then(res => res.json())
       .then(profile => {
         this.setState({
-          mentor: profile[0].role == 'mentor',
+          mentor: profile[0].role === 'mentor',
           mounted: true
         });
       });
@@ -61,26 +61,26 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      if (this.state.type == "lessons") {
+      if (this.state.type === "lessons") {
         return (
           <SiteLessons ismentor={this.state.mentor}/>
         );
       }
 
-      else if (this.state.type == "profile") {
+      else if (this.state.type === "profile") {
         return (
           <Profile/>
         );
       }
 
-      else if (this.state.type == "lessonpool") {
+      else if (this.state.type === "lessonpool") {
         return (
 
           <LessonPool ismentor={this.state.mentor}/>
         );
       }
 
-      else if (this.state.type == "roster") {
+      else if (this.state.type === "roster") {
         return (
           <Roster ismentor={this.state.mentor}/>
         )

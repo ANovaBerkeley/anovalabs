@@ -7,7 +7,7 @@ const router = express.Router();
 /* Retrieve the list of students for a specific site. */
 router.get('/', (req, res) => {
   const userid = req.query.uid;
-  const roleType = 'student';
+  const roleType = req.query.roleToRetrieve;
 
   const siteid = db
     .select('site_id')
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
 /* Update a specific student profile */
 router.post('/update', (req, res, next) => {
-  for (let requiredParameter of ['name', 'email']) {
+  for (let requiredParameter of ['editedNotes', 'userId']) {
     if (!req.body[requiredParameter]) {
       return res
         .status(422)
@@ -36,12 +36,13 @@ router.post('/update', (req, res, next) => {
   }
 
   knex('user')
-    .where({ name: req.body.name })
-    .update({ name: req.body.name, email: req.body.email, notes: req.body.notes })
+    .where({ id: req.body.userId })
+    .update({ notes: req.body.editedNotes })
     .then(() => {
-      res.status(201).json({ name: req.body.name });
+      res.status(201).json({ id: req.body.userId });
     })
     .catch(error => {
+      console.log(error);
       res.status(500).json({ error });
     });
 });

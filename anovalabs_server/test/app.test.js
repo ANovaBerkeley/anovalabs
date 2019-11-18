@@ -143,10 +143,10 @@ describe('DB Test', () =>{
 
     it('Getting Correct Student Roster', (done) =>{
         request(app)
-        .get('/api/v1/rosterStudent?uid=1')
+        .get('/api/v1/roster?uid=1')
         .expect(200)
         .then((response) =>{
-            expect(response.body).to.deep.equal(fixtures.rosterStudent);
+            expect(response.body).to.deep.equal(fixtures.roster);
              done();
         }).catch(function(error) {
             console.error(error);
