@@ -101,12 +101,14 @@ class SiteLessons extends Component {
       })
         .then(res => res.json())
         .then(newLesson => {
-          const newSiteLessons = [...siteLessons, { ...newLesson, date }];
-          newSiteLessons.sort(
-            (siteLesson1, siteLesson2) => siteLesson1.date > siteLesson2.date
-          );
+          let newSiteLessons = [...siteLessons, { ...newLesson, date }];
+          console.log(newSiteLessons);
+          var sorted_lessons = newSiteLessons.sort((siteLesson1,siteLesson2) => {
+              return new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
+          })
+          console.log(sorted_lessons);
           this.setState(prevState => ({
-            siteLessons: newSiteLessons,
+            siteLessons: sorted_lessons,
             otherLessons: prevState.otherLessons.filter(
               otherLesson => otherLesson.id !== lessonId
             ),
@@ -117,6 +119,12 @@ class SiteLessons extends Component {
         });
     }
   }
+
+  // const myData = [].concat(this.state.data)
+  //   .sort((a, b) => a.itemM > b.itemM)
+  //   .map((item, i) => 
+  //       <div key={i}> {item.matchID} {item.timeM}{item.description}</div>
+  //   );
 
   renderLessons = () => {
     const {
@@ -144,6 +152,7 @@ class SiteLessons extends Component {
             visible={showModal}
             onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
             onCancel={() => this.setState({ showModal: false })}
+            destroyOnClose = {true}
           >
             <div className="addLesson">
               <Select
