@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Popconfirm } from 'antd';
-import { GoTrashcan } from 'react-icons/go';
+import { Popconfirm, Modal, Row, Col, Input } from 'antd';
+import { GoTrashcan, GoInfo, GoPlus } from 'react-icons/go';
 import PropTypes from 'prop-types';
 import * as decode from 'jwt-decode';
 
@@ -11,6 +11,7 @@ class LessonCard extends Component {
     super(props);
     this.state = {
       showModal: false,
+      showEditModal: false,
       isMentor: this.props.isment
     };
     this.delete = this.delete.bind(this);
@@ -29,14 +30,16 @@ class LessonCard extends Component {
   }
 
   render() {
-    const { showModal, isMentor } = this.state;
+    const { showEditModal, showModal, isMentor } = this.state;
     const { lessonDetails } = this.props;
     let readableDate = '';
     if (lessonDetails.date && !this.props.pool) {
       readableDate = new Date(lessonDetails.date).toLocaleDateString();
     }
     let maybeDeleteButton;
+    let maybeAddCard;
     if (isMentor) {
+
       maybeDeleteButton =
         <Popconfirm
           className="deleteModal"
@@ -64,6 +67,59 @@ class LessonCard extends Component {
         <div className="date">{readableDate}</div>
         <div className="descriptionContainer">
           <div className="description">{lessonDetails.summary}</div>
+        </div>
+        <Modal
+            className="addModal"
+            title="Add a New Lesson"
+            centered
+            visible={showEditModal}
+            onOk={() => this.addLessonToPool()}
+            onCancel={() => this.setState({ showEditModal: false })}
+          >
+            <div className="addFields">
+              <Row>
+                <Col>
+                  <Input
+                    id="titleAdd"
+                    allowClear
+                    addonBefore="Title:"
+                    autosize
+                    defaultValue=""
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    id="summaryAdd"
+                    allowClear
+                    addonBefore="Summary:"
+                    autosize="true"
+                    defaultValue=""
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    id="linkAdd"
+                    allowClear
+                    addonBefore="Link:"
+                    autosize="true"
+                    defaultValue=""
+                  />
+                </Col>
+              </Row>
+            </div>
+          </Modal>
+        <div className ="editButton">
+          <button
+              className="editButton"
+              onClick={() => this.setState({ showEditModal: true })}
+              type="button"
+            >
+              <GoInfo size="20" />
+          </button>
         </div>
         <div className="buttonContainer">
           <div className="viewAssignment">

@@ -21,13 +21,23 @@
   height: 30px;
   border: none;
   position: absolute;
-  right:10px;
+  right: 0px;
   top:0px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-
+.editButton{
+  width: 30px;
+  height: 70px;
+  border: none;
+  position: absolute;
+  right:30px;
+  top:0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .titleContainer{
