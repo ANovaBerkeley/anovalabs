@@ -131,7 +131,7 @@ class SignUp extends Component {
         centered: true
       });
       event.preventDefault();
-    } 
+    }
     if (role == 'mentor' && isMentor != 'wazoo!') {
       Modal.error({
         title: 'Wrong Mentor Access Code!',
@@ -259,14 +259,14 @@ class SignUp extends Component {
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   placeholder="Name"
-                  onChange = {this._changeName}                  
+                  onChange = {this._changeName}
                 />
             </Form.Item>
             <Form.Item>
                 <Input
                   prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   placeholder="Email"
-                  onChange = {this._changeEmail}                  
+                  onChange = {this._changeEmail}
                 />
             </Form.Item>
             <Form.Item>
@@ -275,7 +275,7 @@ class SignUp extends Component {
                   type="password"
                   placeholder="Password"
                   onChange = {this._changePassword}
-                  
+
                 />
             </Form.Item>
             <Form.Item>
@@ -285,7 +285,7 @@ class SignUp extends Component {
                   onChange={this.onSelectSiteChange}
                 >
                   {this.loadSites()}
-              </Select>,
+              </Select>
             </Form.Item>
             <Form.Item>
                 <Select
@@ -303,7 +303,7 @@ class SignUp extends Component {
                   type="access"
                   placeholder="Mentor/Site Access Code"
                   onChange = {this._checkAccess}
-                  
+
                 />
             </Form.Item>
             <div className = "error">{this.state.errorMsg}</div>
