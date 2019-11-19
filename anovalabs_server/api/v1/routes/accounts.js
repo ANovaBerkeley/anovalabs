@@ -4,6 +4,9 @@ const router = express.Router();
 
 const Accounts = require('../../../db/account');
 
+// this is an old route class to be used as reference for moving database calls
+// to db/
+
 // need to create a validation function for id
 
 // need to create a validation function for account

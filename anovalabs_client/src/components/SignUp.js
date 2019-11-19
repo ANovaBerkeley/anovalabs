@@ -1,7 +1,7 @@
-  import React, { Component } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { Modal, Select, Form, Input, Icon, Checkbox, Button } from 'antd';
+import { Modal, Select, Form, Input, Icon, Button } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 import '../stylesheets/SignUp.css';
@@ -24,15 +24,6 @@ class SignUp extends Component {
       isMentor: '',
       siteCode: ''
     };
-
-    this.onSelectSiteChange = this.onSelectSiteChange.bind(this);
-    this.onSelectRoleChange = this.onSelectRoleChange.bind(this);
-    this._submit = this._submit.bind(this);
-    this._validateUser = this._validateUser.bind(this);
-    this._changeName= this._changeName.bind(this);
-    this._changeEmail = this._changeEmail.bind(this);
-    this._changePassword = this._changePassword.bind(this);
-    this._checkAccess = this._checkAccess.bind(this);
   }
 
   componentDidMount() {
@@ -54,42 +45,41 @@ class SignUp extends Component {
         }
       );
   }
-  _changeEmail(event) {
+
+  _changeEmail = event => {
     this.setState({
       email: event.target.value
     });
-  }
-  _changeName(event) {
+  };
+
+  _changeName = event => {
     this.setState({
       name: event.target.value
     });
-  }
+  };
 
-  _changePassword(event) {
+  _changePassword = event => {
     this.setState({
       password: event.target.value
     });
-  }
+  };
 
-  onSelectSiteChange(siteId) {
+  onSelectSiteChange = siteId => {
     this.setState({ siteId });
-  }
+  };
 
-  onSelectRoleChange(role) {
-    console.log(role);
+  onSelectRoleChange = role => {
     this.setState({ role });
-  }
+  };
 
-  _checkAccess(event) {
-    if (this.state.role == 'student') {
-      this.setState({siteCode: event.target.value});
-      console.log(this.state.siteCode);
+  _checkAccess = event => {
+    const { role } = this.state;
+    if (role === 'student') {
+      this.setState({ siteCode: event.target.value });
     } else {
-      this.setState({isMentor: event.target.value});
-      console.log(this.state.isMentor);
-
+      this.setState({ isMentor: event.target.value });
     }
-  }
+  };
 
   getCurrentSemester = () => {
     const currDate = new Date();
@@ -104,7 +94,7 @@ class SignUp extends Component {
     return semester;
   };
 
-  addUserSite(decodedToken) {
+  addUserSite = decodedToken => {
     const { siteId } = this.state;
     const semester = this.getCurrentSemester();
     fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
@@ -118,7 +108,7 @@ class SignUp extends Component {
         'Content-Type': 'application/json'
       })
     });
-  }
+  };
 
   async _submit(event) {
     const { name, email, password, role, siteId, isMentor, siteCode, sites} = this.state;
@@ -184,8 +174,7 @@ class SignUp extends Component {
       );
     }
     return options;
-  }
-
+  };
 
   async _validateUser() {
     const userSchema = Yup.object({
@@ -213,7 +202,7 @@ class SignUp extends Component {
     } catch (error) {
       if (error.name === 'ValidationError') {
         const presentState = { passwordStatus: '', emailStatus: '' };
-        error.inner.map(item => {
+        error.inner.foreach(item => {
           if (item.path === 'password') {
             presentState.passwordStatus = item.message;
           } else if (item.path === 'email') {
@@ -231,16 +220,10 @@ class SignUp extends Component {
   }
 
   render() {
-    const {
-      redirect,
-      name,
-      email,
-      password,
-      emailStatus,
-      passwordStatus
-    } = this.state;
+    const { redirect, errorMsg } = this.state;
+    const { history } = this.props;
     if (redirect) {
-      this.props.history.push('/SiteLessons');
+      history.push('/SiteLessons');
     }
     return (
       <div className="container">
@@ -256,62 +239,75 @@ class SignUp extends Component {
           </div>
           <Form onSubmit={this._submit} className="login-form">
             <Form.Item>
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Name"
-                  onChange = {this._changeName}
-                />
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="Name"
+                onChange={this._changeName}
+              />
             </Form.Item>
             <Form.Item>
-                <Input
-                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Email"
-                  onChange = {this._changeEmail}
-                />
+              <Input
+                prefix={
+                  <Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="Email"
+                onChange={this._changeEmail}
+              />
             </Form.Item>
             <Form.Item>
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                  onChange = {this._changePassword}
-
-                />
+              <Input
+                prefix={
+                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                type="password"
+                placeholder="Password"
+                onChange={this._changePassword}
+              />
             </Form.Item>
             <Form.Item>
-                <Select
-                  style={{ width: 270}}
-                  placeholder="Select a site"
-                  onChange={this.onSelectSiteChange}
-                >
-                  {this.loadSites()}
+              <Select
+                style={{ width: 270 }}
+                placeholder="Select a site"
+                onChange={this.onSelectSiteChange}
+              >
+                {this.loadSites()}
               </Select>
             </Form.Item>
             <Form.Item>
-                <Select
-                  style={{ width: 270}}
-                  placeholder="Select your role"
-                  onChange={this.onSelectRoleChange}
-                >
-                  <Option value="student">Student</Option>
-                  <Option value="mentor">Mentor</Option>
+              <Select
+                style={{ width: 270 }}
+                placeholder="Select your role"
+                onChange={this.onSelectRoleChange}
+              >
+                <Option value="student">Student</Option>
+                <Option value="mentor">Mentor</Option>
               </Select>
             </Form.Item>
             <Form.Item>
-                <Input
-                  prefix={<Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="access"
-                  placeholder="Mentor/Site Access Code"
-                  onChange = {this._checkAccess}
-
-                />
+              <Input
+                prefix={
+                  <Icon
+                    type="exclamation-circle"
+                    style={{ color: 'rgba(0,0,0,.25)' }}
+                  />
+                }
+                type="access"
+                placeholder="Mentor/Site Access Code"
+                onChange={this._checkAccess}
+              />
             </Form.Item>
-            <div className = "error">{this.state.errorMsg}</div>
+            <div className="error">{errorMsg}</div>
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
-                  Sign Up
-                </Button>
-                <a href="./LogIn">Back to Log In</a>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
+                Sign Up
+              </Button>
+              <a href="./LogIn">Back to Log In</a>
             </Form.Item>
           </Form>
         </div>
