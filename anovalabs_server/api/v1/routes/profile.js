@@ -8,7 +8,15 @@ const router = express.Router();
 router.get('/:id', (req, res) => {
   const userid = req.query.uid;
 
-  db.select('user.email', 'user.picture', 'user.candy', 'user.name', 'user.hobby', 'user.notes', 'user.role')
+  db.select(
+    'user.email',
+    'user.picture',
+    'user.candy',
+    'user.name',
+    'user.hobby',
+    'user.notes',
+    'user.role'
+  )
     .from('user')
     .where('user.id', userid)
     .then(data => {
@@ -17,20 +25,12 @@ router.get('/:id', (req, res) => {
 });
 
 /* Update a user's profile. */
-router.post('/update', (req, res, next) => {
-  for (let requiredParameter of ['id']) {
-    if (!req.body[requiredParameter]) {
-      return res
-        .status(422)
-        .send({ error: `Expected format: { notes: <String> , id: <int>}. You're missing a "${requiredParameter}" property.` });
-    }
-  }
-
+router.post('/update', (req, res) => {
   knex('user')
     .where({ id: req.body.id })
-    .update({hobby: req.body.hobby, candy: req.body.candy, notes: req.body.notes })
+    .update({ hobby: req.body.hobby, candy: req.body.candy, notes: req.body.notes })
     .then(data => {
-      res.status(201).json({ id: req.body.id });
+      res.send(data);
     })
     .catch(error => {
       res.status(500).json({ error });

@@ -4,6 +4,7 @@ const knex = require('../../../db/knex');
 
 const router = express.Router();
 
+/* Unused */
 router.get('/', (req, res) => {
   db.select()
     .from('lesson_site')
@@ -66,14 +67,6 @@ router.post('/add', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  for (let requiredParameter of ['lesson_id', 'date']) {
-      if (!req.body[requiredParameter]) {
-        return res
-          .status(422)
-          .send({ error: `Expected format: { lesson_id: <int>, site_id: <int>}. You're missing a "${requiredParameter}" property.` });
-      }
-    }
-
   return knex('lesson_site')
     .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
     .then(() =>
@@ -110,4 +103,4 @@ router.post('/delete', (req, res) => {
     });
 });
 
-module.exports= router;
+module.exports = router;
