@@ -1,64 +1,44 @@
-import React, { Component } from 'react'
-import axios from 'axios';
+import React, { Component } from 'react';
 import '../stylesheets/Roster.css';
-import ProfileCard from './ProfileCard'
-import { Icon, Card, Avatar, Col, Row } from 'antd';
-import "antd/dist/antd.css";
-
-
+import * as decode from 'jwt-decode';
+import RosterCard from './RosterCard';
+import 'antd/dist/antd.css';
 
 export default class Roster extends Component {
   state = {
-    students: [],
-    mentors: [],
-    mentor: true
-  }
+    roster: [],
+    isMentor: this.props.ismentor
+  };
+
   componentDidMount() {
-    fetch('http://localhost:5000/api/v1/rosterStudent')
+    const tok = localStorage.getItem('anovaToken');
+    const dTok = decode(tok);
+    const { isMentor } = this.state;
+
+    let rosterFetchCall = `http://localhost:5000/api/v1/roster?uid=${dTok.id}`;
+    if (isMentor) {
+      rosterFetchCall += '&roleToRetrieve=student';
+    } else {
+      rosterFetchCall += '&roleToRetrieve=mentor';
+    }
+
+    fetch(rosterFetchCall)
       .then(res => res.json())
-      .then(students1 => {
-          this.setState({
-            students: students1});
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-      fetch('http://localhost:5000/api/v1/rosterMentor')
-        .then(res => res.json())
-        .then(mentors1 => {
-            this.setState({
-              mentors: mentors1});
-          },
-          error => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        )
+      .then(roster => {
+        this.setState({ roster });
+      });
   }
 
-   render() {
-     if(!this.state.mentor) {
-       return (
-            <div className="container">
-            <div className="containerGrid">
-            {this.state.mentors.map((mentor, index) => <ProfileCard key = {index} student = {mentor} mentor = {this.state.mentor}/>)}
-            </div>
-            </div>
-       )
-     } else {
-       return (
-            <div className="container">
-            <div className="containerGrid">
-            {this.state.students.map((student, index) => <ProfileCard key = {index} student = {student} mentor = {this.state.mentor}/>)}
-            </div>
-            </div>
-       )
-     }
-   }
+  render() {
+    const { isMentor, roster } = this.state;
+    const rosterCards = roster.map(person => (
+      <RosterCard key={person.id} person={person} mentor={isMentor} />
+    ));
+
+    return (
+      <div className="container">
+        <div className="containerGrid">{rosterCards}</div>
+      </div>
+    );
+  }
 }

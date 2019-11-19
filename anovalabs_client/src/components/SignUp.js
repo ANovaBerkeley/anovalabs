@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { getJWT } from '../utils/utils';
+import { Modal, Select, Form, Input, Icon, Checkbox, Button } from 'antd';
 import * as decode from 'jwt-decode';
-
+import { getJWT } from '../utils/utils';
 import '../stylesheets/SignUp.css';
 
-class Login extends Component {
+const { Option } = Select;
+
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,35 +20,172 @@ class Login extends Component {
       redirect: false,
       sites: [],
       role: '',
-      site: ''
+      siteId: '',
+      isMentor: '',
+      siteCode: ''
     };
 
-    this._change = this._change.bind(this);
-
+    this.onSelectSiteChange = this.onSelectSiteChange.bind(this);
+    this.onSelectRoleChange = this.onSelectRoleChange.bind(this);
     this._submit = this._submit.bind(this);
-
     this._validateUser = this._validateUser.bind(this);
+    this._changeName= this._changeName.bind(this);
+    this._changeEmail = this._changeEmail.bind(this);
+    this._changePassword = this._changePassword.bind(this);
+    this._checkAccess = this._checkAccess.bind(this);
   }
 
   componentDidMount() {
     if (getJWT() !== null) {
-      this.setState({ redirect: true })
-    };
+      this.setState({ redirect: true });
+    }
     fetch('http://localhost:5000/api/v1/site/allSites')
-          .then(res => res.json())
-          .then(
-            sites => {
-              this.setState({
-                sites
-              });
-            },
-            error => {
-              this.setState({
-                error
-              });
-            }
-          );
+      .then(res => res.json())
+      .then(
+        sites => {
+          this.setState({
+            sites
+          });
+        },
+        error => {
+          this.setState({
+            error
+          });
+        }
+      );
   }
+  _changeEmail(event) {
+    this.setState({
+      email: event.target.value
+    });
+  }
+  _changeName(event) {
+    this.setState({
+      name: event.target.value
+    });
+  }
+
+  _changePassword(event) {
+    this.setState({
+      password: event.target.value
+    });
+  }
+
+  onSelectSiteChange(siteId) {
+    this.setState({ siteId });
+  }
+
+  onSelectRoleChange(role) {
+    console.log(role);
+    this.setState({ role });
+  }
+
+  _checkAccess(event) {
+    if (this.state.role == 'student') {
+      this.setState({siteCode: event.target.value});
+      console.log(this.state.siteCode);
+    } else {
+      this.setState({isMentor: event.target.value});
+      console.log(this.state.isMentor);
+
+    }
+  }
+
+  getCurrentSemester = () => {
+    const currDate = new Date();
+    const month = currDate.getMonth();
+    const year = Number(currDate.getYear()) + 1900;
+    let semester;
+    if (month < 7) {
+      semester = `Spring ${year}`;
+    } else {
+      semester = `Fall ${year}`;
+    }
+    return semester;
+  };
+
+  addUserSite(decodedToken) {
+    const { siteId } = this.state;
+    const semester = this.getCurrentSemester();
+    fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
+      method: 'POST',
+      body: JSON.stringify({
+        user_id: decodedToken.id,
+        semester,
+        site_id: siteId
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  async _submit(event) {
+    const { name, email, password, role, siteId, isMentor, siteCode, sites} = this.state;
+    console.log(role);
+    console.log(isMentor);
+    console.log(siteCode);
+    if (!name || !email || !password || !role || !siteId) {
+      Modal.error({
+        title: 'Please fill out all fields.',
+        centered: true
+      });
+      event.preventDefault();
+    }
+    if (role == 'mentor' && isMentor != 'wazoo!') {
+      Modal.error({
+        title: 'Wrong Mentor Access Code!',
+        centered: true
+      });
+      event.preventDefault();
+    }
+    if (role == 'student' && siteCode != sites[siteId - 1].schoolName + "ANova") {
+      console.log(sites[siteId - 1]);
+      Modal.error({
+        title: 'Wrong Site Access Code!',
+        centered: true
+      });
+      event.preventDefault();
+    } else {
+      event.preventDefault();
+      const isValid = await this._validateUser();
+      if (isValid) {
+        axios
+          .post('http://localhost:5000/api/v1/auth/signup', {
+            name,
+            email,
+            password,
+            role
+          })
+          .then(res => {
+            // storing token from server
+            localStorage.setItem('anovaToken', res.data.token);
+            this.props.history.push('/SiteLessons');
+            const tokPayload = decode(res.data.token);
+            this.addUserSite(tokPayload);
+          })
+          .catch(err => {
+            localStorage.removeItem('anovaToken');
+          });
+      } else {
+        console.log(this.state.errorMessage);
+      }
+     }
+  }
+
+  loadSites = () => {
+    const { sites } = this.state;
+    const options = [];
+    for (let i = 0; i < sites.length; i += 1) {
+      options.push(
+        <Option key={sites[i].id} value={sites[i].id}>
+          {sites[i].schoolName}
+        </Option>
+      );
+    }
+    return options;
+  }
+
 
   async _validateUser() {
     const userSchema = Yup.object({
@@ -55,8 +194,8 @@ class Login extends Component {
         .required('No email provided'),
       password: Yup.string()
         .required('No password provided.')
-        .min(10, 'Password should be 8 chars minimum.')
-        .matches(/[a-zA-Z0-9]/, 'Password must contain numbers or letters')
+        .min(8, 'Password should be 8 chars minimum.')
+        .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters')
     });
     const { email, password } = this.state;
     try {
@@ -91,150 +230,93 @@ class Login extends Component {
     return false;
   }
 
-  // takes an event and creates a key,value pair
-  _change(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-
-  }
-
-  add_user_site(d_token) {
-    let curr_date = new Date();
-    let month = curr_date.getMonth();
-    let year = Number(curr_date.getYear()) + 1900;
-    if (month < 7){
-        year = 'Spring ' + year;
-    } else {
-        year = 'Fall ' + year;
-    }
-    console.log(this.state.site);
-    fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
-          method: 'POST',
-          body: JSON.stringify({ user_id: d_token.id, semester: year, site_id: this.state.site}),
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          })
-        })
-      .then(res => {
-        return
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  async _submit(event) {
-    event.preventDefault();
-    const isValid = await this._validateUser();
-    if (isValid) {
-      axios
-        .post('http://localhost:5000/api/v1/auth/signup', {
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-          role: this.state.role
-        })
-        .then(res => {
-          // storing token from server
-
-          localStorage.setItem('anovaToken', res.data.token);
-          this.props.history.push('/');
-          const tok_payload = decode(res.data.token);
-          this.add_user_site(tok_payload);
-        })
-        .catch(err => {
-
-          localStorage.removeItem('anovaToken');
-          console.log(err);
-        });
-    } else {
-      console.log(this.state.errorMessage);
-    }
-  }
-
-  loadSites = () => {
-
-    let options = [];
-    let sites2 = this.state.sites;
-    for (let i = 0; i < sites2.length; i++) {
-      options.push(<option value={sites2[i].id}>{sites2[i].schoolName}</option>);
-    }
-    return options;
-  }
-
   render() {
-    const { redirect } = this.state;
+    const {
+      redirect,
+      name,
+      email,
+      password,
+      emailStatus,
+      passwordStatus
+    } = this.state;
     if (redirect) {
-      this.props.history.push('/profile');
+      this.props.history.push('/SiteLessons');
     }
     return (
       <div className="container">
         <div className="signUpBox">
-          <img src = "../public/img/logo-lower.png" className = "signup-logo"/>
-          <div className = "title">
-            <div className = "anova">ANova </div>
-            <div className = "labs">Labs </div>
+          <img
+            alt="anova logo"
+            src="../public/img/logo-lower.png"
+            className="signup-logo"
+          />
+          <div className="title">
+            <div className="anova">ANova </div>
+            <div className="labs">Labs </div>
           </div>
-          <form onSubmit={this._submit}>
-            <div>
-              <label htmlFor="name">Name
-              <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  onChange={this._change}
-                  value={this.state.name}
-              />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="email">
-                Email
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  onChange={this._change}
-                  value={this.state.email}
-              />
-              </label>
-            </div>
-            <div>{this.state.emailStatus}</div>
-            <div>
-              <label htmlFor="password">Password
-              <input
-                  id="password"
+          <Form onSubmit={this._submit} className="login-form">
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Name"
+                  onChange = {this._changeName}
+                />
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Email"
+                  onChange = {this._changeEmail}
+                />
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   type="password"
-                  name="password"
-                  onChange={this._change}
-                  value={this.state.password}
-              />
-              </label>
-              <div>{this.state.passwordStatus}</div>
-            </div>
+                  placeholder="Password"
+                  onChange = {this._changePassword}
 
-            <div>
-              <label> Site
-              <select onChange={this._change} id="site" name="site">
-                {this.loadSites()}
-              </select>
-              </label>
-            </div>
-            <div>
-              <label> Role
-              <select onChange={this._change} id="role" name="role">
-                <option value="student">Student</option>
-                <option value="mentor">Mentor</option>
-              </select>
-              </label>
-            </div>
-            <br />
-            <input type="submit" value="submit" />
-          </form>
+                />
+            </Form.Item>
+            <Form.Item>
+                <Select
+                  style={{ width: 270}}
+                  placeholder="Select a site"
+                  onChange={this.onSelectSiteChange}
+                >
+                  {this.loadSites()}
+              </Select>
+            </Form.Item>
+            <Form.Item>
+                <Select
+                  style={{ width: 270}}
+                  placeholder="Select your role"
+                  onChange={this.onSelectRoleChange}
+                >
+                  <Option value="student">Student</Option>
+                  <Option value="mentor">Mentor</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item>
+                <Input
+                  prefix={<Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  type="access"
+                  placeholder="Mentor/Site Access Code"
+                  onChange = {this._checkAccess}
+
+                />
+            </Form.Item>
+            <div className = "error">{this.state.errorMsg}</div>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  Sign Up
+                </Button>
+                <a href="./LogIn">Back to Log In</a>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     );
   }
 }
-export default Login;
+export default SignUp;

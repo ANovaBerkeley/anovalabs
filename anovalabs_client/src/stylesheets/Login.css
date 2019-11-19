@@ -12,14 +12,14 @@
 .loginBox {
 
   width: 350px;
-       height: 550px;
-       background-color: rgba(247, 247, 247, 0.86);
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: center;
-       box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
-       border-radius: 16px;
+  height: 400px;
+  background-color: rgba(247, 247, 247, 0.86);
+  display: flex;
+  flex-direction: column;
+  padding-top: 4%;
+  align-items: center;
+  box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
+  border-radius: 16px;
 
 }
 .linktext{
@@ -59,7 +59,7 @@
   font-size: 20px;
   display: flex;
   flex-direction: row;
-  
+  padding-bottom: 10px;
 }
 
 label{
@@ -78,7 +78,7 @@ label{
   max-width:10%;
   width: auto;
   height: auto;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   margin:0;
 }
 
@@ -86,6 +86,18 @@ label{
   font-family: 'Lato';
   font-size: 10px;
 }
+
+.login-form {
+  width: 270px;
+  height: 40px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+
 input[type=checkbox], select{
   border-color: #D2EDFC;
 }

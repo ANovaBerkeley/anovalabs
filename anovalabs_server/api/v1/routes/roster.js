@@ -6,15 +6,15 @@ const router = express.Router();
 
 /* Retrieve the list of students for a specific site. */
 router.get('/', (req, res) => {
-  const userid = 1;
-  const roleType = 'student';
+  const userid = req.query.uid;
+  const roleType = req.query.roleToRetrieve;
 
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('name', 'email', 'picture', 'grade', 'bio', 'notes')
+  db.select('user.id', 'name', 'email', 'picture', 'notes')
     .from('user_semester_site')
     .rightJoin('user', 'user.id', 'user_semester_site.user_id')
     .where('site_id', siteid)
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
 /* Update a specific student profile */
 router.post('/update', (req, res, next) => {
-  for (let requiredParameter of ['name', 'email']) {
+  for (let requiredParameter of ['editedNotes', 'userId']) {
     if (!req.body[requiredParameter]) {
       return res
         .status(422)
@@ -36,15 +36,15 @@ router.post('/update', (req, res, next) => {
   }
 
   knex('user')
-  .where({ name: req.body.name })
-  .update({ name: req.body.name, email: req.body.email, notes: req.body.notes })
-  .then(data => {
-    res.status(201).json({ name: req.body.name });
-  })
-  .catch(error => {
-    console.log(req.body);
-    res.status(500).json({ error });
-  });
+    .where({ id: req.body.userId })
+    .update({ notes: req.body.editedNotes })
+    .then(() => {
+      res.status(201).json({ id: req.body.userId });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error });
+    });
 });
 
 module.exports = router;

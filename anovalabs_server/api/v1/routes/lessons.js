@@ -4,23 +4,6 @@ const knex = require('../../../db/knex');
 
 const router = express.Router();
 
-router.get('/site', (req, res) => {
-
-  const userid = 1;
-
-  const siteid = db
-    .select('site_id')
-    .from('user_semester_site')
-    .where('user_semester_site.user_id', userid);
-
-  db.select('site.schoolName')
-    .from('site')
-    .then(data => {
-      res.send(data);
-    });
-});
-
-
 /* Class interacting with the lesson pool. */
 
 /* Retrieve all lessons from the lesson pool. */

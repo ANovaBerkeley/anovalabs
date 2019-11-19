@@ -1,15 +1,14 @@
 .lessonPoolContainer{
 
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 50% 50%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-auto-rows: auto;
 
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
-  height: 80%;
-  padding-bottom: 200px;
-  padding-right: 50px;
-  padding-left: 50px;
+    grid-column-gap: 50px;
+    grid-row-gap: 50px;
+    height: 80%;
+
+    padding-bottom: 200px;
 
 
 }

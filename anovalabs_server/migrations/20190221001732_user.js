@@ -13,18 +13,17 @@ exports.up = function(knex, Promise) {
       	.string('password')
       	.notNullable();
       table
-      	.integer('grade')
-      	.notNullable();
-      table
       	.string('name')
       	.notNullable();
       table
-      	.string('bio');
+        .string('role')
+        .notNullable();
       table
       	.string('notes');
       table
-        .string('role')
-        .notNullable();
+        .string('candy');
+      table
+        .string('hobby');
     });
 };
 

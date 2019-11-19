@@ -13,16 +13,13 @@ function App() {
   const DefaultContainer = () => (
     <div>
       <NavBar />
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" type="lessons" />
-          <AuthComponent path="/SiteLessons" type="lessons" />
-          <AuthComponent path="/LessonPool" type="lessonpool" />
-          <AuthComponent path="/Profile" type="profile" />
-          <AuthComponent path="/Roster" type="roster" />
-          <Route component={AuthComponent} />
-        </Switch>
-      </BrowserRouter>
+      <Switch>
+        <AuthComponent exact path="/" type="lessons" />
+        <AuthComponent path="/SiteLessons" type="lessons" />
+        <AuthComponent path="/LessonPool" type="lessonpool" />
+        <AuthComponent path="/Profile" type="profile" />
+        <AuthComponent path="/Roster" type="roster" />
+      </Switch>
     </div>
   );
 

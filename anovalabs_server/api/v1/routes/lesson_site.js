@@ -12,10 +12,10 @@ router.get('/', function (req, res) {
   	});
   });
 
-/* Get all lessons from the semester and site of that user.
-TODO: replace hardcoded userid */
+/* Get all lessons from the semester and site of that user. */
 router.get('/all', function (req, res) {
-  userid = 1
+  const userid = req.query.uid;
+
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
@@ -34,7 +34,7 @@ router.get('/all', function (req, res) {
 
 /* Get all lessons from other sites */
 router.get('/all_but_current_site', (req, res) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
@@ -58,14 +58,14 @@ router.get('/all_but_current_site', (req, res) => {
 
 /* Add a lesson to a specific site. */
 router.post('/add', (req, res, next) => {
-  const userid = 1;
+  const userid = req.query.uid;
 
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  for (let requiredParameter of ['lesson_id']) {
+  for (let requiredParameter of ['lesson_id', 'date']) {
       if (!req.body[requiredParameter]) {
         return res
           .status(422)
@@ -73,21 +73,16 @@ router.post('/add', (req, res, next) => {
       }
     }
 
-  if (req.body.date) {
-    return knex('lesson_site')
-      .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
-      .then(data => {
-        res.status(201).json({ lesson_id: req.body.lesson_id });
-      })
-      .catch(error => {
-        res.status(500).json({ error });
-      });
-  }
   return knex('lesson_site')
-    .insert({ lesson_id: req.body.lesson_id, site_id: siteid })
-    .then(data => {
-      res.status(201).json({ lesson_id: req.body.lesson_id });
-    })
+    .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
+    .then(() =>
+      db
+        .select('*')
+        .from('lesson')
+        .where('id', req.body.lesson_id)
+        .first()
+        .then(data => res.send(data))
+    )
     .catch(error => {
       res.status(500).json({ error });
     });
@@ -97,7 +92,7 @@ router.post('/add', (req, res, next) => {
 lesson pool. */
 router.post('/delete', (req, res, next) => {
 
-  const userid = 1;
+  const userid = req.query.uid;
   const siteid = db
     .select('site_id')
     .from('user_semester_site')
