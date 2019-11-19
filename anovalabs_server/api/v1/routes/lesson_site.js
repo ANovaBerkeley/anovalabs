@@ -1,19 +1,19 @@
 const express = require('express');
-const router = express.Router();
 const db = require('../../../db');
 const knex = require('../../../db/knex');
 
+const router = express.Router();
 
-router.get('/', function (req, res) {
-	db.select()
-		.from('lesson_site')
-  	.then(function(data){
-  		res.send(data);
-  	});
-  });
+router.get('/', (req, res) => {
+  db.select()
+    .from('lesson_site')
+    .then(data => {
+      res.send(data);
+    });
+});
 
 /* Get all lessons from the semester and site of that user. */
-router.get('/all', function (req, res) {
+router.get('/all', (req, res) => {
   const userid = req.query.uid;
 
   const siteid = db
@@ -41,7 +41,8 @@ router.get('/all_but_current_site', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  const current_site_lesson_ids = db.select('lesson.id')
+  const currentSiteLessonIds = db
+    .select('lesson.id')
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
@@ -50,14 +51,14 @@ router.get('/all_but_current_site', (req, res) => {
 
   db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
-    .whereNotIn('id', current_site_lesson_ids)
+    .whereNotIn('id', currentSiteLessonIds)
     .then(data => {
       res.send(data);
     });
 });
 
 /* Add a lesson to a specific site. */
-router.post('/add', (req, res, next) => {
+router.post('/add', (req, res) => {
   const userid = req.query.uid;
 
   const siteid = db
@@ -90,8 +91,7 @@ router.post('/add', (req, res, next) => {
 
 /* Deletes an existing lesson from a specific site; The lesson remains in the
 lesson pool. */
-router.post('/delete', (req, res, next) => {
-
+router.post('/delete', (req, res) => {
   const userid = req.query.uid;
   const siteid = db
     .select('site_id')
@@ -103,7 +103,7 @@ router.post('/delete', (req, res, next) => {
     .where('lesson_id', req.body.lesson_id)
     .del()
     .then(data => {
-      res.status(201).json({ id: req.body.id });
+      res.send(data);
     })
     .catch(error => {
       res.status(500).json({ error });
