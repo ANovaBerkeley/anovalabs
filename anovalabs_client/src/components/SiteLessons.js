@@ -21,7 +21,8 @@ class SiteLessons extends Component {
       site: '',
       otherLessons: [],
       modalSelectedValue: '',
-      modalDate: ''
+      modalDate: '',
+
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
@@ -31,6 +32,10 @@ class SiteLessons extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
+
+
+
+
 
     fetch(`http://localhost:5000/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
@@ -53,6 +58,8 @@ class SiteLessons extends Component {
           otherLessons
         });
       });
+
+
   }
 
   onDateChange(date) {
@@ -136,6 +143,7 @@ class SiteLessons extends Component {
       otherLessons,
       site
     } = this.state;
+
     let maybeAddCard;
     if (isMentor) {
       maybeAddCard = (
@@ -196,6 +204,7 @@ class SiteLessons extends Component {
               lessonDetails={lesson}
               pool={false}
               isment={isMentor}
+
             />
           ))}
           {maybeAddCard}

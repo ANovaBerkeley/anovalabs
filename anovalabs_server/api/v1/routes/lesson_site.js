@@ -22,7 +22,7 @@ router.get('/all', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date')
+  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date', 'lesson_site.notes')
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
@@ -103,4 +103,25 @@ router.post('/delete', (req, res) => {
     });
 });
 
+
+/* Update notes on a site_lesson */
+router.post('/update', (req, res) => {
+  const userid = req.body.userId;
+  const siteid = db
+    .select('site_id')
+    .from('user_semester_site')
+    .where('user_semester_site.user_id', userid);
+
+  knex('lesson_site')
+      .where('site_id', siteid)
+      .where('lesson_id', req.body.lessonId)
+      .update({ notes: req.body.editedNotes })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+
+});
 module.exports = router;
