@@ -3,6 +3,8 @@ import { Menu, Button } from 'antd';
 import 'antd/dist/antd.css';
 import '../stylesheets/navbar.css';
 import { removeJWT } from '../utils/utils';
+import * as decode from 'jwt-decode';
+
 
 const logo = require('../stylesheets/logo.png');
 
@@ -45,6 +47,9 @@ class NavBar extends Component {
   }
 
   render() {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+
     const { current } = this.state;
     return (
       <Menu
