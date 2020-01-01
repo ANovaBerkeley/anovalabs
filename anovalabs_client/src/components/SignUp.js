@@ -21,9 +21,9 @@ class SignUp extends Component {
       sites: [],
       role: '',
       siteId: '',
-      isMentor: '',
       siteCode: ''
     };
+    this._submit = this._submit.bind(this);
   }
 
   componentDidMount() {
@@ -73,12 +73,7 @@ class SignUp extends Component {
   };
 
   _checkAccess = event => {
-    const { role } = this.state;
-    if (role === 'student') {
-      this.setState({ siteCode: event.target.value });
-    } else {
-      this.setState({ isMentor: event.target.value });
-    }
+    this.setState({ siteCode: event.target.value });
   };
 
   getCurrentSemester = () => {
@@ -111,10 +106,7 @@ class SignUp extends Component {
   };
 
   async _submit(event) {
-    const { name, email, password, role, siteId, isMentor, siteCode, sites} = this.state;
-    console.log(role);
-    console.log(isMentor);
-    console.log(siteCode);
+    const { name, email, password, role, siteId, siteCode, sites} = this.state;
     if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
@@ -122,7 +114,7 @@ class SignUp extends Component {
       });
       event.preventDefault();
     }
-    if (role == 'mentor' && isMentor != 'wazoo!') {
+    if (role == 'mentor' && siteCode != 'wazoo!') {
       Modal.error({
         title: 'Wrong Mentor Access Code!',
         centered: true
