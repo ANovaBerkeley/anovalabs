@@ -117,6 +117,7 @@ class LessonCard extends Component {
     const { showModal, isMentor } = this.state;
     const { lessonDetails } = this.props;
     let maybeNotesButton;
+    let maybeEditButton;
     if (!this.props.pool) {
        maybeNotesButton = this.renderNotesButton();
     }

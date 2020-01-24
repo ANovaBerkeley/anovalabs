@@ -33,7 +33,8 @@ export default class Profile extends Component {
             username: profile[0].name,
             //TODO: picture, candy
             email: profile[0].email,
-            candy: profile[0].candy
+            candy: profile[0].candy,
+            hobby: profile[0].hobby
          });
         },
         error => {
@@ -47,17 +48,23 @@ export default class Profile extends Component {
 
   applyChanges() {
     const candyEdit = document.getElementById('candyEdit');
+    const hobbyEdit = document.getElementById('hobbyEdit');
     fetch('http://localhost:5000/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
         candy: candyEdit.value,
+        hobby: hobbyEdit.value,
         id: decode(getJWT()).id
       }),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
     }).then(() => {
-      this.setState({ showEdit: false });
+      this.setState({
+        showEdit: false,
+        candy: candyEdit.value,
+        hobby: hobbyEdit.value
+       });
     });
   }
 
