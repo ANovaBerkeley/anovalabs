@@ -27,6 +27,21 @@ router.post('/add', (req, res) => {
     });
 });
 
+/* Update a lesson details */
+router.post('/update', (req, res) => {
+  knex('lesson')
+      .where({id: req.body.id})
+      .update({ title: req.body.editedTitle, summary: req.body.editedSummary, link: req.body.editedLink })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+
+});
+
+
 /* Delete a lesson from the lesson pool. */
 router.post('/delete', (req, res) => {
   knex('lesson')

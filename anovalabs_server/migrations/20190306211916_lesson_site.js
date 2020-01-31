@@ -10,6 +10,7 @@ exports.up = knex =>
       .notNullable()
       .unsigned();
     table.timestamp('date').defaultTo(knex.fn.now());
+    table.string('notes').comment('lesson reflections');
     table
       .foreign('lesson_id')
       .references('lesson.id')

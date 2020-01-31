@@ -75,7 +75,7 @@ class NavBar extends Component {
           <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
             <a href="/Roster">Roster</a>
           </Menu.Item>
-          <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 10 }}>
+          <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 21 }}>
           <img
             onClick={this.toggleDialog}
             src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
