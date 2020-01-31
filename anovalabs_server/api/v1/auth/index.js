@@ -33,6 +33,7 @@ function validatorAccount(account) {
     { email: account.email.trim(), password: account.password.trim() },
     schema
   );
+  console.log(result);
   return result;
 }
 
