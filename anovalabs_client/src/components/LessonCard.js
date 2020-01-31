@@ -12,15 +12,19 @@ class LessonCard extends Component {
     this.state = {
       showModal: false,
       showNotesModal: false,
+      showEditModal: false,
       isMentor: this.props.isment,
       notes: this.props.lessonDetails.notes,
       editedNotes: this.props.lessonDetails.notes,
       lessonId: this.props.lessonDetails.id,
-
+      title: this.props.lessonDetails.title,
+      summary: this.props.lessonDetails.summary,
+      link: this.props.lessonDetails.link,
     };
     this.delete = this.delete.bind(this);
     this.onChangeNotes = this.onChangeNotes.bind(this);
     this.editLesson = this.editLesson.bind(this);
+    this.editLessonDetails = this.editLessonDetails.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +44,7 @@ class LessonCard extends Component {
       this.setState({ editedNotes: event.target.value });
 
     }
+
 
     editLesson() {
       const tok = localStorage.getItem('anovaToken');
@@ -73,6 +78,47 @@ class LessonCard extends Component {
           });
         });
     }
+
+    editLessonDetails() {
+          const editedTitle = document.getElementById('titleAdd').value;
+          const editedSummary = document.getElementById('summaryAdd').value;
+          const editedLink = document.getElementById('linkAdd').value;
+          const tok = localStorage.getItem('anovaToken');
+          const dTok = decode(tok);
+          let userId;
+          userId = dTok.id;
+          const {lessonId } = this.state;
+          console.log(editedTitle);
+          if (editedSummary.length >= 255) {
+            Modal.error({
+              title: 'Exceeded maximum number of characters (255).',
+              centered: true
+            });
+            return;
+          }
+          fetch('http://localhost:5000/api/v1/lessons/update', {
+            method: 'POST',
+            body: JSON.stringify({
+              editedTitle,
+              editedSummary,
+              editedLink,
+              userId,
+              lessonId
+            }),
+            headers: new Headers({
+              'Content-Type': 'application/json'
+            })
+          })
+            .then(res => res.json())
+            .then(values => {
+              this.setState({
+                showEditModal: false,
+                title: editedTitle,
+                summary: editedSummary,
+                link: editedLink
+              });
+            });
+        }
 
     renderNotesButton() {
       const { isMentor } = this.state;
@@ -113,6 +159,68 @@ class LessonCard extends Component {
       return notesButton;
     }
 
+    renderEditButton() {
+      const { isMentor } = this.state;
+      const { showEditModal, title, summary, link, editedNotes } = this.state;
+      let editButton;
+      if (isMentor) {
+        editButton = (
+          <div>
+            <Button
+              type="primary"
+              onClick={() => this.setState({ showEditModal: true })}
+            >
+              Edit
+            </Button>
+            <Modal
+              visible={showEditModal}
+              title="Update Lesson Details:"
+              okText="Update"
+              onCancel={() => this.setState({ showEditModal: false })}
+              onOk={this.editLessonDetails}
+            >
+              <div className="addFields">
+                <Row>
+                  <Col>
+                    <Input
+                      id="titleAdd"
+                      allowClear
+                      addonBefore="Title:"
+                      autosize="true"
+                      defaultValue={title}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Input
+                      id="summaryAdd"
+                      allowClear
+                      addonBefore="Summary:"
+                      autosize="true"
+                      defaultValue={summary}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Input
+                      id="linkAdd"
+                      allowClear
+                      addonBefore="Link:"
+                      autosize="true"
+                      defaultValue={link}
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Modal>
+          </div>
+        );
+      }
+      return editButton;
+    }
+
   render() {
     const { showModal, isMentor } = this.state;
     const { lessonDetails } = this.props;
@@ -120,6 +228,8 @@ class LessonCard extends Component {
     let maybeEditButton;
     if (!this.props.pool) {
        maybeNotesButton = this.renderNotesButton();
+    } else {
+       maybeEditButton = this.renderEditButton();
     }
     let readableDate = '';
     if (lessonDetails.date && !this.props.pool) {
@@ -157,6 +267,7 @@ class LessonCard extends Component {
         </div>
         <div>
            {maybeNotesButton}
+           {maybeEditButton}
            </div>
         <div className="buttonContainer">
           <div className="viewAssignment">

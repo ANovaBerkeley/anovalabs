@@ -29,8 +29,9 @@ router.post('/add', (req, res) => {
 
 /* Update a lesson details */
 router.post('/update', (req, res) => {
+  console.log(req.body);
   knex('lesson')
-      .where({id: req.body.id})
+      .where({id: req.body.lessonId})
       .update({ title: req.body.editedTitle, summary: req.body.editedSummary, link: req.body.editedLink })
       .then(data => {
         res.send(data);
