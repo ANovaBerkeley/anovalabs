@@ -107,12 +107,22 @@ class SignUp extends Component {
 
   async _submit(event) {
     const { name, email, password, role, siteId, siteCode, sites} = this.state;
+    var pass = true;
     if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
         centered: true
       });
       event.preventDefault();
+      pass = false;
+    }
+    if (password && password.length < 8) {
+      Modal.error({
+        title: 'Password needs to be at least 8 characters.',
+        centered: true
+      });
+      event.preventDefault();
+      pass = false;
     }
     if (role == 'mentor' && siteCode != 'wazoo!') {
       Modal.error({
@@ -120,6 +130,7 @@ class SignUp extends Component {
         centered: true
       });
       event.preventDefault();
+      pass = false;
     }
     if (role == 'student' && siteCode != sites[siteId - 1].schoolName + "ANova") {
       console.log(sites[siteId - 1]);
@@ -128,7 +139,9 @@ class SignUp extends Component {
         centered: true
       });
       event.preventDefault();
-    } else {
+      pass = false;
+    }
+    if (pass) {
       event.preventDefault();
       const isValid = await this._validateUser();
       if (isValid) {
