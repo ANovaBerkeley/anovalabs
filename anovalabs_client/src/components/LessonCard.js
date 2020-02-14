@@ -20,9 +20,15 @@ class LessonCard extends Component {
       title: this.props.lessonDetails.title,
       summary: this.props.lessonDetails.summary,
       link: this.props.lessonDetails.link,
+      editedTitle: this.props.lessonDetails.title,
+      editedSummary: this.props.lessonDetails.summary,
+      editedLink: this.props.lessonDetails.link,
     };
     this.delete = this.delete.bind(this);
     this.onChangeNotes = this.onChangeNotes.bind(this);
+    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChangeSummary = this.onChangeSummary.bind(this);
+    this.onChangeLink = this.onChangeLink.bind(this);
     this.editLesson = this.editLesson.bind(this);
     this.editLessonDetails = this.editLessonDetails.bind(this);
   }
@@ -44,6 +50,21 @@ class LessonCard extends Component {
       this.setState({ editedNotes: event.target.value });
 
     }
+
+  onChangeTitle(event) {
+        this.setState({ editedTitle: event.target.value });
+
+      }
+
+  onChangeSummary(event) {
+        this.setState({ editedSummary: event.target.value });
+
+      }
+
+  onChangeLink(event) {
+        this.setState({ editedLink: event.target.value });
+
+      }
 
 
     editLesson() {
@@ -80,14 +101,7 @@ class LessonCard extends Component {
     }
 
     editLessonDetails() {
-          const editedTitle = document.getElementById('titleAdd').value;
-          const editedSummary = document.getElementById('summaryAdd').value;
-          const editedLink = document.getElementById('linkAdd').value;
-          const tok = localStorage.getItem('anovaToken');
-          const dTok = decode(tok);
-          let userId;
-          userId = dTok.id;
-          const {lessonId } = this.state;
+          const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
           console.log(editedTitle);
           if (editedSummary.length >= 255) {
             Modal.error({
@@ -102,7 +116,6 @@ class LessonCard extends Component {
               editedTitle,
               editedSummary,
               editedLink,
-              userId,
               lessonId
             }),
             headers: new Headers({
@@ -188,6 +201,7 @@ class LessonCard extends Component {
                       addonBefore="Title:"
                       autosize="true"
                       defaultValue={title}
+                      onChange={this.onChangeTitle}
                     />
                   </Col>
                 </Row>
@@ -199,6 +213,7 @@ class LessonCard extends Component {
                       addonBefore="Summary:"
                       autosize="true"
                       defaultValue={summary}
+                      onChange={this.onChangeSummary}
                     />
                   </Col>
                 </Row>
@@ -210,6 +225,7 @@ class LessonCard extends Component {
                       addonBefore="Link:"
                       autosize="true"
                       defaultValue={link}
+                      onChange={this.onChangeLink}
                     />
                   </Col>
                 </Row>
@@ -222,7 +238,7 @@ class LessonCard extends Component {
     }
 
   render() {
-    const { showModal, isMentor } = this.state;
+    const { showModal, isMentor, title, summary, link } = this.state;
     const { lessonDetails } = this.props;
     let maybeNotesButton;
     let maybeEditButton;
@@ -258,12 +274,12 @@ class LessonCard extends Component {
     return (
       <div className="card">
         <div className="titleContainer">
-          <div className="lessonTitle">{lessonDetails.title}</div>
+          <div className="lessonTitle">{title}</div>
           {maybeDeleteButton}
         </div>
         <div className="date">{readableDate}</div>
         <div className="descriptionContainer">
-          <div className="description">{lessonDetails.summary}</div>
+          <div className="description">{summary}</div>
         </div>
         <div>
            {maybeNotesButton}
@@ -271,7 +287,7 @@ class LessonCard extends Component {
            </div>
         <div className="buttonContainer">
           <div className="viewAssignment">
-            <a href={lessonDetails.link}>View Assignment</a>
+            <a href={link}>View Assignment</a>
           </div>
         </div>
       </div>
