@@ -84,7 +84,9 @@ router.post('/signup', (req, res, next) => {
           }
         );
       } else {
+        console.error('Email in use');
         next(new Error('Email in use'));
+        // throw new Error('Email in use');
       }
     });
   } else {
@@ -135,6 +137,11 @@ router.post('/login', (req, res, next) => {
     res.status(401);
     next(new Error('Invalid Login'));
   }
+});
+
+router.use(function (err, req, res, next) {
+  res.status(500);
+  res.render('error', { error: err });
 });
 
 module.exports = router;

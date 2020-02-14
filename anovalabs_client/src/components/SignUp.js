@@ -107,7 +107,7 @@ class SignUp extends Component {
 
   async _submit(event) {
     const { name, email, password, role, siteId, siteCode, sites} = this.state;
-    var pass = true;
+    let pass = true;
     if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
@@ -154,13 +154,20 @@ class SignUp extends Component {
           })
           .then(res => {
             // storing token from server
+            console.log("i'm not supposed to be here");
             localStorage.setItem('anovaToken', res.data.token);
             this.props.history.push('/SiteLessons');
             const tokPayload = decode(res.data.token);
             this.addUserSite(tokPayload);
           })
           .catch(err => {
+            console.log("hi");
             localStorage.removeItem('anovaToken');
+            Modal.error({
+              title: 'Email already in use.',
+              centered: true
+            });
+            event.preventDefault();
           });
       } else {
         console.log(this.state.errorMessage);
