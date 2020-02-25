@@ -1,0 +1,7 @@
+{
+  "name": "anovalabs",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm install --prefix anovalabs_server && npm install --prefix anovalabs_client"
+  }
+}
