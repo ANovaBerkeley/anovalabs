@@ -1,2 +1,2 @@
-web: cd anovalabs_client && npm install --dev && npm start
-server: cd anovalabs_server && npm install --dev && npm start
+web: cd anovalabs_client && npm start
+server: cd anovalabs_server && npm start
