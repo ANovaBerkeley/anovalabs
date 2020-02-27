@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --mode development --open --hot",
     "lint": "eslint src/** src/**/**; exit 0",
     "lint-fix": "eslint src/** src/**/** --fix; exit 0",
-    "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
     
     
     
