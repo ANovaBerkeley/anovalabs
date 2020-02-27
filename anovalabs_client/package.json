@@ -4,7 +4,6 @@
   "description": "Client for ANova Labs",
   "main": "index.js",
   "scripts": {
-    "heroku-prebuild": "npm install --dev",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open --hot",
     "lint": "eslint src/** src/**/**; exit 0",
