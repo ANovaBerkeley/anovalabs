@@ -7,7 +7,7 @@ import 'antd/dist/antd.css';
 export default class Roster extends Component {
   state = {
     roster: [],
-    isMentor: this.props.ismentor
+    isMentor: this.props.ismentor,
   };
 
   componentDidMount() {

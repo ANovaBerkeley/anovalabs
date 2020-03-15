@@ -10,7 +10,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 'home'
+      current: 'home',
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -45,6 +45,10 @@ class NavBar extends Component {
   }
 
   render() {
+    const tok = localStorage.getItem('anovaToken');
+    if (tok === null) {
+      return <div></div>;
+    }
     const { current } = this.state;
     return (
       <Menu
@@ -60,28 +64,27 @@ class NavBar extends Component {
             src={logo}
             className="logo"
             style={{ width: 180, height: 65 }}
+            alt={'Logo'}
           />
         </Menu.Item>
         <div className="navbar-options">
           <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
             <a href="/SiteLessons">Site Material</a>
           </Menu.Item>
-          <Menu.Item
-            key="lessonpool"
-            style={{ paddingRight: 20, paddingTop: 10 }}
-          >
+          <Menu.Item key="lessonpool" style={{ paddingRight: 20, paddingTop: 10 }}>
             <a href="/LessonPool">Lesson Pool</a>
           </Menu.Item>
           <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
             <a href="/Roster">Roster</a>
           </Menu.Item>
           <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 21 }}>
-          <img
-            onClick={this.toggleDialog}
-            src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
-            className="profile-logo"
-            style={{ width: 20, height: 20 }}
-          />
+            <img
+              alt={'Student Icon'}
+              onClick={this.toggleDialog}
+              src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
+              className="profile-logo"
+              style={{ width: 20, height: 20 }}
+            />
           </Menu.Item>
           <div id="navbar-dialog">
             <Button

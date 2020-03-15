@@ -21,7 +21,7 @@ class SignUp extends Component {
       sites: [],
       role: '',
       siteId: '',
-      siteCode: ''
+      siteCode: '',
     };
     this._submit = this._submit.bind(this);
   }
@@ -35,32 +35,32 @@ class SignUp extends Component {
       .then(
         sites => {
           this.setState({
-            sites
+            sites,
           });
         },
         error => {
           this.setState({
-            error
+            error,
           });
-        }
+        },
       );
   }
 
   _changeEmail = event => {
     this.setState({
-      email: event.target.value
+      email: event.target.value,
     });
   };
 
   _changeName = event => {
     this.setState({
-      name: event.target.value
+      name: event.target.value,
     });
   };
 
   _changePassword = event => {
     this.setState({
-      password: event.target.value
+      password: event.target.value,
     });
   };
 
@@ -97,21 +97,21 @@ class SignUp extends Component {
       body: JSON.stringify({
         user_id: decodedToken.id,
         semester,
-        site_id: siteId
+        site_id: siteId,
       }),
       headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     });
   };
 
   async _submit(event) {
-    const { name, email, password, role, siteId, siteCode, sites} = this.state;
+    const { name, email, password, role, siteId, siteCode, sites } = this.state;
     let pass = true;
     if (!name || !email || !password || !role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
-        centered: true
+        centered: true,
       });
       event.preventDefault();
       pass = false;
@@ -119,24 +119,24 @@ class SignUp extends Component {
     if (password && password.length < 8) {
       Modal.error({
         title: 'Password needs to be at least 8 characters.',
-        centered: true
+        centered: true,
       });
       event.preventDefault();
       pass = false;
     }
-    if (role == 'mentor' && siteCode != 'wazoo!') {
+    if (role === 'mentor' && siteCode !== 'wazoo!') {
       Modal.error({
         title: 'Wrong Mentor Access Code!',
-        centered: true
+        centered: true,
       });
       event.preventDefault();
       pass = false;
     }
-    if (role == 'student' && siteCode != sites[siteId - 1].schoolName + "ANova") {
+    if (role === 'student' && siteCode !== sites[siteId - 1].schoolName + 'ANova') {
       console.log(sites[siteId - 1]);
       Modal.error({
         title: 'Wrong Site Access Code!',
-        centered: true
+        centered: true,
       });
       event.preventDefault();
       pass = false;
@@ -150,7 +150,7 @@ class SignUp extends Component {
             name,
             email,
             password,
-            role
+            role,
           })
           .then(res => {
             // storing token from server
@@ -161,18 +161,18 @@ class SignUp extends Component {
             this.addUserSite(tokPayload);
           })
           .catch(err => {
-            console.log("hi");
+            console.log('hi');
             localStorage.removeItem('anovaToken');
             Modal.error({
               title: 'Email already in use.',
-              centered: true
+              centered: true,
             });
             event.preventDefault();
           });
       } else {
         console.log(this.state.errorMessage);
       }
-     }
+    }
   }
 
   loadSites = () => {
@@ -182,7 +182,7 @@ class SignUp extends Component {
       options.push(
         <Option key={sites[i].id} value={sites[i].id}>
           {sites[i].schoolName}
-        </Option>
+        </Option>,
       );
     }
     return options;
@@ -196,18 +196,18 @@ class SignUp extends Component {
       password: Yup.string()
         .required('No password provided.')
         .min(8, 'Password should be 8 chars minimum.')
-        .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters')
+        .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters'),
     });
     const { email, password } = this.state;
     try {
       const isValid = await userSchema.validate(
         { email, password },
-        { abortEarly: false }
+        { abortEarly: false },
       );
       if (isValid) {
         this.setState({
           emailStatus: '',
-          passwordStatus: ''
+          passwordStatus: '',
         });
         return true;
       }
@@ -223,7 +223,7 @@ class SignUp extends Component {
         });
         this.setState({
           emailStatus: presentState.emailStatus,
-          passwordStatus: presentState.passwordStatus
+          passwordStatus: presentState.passwordStatus,
         });
         return false;
       }
@@ -252,27 +252,21 @@ class SignUp extends Component {
           <Form onSubmit={this._submit} className="login-form">
             <Form.Item>
               <Input
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Name"
                 onChange={this._changeName}
               />
             </Form.Item>
             <Form.Item>
               <Input
-                prefix={
-                  <Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Email"
                 onChange={this._changeEmail}
               />
             </Form.Item>
             <Form.Item>
               <Input
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="password"
                 placeholder="Password"
                 onChange={this._changePassword}
@@ -300,10 +294,7 @@ class SignUp extends Component {
             <Form.Item>
               <Input
                 prefix={
-                  <Icon
-                    type="exclamation-circle"
-                    style={{ color: 'rgba(0,0,0,.25)' }}
-                  />
+                  <Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
                 type="access"
                 placeholder="Mentor/Site Access Code"
@@ -312,11 +303,7 @@ class SignUp extends Component {
             </Form.Item>
             <div className="error">{errorMsg}</div>
             <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
+              <Button type="primary" htmlType="submit" className="login-form-button">
                 Sign Up
               </Button>
               <a href="./LogIn">Back to Log In</a>

@@ -17,7 +17,7 @@ export default class RosterCard extends Component {
       candy: this.props.person.candy,
       hobby: this.props.person.hobby,
       notes: this.props.person.notes,
-      editedNotes: this.props.person.notes
+      editedNotes: this.props.person.notes,
     };
     this.onChangeNotes = this.onChangeNotes.bind(this);
     this.editStudentProfile = this.editStudentProfile.bind(this);
@@ -32,7 +32,7 @@ export default class RosterCard extends Component {
     if (editedNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
-        centered: true
+        centered: true,
       });
       return;
     }
@@ -40,18 +40,18 @@ export default class RosterCard extends Component {
       method: 'POST',
       body: JSON.stringify({
         editedNotes,
-        userId
+        userId,
       }),
       headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     })
       .then(res => res.json())
       .then(values => {
         console.log(values);
         this.setState({
           showEditModal: false,
-          notes: editedNotes
+          notes: editedNotes,
         });
       });
   }
@@ -88,10 +88,7 @@ export default class RosterCard extends Component {
     if (mentor) {
       editButton = (
         <div>
-          <Button
-            type="primary"
-            onClick={() => this.setState({ showEditModal: true })}
-          >
+          <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
             Edit Student Notes
           </Button>
           <Modal
@@ -128,10 +125,7 @@ export default class RosterCard extends Component {
         <Card
           style={{ width: 300 }}
           cover={
-            <img
-              alt=""
-              src="https://image.flaticon.com/icons/svg/1141/1141771.svg"
-            />
+            <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
           }
         >
           {description}
@@ -143,8 +137,8 @@ export default class RosterCard extends Component {
 }
 
 RosterCard.propTypes = {
-  mentor: PropTypes.bool
+  mentor: PropTypes.bool,
 };
 RosterCard.defaultProps = {
-  mentor: false
+  mentor: false,
 };

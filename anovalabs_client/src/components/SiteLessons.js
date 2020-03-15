@@ -6,11 +6,7 @@ import LessonCard from './LessonCard';
 import '../stylesheets/SiteLessons.css';
 
 const { Option } = Select;
-// import '../stylesheets/Lessons.css';
-
 // TODO reset modal values onOk
-// add documentation
-
 class SiteLessons extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +18,6 @@ class SiteLessons extends Component {
       otherLessons: [],
       modalSelectedValue: '',
       modalDate: '',
-
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
@@ -33,33 +28,27 @@ class SiteLessons extends Component {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-
-
-
-
     fetch(`http://localhost:5000/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
         this.setState({
-          site
+          site,
         });
       });
     fetch(`http://localhost:5000/api/v1/lesson_site/all?uid=${dTok.id}`)
       .then(res => res.json())
       .then(siteLessons => {
         this.setState({
-          siteLessons
+          siteLessons,
         });
       });
     fetch(`http://localhost:5000/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
       .then(res => res.json())
       .then(otherLessons => {
         this.setState({
-          otherLessons
+          otherLessons,
         });
       });
-
-
   }
 
   onDateChange(date) {
@@ -77,15 +66,15 @@ class SiteLessons extends Component {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
       headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     }).then(() =>
       this.setState(prevState => ({
         siteLessons: prevState.siteLessons.filter(
-          lesson => lesson.id !== lessonDetails.id
+          lesson => lesson.id !== lessonDetails.id,
         ),
-        otherLessons: [...prevState.otherLessons, lessonDetails]
-      }))
+        otherLessons: [...prevState.otherLessons, lessonDetails],
+      })),
     );
   }
 
@@ -94,7 +83,7 @@ class SiteLessons extends Component {
     if (!lessonId || !date) {
       Modal.error({
         title: 'Please fill out all fields.',
-        centered: true
+        centered: true,
       });
     } else {
       const tok = localStorage.getItem('anovaToken');
@@ -103,35 +92,31 @@ class SiteLessons extends Component {
         method: 'POST',
         body: JSON.stringify({ lesson_id: lessonId, date }),
         headers: new Headers({
-          'Content-Type': 'application/json'
-        })
+          'Content-Type': 'application/json',
+        }),
       })
         .then(res => res.json())
         .then(newLesson => {
           let newSiteLessons = [...siteLessons, { ...newLesson, date }];
           console.log(newSiteLessons);
-          var sorted_lessons = newSiteLessons.sort((siteLesson1,siteLesson2) => {
-              return new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
-          })
+          var sorted_lessons = newSiteLessons.sort((siteLesson1, siteLesson2) => {
+            return (
+              new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
+            );
+          });
           console.log(sorted_lessons);
           this.setState(prevState => ({
             siteLessons: sorted_lessons,
             otherLessons: prevState.otherLessons.filter(
-              otherLesson => otherLesson.id !== lessonId
+              otherLesson => otherLesson.id !== lessonId,
             ),
             showModal: false,
             modalSelectedValue: '',
-            modalDate: ''
+            modalDate: '',
           }));
         });
     }
   }
-
-  // const myData = [].concat(this.state.data)
-  //   .sort((a, b) => a.itemM > b.itemM)
-  //   .map((item, i) => 
-  //       <div key={i}> {item.matchID} {item.timeM}{item.description}</div>
-  //   );
 
   renderLessons = () => {
     const {
@@ -141,7 +126,7 @@ class SiteLessons extends Component {
       modalSelectedValue,
       modalDate,
       otherLessons,
-      site
+      site,
     } = this.state;
 
     let maybeAddCard;
@@ -160,7 +145,7 @@ class SiteLessons extends Component {
             visible={showModal}
             onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
             onCancel={() => this.setState({ showModal: false })}
-            destroyOnClose = {true}
+            destroyOnClose={true}
           >
             <div className="addLesson">
               <Select
@@ -170,9 +155,7 @@ class SiteLessons extends Component {
                 optionFilterProp="children"
                 onChange={this.onSelectChange}
                 filterOption={(input, option) =>
-                  option.props.children
-                    .toLowerCase()
-                    .indexOf(input.toLowerCase()) >= 0
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
                 {otherLessons.map(lesson => (
@@ -204,7 +187,6 @@ class SiteLessons extends Component {
               lessonDetails={lesson}
               pool={false}
               isment={isMentor}
-
             />
           ))}
           {maybeAddCard}

@@ -6,13 +6,8 @@ import Login from './Login';
 import NavBar from './NavBar';
 
 function App() {
-  const LoginContainer = () => <Route path="/Login" component={Login} />;
-
-  const SignUpContainer = () => <Route path="/SignUp" component={SignUp} />;
-
   const DefaultContainer = () => (
     <div>
-      <NavBar />
       <Switch>
         <AuthComponent exact path="/" type="lessons" />
         <AuthComponent path="/SiteLessons" type="lessons" />
@@ -28,8 +23,9 @@ function App() {
       <BrowserRouter>
         <Switch>
           <div>
-            <Route exact path="/Login" component={LoginContainer} />
-            <Route exact path="/SignUp" component={SignUpContainer} />
+            <NavBar />
+            <Route exact path="/Login" component={Login} />
+            <Route exact path="/SignUp" component={SignUp} />
             <Route component={DefaultContainer} />
           </div>
         </Switch>
@@ -37,5 +33,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
