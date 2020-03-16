@@ -19,8 +19,9 @@ router.get('/all', (req, res) => {
 router.post('/add', (req, res) => {
   knex('lesson')
     .insert(req.body)
+    .returning('id')
     .then(data => {
-      res.send(data);
+      res.send({data});
     })
     .catch(error => {
       res.status(500).json({ error });
@@ -34,7 +35,7 @@ router.post('/update', (req, res) => {
       .where({id: req.body.lessonId})
       .update({ title: req.body.editedTitle, summary: req.body.editedSummary, link: req.body.editedLink })
       .then(data => {
-        res.send(data);
+        res.send({data});
       })
       .catch(error => {
         res.status(500).json({ error });
@@ -49,9 +50,10 @@ router.post('/delete', (req, res) => {
     .where({ id: req.body.id })
     .del()
     .then(data => {
-      res.send(data);
+      res.send({data});
     })
     .catch(error => {
+      console.log(error);
       res.status(500).json({ error });
     });
 });

@@ -2,6 +2,6 @@
   "name": "anovalabs",
   "version": "1.0.0",
   "scripts": {
-  	"heroku-prebuild": "npm install --dev"
+    "heroku-prebuild": "npm install --dev"
   }
 }

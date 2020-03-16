@@ -20,8 +20,16 @@ class AuthComponent extends Component {
   }
 
   componentDidMount() {
-    const tok = localStorage.getItem('anovaToken');
-    const d_tok = decode(tok);
+    let d_tok;
+    try {
+      const tok = localStorage.getItem('anovaToken');
+      d_tok = decode(tok);
+    } catch(err) { // if local storage doesn't have token
+      localStorage.removeItem('anovaToken');
+      this.props.history.push(`/login`);
+      return;
+    }
+    
     fetch('http://localhost:5000/api/v1/profile/'+d_tok.id + '?uid=' + d_tok.id)
       .then(res => res.json())
       .then(profile => {
@@ -84,7 +92,7 @@ class AuthComponent extends Component {
         return (
           <Roster ismentor={this.state.mentor}/>
         )
-      }
+      } 
     }
   }
 }

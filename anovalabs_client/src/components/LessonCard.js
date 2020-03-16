@@ -36,8 +36,6 @@ class LessonCard extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-    console.log(this.props.lessonDetails);
-
   }
 
   delete() {

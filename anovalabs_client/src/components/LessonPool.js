@@ -34,7 +34,6 @@ class LessonPool extends Component {
   }
 
   deleteHandler(lessonDetails) {
-    console.log(lessonDetails.id);
     fetch('http://localhost:5000/api/v1/lessons/delete', {
       method: 'POST',
       body: JSON.stringify({ id: lessonDetails.id }),
@@ -54,7 +53,6 @@ class LessonPool extends Component {
     const titleAdd = document.getElementById('titleAdd');
     const summaryAdd = document.getElementById('summaryAdd');
     const linkAdd = document.getElementById('linkAdd');
-    const lessonId = document.getElementById('id');
 
     if (!titleAdd.value || !summaryAdd.value || !linkAdd.value) {
       Modal.error({
@@ -63,7 +61,6 @@ class LessonPool extends Component {
       });
     } else {
       const item = {
-        id : lessonId,
         title: titleAdd.value,
         summary: summaryAdd.value,
         link: linkAdd.value
@@ -76,7 +73,8 @@ class LessonPool extends Component {
         })
       })
         .then(res => res.json())
-        .then(() => {
+        .then(newLessonId => {
+          item['id'] = newLessonId.data[0];
           this.setState(prevState => ({
             allLessons: [...prevState.allLessons, item],
             showModal: false
