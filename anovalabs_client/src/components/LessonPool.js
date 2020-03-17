@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Input, Row, Col } from 'antd';
 import { GoPlus } from 'react-icons/go';
-import * as decode from 'jwt-decode';
 import '../stylesheets/LessonPool.css';
 import LessonCard from './LessonCard';
 
@@ -13,22 +12,18 @@ class LessonPool extends Component {
       isLoaded: true,
       mentor: this.props.ismentor,
       showModal: false,
-      allLessons: []
+      allLessons: [],
     };
     this.addLessonToPool = this.addLessonToPool.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   componentDidMount() {
-    const tok = localStorage.getItem('anovaToken');
-    const dTok = decode(tok);
-
-
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(allLessons => {
         this.setState({
-          allLessons
+          allLessons,
         });
       });
   }
@@ -39,14 +34,12 @@ class LessonPool extends Component {
       method: 'POST',
       body: JSON.stringify({ id: lessonDetails.id }),
       headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     }).then(() =>
       this.setState(prevState => ({
-        allLessons: prevState.allLessons.filter(
-          item => item.id !== lessonDetails.id
-        )
-      }))
+        allLessons: prevState.allLessons.filter(item => item.id !== lessonDetails.id),
+      })),
     );
   }
 
@@ -59,27 +52,27 @@ class LessonPool extends Component {
     if (!titleAdd.value || !summaryAdd.value || !linkAdd.value) {
       Modal.error({
         title: 'Please fill out all fields.',
-        centered: true
+        centered: true,
       });
     } else {
       const item = {
-        id : lessonId,
+        id: lessonId,
         title: titleAdd.value,
         summary: summaryAdd.value,
-        link: linkAdd.value
+        link: linkAdd.value,
       };
       fetch('http://localhost:5000/api/v1/lessons/add', {
         method: 'POST',
         body: JSON.stringify(item),
         headers: new Headers({
-          'Content-Type': 'application/json'
-        })
+          'Content-Type': 'application/json',
+        }),
       })
         .then(res => res.json())
         .then(() => {
           this.setState(prevState => ({
             allLessons: [...prevState.allLessons, item],
-            showModal: false
+            showModal: false,
           }));
         });
     }

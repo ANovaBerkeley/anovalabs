@@ -33,13 +33,6 @@ class LessonCard extends Component {
     this.editLessonDetails = this.editLessonDetails.bind(this);
   }
 
-  componentDidMount() {
-    const tok = localStorage.getItem('anovaToken');
-    const d_tok = decode(tok);
-    console.log(this.props.lessonDetails);
-
-  }
-
   delete() {
     const { lessonDetails, deleteHandler } = this.props;
     this.setState({ showModal: false });
@@ -47,195 +40,184 @@ class LessonCard extends Component {
   }
 
   onChangeNotes(event) {
-      this.setState({ editedNotes: event.target.value });
-
-    }
+    this.setState({ editedNotes: event.target.value });
+  }
 
   onChangeTitle(event) {
-        this.setState({ editedTitle: event.target.value });
-
-      }
+    this.setState({ editedTitle: event.target.value });
+  }
 
   onChangeSummary(event) {
-        this.setState({ editedSummary: event.target.value });
-
-      }
+    this.setState({ editedSummary: event.target.value });
+  }
 
   onChangeLink(event) {
-        this.setState({ editedLink: event.target.value });
+    this.setState({ editedLink: event.target.value });
+  }
 
-      }
-
-
-    editLesson() {
-      const tok = localStorage.getItem('anovaToken');
-      const dTok = decode(tok);
-      let userId;
-      userId = dTok.id;
-      const { editedNotes, lessonId } = this.state;
-      if (editedNotes.length >= 255) {
-        Modal.error({
-          title: 'Exceeded maximum number of characters (255).',
-          centered: true
-        });
-        return;
-      }
-      fetch('http://localhost:5000/api/v1/lesson_site/update', {
-        method: 'POST',
-        body: JSON.stringify({
-          editedNotes,
-          userId,
-          lessonId
-        }),
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        })
-      })
-        .then(res => res.json())
-        .then(values => {
-          this.setState({
-            showNotesModal: false,
-            notes: editedNotes
-          });
-        });
+  editLesson() {
+    const tok = localStorage.getItem('anovaToken');
+    const dTok = decode(tok);
+    let userId;
+    userId = dTok.id;
+    const { editedNotes, lessonId } = this.state;
+    if (editedNotes.length >= 255) {
+      Modal.error({
+        title: 'Exceeded maximum number of characters (255).',
+        centered: true,
+      });
+      return;
     }
+    fetch('http://localhost:5000/api/v1/lesson_site/update', {
+      method: 'POST',
+      body: JSON.stringify({
+        editedNotes,
+        userId,
+        lessonId,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .then(values => {
+        this.setState({
+          showNotesModal: false,
+          notes: editedNotes,
+        });
+      });
+  }
 
-    editLessonDetails() {
-          const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
-          console.log(editedTitle);
-          if (editedSummary.length >= 255) {
-            Modal.error({
-              title: 'Exceeded maximum number of characters (255).',
-              centered: true
-            });
-            return;
-          }
-          fetch('http://localhost:5000/api/v1/lessons/update', {
-            method: 'POST',
-            body: JSON.stringify({
-              editedTitle,
-              editedSummary,
-              editedLink,
-              lessonId
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          })
-            .then(res => res.json())
-            .then(values => {
-              this.setState({
-                showEditModal: false,
-                title: editedTitle,
-                summary: editedSummary,
-                link: editedLink
-              });
-            });
-        }
+  editLessonDetails() {
+    const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
+    console.log(editedTitle);
+    if (editedSummary.length >= 255) {
+      Modal.error({
+        title: 'Exceeded maximum number of characters (255).',
+        centered: true,
+      });
+      return;
+    }
+    fetch('http://localhost:5000/api/v1/lessons/update', {
+      method: 'POST',
+      body: JSON.stringify({
+        editedTitle,
+        editedSummary,
+        editedLink,
+        lessonId,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(res => res.json())
+      .then(values => {
+        this.setState({
+          showEditModal: false,
+          title: editedTitle,
+          summary: editedSummary,
+          link: editedLink,
+        });
+      });
+  }
 
-    renderNotesButton() {
-      const { isMentor } = this.state;
-      const { showNotesModal, notes, editedNotes } = this.state;
-      let notesButton;
-      if (isMentor) {
-        notesButton = (
-          <div>
-            <Button
-              type="primary"
-              onClick={() => this.setState({ showNotesModal: true })}
-            >
-              Notes
-            </Button>
-            <Modal
-              visible={showNotesModal}
-              title="Lesson Notes:"
-              okText="Update"
-              onCancel={() => this.setState({ showNotesModal: false })}
-              onOk={this.editLesson}
-            >
+  renderNotesButton() {
+    const { isMentor } = this.state;
+    const { showNotesModal, notes } = this.state;
+    let notesButton;
+    if (isMentor) {
+      notesButton = (
+        <div>
+          <Button type="primary" onClick={() => this.setState({ showNotesModal: true })}>
+            Notes
+          </Button>
+          <Modal
+            visible={showNotesModal}
+            title="Lesson Notes:"
+            okText="Update"
+            onCancel={() => this.setState({ showNotesModal: false })}
+            onOk={this.editLesson}
+          >
+            <Row>
+              <Col>
+                <TextArea
+                  rows={4}
+                  id="notes"
+                  addonBefore="Notes:"
+                  autosize
+                  defaultValue={notes}
+                  onChange={this.onChangeNotes}
+                />
+              </Col>
+            </Row>
+          </Modal>
+        </div>
+      );
+    }
+    return notesButton;
+  }
+
+  renderEditButton() {
+    const { isMentor } = this.state;
+    const { showEditModal, title, summary, link } = this.state;
+    let editButton;
+    if (isMentor) {
+      editButton = (
+        <div>
+          <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
+            Edit
+          </Button>
+          <Modal
+            visible={showEditModal}
+            title="Update Lesson Details:"
+            okText="Update"
+            onCancel={() => this.setState({ showEditModal: false })}
+            onOk={this.editLessonDetails}
+          >
+            <div className="addFields">
               <Row>
                 <Col>
-                  <TextArea
-                    rows={4}
-                    id="notes"
-                    addonBefore="Notes:"
-                    autosize
-                    defaultValue={notes}
-                    onChange={this.onChangeNotes}
+                  <Input
+                    id="titleAdd"
+                    allowClear
+                    addonBefore="Title:"
+                    autosize="true"
+                    defaultValue={title}
+                    onChange={this.onChangeTitle}
                   />
                 </Col>
               </Row>
-            </Modal>
-          </div>
-        );
-      }
-      return notesButton;
+              <Row>
+                <Col>
+                  <Input
+                    id="summaryAdd"
+                    allowClear
+                    addonBefore="Summary:"
+                    autosize="true"
+                    defaultValue={summary}
+                    onChange={this.onChangeSummary}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    id="linkAdd"
+                    allowClear
+                    addonBefore="Link:"
+                    autosize="true"
+                    defaultValue={link}
+                    onChange={this.onChangeLink}
+                  />
+                </Col>
+              </Row>
+            </div>
+          </Modal>
+        </div>
+      );
     }
-
-    renderEditButton() {
-      const { isMentor } = this.state;
-      const { showEditModal, title, summary, link, editedNotes } = this.state;
-      let editButton;
-      if (isMentor) {
-        editButton = (
-          <div>
-            <Button
-              type="primary"
-              onClick={() => this.setState({ showEditModal: true })}
-            >
-              Edit
-            </Button>
-            <Modal
-              visible={showEditModal}
-              title="Update Lesson Details:"
-              okText="Update"
-              onCancel={() => this.setState({ showEditModal: false })}
-              onOk={this.editLessonDetails}
-            >
-              <div className="addFields">
-                <Row>
-                  <Col>
-                    <Input
-                      id="titleAdd"
-                      allowClear
-                      addonBefore="Title:"
-                      autosize="true"
-                      defaultValue={title}
-                      onChange={this.onChangeTitle}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Input
-                      id="summaryAdd"
-                      allowClear
-                      addonBefore="Summary:"
-                      autosize="true"
-                      defaultValue={summary}
-                      onChange={this.onChangeSummary}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Input
-                      id="linkAdd"
-                      allowClear
-                      addonBefore="Link:"
-                      autosize="true"
-                      defaultValue={link}
-                      onChange={this.onChangeLink}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Modal>
-          </div>
-        );
-      }
-      return editButton;
-    }
+    return editButton;
+  }
 
   render() {
     const { showModal, isMentor, title, summary, link } = this.state;
@@ -243,9 +225,9 @@ class LessonCard extends Component {
     let maybeNotesButton;
     let maybeEditButton;
     if (!this.props.pool) {
-       maybeNotesButton = this.renderNotesButton();
+      maybeNotesButton = this.renderNotesButton();
     } else {
-       maybeEditButton = this.renderEditButton();
+      maybeEditButton = this.renderEditButton();
     }
     let readableDate = '';
     if (lessonDetails.date && !this.props.pool) {
@@ -253,7 +235,7 @@ class LessonCard extends Component {
     }
     let maybeDeleteButton;
     if (isMentor) {
-      maybeDeleteButton =
+      maybeDeleteButton = (
         <Popconfirm
           className="deleteModal"
           title="Delete this Lesson?"
@@ -270,6 +252,7 @@ class LessonCard extends Component {
             <GoTrashcan size="20" />
           </button>
         </Popconfirm>
+      );
     }
     return (
       <div className="card">
@@ -282,9 +265,9 @@ class LessonCard extends Component {
           <div className="description">{summary}</div>
         </div>
         <div>
-           {maybeNotesButton}
-           {maybeEditButton}
-           </div>
+          {maybeNotesButton}
+          {maybeEditButton}
+        </div>
         <div className="buttonContainer">
           <div className="viewAssignment">
             <a href={link}>View Assignment</a>
@@ -295,7 +278,7 @@ class LessonCard extends Component {
   }
 }
 LessonCard.propTypes = {
-  deleteHandler: PropTypes.func
+  deleteHandler: PropTypes.func,
 };
 LessonCard.defaultProps = {};
 export default LessonCard;
