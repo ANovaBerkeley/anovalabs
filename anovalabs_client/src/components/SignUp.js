@@ -161,7 +161,6 @@ class SignUp extends Component {
             this.addUserSite(tokPayload);
           })
           .catch(err => {
-            console.log("hi");
             localStorage.removeItem('anovaToken');
             Modal.error({
               title: 'Email already in use.',
