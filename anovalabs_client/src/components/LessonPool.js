@@ -23,7 +23,6 @@ class LessonPool extends Component {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-
     fetch('http://localhost:5000/api/v1/lessons/all')
       .then(res => res.json())
       .then(allLessons => {
@@ -119,7 +118,7 @@ class LessonPool extends Component {
                     id="titleAdd"
                     allowClear
                     addonBefore="Title:"
-                    autosize
+                    autosize="true"
                     defaultValue=""
                   />
                 </Col>

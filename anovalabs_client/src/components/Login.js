@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Form, Input, Icon, Checkbox, Button} from 'antd';
+import { Form, Input, Icon, Checkbox, Button } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 
@@ -55,7 +55,7 @@ class Login extends Component {
 
   componentDidMount() {
     if (getJWT() !== null) {
-      this.setState({ redirect: true })
+      this.setState({ redirect: true });
     }
   }
 
@@ -65,37 +65,43 @@ class Login extends Component {
       this.props.history.push('/profile');
     }
     return (
-
       <div className="container">
-        <div className= "loginBox">
-          <img src = "../public/img/logo-lower.png" className = "log_logo"/>
-          <div className = "title">
-            <div className = "anova">ANova </div>
-            <div className = "labs">Labs </div>
+        <div className="loginBox">
+          <img src="../public/img/logo-lower.png" className="log_logo" />
+          <div className="title">
+            <div className="anova">ANova </div>
+            <div className="labs">Labs </div>
           </div>
           <Form onSubmit={this._submit} className="login-form">
             <Form.Item>
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Username"
-                  onChange = {this._changeEmail}                  
-                />
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder="Username"
+                onChange={this._changeEmail}
+              />
             </Form.Item>
             <Form.Item>
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                  onChange = {this._changePassword}
-                  
-                />
+              <Input
+                prefix={
+                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                type="password"
+                placeholder="Password"
+                onChange={this._changePassword}
+              />
             </Form.Item>
-            <div className = "error">{this.state.errorMsg}</div>
+            <div className="error">{this.state.errorMsg}</div>
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
-                  Log in
-                </Button>
-                <a href="./SignUp">Register here!</a>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+              >
+                Log in
+              </Button>
+              <a href="./SignUp">Register here!</a>
             </Form.Item>
           </Form>
         </div>

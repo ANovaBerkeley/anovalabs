@@ -30,7 +30,7 @@ router.post('/update', (req, res) => {
     .where({ id: req.body.id })
     .update({ hobby: req.body.hobby, candy: req.body.candy, notes: req.body.notes })
     .then(data => {
-      res.send(data);
+      res.send({ data });
     })
     .catch(error => {
       res.status(500).json({ error });
