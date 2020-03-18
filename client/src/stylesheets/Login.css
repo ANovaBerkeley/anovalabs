@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+.loginContainer {
+  background-color: #e6f4fc;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 150px;
+  padding-bottom: 230px;
+}
+
+.loginBox {
+  width: 350px;
+  height: 425px;
+  background-color: rgba(247, 247, 247, 0.86);
+  display: flex;
+  flex-direction: column;
+  padding-top: 4%;
+  align-items: center;
+  box-shadow: 6px -6px 10px #d2edfc, -6px 6px 10px #d2edfc;
+  border-radius: 16px;
+}
+.linktext {
+  text-decoration: underline;
+  padding-bottom: 5px;
+  color: black;
+}
+.links {
+  font-family: 'Lato';
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  padding-bottom: 8px;
+}
+
+.error {
+  font-family: 'Lato';
+  font-size: 12px;
+  color: red;
+  padding-bottom: 5px;
+}
+
+.anova {
+  color: #155fc2;
+  font-size: 20px;
+}
+.labs {
+  padding-left: 4px;
+  font-size: 20px;
+}
+.title {
+  font-family: 'Lato';
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+}
+
+label {
+  font-family: 'Lato';
+  font-size: 11px;
+}
+
+.logo {
+  width: 10%;
+  height: 15%;
+  padding-bottom: 5px;
+  padding-bottom: 8px;
+}
+
+.log_logo {
+  max-width: 10%;
+  width: auto;
+  height: auto;
+  padding-bottom: 10px;
+  margin: 0;
+}
+
+.remember {
+  font-family: 'Lato';
+  font-size: 10px;
+}
+
+.login-form {
+  width: 270px;
+  height: 40px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+
+input[type='checkbox'],
+select {
+  border-color: #d2edfc;
+}
+input[type='text'],
+select {
+  width: 100%;
+  height: 10px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-color: #d2edfc;
+}
+
+input[type='password'],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-color: #d2edfc;
+}
+
+input[type='button'] {
+  width: 100%;
+  background-color: #9ed8df;
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(31, 137, 139, 0.5);
+}
+
+input[type='button'],
+select {
+  opacity: 0.8;
+}
