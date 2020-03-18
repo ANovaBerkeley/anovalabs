@@ -31,7 +31,7 @@ export default class Profile extends Component {
           this.setState({
             isLoaded: true,
             username: profile[0].name,
-            //TODO: picture, candy
+            //TODO: picture
             email: profile[0].email,
             candy: profile[0].candy,
             hobby: profile[0].hobby,
