@@ -48,7 +48,6 @@ export default class RosterCard extends Component {
     })
       .then(res => res.json())
       .then(values => {
-        console.log(values);
         this.setState({
           showEditModal: false,
           notes: editedNotes,

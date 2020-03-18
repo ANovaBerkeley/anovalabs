@@ -1,5 +1,5 @@
 {
-  "name": "anovalabs_client",
+  "name": "client",
   "version": "1.0.0",
   "description": "Client for ANova Labs",
   "main": "index.js",
@@ -7,10 +7,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint src/** src/**/**; exit 0",
-    "lint-fix": "eslint src/** src/**/** --fix; exit 0",
-    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",

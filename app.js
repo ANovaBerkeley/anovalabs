@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -49,5 +50,10 @@ app.use((err, req, res, next) => {
     message: err.message,
     error: req.app.get('env') === 'development' ? err : {},
   });
+});
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 module.exports = app;
