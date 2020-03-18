@@ -34,18 +34,21 @@ router.get('/current', (req, res) => {
 /* Add user to a site + semester. */
 router.post('/addUserSemSite', (req, res) =>
   knex('user_semester_site')
-    .insert({ user_id: req.body.user_id, semester: req.body.semester, site_id: req.body.site_id })
+    .insert({
+      user_id: req.body.user_id,
+      semester: req.body.semester,
+      site_id: req.body.site_id,
+    })
     .then(() => {
-      // TODO: does res.send(data); work?
       res.status(201).json({
         user_id: req.body.user_id,
         semester: req.body.semester,
-        site_id: req.body.site_id
+        site_id: req.body.site_id,
       });
     })
     .catch(error => {
       res.status(500).json({ error });
-    })
+    }),
 );
 
 module.exports = router;

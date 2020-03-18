@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Form, Input, Icon, Button } from 'antd';
 import { getJWT } from '../utils/utils';
-
+import ANovaLogo from '../assets/img/logo-lower.png';
 import '../stylesheets/Login.css';
 
 class Login extends Component {
@@ -35,11 +35,9 @@ class Login extends Component {
   }
 
   _submit(event) {
-    console.log(this.state.email);
-    console.log(this.state.password);
     event.preventDefault();
     axios
-      .post('http://localhost:5000/api/v1/auth/login', {
+      .post('/api/v1/auth/login', {
         email: this.state.email,
         password: this.state.password,
       })
@@ -64,13 +62,9 @@ class Login extends Component {
       this.props.history.push('/profile');
     }
     return (
-      <div className="container">
+      <div className="loginContainer">
         <div className="loginBox">
-          <img
-            alt={'ANova Logo'}
-            src="../public/img/logo-lower.png"
-            className="log_logo"
-          />
+          <img alt={'ANova Logo'} src={ANovaLogo} className="log_logo" />
           <div className="title">
             <div className="anova">ANova </div>
             <div className="labs">Labs </div>

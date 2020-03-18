@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   cors({
-    origin: 'http://localhost:8080',
-    credentials: true
-  })
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
 );
 
 app.use(authMiddleware.checkTokenSetAccount);
@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
   res.status(res.statusCode || 500);
   res.json({
     message: err.message,
-    error: req.app.get('env') === 'development' ? err : {}
+    error: req.app.get('env') === 'development' ? err : {},
   });
 });
 module.exports = app;

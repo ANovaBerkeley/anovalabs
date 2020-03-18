@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { decode } from 'jwt-decode';
+import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 import SiteLessons from './SiteLessons';
 import Profile from './Profile';
@@ -15,13 +15,23 @@ class AuthComponent extends Component {
       message: undefined,
       type: this.props.type,
       mentor: null,
+      mounted: false,
     };
   }
 
   componentDidMount() {
-    const tok = localStorage.getItem('anovaToken');
-    const d_tok = decode(tok);
-    fetch('http://localhost:5000/api/v1/profile/' + d_tok.id + '?uid=' + d_tok.id)
+    let d_tok;
+    try {
+      const tok = localStorage.getItem('anovaToken');
+      d_tok = decode(tok);
+    } catch (err) {
+      // if local storage doesn't have token
+      localStorage.removeItem('anovaToken');
+      this.props.history.push(`/login`);
+      return;
+    }
+
+    fetch('/api/v1/profile/' + d_tok.id + '?uid=' + d_tok.id)
       .then(res => res.json())
       .then(profile => {
         this.setState({
@@ -29,12 +39,13 @@ class AuthComponent extends Component {
           mounted: true,
         });
       });
+
     const jwt = getJWT();
     if (!jwt) {
       this.props.history.replace('/login');
     } else {
       axios
-        .post('http://localhost:5000/api/v1/auth', {
+        .post('/api/v1/auth', {
           token: jwt,
         })
         .then(res => {

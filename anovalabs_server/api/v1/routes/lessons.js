@@ -11,7 +11,7 @@ router.get('/all', (req, res) => {
   db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     });
 });
 
@@ -20,7 +20,7 @@ router.post('/add', (req, res) => {
   knex('lesson')
     .insert(req.body)
     .then(data => {
-      res.send(data);
+      res.status(201).send(data);
     })
     .catch(error => {
       res.status(500).json({ error });
@@ -29,19 +29,20 @@ router.post('/add', (req, res) => {
 
 /* Update a lesson details */
 router.post('/update', (req, res) => {
-  console.log(req.body);
   knex('lesson')
-      .where({id: req.body.lessonId})
-      .update({ title: req.body.editedTitle, summary: req.body.editedSummary, link: req.body.editedLink })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(error => {
-        res.status(500).json({ error });
-      });
-
+    .where({ id: req.body.lessonId })
+    .update({
+      title: req.body.editedTitle,
+      summary: req.body.editedSummary,
+      link: req.body.editedLink,
+    })
+    .then(data => {
+      res.status(200).send(data);
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 });
-
 
 /* Delete a lesson from the lesson pool. */
 router.post('/delete', (req, res) => {
@@ -49,7 +50,7 @@ router.post('/delete', (req, res) => {
     .where({ id: req.body.id })
     .del()
     .then(data => {
-      res.send(data);
+      res.status(200).send({ data });
     })
     .catch(error => {
       res.status(500).json({ error });

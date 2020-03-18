@@ -36,7 +36,7 @@ export default class RosterCard extends Component {
       });
       return;
     }
-    fetch('http://localhost:5000/api/v1/roster/update', {
+    fetch('/api/v1/roster/update', {
       method: 'POST',
       body: JSON.stringify({
         editedNotes,

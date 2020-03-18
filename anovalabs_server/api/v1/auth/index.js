@@ -13,19 +13,18 @@ router.post('/', (req, res) => {
   jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
     if (error) {
       console.log(error);
-    }
-    else {
+    } else {
       res.json({
         user: decoded,
-        message: "authenticate"
-      })
+        message: 'authenticate'
+      });
     }
   });
 });
 
 const schema = Joi.object().keys({
   email: Joi.string().email({ minDomainAtoms: 2 }),
-  password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+  password: Joi.string().regex(/[a-zA-Z0-9]/)
 });
 
 function validatorAccount(account) {
@@ -114,7 +113,7 @@ router.post('/login', (req, res, next) => {
               },
               (err, token) => {
                 if (err) {
-                  console.log("error jwt not created");
+                  console.log('error jwt not created');
                   next(new Error('Invalid login'));
                 } else {
                   res.json({
@@ -139,7 +138,7 @@ router.post('/login', (req, res, next) => {
   }
 });
 
-router.use(function (err, req, res, next) {
+router.use(function(err, req, res, next) {
   res.status(500);
   res.render('error', { error: err });
 });

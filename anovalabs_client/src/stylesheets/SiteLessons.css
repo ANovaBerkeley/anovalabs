@@ -1,5 +1,4 @@
-.lessonsContainer{
-
+.lessonsContainer {
   display: grid;
   grid-template-columns: 50% 50%;
   grid-auto-rows: auto;
@@ -9,25 +8,22 @@
   height: 80%;
 
   padding-bottom: 200px;
-
 }
-.plusCard{
+.plusCard {
   width: 300px;
   height: 200px;
 
-
   /*align-items: center;*/
   border-radius: 16px;
-  background: #FFFFFF;
-  box-shadow: 0px -4px 0px #D2EDFC;
+  background: #ffffff;
+  box-shadow: 0px -4px 0px #d2edfc;
   border-radius: 5px;
   padding: 20px 20px;
   position: relative;
   padding-bottom: 20px;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .lessons_title {
@@ -40,34 +36,28 @@
 }
 
 .ant-avatar.ant-avatar-icon {
-  padding-top: 20%
+  padding-top: 20%;
 }
 .lessonsContainer:after {
-  content: "";
+  content: '';
   display: block;
 
   height: 100px;
 }
 
-.container{
-  /* background: #F5F7F8;
-  overflow:auto;
-
-  padding-top: 100px;
-  padding-bottom: 100px;
-
-  height:100%; */
-
-  background-color: #E6F4FC;
+.siteLessonsContainer {
+  background-color: #e6f4fc;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 
-.emptyDiv{
+.emptyDiv {
   height: 100px;
-  background: #F5F7F8;
+  background: #f5f7f8;
 }

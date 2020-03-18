@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../stylesheets/Profile.css';
 import { Modal, Input, Row, Col, Avatar } from 'antd';
 import 'antd/dist/antd.css';
+import '../stylesheets/Profile.css';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 
@@ -22,7 +22,7 @@ export default class Profile extends Component {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
     var { id } = decode(getJWT());
-    var get_url = 'http://localhost:5000/api/v1/profile/';
+    var get_url = '/api/v1/profile/';
     var id_str = id.toString();
     fetch(get_url + id_str + '?uid=' + d_tok.id)
       .then(res => res.json())
@@ -49,7 +49,7 @@ export default class Profile extends Component {
   applyChanges() {
     const candyEdit = document.getElementById('candyEdit');
     const hobbyEdit = document.getElementById('hobbyEdit');
-    fetch('http://localhost:5000/api/v1/profile/update', {
+    fetch('/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
         candy: candyEdit.value,
@@ -74,7 +74,7 @@ export default class Profile extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="profileContainer">
         <div className="profileBox">
           <Row type="flex">
             <Col>

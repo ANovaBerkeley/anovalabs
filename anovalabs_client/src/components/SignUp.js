@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Modal, Select, Form, Input, Icon, Button } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
+import ANovaLogo from '../assets/img/logo-lower.png';
 import '../stylesheets/SignUp.css';
 
 const { Option } = Select;
@@ -30,7 +31,7 @@ class SignUp extends Component {
     if (getJWT() !== null) {
       this.setState({ redirect: true });
     }
-    fetch('http://localhost:5000/api/v1/site/allSites')
+    fetch('/api/v1/site/allSites')
       .then(res => res.json())
       .then(
         sites => {
@@ -92,7 +93,7 @@ class SignUp extends Component {
   addUserSite = decodedToken => {
     const { siteId } = this.state;
     const semester = this.getCurrentSemester();
-    fetch('http://localhost:5000/api/v1/site/addUserSemSite', {
+    fetch('/api/v1/site/addUserSemSite', {
       method: 'POST',
       body: JSON.stringify({
         user_id: decodedToken.id,
@@ -133,7 +134,6 @@ class SignUp extends Component {
       pass = false;
     }
     if (role === 'student' && siteCode !== sites[siteId - 1].schoolName + 'ANova') {
-      console.log(sites[siteId - 1]);
       Modal.error({
         title: 'Wrong Site Access Code!',
         centered: true,
@@ -146,22 +146,19 @@ class SignUp extends Component {
       const isValid = await this._validateUser();
       if (isValid) {
         axios
-          .post('http://localhost:5000/api/v1/auth/signup', {
+          .post('/api/v1/auth/signup', {
             name,
             email,
             password,
             role,
           })
           .then(res => {
-            // storing token from server
-            console.log("i'm not supposed to be here");
             localStorage.setItem('anovaToken', res.data.token);
-            this.props.history.push('/SiteLessons');
             const tokPayload = decode(res.data.token);
             this.addUserSite(tokPayload);
+            this.props.history.push('/SiteLessons');
           })
           .catch(err => {
-            console.log('hi');
             localStorage.removeItem('anovaToken');
             Modal.error({
               title: 'Email already in use.',
@@ -195,7 +192,7 @@ class SignUp extends Component {
         .required('No email provided'),
       password: Yup.string()
         .required('No password provided.')
-        .min(8, 'Password should be 8 chars minimum.')
+        .min(4, 'Password should be 8 chars minimum.')
         .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters'),
     });
     const { email, password } = this.state;
@@ -238,13 +235,9 @@ class SignUp extends Component {
       history.push('/SiteLessons');
     }
     return (
-      <div className="container">
+      <div className="signUpContainer">
         <div className="signUpBox">
-          <img
-            alt="anova logo"
-            src="../public/img/logo-lower.png"
-            className="signup-logo"
-          />
+          <img alt="anova logo" src={ANovaLogo} className="signup-logo" />
           <div className="title">
             <div className="anova">ANova </div>
             <div className="labs">Labs </div>

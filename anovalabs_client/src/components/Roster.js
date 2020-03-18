@@ -15,7 +15,7 @@ export default class Roster extends Component {
     const dTok = decode(tok);
     const { isMentor } = this.state;
 
-    let rosterFetchCall = `http://localhost:5000/api/v1/roster?uid=${dTok.id}`;
+    let rosterFetchCall = `/api/v1/roster?uid=${dTok.id}`;
     if (isMentor) {
       rosterFetchCall += '&roleToRetrieve=student';
     } else {

@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-.container {
-  background-color: #E6F4FC;
+.profileContainer {
+  background-color: #e6f4fc;
   width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding-top: 200px;
+  padding-bottom: 150px;
 }
 
 .profileBox {
-
   width: 700px;
   height: 450px;
   background-color: rgba(247, 247, 247, 0.86);
@@ -19,21 +20,20 @@
   justify-content: center;
   vertical-align: middle;
   align-items: center;
-  box-shadow: 6px -6px 10px #D2EDFC, -6px 6px 10px #D2EDFC;
+  box-shadow: 6px -6px 10px #d2edfc, -6px 6px 10px #d2edfc;
   border-radius: 16px;
-
 }
 
-.profileBox p{
-     padding-right: 20px;
+.profileBox p {
+  padding-right: 20px;
 }
 
-.linktext{
+.linktext {
   text-decoration: underline;
   padding-bottom: 5px;
   color: black;
 }
-.links{
+.links {
   font-family: 'Lato';
   font-size: 12px;
   display: flex;
@@ -45,20 +45,20 @@
   padding-bottom: 8px;
 }
 
-.error{
+.error {
   font-family: 'Lato';
   font-size: 12px;
   color: red;
   padding-bottom: 5px;
 }
 
-.anova{
-  color: #155FC2;
+.anova {
+  color: #155fc2;
 }
-.labs{
+.labs {
   padding-left: 4px;
 }
-.title{
+.title {
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
@@ -66,33 +66,35 @@
 }
 
 p {
-          font-family: 'Lato';
-          font-size: 15px;
-          display: flex;
-          flex-direction: row;
-          color: #3b3b3b
+  font-family: 'Lato';
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  color: #3b3b3b;
 }
 
-label{
+label {
   font-family: 'Lato';
   font-size: 11px;
 }
 
-.logo{
+.logo {
   width: 10%;
   height: 15%;
   padding-bottom: 5px;
   padding-bottom: 8px;
 }
 
-.remember{
+.remember {
   font-family: 'Lato';
   font-size: 10px;
 }
-input[type=checkbox], select{
-  border-color: #D2EDFC;
+input[type='checkbox'],
+select {
+  border-color: #d2edfc;
 }
-input[type=text], select {
+input[type='text'],
+select {
   width: 100%;
   padding: 20px 10px;
   margin-top: 0px;
@@ -100,41 +102,43 @@ input[type=text], select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  border-color: #D2EDFC;
+  border-color: #d2edfc;
 }
 
 input {
-     width: 100%;
-     padding: 20px 10px;
-     display: inline-block;
-     border: 1px solid #ccc;
-     border-radius: 4px;
-     box-sizing: border-box;
-     border-color: #D2EDFC;
+  width: 100%;
+  padding: 20px 10px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-color: #d2edfc;
 }
-input[type=email], select {
-     width: 100%;
-     padding: 20px 10px;
-     display: inline-block;
-     border: 1px solid #ccc;
-     border-radius: 4px;
-     box-sizing: border-box;
-     border-color: #D2EDFC;
-   }
+input[type='email'],
+select {
+  width: 100%;
+  padding: 20px 10px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border-color: #d2edfc;
+}
 
-input[type=password], select {
+input[type='password'],
+select {
   width: 100%;
   padding: 12px 20px;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  border-color: #D2EDFC;
+  border-color: #d2edfc;
 }
 
-input[type=submit] {
+input[type='submit'] {
   width: 100%;
-  background-color: #9ED8DF;
+  background-color: #9ed8df;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -145,13 +149,12 @@ input[type=submit] {
   box-shadow: 0px 4px 4px rgba(31, 137, 139, 0.5);
 }
 
-input[type=submit]:hover {
-  opacity: .8;
+input[type='submit']:hover {
+  opacity: 0.8;
 }
 
-
 .editModal {
-     padding: 10px 10px;
+  padding: 10px 10px;
 }
 /* button {
      border-style: solid;
@@ -159,5 +162,5 @@ input[type=submit]:hover {
 } */
 
 .editFields .ant-row {
-     padding: 20 0px;
+  padding: 20 0px;
 }

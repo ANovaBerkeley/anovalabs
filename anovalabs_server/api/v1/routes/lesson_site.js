@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   db.select()
     .from('lesson_site')
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     });
 });
 
@@ -22,14 +22,21 @@ router.get('/all', (req, res) => {
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link', 'lesson_site.date', 'lesson_site.notes')
+  db.select(
+    'lesson.id',
+    'lesson.title',
+    'lesson.summary',
+    'lesson.link',
+    'lesson_site.date',
+    'lesson_site.notes',
+  )
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
     .where('site.id', siteid)
     .orderBy('date', 'asc')
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     });
 });
 
@@ -54,7 +61,7 @@ router.get('/all_but_current_site', (req, res) => {
     .from('lesson')
     .whereNotIn('id', currentSiteLessonIds)
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     });
 });
 
@@ -75,7 +82,7 @@ router.post('/add', (req, res) => {
         .from('lesson')
         .where('id', req.body.lesson_id)
         .first()
-        .then(data => res.send(data))
+        .then(data => res.status(201).send(data)),
     )
     .catch(error => {
       res.status(500).json({ error });
@@ -96,13 +103,12 @@ router.post('/delete', (req, res) => {
     .where('lesson_id', req.body.lesson_id)
     .del()
     .then(data => {
-      res.send(data);
+      return res.status(200).send({ data });
     })
     .catch(error => {
-      res.status(500).json({ error });
+      return res.status(500).json({ error });
     });
 });
-
 
 /* Update notes on a site_lesson */
 router.post('/update', (req, res) => {
@@ -111,17 +117,15 @@ router.post('/update', (req, res) => {
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
-
   knex('lesson_site')
-      .where('site_id', siteid)
-      .where('lesson_id', req.body.lessonId)
-      .update({ notes: req.body.editedNotes })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(error => {
-        res.status(500).json({ error });
-      });
-
+    .where('site_id', siteid)
+    .where('lesson_id', req.body.lessonId)
+    .update({ notes: req.body.editedNotes })
+    .then(data => {
+      return res.status(200).json({ data });
+    })
+    .catch(error => {
+      return res.status(500).json({ error });
+    });
 });
 module.exports = router;

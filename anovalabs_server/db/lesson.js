@@ -22,5 +22,5 @@ module.exports = {
     return knex('lesson')
       .where('id', id)
       .del();
-  }
+  },
 };

@@ -45,7 +45,7 @@ router.put('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
   Accounts.delete(req.params.id).then(() => {
     res.json({
-      deleted: true
+      deleted: true,
     });
   });
 });

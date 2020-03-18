@@ -28,21 +28,21 @@ class SiteLessons extends Component {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-    fetch(`http://localhost:5000/api/v1/site/current?uid=${dTok.id}`)
+    fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
         this.setState({
           site,
         });
       });
-    fetch(`http://localhost:5000/api/v1/lesson_site/all?uid=${dTok.id}`)
+    fetch(`/api/v1/lesson_site/all?uid=${dTok.id}`)
       .then(res => res.json())
       .then(siteLessons => {
         this.setState({
           siteLessons,
         });
       });
-    fetch(`http://localhost:5000/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
+    fetch(`/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
       .then(res => res.json())
       .then(otherLessons => {
         this.setState({
@@ -62,7 +62,7 @@ class SiteLessons extends Component {
   deleteHandler(lessonDetails) {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
-    fetch(`http://localhost:5000/api/v1/lesson_site/delete?uid=${dTok.id}`, {
+    fetch(`/api/v1/lesson_site/delete?uid=${dTok.id}`, {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
       headers: new Headers({
@@ -88,7 +88,7 @@ class SiteLessons extends Component {
     } else {
       const tok = localStorage.getItem('anovaToken');
       const dTok = decode(tok);
-      fetch(`http://localhost:5000/api/v1/lesson_site/add?uid=${dTok.id}`, {
+      fetch(`/api/v1/lesson_site/add?uid=${dTok.id}`, {
         method: 'POST',
         body: JSON.stringify({ lesson_id: lessonId, date }),
         headers: new Headers({
@@ -98,13 +98,11 @@ class SiteLessons extends Component {
         .then(res => res.json())
         .then(newLesson => {
           let newSiteLessons = [...siteLessons, { ...newLesson, date }];
-          console.log(newSiteLessons);
           var sorted_lessons = newSiteLessons.sort((siteLesson1, siteLesson2) => {
             return (
               new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
             );
           });
-          console.log(sorted_lessons);
           this.setState(prevState => ({
             siteLessons: sorted_lessons,
             otherLessons: prevState.otherLessons.filter(
@@ -175,7 +173,7 @@ class SiteLessons extends Component {
     }
 
     return (
-      <div className="container">
+      <div className="siteLessonsContainer">
         <div className="lessons_title">
           <h1>{site.schoolName} Lessons</h1>
         </div>

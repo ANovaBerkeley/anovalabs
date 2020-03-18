@@ -68,7 +68,7 @@ class LessonCard extends Component {
       });
       return;
     }
-    fetch('http://localhost:5000/api/v1/lesson_site/update', {
+    fetch('/api/v1/lesson_site/update', {
       method: 'POST',
       body: JSON.stringify({
         editedNotes,
@@ -90,7 +90,6 @@ class LessonCard extends Component {
 
   editLessonDetails() {
     const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
-    console.log(editedTitle);
     if (editedSummary.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
@@ -98,7 +97,7 @@ class LessonCard extends Component {
       });
       return;
     }
-    fetch('http://localhost:5000/api/v1/lessons/update', {
+    fetch('/api/v1/lessons/update', {
       method: 'POST',
       body: JSON.stringify({
         editedTitle,

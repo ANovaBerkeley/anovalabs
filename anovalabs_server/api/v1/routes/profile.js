@@ -15,12 +15,12 @@ router.get('/:id', (req, res) => {
     'user.name',
     'user.hobby',
     'user.notes',
-    'user.role'
+    'user.role',
   )
     .from('user')
     .where('user.id', userid)
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     });
 });
 
@@ -30,7 +30,7 @@ router.post('/update', (req, res) => {
     .where({ id: req.body.id })
     .update({ hobby: req.body.hobby, candy: req.body.candy, notes: req.body.notes })
     .then(data => {
-      res.send(data);
+      res.status(200).send({ data });
     })
     .catch(error => {
       res.status(500).json({ error });
