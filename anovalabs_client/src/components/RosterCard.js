@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../stylesheets/Roster.css';
 import { Card, Button, Modal, Input, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
-import 'antd/dist/antd.css';
 
 export default class RosterCard extends Component {
   constructor(props) {
@@ -121,7 +120,7 @@ export default class RosterCard extends Component {
     const description = this.renderDescription();
     const maybeEditButton = this.renderEditButton();
     return (
-      <div className="grid-item">
+      <div className="grid-item-roster">
         <div className="grid-item-wrapper">
           <div className="grid-item-container">
             <Card

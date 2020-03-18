@@ -103,7 +103,7 @@ label {
   justify-content: center;
 }
 
-.grid-item {
+.grid-item-roster {
   flex-basis: 20%;
   -ms-flex: auto;
   position: relative;
@@ -135,30 +135,30 @@ label {
   position: relative;
 }
 
-.grid-item:hover .more-info i {
+.grid-item-roster:hover .more-info i {
   padding-left: 20px;
   transition-duration: 0.5s;
 }
 
-.grid-item:hover .grid-item-wrapper {
+.grid-item-roster:hover .grid-item-wrapper {
   padding: 2% 2%;
   margin: -2% -2%;
 }
 
 @media (max-width: 1333px) {
-  .grid-item {
-    flex-basis: 33.33%;
+  .grid-item-roster {
+    flex-basis: 25%;
   }
 }
 
 @media (max-width: 1073px) {
-  .grid-item {
+  .grid-item-roster {
     flex-basis: 33.33%;
   }
 }
 
 @media (max-width: 815px) {
-  .grid-item {
+  .grid-item-roster {
     flex-basis: 50%;
   }
 }
@@ -174,7 +174,7 @@ label {
 }
 
 @media (max-width: 555px) {
-  .grid-item {
+  .grid-item-roster {
     flex-basis: 100%;
   }
 }

@@ -76,7 +76,7 @@ export default class Profile extends Component {
       <div className="container">
         <div className="grid-container">
           <div className="grid-row">
-            <div className="grid-item">
+            <div className="grid-item-profile">
               <div className="grid-item-wrapper">
                 <div className="grid-item-container">
                   <Card
