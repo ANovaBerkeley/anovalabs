@@ -1,22 +1,18 @@
-const express = require('express');
-const db = require('../../../db');
-const knex = require('../../../db/knex');
-
-const router = express.Router();
+const knex = require('../db/knex');
 
 /* Class interacting with the lesson pool. */
 
 /* Retrieve all lessons from the lesson pool. */
-router.get('/all', (req, res) => {
-  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+const index = (req, res, next) => {
+  knex
+    .select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
     .then(data => {
       res.status(200).send(data);
     });
-});
-
+};
 /* Add a lesson to the lesson pool. */
-router.post('/add', (req, res) => {
+const create = (req, res, next) => {
   knex('lesson')
     .insert(req.body)
     .then(data => {
@@ -25,10 +21,9 @@ router.post('/add', (req, res) => {
     .catch(error => {
       res.status(500).json({ error });
     });
-});
-
+};
 /* Update a lesson details */
-router.post('/update', (req, res) => {
+const update = (req, res, next) => {
   knex('lesson')
     .where({ id: req.body.lessonId })
     .update({
@@ -37,15 +32,14 @@ router.post('/update', (req, res) => {
       link: req.body.editedLink,
     })
     .then(data => {
-      res.status(200).send(data);
+      res.status(200).send({ data });
     })
     .catch(error => {
       res.status(500).json({ error });
     });
-});
-
+};
 /* Delete a lesson from the lesson pool. */
-router.post('/delete', (req, res) => {
+const deleteLesson = (req, res, next) => {
   knex('lesson')
     .where({ id: req.body.id })
     .del()
@@ -55,6 +49,11 @@ router.post('/delete', (req, res) => {
     .catch(error => {
       res.status(500).json({ error });
     });
-});
+};
 
-module.exports = router;
+module.exports = {
+  index: index,
+  create: create,
+  update: update,
+  deleteLesson: deleteLesson,
+};

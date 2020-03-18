@@ -1,35 +1,23 @@
-const express = require('express');
-const db = require('../../../db');
-const knex = require('../../../db/knex');
-
-const router = express.Router();
-
-/* Unused */
-router.get('/', (req, res) => {
-  db.select()
-    .from('lesson_site')
-    .then(data => {
-      res.status(200).send(data);
-    });
-});
+const knex = require('../db/knex');
 
 /* Get all lessons from the semester and site of that user. */
-router.get('/all', (req, res) => {
+const getAllSemAndSiteLessons = (req, res, next) => {
   const userid = req.query.uid;
 
-  const siteid = db
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select(
-    'lesson.id',
-    'lesson.title',
-    'lesson.summary',
-    'lesson.link',
-    'lesson_site.date',
-    'lesson_site.notes',
-  )
+  knex
+    .select(
+      'lesson.id',
+      'lesson.title',
+      'lesson.summary',
+      'lesson.link',
+      'lesson_site.date',
+      'lesson_site.notes',
+    )
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
     .join('lesson', 'lesson_site.lesson_id', 'lesson.id')
@@ -38,18 +26,17 @@ router.get('/all', (req, res) => {
     .then(data => {
       res.status(200).send(data);
     });
-});
-
+};
 /* Get all lessons from other sites */
-router.get('/all_but_current_site', (req, res) => {
+const getOtherSiteLessons = (req, res, next) => {
   const userid = req.query.uid;
 
-  const siteid = db
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  const currentSiteLessonIds = db
+  const currentSiteLessonIds = knex
     .select('lesson.id')
     .from('site')
     .join('lesson_site', 'lesson_site.site_id', 'site.id')
@@ -57,19 +44,19 @@ router.get('/all_but_current_site', (req, res) => {
     .where('site.id', siteid)
     .orderBy('date', 'asc');
 
-  db.select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+  knex
+    .select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
     .from('lesson')
     .whereNotIn('id', currentSiteLessonIds)
     .then(data => {
       res.status(200).send(data);
     });
-});
-
+};
 /* Add a lesson to a specific site. */
-router.post('/add', (req, res) => {
+const addLessonToSite = (req, res, next) => {
   const userid = req.query.uid;
 
-  const siteid = db
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
@@ -77,7 +64,7 @@ router.post('/add', (req, res) => {
   return knex('lesson_site')
     .insert({ lesson_id: req.body.lesson_id, site_id: siteid, date: req.body.date })
     .then(() =>
-      db
+      knex
         .select('*')
         .from('lesson')
         .where('id', req.body.lesson_id)
@@ -87,13 +74,13 @@ router.post('/add', (req, res) => {
     .catch(error => {
       res.status(500).json({ error });
     });
-});
-
+};
 /* Deletes an existing lesson from a specific site; The lesson remains in the
-lesson pool. */
-router.post('/delete', (req, res) => {
+     lesson pool. */
+const deleteLessonFromSite = (req, res, next) => {
   const userid = req.query.uid;
-  const siteid = db
+
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
@@ -108,12 +95,12 @@ router.post('/delete', (req, res) => {
     .catch(error => {
       return res.status(500).json({ error });
     });
-});
-
+};
 /* Update notes on a site_lesson */
-router.post('/update', (req, res) => {
+const update = (req, res, next) => {
   const userid = req.body.userId;
-  const siteid = db
+
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
@@ -127,5 +114,11 @@ router.post('/update', (req, res) => {
     .catch(error => {
       return res.status(500).json({ error });
     });
-});
-module.exports = router;
+};
+module.exports = {
+  getAllSemAndSiteLessons: getAllSemAndSiteLessons,
+  getOtherSiteLessons: getOtherSiteLessons,
+  addLessonToSite: addLessonToSite,
+  deleteLessonFromSite: deleteLessonFromSite,
+  update: update,
+};

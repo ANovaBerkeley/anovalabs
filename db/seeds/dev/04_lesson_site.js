@@ -6,5 +6,5 @@ exports.seed = knex =>
     .then(() =>
       knex
         .raw('ALTER SEQUENCE site_id_seq RESTART WITH 1')
-        .then(() => knex('lesson_site').insert(seed))
+        .then(() => knex('lesson_site').insert(seed)),
     );

@@ -1,20 +1,17 @@
-const express = require('express');
-const db = require('../../../db');
-const knex = require('../../../db/knex');
-
-const router = express.Router();
+const knex = require('../db/knex');
 
 /* Retrieve the list of students for a specific site. */
-router.get('/', (req, res) => {
+const getUsersBySite = (req, res) => {
   const userid = req.query.uid;
   const roleType = req.query.roleToRetrieve;
 
-  const siteid = db
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('user.id', 'name', 'email', 'picture', 'notes')
+  knex
+    .select('user.id', 'name', 'email', 'picture', 'notes')
     .from('user_semester_site')
     .rightJoin('user', 'user.id', 'user_semester_site.user_id')
     .where('site_id', siteid)
@@ -22,10 +19,9 @@ router.get('/', (req, res) => {
     .then(data => {
       res.status(200).send(data);
     });
-});
-
+};
 /* Update a specific student profile */
-router.post('/update', (req, res) => {
+const update = (req, res) => {
   knex('user')
     .where({ id: req.body.userId })
     .update({ notes: req.body.editedNotes })
@@ -35,6 +31,9 @@ router.post('/update', (req, res) => {
     .catch(error => {
       res.status(500).json({ error });
     });
-});
+};
 
-module.exports = router;
+module.exports = {
+  getUsersBySite: getUsersBySite,
+  update: update,
+};

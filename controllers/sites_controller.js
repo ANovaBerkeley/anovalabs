@@ -1,38 +1,34 @@
-const express = require('express');
-const db = require('../../../db');
-const knex = require('../../../db/knex');
-
-const router = express.Router();
+const knex = require('../db/knex');
 
 /* Returns all site names */
-router.get('/allSites', (req, res) => {
-  db.select('schoolName', 'id')
+const index = (req, res, next) => {
+  knex
+    .select('schoolName', 'id')
     .from('site')
     .then(data => {
       res.send(data);
     });
-});
-
+};
 /* Returns the current site of the user. */
-router.get('/current', (req, res) => {
+const getCurrentUserSite = (req, res, next) => {
   const userid = req.query.uid;
 
-  const siteid = db
+  const siteid = knex
     .select('site_id')
     .from('user_semester_site')
     .where('user_semester_site.user_id', userid);
 
-  db.select('site.schoolName')
+  knex
+    .select('site.schoolName')
     .from('site')
     .where('site.id', siteid)
     .first()
     .then(data => {
       res.send(data);
     });
-});
-
+};
 /* Add user to a site + semester. */
-router.post('/addUserSemSite', (req, res) =>
+const addUserToSemSite = (req, res, next) => {
   knex('user_semester_site')
     .insert({
       user_id: req.body.user_id,
@@ -48,7 +44,11 @@ router.post('/addUserSemSite', (req, res) =>
     })
     .catch(error => {
       res.status(500).json({ error });
-    }),
-);
+    });
+};
 
-module.exports = router;
+module.exports = {
+  index: index,
+  getCurrentUserSite: getCurrentUserSite,
+  addUserToSemSite: addUserToSemSite,
+};
