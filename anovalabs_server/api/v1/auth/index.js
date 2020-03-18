@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     } else {
       res.json({
         user: decoded,
-        message: 'authenticate'
+        message: 'authenticate',
       });
     }
   });
@@ -24,15 +24,14 @@ router.post('/', (req, res) => {
 
 const schema = Joi.object().keys({
   email: Joi.string().email({ minDomainAtoms: 2 }),
-  password: Joi.string().regex(/[a-zA-Z0-9]/)
+  password: Joi.string().regex(/[a-zA-Z0-9]/),
 });
 
 function validatorAccount(account) {
   const result = Joi.validate(
     { email: account.email.trim(), password: account.password.trim() },
-    schema
+    schema,
   );
-  console.log(result);
   return result;
 }
 
@@ -53,7 +52,7 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name.trim(),
               email: req.body.email.trim(),
               password: hash,
-              role: req.body.role
+              role: req.body.role,
               // account_id: accountId
             };
             User.create(newUser).then(retUser => {
@@ -61,26 +60,26 @@ router.post('/signup', (req, res, next) => {
                 id: retUser[0].id,
                 email: retUser[0].email,
                 roles: retUser[0].role,
-                candy: ''
+                candy: '',
               };
               jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
                 {
-                  expiresIn: '2d'
+                  expiresIn: '2d',
                 },
                 (err, token) => {
                   if (err) {
                     next(new Error('Invalid login'));
                   } else {
                     res.json({
-                      token
+                      token,
                     });
                   }
-                }
+                },
               );
             });
-          }
+          },
         );
       } else {
         console.error('Email in use');
@@ -103,13 +102,13 @@ router.post('/login', (req, res, next) => {
             const payload = {
               id: user.id,
               email: user.email,
-              roles: user.role
+              roles: user.role,
             };
             jwt.sign(
               payload,
               process.env.JWT_SECRET,
               {
-                expiresIn: '2d'
+                expiresIn: '2d',
               },
               (err, token) => {
                 if (err) {
@@ -117,10 +116,10 @@ router.post('/login', (req, res, next) => {
                   next(new Error('Invalid login'));
                 } else {
                   res.json({
-                    token
+                    token,
                   });
                 }
-              }
+              },
             );
           } else {
             res.status(401);
