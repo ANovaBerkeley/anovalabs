@@ -1,8 +1,6 @@
-import React, { Component } from 'react'
-import axios from 'axios';
+import React, { Component } from 'react';
 import '../stylesheets/Profile.css';
-import { Modal, Input, Button, Row, Col, Avatar } from 'antd';
-import "antd/dist/antd.css";
+import { Modal, Input, Button, Row, Col, Card } from 'antd';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
 
@@ -27,7 +25,8 @@ export default class Profile extends Component {
     var id_str = id.toString();
     fetch(get_url + id_str + '?uid=' + d_tok.id)
       .then(res => res.json())
-      .then(profile => {
+      .then(
+        profile => {
           this.setState({
             isLoaded: true,
             username: profile[0].name,
@@ -35,7 +34,7 @@ export default class Profile extends Component {
             email: profile[0].email,
             candy: profile[0].candy,
             hobby: profile[0].hobby
-         });
+          });
         },
         error => {
           this.setState({
@@ -43,7 +42,7 @@ export default class Profile extends Component {
             error
           });
         }
-      )
+      );
   }
 
   applyChanges() {
@@ -64,7 +63,7 @@ export default class Profile extends Component {
         showEdit: false,
         candy: candyEdit.value,
         hobby: hobbyEdit.value
-       });
+      });
     });
   }
 
@@ -72,70 +71,71 @@ export default class Profile extends Component {
     this.setState({ showEdit: bool });
   }
 
-   render() {
-        return (
-             <div className="container">
-                  <div className="profileBox">
-                       <Row type="flex">
-                            <Col>
-                                 <Avatar style={{marginRight : "20px"}}src={this.state.profileimage} size="large" />
-                            </Col>
-                            <Col>
-                                 <p id="username" className="title">{this.state.username}</p>
-                            </Col>
-                       </Row>
-                       <Row type="flex">
-                       <Col>
-                                 <p>Email:</p>
-                            </Col>
-                            <Col>
-                                 <p id="email">{this.state.email}</p>
-                            </Col>
-                       </Row>
-                       <Row type="flex">
-                       <Col>
-                                 <p>Favorite Candy:</p>
-                            </Col>
-                            <Col>
-                                 <p id="candy">{this.state.candy}</p>
-                            </Col>
-                       </Row>
-                       <Row type="flex">
-                            <Col>
-                                 <p>Hobbies:</p>
-                            </Col>
-                            <Col>
-                                 <p id="hobby">{this.state.hobby}</p>
-                            </Col>
-                       </Row>
-                       <Row>
-                            <Col>
-                                 <Avatar size={64} onClick={() => this.showModal(true)} icon="edit" />
-                                 <Modal
-                                      className="editModal"
-                                      title="Edit Your Profile"
-                                      centered
-                                      visible={this.state.showEdit}
-                                      onOk={() => this.applyChanges()}
-                                      onCancel={() => this.showModal(false)}
-                                 >
-                                      <div className="editFields">
-                                           <Row>
-                                                <Col>
-                                                     <Input id="candyEdit" allowClear={true} addonBefore="Favorite Candy:" autosize="true" defaultValue={this.state.candy}></Input>
-                                                </Col>
-                                           </Row>
-                                           <Row>
-                                                <Col>
-                                                     <Input id="hobbyEdit" allowClear={true} addonBefore="Hobbies:" autosize="true" defaultValue={this.state.hobby}></Input>
-                                                </Col>
-                                           </Row>
-                                      </div>
-                                 </Modal>
-                            </Col>
-                       </Row>
-                  </div>
-             </div>
-        )
-   }
+  render() {
+    return (
+      <div className="container">
+        <div className="grid-container">
+          <div className="grid-row">
+            <div className="grid-item">
+              <div className="grid-item-wrapper">
+                <div className="grid-item-container">
+                  <Card
+                    cover={
+                      <img
+                        alt=""
+                        src="https://image.flaticon.com/icons/svg/1141/1141771.svg"
+                      />
+                    }
+                  >
+                    <div>
+                      <h2>{this.state.username}</h2>
+                      <p>Email: {this.state.email}</p>
+                      <p>Favorite Candy: {this.state.candy}</p>
+                      <p>Favorite Hobby: {this.state.hobby}</p>
+                    </div>
+                    <Button type="primary" onClick={() => this.showModal(true)}>
+                      Edit Profile
+                    </Button>
+                    <Modal
+                      className="editModal"
+                      title="Edit Your Profile"
+                      centered
+                      visible={this.state.showEdit}
+                      onOk={() => this.applyChanges()}
+                      onCancel={() => this.showModal(false)}
+                    >
+                      <div className="editFields">
+                        <Row>
+                          <Col>
+                            <Input
+                              id="candyEdit"
+                              allowClear={true}
+                              addonBefore="Favorite Candy:"
+                              autosize="true"
+                              defaultValue={this.state.candy}
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <Input
+                              id="hobbyEdit"
+                              allowClear={true}
+                              addonBefore="Hobbies:"
+                              autosize="true"
+                              defaultValue={this.state.hobby}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </Modal>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }

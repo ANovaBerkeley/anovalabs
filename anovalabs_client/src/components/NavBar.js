@@ -58,7 +58,6 @@ class NavBar extends Component {
                 className="menuItem"
                 title={
                   <img
-                    onClick={this.toggleDialog}
                     src={
                       'https://image.flaticon.com/icons/png/128/1141/1141771.png'
                     }
@@ -67,7 +66,7 @@ class NavBar extends Component {
                 }
               >
                 <Menu.Item className="menuItem" key="edit">
-                  <span onClick={this.goToProfile}>Profile</span>
+                  <a href="/Profile">Profile</a>
                 </Menu.Item>
                 <Menu.Item className="menuItem" key="logout">
                   <span onClick={this.goToLogout}>Logout</span>
@@ -96,7 +95,7 @@ class NavBar extends Component {
                 <a href="/Roster">Roster</a>
               </Menu.Item>
               <Menu.Item className="menuItem" key="edit">
-                <a onClick={this.goToProfile}>Profile</a>
+                <a href="/Profile">Profile</a>
               </Menu.Item>
               <Menu.Item className="menuItem" key="logout">
                 <a onClick={this.goToLogout}>Logout</a>

@@ -4,8 +4,6 @@ import { Card, Button, Modal, Input, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 
-const { TextArea } = Input;
-
 export default class RosterCard extends Component {
   constructor(props) {
     super(props);
@@ -47,8 +45,7 @@ export default class RosterCard extends Component {
       })
     })
       .then(res => res.json())
-      .then(values => {
-        console.log(values);
+      .then(() => {
         this.setState({
           showEditModal: false,
           notes: editedNotes
@@ -103,11 +100,11 @@ export default class RosterCard extends Component {
           >
             <Row>
               <Col>
-                <TextArea
+                <Input
                   rows={4}
                   id="notes"
                   addonBefore="Notes:"
-                  autosize
+                  autosize="true"
                   defaultValue={notes}
                   onChange={this.onChangeNotes}
                 />
@@ -124,19 +121,22 @@ export default class RosterCard extends Component {
     const description = this.renderDescription();
     const maybeEditButton = this.renderEditButton();
     return (
-      <div>
-        <Card
-          style={{ width: 300 }}
-          cover={
-            <img
-              alt=""
-              src="https://image.flaticon.com/icons/svg/1141/1141771.svg"
-            />
-          }
-        >
-          {description}
-          {maybeEditButton}
-        </Card>
+      <div className="grid-item">
+        <div className="grid-item-wrapper">
+          <div className="grid-item-container">
+            <Card
+              cover={
+                <img
+                  alt=""
+                  src="https://image.flaticon.com/icons/svg/1141/1141771.svg"
+                />
+              }
+            >
+              {description}
+              {maybeEditButton}
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }

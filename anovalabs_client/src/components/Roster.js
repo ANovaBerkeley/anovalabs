@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../stylesheets/Roster.css';
 import * as decode from 'jwt-decode';
 import RosterCard from './RosterCard';
-import 'antd/dist/antd.css';
 
 export default class Roster extends Component {
   state = {
@@ -37,7 +36,9 @@ export default class Roster extends Component {
 
     return (
       <div className="container">
-        <div className="containerGrid">{rosterCards}</div>
+        <div className="grid-container">
+          <div className="grid-row">{rosterCards}</div>
+        </div>
       </div>
     );
   }
