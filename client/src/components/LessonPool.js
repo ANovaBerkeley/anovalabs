@@ -150,15 +150,16 @@ class LessonPool extends Component {
           <h1>All Lessons</h1>
         </div>
         <div className="lessonPoolContainer">
-          {allLessons.map(item => (
-            <LessonCard
-              key={item.id}
-              deleteHandler={this.deleteHandler}
-              lessonDetails={item}
-              pool
-              isment={this.state.mentor}
-            />
-          ))}
+          {allLessons &&
+            allLessons.map(item => (
+              <LessonCard
+                key={item.id}
+                deleteHandler={this.deleteHandler}
+                lessonDetails={item}
+                pool
+                isment={this.state.mentor}
+              />
+            ))}
           {maybeAddCard}
         </div>
       </div>

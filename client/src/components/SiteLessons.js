@@ -25,8 +25,16 @@ class SiteLessons extends Component {
   }
 
   componentDidMount() {
-    const tok = localStorage.getItem('anovaToken');
-    const dTok = decode(tok);
+    let dTok;
+    try {
+      const tok = localStorage.getItem('anovaToken');
+      dTok = decode(tok);
+    } catch (err) {
+      // if local storage doesn't have token
+      localStorage.removeItem('anovaToken');
+      this.props.history.push(`/login`);
+      return;
+    }
 
     fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
@@ -156,11 +164,12 @@ class SiteLessons extends Component {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {otherLessons.map(lesson => (
-                  <Option key={lesson.id} value={lesson.id}>
-                    {lesson.title}
-                  </Option>
-                ))}
+                {otherLessons &&
+                  otherLessons.map(lesson => (
+                    <Option key={lesson.id} value={lesson.id}>
+                      {lesson.title}
+                    </Option>
+                  ))}
               </Select>
               <br />
               <div>
@@ -178,15 +187,16 @@ class SiteLessons extends Component {
           <h1>{site.schoolName} Lessons</h1>
         </div>
         <div className="lessonsContainer">
-          {siteLessons.map(lesson => (
-            <LessonCard
-              key={lesson.id}
-              deleteHandler={this.deleteHandler}
-              lessonDetails={lesson}
-              pool={false}
-              isment={isMentor}
-            />
-          ))}
+          {siteLessons &&
+            siteLessons.map(lesson => (
+              <LessonCard
+                key={lesson.id}
+                deleteHandler={this.deleteHandler}
+                lessonDetails={lesson}
+                pool={false}
+                isment={isMentor}
+              />
+            ))}
           {maybeAddCard}
         </div>
       </div>
