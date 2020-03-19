@@ -24,13 +24,12 @@ class SiteLessons extends Component {
     this.deleteHandler = this.deleteHandler.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let dTok;
     try {
-      const tok = localStorage.getItem('anovaToken');
-      dTok = decode(tok);
+      const tok = await localStorage.getItem('anovaToken');
+      dTok = await decode(tok);
     } catch (err) {
-      // if local storage doesn't have token
       localStorage.removeItem('anovaToken');
       this.props.history.push(`/login`);
       return;
