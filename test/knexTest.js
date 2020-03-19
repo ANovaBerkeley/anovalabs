@@ -1,6 +1,5 @@
 require('dotenv').load();
 path = require('path');
-// path.join(__dirname, '../test/karma.conf.js');
 const knex = require('knex')({
   client: 'pg',
   connection: process.env.TEST_DATABASE_URL,
