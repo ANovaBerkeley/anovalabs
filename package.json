@@ -6,6 +6,9 @@
     "dev": "NODE_ENV=development nodemon index.js",
     "server": "nodemon index.js",
     "test": "(dropdb --if-exists test-anovalabs-db && createdb test-anovalabs-db) && mocha --exit",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback",
+    "seed": "knex seed:run",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
@@ -39,7 +42,7 @@
     "knex": "^0.20.11",
     "morgan": "~1.9.0",
     "node-gyp": "^6.1.0",
-    "pg": "^7.5.0",
+    "pg": "^7.18.2",
     "request": "^2.88.0",
     "style-loader": "^0.23.1",
     "uuid": "^3.3.2"

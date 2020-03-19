@@ -1,0 +1,1 @@
+web: knex migrate:latest --env production && npm start
