@@ -11,6 +11,9 @@
     "seed": "knex seed:run",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
+  "engines": {
+    "node": "8.12"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/ANovaBerkeley/anovalabs.git"
