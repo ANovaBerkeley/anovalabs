@@ -32,7 +32,7 @@ module.exports = {
       tableName: 'knex_migrations',
     },
     seeds: {
-      directory: __dirname + '/db/seeds/dev',
+      directory: __dirname + '/db/seeds/production',
     },
   },
 };

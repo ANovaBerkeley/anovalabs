@@ -14,6 +14,4 @@ exports.up = knex =>
     table.string('hobby');
   });
 
-exports.down = knex => {
-  knex.schema.dropTableIfExists('user');
-};
+exports.down = knex => knex.raw(`DROP TABLE IF EXISTS "user" CASCADE`);

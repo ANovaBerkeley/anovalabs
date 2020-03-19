@@ -1,3 +1,7 @@
+#secrets
+.env
+env
+
 # Logs
 logs
 *.log

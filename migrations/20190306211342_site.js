@@ -8,4 +8,4 @@ exports.up = knex =>
     table.string('contact').notNullable();
   });
 
-exports.down = knex => knex.schema.dropTableIfExists('site');
+exports.down = knex => knex.raw('DROP TABLE IF EXISTS site CASCADE');
