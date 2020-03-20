@@ -1,4 +1,4 @@
-const seed = require('../../seed_data/03_lesson_seed');
+const seed = require('../../seed_data/test/03_lesson_seed');
 
 exports.seed = knex =>
   knex('lesson')

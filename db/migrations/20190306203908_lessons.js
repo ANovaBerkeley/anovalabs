@@ -10,4 +10,4 @@ exports.up = knex =>
     table.timestamp('updated_at').defaultTo(knex.fn.now());
   });
 
-exports.down = knex => knex.schema.dropTableIfExists('lesson');
+exports.down = knex => knex.raw('DROP TABLE IF EXISTS lesson CASCADE');

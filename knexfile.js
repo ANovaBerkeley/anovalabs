@@ -1,38 +1,34 @@
 // Update with your config settings.
+require('dotenv').load();
 
 module.exports = {
   development: {
-    client: 'postgresql',
-    connection: 'postgres://localhost/anovalabs-db',
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: { directory: __dirname + '/db/migrations' },
     seeds: {
-      directory: './db/seeds/dev',
+      directory: __dirname + '/db/seeds/development',
     },
   },
   test: {
-    client: 'postgresql',
-    connection: 'postgres://localhost/test-anovalabs-db',
+    client: 'pg',
+    connection: process.env.TEST_DATABASE_URL,
+    migrations: { directory: __dirname + '/db/migrations' },
     seeds: {
-      directory: './db/seeds/dev',
+      directory: __dirname + '/db/seeds/test',
     },
   },
   production: {
-    client: process.env.PG_CLIENT,
-    connection: {
-      host: process.env.PG_HOST,
-      user: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_NAME,
-    },
+    client: 'pg',
+    ssl: true,
+    connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
       max: 10,
     },
-    migrations: {
-      directory: __dirname + '/migrations',
-      tableName: 'knex_migrations',
-    },
+    migrations: { directory: __dirname + '/db/migrations' },
     seeds: {
-      directory: __dirname + '/db/seeds/dev',
+      directory: __dirname + '/db/seeds/production',
     },
   },
 };

@@ -21,4 +21,4 @@ exports.up = knex =>
       .onDelete('CASCADE');
   });
 
-exports.down = knex => knex.schema.dropTableIfExists('semester_site');
+exports.down = knex => knex.schema.dropTableIfExists('user_semester_site');

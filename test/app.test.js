@@ -148,7 +148,7 @@ describe('DB Test', () => {
 
   it('Getting Correct Student Roster', done => {
     request(app)
-      .get('/api/v1/roster?uid=1')
+      .get('/api/v1/roster?uid=1&roleToRetrieve=student')
       .expect(200)
       .then(response => {
         expect(response.body).to.deep.equal(fixtures.roster);
@@ -176,7 +176,7 @@ describe('DB Test', () => {
     request(app)
       .post('/api/v1/profile/update')
       .send(fixtures.updatedNotes)
-      .expect(201)
+      .expect(200)
       .then(response => {
         done();
       })

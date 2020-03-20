@@ -2,7 +2,6 @@
   "name": "anovalabs",
   "version": "1.0.0",
   "description": "Client for ANova Labs",
-  "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -60,8 +59,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
   "devDependencies": {
     "prettier": "^1.19.1"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

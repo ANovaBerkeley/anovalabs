@@ -90,20 +90,24 @@ class SignUp extends Component {
     return semester;
   };
 
-  addUserSite = decodedToken => {
+  addUserSite = async decodedToken => {
     const { siteId } = this.state;
     const semester = this.getCurrentSemester();
-    fetch('/api/v1/site/addUserSemSite', {
-      method: 'POST',
-      body: JSON.stringify({
-        user_id: decodedToken.id,
-        semester,
-        site_id: siteId,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    });
+    try {
+      await fetch('/api/v1/site/addUserSemSite', {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: decodedToken.id,
+          semester,
+          site_id: siteId,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async _submit(event) {
@@ -145,27 +149,25 @@ class SignUp extends Component {
       event.preventDefault();
       const isValid = await this._validateUser();
       if (isValid) {
-        axios
-          .post('/api/v1/auth/signup', {
+        try {
+          const { data } = await axios.post('/api/v1/auth/signup', {
             name,
             email,
             password,
             role,
-          })
-          .then(res => {
-            localStorage.setItem('anovaToken', res.data.token);
-            const tokPayload = decode(res.data.token);
-            this.addUserSite(tokPayload);
-            this.props.history.push('/SiteLessons');
-          })
-          .catch(err => {
-            localStorage.removeItem('anovaToken');
-            Modal.error({
-              title: 'Email already in use.',
-              centered: true,
-            });
-            event.preventDefault();
           });
+          await localStorage.setItem('anovaToken', data.token);
+          const tokPayload = decode(data.token);
+          await this.addUserSite(tokPayload);
+          await this.props.history.push('/SiteLessons');
+        } catch (error) {
+          localStorage.removeItem('anovaToken');
+          Modal.error({
+            title: 'Email already in use.',
+            centered: true,
+          });
+          event.preventDefault();
+        }
       } else {
         console.log(this.state.errorMessage);
       }

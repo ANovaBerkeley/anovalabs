@@ -1,5 +1,6 @@
 # 🚀 ANova Labs
 
+updated: March 19th, 2020
 ## ANova's Computer Science Education and Mentorship Platform
 
 - Purpose of ANova Labs is to provide the necessary tools for our mentors carrying out ANova's mission statement of improving computer science education in under-resourced communinities across the Bay Area by combining technology and mentorsip. And to make resources and mentorship more accessible to ANova mentees.
@@ -23,7 +24,7 @@
 - /db
   - This folder contains implementation and configuration files for the Knex.js database. It also contains files that provide a friendly abstraction over knex queries.
 
-- /migrations
+- /db/migrations
   - These files describe changes to the database in chronological order, when you run a migration you are asking a program to go through and apply each change that was made to the database in order to make the Database have the tables,columns it has in present day.
 
 - /controllers
@@ -102,6 +103,25 @@ For this portion I recommend opening up two seperate tabs on your terminal -- on
     - This will start the ANova labs client which is a react application
     - Go to http://localhost:3000/
       - And you will see the main page and be able to register/login
+
+# 😲ANova Labs Reseting The Database
+If you want to reset your database you can do the following in the root directory
+- dropdb anovalabs-db // this will drop your current database
+- createdb anovalabs-db // this will re-create your current database
+- knex migrate:latest //this will run all the migration files
+- knex seed:run //this will run the seeds file
+
+for helpful commands, look at package.json in the root directory for migrating, rolling back and seeding the Database
+
+# 🧪 ANova Labs Running Tests
+- in the root directory of the ANovaLabs directory type the following command
+- `npm run test` and you will run a series of tests
+
+# 🚀 ANova Labs: Testing Production Build Locally
+- You will need to first make the build version of the client
+- cd into `/client` and run `npm run build` and the react scripts will produce a build folder
+- cd back into the root directory and type `npm run dev`
+- go to localhost:5000 and you will be able to access the same pages and routing as before
 
 # 💻 ANova Labs Reference Material
 The following is for reference to help you in your journey in developing on ANova Labs
