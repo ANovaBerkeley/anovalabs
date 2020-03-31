@@ -143,7 +143,7 @@ class LessonCard extends Component {
                   rows={4}
                   id="notes"
                   addonBefore="Notes:"
-                  autosize
+                  autosize="true"
                   defaultValue={notes}
                   onChange={this.onChangeNotes}
                 />
