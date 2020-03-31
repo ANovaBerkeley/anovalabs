@@ -16,8 +16,10 @@ const index = async (req, res, next) => {
 /* Add a lesson to the lesson pool. */
 const create = async (req, res, next) => {
   try {
-    await knex('lesson').insert(req.body);
-    return res.status(201).send({ title: req.body.title });
+    const data = await knex('lesson')
+      .insert(req.body)
+      .returning('id');
+    return res.status(201).send({ title: req.body.title, id: data[0] });
   } catch (error) {
     return res.status(500).json({ error });
   }

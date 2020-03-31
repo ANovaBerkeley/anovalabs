@@ -66,7 +66,8 @@ class LessonPool extends Component {
         }),
       })
         .then(res => res.json())
-        .then(() => {
+        .then(newLessonInfo => {
+          item['id'] = newLessonInfo.id;
           this.setState(prevState => ({
             allLessons: [...prevState.allLessons, item],
             showModal: false,
@@ -111,7 +112,7 @@ class LessonPool extends Component {
                     id="titleAdd"
                     allowClear
                     addonBefore="Title:"
-                    autosize
+                    autosize="true"
                     defaultValue=""
                   />
                 </Col>
