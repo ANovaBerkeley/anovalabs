@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .navbar_menu {
   background: #f7f7f7;
   position: fixed;

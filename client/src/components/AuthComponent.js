@@ -13,7 +13,6 @@ class AuthComponent extends Component {
     super(props);
     this.state = {
       message: undefined,
-      type: this.props.type,
       mentor: null,
       mounted: false,
     };
@@ -69,13 +68,13 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      if (this.state.type === 'lessons') {
+      if (this.props.type === 'lessons') {
         return <SiteLessons ismentor={this.state.mentor} />;
-      } else if (this.state.type === 'profile') {
+      } else if (this.props.type === 'profile') {
         return <Profile />;
-      } else if (this.state.type === 'lessonpool') {
+      } else if (this.props.type === 'lessonpool') {
         return <LessonPool ismentor={this.state.mentor} />;
-      } else if (this.state.type === 'roster') {
+      } else if (this.props.type === 'roster') {
         return <Roster ismentor={this.state.mentor} />;
       }
     }

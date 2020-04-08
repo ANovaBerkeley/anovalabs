@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Menu, Button } from 'antd';
-import 'antd/dist/antd.css';
-import '../stylesheets/navbar.css';
+import { Menu, Button, Drawer, Icon } from 'antd';
+import '../stylesheets/NavBar.css';
 import { removeJWT } from '../utils/utils';
+import { NavLink } from 'react-router-dom';
 
 const logo = require('../stylesheets/logo.png');
 
@@ -15,21 +15,8 @@ class NavBar extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  returnHome = () => {
-    window.location = '/';
-  };
-
-  goToProfile = () => {
-    window.location = '/Profile';
-  };
-
-  goToLogout = () => {
+  logOut = () => {
     removeJWT();
-    window.location = '/Login';
-  };
-
-  goToRoster = () => {
-    window.location = '/Roster';
   };
 
   toggleDialog = () => {
@@ -59,23 +46,24 @@ class NavBar extends Component {
         theme="light"
       >
         <Menu.Item key="home">
-          <img
-            onClick={this.returnHome}
-            src={logo}
-            className="logo"
-            style={{ width: 180, height: 65 }}
-            alt={'Logo'}
-          />
+          <NavLink to="/">
+            <img
+              src={logo}
+              className="logo"
+              style={{ width: 180, height: 65 }}
+              alt={'Logo'}
+            />
+          </NavLink>
         </Menu.Item>
         <div className="navbar-options">
           <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <a href="/SiteLessons">Site Material</a>
+            <NavLink to="/SiteLessons">Site Material</NavLink>
           </Menu.Item>
           <Menu.Item key="lessonpool" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <a href="/LessonPool">Lesson Pool</a>
+            <NavLink to="/LessonPool">Lesson Pool</NavLink>
           </Menu.Item>
           <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <a href="/Roster">Roster</a>
+            <NavLink to="/Roster">Roster</NavLink>
           </Menu.Item>
           <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 21 }}>
             <img
@@ -99,7 +87,7 @@ class NavBar extends Component {
               key="logout"
               type="danger"
               className="navbar-dialog-button"
-              onClick={this.goToLogout}
+              onClick={this.logOut}
             >
               Logout
             </Button>

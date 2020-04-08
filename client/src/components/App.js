@@ -6,29 +6,31 @@ import Login from './Login';
 import NavBar from './NavBar';
 
 function App() {
-  const DefaultContainer = () => (
-    <div>
-      <Switch>
-        <AuthComponent exact path="/" type="lessons" />
-        <AuthComponent path="/SiteLessons" type="lessons" />
-        <AuthComponent path="/LessonPool" type="lessonpool" />
-        <AuthComponent path="/Profile" type="profile" />
-        <AuthComponent path="/Roster" type="roster" />
-      </Switch>
-    </div>
-  );
-
   return (
     <div>
       <BrowserRouter>
-        <Switch>
-          <div>
-            <NavBar />
+        <div>
+          <NavBar />
+          <Switch>
             <Route exact path="/Login" component={Login} />
             <Route exact path="/SignUp" component={SignUp} />
-            <Route component={DefaultContainer} />
-          </div>
-        </Switch>
+            <Route exact path="/">
+              <AuthComponent type="lessons" />
+            </Route>
+            <Route path="/SiteLessons">
+              <AuthComponent type="lessons" />
+            </Route>
+            <Route path="/LessonPool">
+              <AuthComponent type="lessonpool" />
+            </Route>
+            <Route path="/Profile">
+              <AuthComponent type="profile" />
+            </Route>
+            <Route path="/Roster">
+              <AuthComponent type="roster" />
+            </Route>
+          </Switch>
+        </div>
       </BrowserRouter>
     </div>
   );
