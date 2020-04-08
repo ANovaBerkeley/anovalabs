@@ -10,26 +10,25 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 'home',
+      drawerVisible: false,
     };
-    this.handleClick = this.handleClick.bind(this);
   }
+
+  showDrawer = () => {
+    this.setState({
+      drawerVisible: true,
+    });
+  };
+
+  hideDrawer = () => {
+    this.setState({
+      drawerVisible: false,
+    });
+  };
 
   logOut = () => {
     removeJWT();
   };
-
-  toggleDialog = () => {
-    if (document.querySelector('#navbar-dialog').style.display !== 'block') {
-      document.querySelector('#navbar-dialog').style.display = 'block';
-    } else {
-      document.querySelector('#navbar-dialog').style.display = 'none';
-    }
-  };
-
-  handleClick(e) {
-    this.setState({ current: e.key });
-  }
 
   render() {
     const tok = localStorage.getItem('anovaToken');
@@ -38,62 +37,88 @@ class NavBar extends Component {
     }
     const { current } = this.state;
     return (
-      <Menu
-        className="navbar_menu"
-        onClick={this.handleClick}
-        selectedKeys={[current]}
-        mode="horizontal"
-        theme="light"
-      >
-        <Menu.Item key="home">
+      <nav className="menuBar">
+        <div className="logo">
           <NavLink to="/">
-            <img
-              src={logo}
-              className="logo"
-              style={{ width: 180, height: 65 }}
-              alt={'Logo'}
-            />
+            <img src={logo} className="logo" alt={'Logo'} />
           </NavLink>
-        </Menu.Item>
-        <div className="navbar-options">
-          <Menu.Item key="lessons" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <NavLink to="/SiteLessons">Site Material</NavLink>
-          </Menu.Item>
-          <Menu.Item key="lessonpool" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <NavLink to="/LessonPool">Lesson Pool</NavLink>
-          </Menu.Item>
-          <Menu.Item key="roster" style={{ paddingRight: 20, paddingTop: 10 }}>
-            <NavLink to="/Roster">Roster</NavLink>
-          </Menu.Item>
-          <Menu.Item key="profile" style={{ paddingRight: 20, paddingTop: 21 }}>
-            <img
-              alt={'Student Icon'}
-              onClick={this.toggleDialog}
-              src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
-              className="profile-logo"
-              style={{ width: 20, height: 20 }}
-            />
-          </Menu.Item>
-          <div id="navbar-dialog">
-            <Button
-              key="edit"
-              type="default"
-              className="navbar-dialog-button"
-              onClick={this.goToProfile}
-            >
-              Profile
-            </Button>
-            <Button
-              key="logout"
-              type="danger"
-              className="navbar-dialog-button"
-              onClick={this.logOut}
-            >
-              Logout
-            </Button>
-          </div>
         </div>
-      </Menu>
+        <div className="menuCon">
+          <div className="leftMenu">
+            <Menu mode="horizontal">
+              <Menu.Item className="menuItem" key="lessons">
+                <NavLink to="/SiteLessons">Site Material</NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="lessonpool">
+                <NavLink to="/LessonPool">Lesson Pool</NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="roster">
+                <NavLink to="/Roster">Roster</NavLink>
+              </Menu.Item>
+            </Menu>
+          </div>
+          <div className="rightMenu">
+            <Menu mode="horizontal">
+              <Menu.SubMenu
+                className="menuItem"
+                title={
+                  <img
+                    src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
+                    className="profile-logo"
+                  />
+                }
+              >
+                <Menu.Item className="menuItem" key="edit">
+                  <NavLink to="/Profile">Profile</NavLink>
+                </Menu.Item>
+                <Menu.Item className="menuItem" key="logout">
+                  <NavLink onClick={this.logOut} to="/Login">
+                    Logout
+                  </NavLink>
+                </Menu.Item>
+              </Menu.SubMenu>
+            </Menu>
+          </div>
+          <Button className="barsMenu" type="primary" onClick={this.showDrawer}>
+            <span className="barsBtn" />
+          </Button>
+          <Drawer
+            title="Menu"
+            placement="right"
+            closable={false}
+            onClose={this.hideDrawer}
+            visible={this.state.drawerVisible}
+          >
+            <Menu mode="vertical">
+              <Menu.Item className="menuItem" key="lessons">
+                <NavLink onClick={this.hideDrawer} to="/SiteLessons">
+                  Site Material
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="lessonpool">
+                <NavLink onClick={this.hideDrawer} to="/LessonPool">
+                  Lesson Pool
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="roster">
+                <NavLink onClick={this.hideDrawer} to="/Roster">
+                  Roster
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="edit">
+                <NavLink onClick={this.hideDrawer} to="/Profile">
+                  Profile
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item className="menuItem" key="logout">
+                <NavLink onClick={this.logOut} to="/Login">
+                  Logout
+                </NavLink>
+              </Menu.Item>
+            </Menu>
+          </Drawer>
+        </div>
+      </nav>
     );
   }
 }

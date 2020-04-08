@@ -1,43 +1,111 @@
 @import '~antd/dist/antd.css';
 
-.navbar_menu {
-  background: #f7f7f7;
-  position: fixed;
+.menuBar {
+  padding: 0 20px;
+  border-bottom: solid 1px #e8e8e8;
+  overflow: hidden;
   width: 100%;
+  position: fixed;
+  background: white;
   z-index: 1;
 }
-.navbar-options {
-  display: flex;
-  float: right;
-  margin-right: 10px;
-  height: 65px;
-  width: 550px;
-  font-size: 20px;
-  justify-content: flex-end;
-  text-align: center;
+
+.profile-logo {
+  width: 45px;
+  height: 45px;
 }
+
 .logo {
   width: 180px;
   height: 65px;
+  float: left;
+  cursor: pointer;
 }
 
-#navbar-dialog {
-  height: 120px;
-  width: 200px;
-  border: 1px solid #eeeeee;
-  z-index: 5;
-  right: 0;
-  transform: translate(-32px, 58px);
-  border-radius: 4px;
-  position: fixed;
-  background-color: white;
-  padding: 16px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+.menuCon {
+  width: calc(100% - 180px);
+  float: left;
+}
+.menuCon .ant-menu-item {
+  padding: 0px 5px;
+}
+.menuCon .ant-menu-submenu-title {
+  padding: 10px 10px;
+}
+.menuCon .ant-menu-item a,
+.menuCon .ant-menu-submenu-title a {
+  padding: 10px 15px;
+}
+.menuCon .ant-menu-horizontal {
+  border-bottom: none;
+}
+.menuCon .leftMenu {
+  float: left;
+}
+.menuCon .rightMenu {
+  float: right;
+}
+
+.barsMenu {
+  float: right;
+  height: 32px;
+  padding: 6px;
+  margin-top: 8px;
   display: none;
+  background: none;
 }
 
-.navbar-dialog-button {
+.barsBtn {
   display: block;
+  width: 20px;
+  height: 2px;
+  background: #155fc2;
+  position: relative;
+}
+
+.barsBtn:after,
+.barsBtn:before {
+  content: attr(x);
+  width: 20px;
+  position: absolute;
+  top: -6px;
+  left: 0px;
+  height: 2px;
+  background: #155fc2;
+}
+
+.barsBtn:after {
+  top: auto;
+  bottom: -6px;
+}
+
+.ant-drawer-body {
+  padding: 0;
+}
+
+.ant-drawer-body .ant-menu-horizontal > .ant-menu-item,
+.ant-drawer-body .ant-menu-horizontal > .ant-menu-submenu {
+  display: inline-block;
   width: 100%;
-  margin: 4px 0px 4px 0px;
+}
+
+@media (max-width: 767px) {
+  .barsMenu {
+    display: inline-block;
+    top: 10px;
+  }
+  .leftMenu,
+  .rightMenu {
+    display: none;
+  }
+  .logo a {
+    margin-left: -20px;
+  }
+  .menuCon .ant-menu-item,
+  .menuCon .ant-menu-submenu-title {
+    padding: 1px 20px;
+  }
+  .logo a {
+    padding: 10px 20px;
+  }
 }
