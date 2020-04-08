@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Button, Drawer, Icon } from 'antd';
+import { Menu, Button, Drawer } from 'antd';
 import '../stylesheets/NavBar.css';
 import { removeJWT } from '../utils/utils';
 import { NavLink } from 'react-router-dom';
@@ -35,7 +35,6 @@ class NavBar extends Component {
     if (tok === null) {
       return <div></div>;
     }
-    const { current } = this.state;
     return (
       <nav className="menuBar">
         <div className="logo">
@@ -65,6 +64,7 @@ class NavBar extends Component {
                   <img
                     src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
                     className="profile-logo"
+                    alt={'Profile'}
                   />
                 }
               >
