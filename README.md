@@ -92,7 +92,7 @@ Now that we have communicated with our Postgres DB what tables and columns we ne
 
 ### Create a .env file
 - Inside the anovalabs root directory there should be a file called .env.example
-  - most likely you won't be able to view it in finder, but you will be able to see it if you open the anovalabs folder in your code editor.
+  - most likely you won't be able to view it in your Finder or File Explorer, but you will be able to see it if you open the anovalabs folder in your code editor.
 - Create a file called .env and copy the contents of .env.example inside it
   - assign any integer value to SALT_ROUNDS and any string value to JWT_SECRET
 
