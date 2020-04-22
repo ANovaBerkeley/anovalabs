@@ -13,11 +13,30 @@ class Feedback extends Component {
             notes: null,
             lessonName: null,
             isMentor: this.props.isMentor,
-            lessonID: this.props.match.params.id
-        }
+            lessonId: this.props.match.params.id
+        };
     }
     componentDidMount() {
-
+        var get_url = '/api/v1/lessons/get_feedback/';
+        fetch(get_url + '?lessonId='+ lessonId)
+            .then(res => res.json())
+            .then(
+                feedback => {
+                    this.setState({
+                        isLoaded: true,
+                        notes:  feedback.mentor_feedback,
+                     });
+                },
+                error => {
+                    this.setState({
+                        isLoaded: true,
+                        error,
+                    });
+                },
+            );
+    }
+    editFeedback() {
+        var get_url = '/api/v1/lessons/submit_feedback/'
     }
     render() {
         return (
