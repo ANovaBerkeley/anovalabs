@@ -14,6 +14,7 @@ function App() {
         <AuthComponent path="/LessonPool" type="lessonpool" />
         <AuthComponent path="/Profile" type="profile" />
         <AuthComponent path="/Roster" type="roster" />
+        <AuthComponent path="/Feedback/:id" type="feedback" />
       </Switch>
     </div>
   );

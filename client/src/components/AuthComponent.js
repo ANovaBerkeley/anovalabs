@@ -7,6 +7,7 @@ import SiteLessons from './SiteLessons';
 import Profile from './Profile';
 import LessonPool from './LessonPool';
 import Roster from './Roster';
+import Feedback from './Feedback';
 
 class AuthComponent extends Component {
   constructor(props) {
@@ -77,6 +78,8 @@ class AuthComponent extends Component {
         return <LessonPool ismentor={this.state.mentor} />;
       } else if (this.state.type === 'roster') {
         return <Roster ismentor={this.state.mentor} />;
+      } else if (this.state.type === 'feedback') {
+        return <Feedback ismentor={this.state.mentor} />;
       }
     }
   }
