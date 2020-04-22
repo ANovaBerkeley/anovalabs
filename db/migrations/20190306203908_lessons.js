@@ -12,6 +12,7 @@ exports.up = knex =>
     table.string('resourcesHTML').comment('description on lesson page');
     table.string('labHTML').comment('description on lesson page');
     table.string('exitTicketHTML').comment('description on lesson page');
+    table.string('mentor feedback').defaultTo('mentor feedback');
   });
 
 exports.down = knex => knex.raw('DROP TABLE IF EXISTS lesson CASCADE');
