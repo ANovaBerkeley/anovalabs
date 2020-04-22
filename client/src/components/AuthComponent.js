@@ -9,6 +9,7 @@ import Profile from './Profile';
 // eslint-disable-next-line
 import Roster from './Roster';
 import LessonPage from './LessonPage';
+import Feedback from './Feedback';
 
 class AuthComponent extends Component {
   constructor(props) {

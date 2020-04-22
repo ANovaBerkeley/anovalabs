@@ -8,6 +8,7 @@ import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
 import LessonPage from './LessonPage';
+import Feedback from './Feedback';
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route path="/LessonPage">
               <AuthComponent component={LessonPage} />
+            </Route>
+            <Route path="/Feedback">
+              <AuthComponent component={Feedback} />
             </Route>
           </Switch>
         </div>

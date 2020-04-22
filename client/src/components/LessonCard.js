@@ -155,7 +155,9 @@ class LessonCard extends Component {
     }
     return notesButton;
   }
-
+  renderFeedback() {
+    this.props.history.push('/Feedback/' + this.state.lessonId);
+  }
   renderEditButton() {
     const { isMentor } = this.state;
     const { showEditModal, title, summary, link } = this.state;
