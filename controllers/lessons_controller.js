@@ -13,6 +13,19 @@ const index = async (req, res, next) => {
     res.status(500).json({ error });
   }
 };
+/* Retrieve lesson by id. */
+const getLessonById = async (req, res, next) => {
+  const lessonId = req.query.id;
+  try {
+    const data = await knex
+      .select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+      .from('lesson')
+      .where('lesson.id', lessonId);
+    return res.status(200).send(data);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+}
 /* Add a lesson to the lesson pool. */
 const create = async (req, res, next) => {
   try {
@@ -55,6 +68,7 @@ const deleteLesson = async (req, res, next) => {
 
 module.exports = {
   index: index,
+  getLessonById: getLessonById,
   create: create,
   update: update,
   deleteLesson: deleteLesson,

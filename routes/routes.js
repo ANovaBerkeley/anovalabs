@@ -22,6 +22,7 @@ module.exports = app => {
 
   //Lessons
   app.get('/api/v1/lessons/all', LessonsController.index);
+  app.get('/api/v1/lessons/:id', LessonsController.getLessonById);
   app.post('/api/v1/lessons/add', LessonsController.create);
   app.post('/api/v1/lessons/update', LessonsController.update);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);

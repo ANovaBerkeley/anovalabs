@@ -269,7 +269,13 @@ class LessonCard extends Component {
         </div>
         <div className="buttonContainer">
           <div className="viewAssignment">
-            <a href={link}>View Assignment</a>
+            <button
+              className="viewassignment"
+              onClick={() => this.props.history.push('/LessonPage/' + this.state.lessonId)}
+              type="button"
+            >
+              View Assignment
+            </button>
           </div>
         </div>
       </div>

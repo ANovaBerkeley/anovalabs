@@ -8,6 +8,7 @@ import NavBar from './NavBar';
 import Profile from './Profile';
 // eslint-disable-next-line
 import Roster from './Roster';
+import LessonPage from './LessonPage';
 
 class AuthComponent extends Component {
   constructor(props) {
