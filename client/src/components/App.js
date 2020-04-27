@@ -4,17 +4,21 @@ import AuthComponent from './AuthComponent';
 import SignUp from './SignUp';
 import Login from './Login';
 import NavBar from './NavBar';
+import SiteLessons from './SiteLessons';
+import LessonPool from './LessonPool';
+import Profile from './Profile';
+import Roster from './Roster';
 
 function App() {
   const DefaultContainer = () => (
     <div>
       <Switch>
-        <AuthComponent exact path="/" type="lessons" />
-        <AuthComponent path="/SiteLessons" type="lessons" />
-        <AuthComponent path="/LessonPool" type="lessonpool" />
-        <AuthComponent path="/Profile" type="profile" />
-        <AuthComponent path="/Roster" type="roster" />
-        <AuthComponent path="/Feedback/:id" type="feedback" />
+        <AuthComponent exact path="/" component={SiteLessons} />
+        <AuthComponent path="/SiteLessons" component={SiteLessons} />
+        <AuthComponent path="/LessonPool" component={LessonPool} />
+        <AuthComponent path="/Profile" component={Profile} />
+        <AuthComponent path="/Roster" component={Roster} />
+        <AuthComponent path="/Feedback/:id" component={Feedback} />
       </Switch>
     </div>
   );

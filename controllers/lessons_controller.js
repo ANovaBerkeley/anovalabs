@@ -61,7 +61,7 @@ const getFeedback = async (req, res, next) => {
       .select('lesson.mentor_feedback')
       .where({ id: lessonId })
       .from('lesson');
-    return res.status(200).send({ data });  
+    return res.status(200).send({ data });
   } catch (error) {
     return res.status(500).json({ error});
   }
@@ -87,4 +87,6 @@ module.exports = {
   create: create,
   update: update,
   deleteLesson: deleteLesson,
+  getFeedback: getFeedback,
+  submitFeedback: submitFeedback
 };
