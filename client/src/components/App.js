@@ -8,6 +8,7 @@ import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
 import LessonPage from './LessonPage';
+import Feedback from './Feedback';
 
 const App = () => {
   return (
