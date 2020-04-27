@@ -18,7 +18,7 @@ class Feedback extends Component {
     }
     componentDidMount() {
         var get_url = '/api/v1/lessons/get_feedback/';
-        fetch(get_url + '?lessonId='+ lessonId)
+        fetch(get_url + '?lessonId='+ this.lessonId)
             .then(res => res.json())
             .then(
                 feedback => {
@@ -38,9 +38,44 @@ class Feedback extends Component {
     editFeedback() {
         var get_url = '/api/v1/lessons/submit_feedback/'
     }
+    // editLessonDetails() {
+    //   const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
+    //   if (editedSummary.length >= 255) {
+    //     Modal.error({
+    //       title: 'Exceeded maximum number of characters (255).',
+    //       centered: true,
+    //     });
+    //     return;
+    //   }
+    //   fetch('/api/v1/lessons/update', {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //       editedTitle,
+    //       editedSummary,
+    //       editedLink,
+    //       lessonId,
+    //     }),
+    //     headers: new Headers({
+    //       'Content-Type': 'application/json',
+    //     }),
+    //   })
+    //     .then(res => res.json())
+    //     .then(values => {
+    //       this.setState({
+    //         showEditModal: false,
+    //         title: editedTitle,
+    //         summary: editedSummary,
+    //         link: editedLink,
+    //       });
+    //     });
+    // }
+
     render() {
         return (
             <div></div>
         );
     }
 }
+
+Feedback.defaultProps = {};
+export default Feedback;
