@@ -3,6 +3,7 @@ import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
 import PropTypes from 'prop-types';
 import * as decode from 'jwt-decode';
+import { Link } from 'react-router-dom';
 
 import '../stylesheets/LessonCard.css';
 const { TextArea } = Input;
@@ -30,7 +31,7 @@ class LessonCard extends Component {
     this.onChangeSummary = this.onChangeSummary.bind(this);
     this.onChangeLink = this.onChangeLink.bind(this);
     this.editLesson = this.editLesson.bind(this);
-    this.editLessonDetails = this.editLessonDetails.bind(this);
+    //this.editLessonDetails = this.editLessonDetails.bind(this);
   }
 
   delete() {
@@ -88,37 +89,37 @@ class LessonCard extends Component {
       });
   }
 
-  editLessonDetails() {
-    const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
-    if (editedSummary.length >= 255) {
-      Modal.error({
-        title: 'Exceeded maximum number of characters (255).',
-        centered: true,
-      });
-      return;
-    }
-    fetch('/api/v1/lessons/update', {
-      method: 'POST',
-      body: JSON.stringify({
-        editedTitle,
-        editedSummary,
-        editedLink,
-        lessonId,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    })
-      .then(res => res.json())
-      .then(values => {
-        this.setState({
-          showEditModal: false,
-          title: editedTitle,
-          summary: editedSummary,
-          link: editedLink,
-        });
-      });
-  }
+  // editLessonDetails() {
+  //   const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
+  //   if (editedSummary.length >= 255) {
+  //     Modal.error({
+  //       title: 'Exceeded maximum number of characters (255).',
+  //       centered: true,
+  //     });
+  //     return;
+  //   }
+  //   fetch('/api/v1/lessons/update', {
+  //     method: 'POST',
+  //     body: JSON.stringify({
+  //       editedTitle,
+  //       editedSummary,
+  //       editedLink,
+  //       lessonId,
+  //     }),
+  //     headers: new Headers({
+  //       'Content-Type': 'application/json',
+  //     }),
+  //   })
+  //     .then(res => res.json())
+  //     .then(values => {
+  //       this.setState({
+  //         showEditModal: false,
+  //         title: editedTitle,
+  //         summary: editedSummary,
+  //         link: editedLink,
+  //       });
+  //     });
+  // }
 
   renderNotesButton() {
     const { isMentor } = this.state;
@@ -158,64 +159,80 @@ class LessonCard extends Component {
   renderFeedback() {
     this.props.history.push('/Feedback/' + this.state.lessonId);
   }
+  // renderEditButton() {
+  //   const { isMentor } = this.state;
+  //   const { showEditModal, title, summary, link } = this.state;
+  //   let editButton;
+  //   if (isMentor) {
+  //     editButton = (
+  //       <div>
+  //         <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
+  //           Edit
+  //         </Button>
+  //         <Modal
+  //           visible={showEditModal}
+  //           title="Update Lesson Details:"
+  //           okText="Update"
+  //           onCancel={() => this.setState({ showEditModal: false })}
+  //           onOk={this.editLessonDetails}
+  //         >
+  //           <div className="addFields">
+  //             <Row>
+  //               <Col>
+  //                 <Input
+  //                   id="titleAdd"
+  //                   allowClear
+  //                   addonBefore="Title:"
+  //                   autosize="true"
+  //                   defaultValue={title}
+  //                   onChange={this.onChangeTitle}
+  //                 />
+  //               </Col>
+  //             </Row>
+  //             <Row>
+  //               <Col>
+  //                 <Input
+  //                   id="summaryAdd"
+  //                   allowClear
+  //                   addonBefore="Summary:"
+  //                   autosize="true"
+  //                   defaultValue={summary}
+  //                   onChange={this.onChangeSummary}
+  //                 />
+  //               </Col>
+  //             </Row>
+  //             <Row>
+  //               <Col>
+  //                 <Input
+  //                   id="linkAdd"
+  //                   allowClear
+  //                   addonBefore="Link:"
+  //                   autosize="true"
+  //                   defaultValue={link}
+  //                   onChange={this.onChangeLink}
+  //                 />
+  //               </Col>
+  //             </Row>
+  //           </div>
+  //         </Modal>
+  //       </div>
+  //     );
+  //   }
+  //   return editButton;
+  // }
+
   renderEditButton() {
     const { isMentor } = this.state;
-    const { showEditModal, title, summary, link } = this.state;
     let editButton;
     if (isMentor) {
       editButton = (
         <div>
-          <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
-            Edit
-          </Button>
-          <Modal
-            visible={showEditModal}
-            title="Update Lesson Details:"
-            okText="Update"
-            onCancel={() => this.setState({ showEditModal: false })}
-            onOk={this.editLessonDetails}
-          >
-            <div className="addFields">
-              <Row>
-                <Col>
-                  <Input
-                    id="titleAdd"
-                    allowClear
-                    addonBefore="Title:"
-                    autosize="true"
-                    defaultValue={title}
-                    onChange={this.onChangeTitle}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Input
-                    id="summaryAdd"
-                    allowClear
-                    addonBefore="Summary:"
-                    autosize="true"
-                    defaultValue={summary}
-                    onChange={this.onChangeSummary}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Input
-                    id="linkAdd"
-                    allowClear
-                    addonBefore="Link:"
-                    autosize="true"
-                    defaultValue={link}
-                    onChange={this.onChangeLink}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Modal>
-        </div>
-      );
+          <Link to = "/Feedback/:id">
+            <button type="button">
+              Edit Feedback
+            </button>
+          </Link>
+      </div>);
     }
     return editButton;
   }

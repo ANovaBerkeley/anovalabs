@@ -8,6 +8,7 @@ import SiteLessons from './SiteLessons';
 import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
+import Feedback from './Feedback';
 
 function App() {
   const DefaultContainer = () => (
