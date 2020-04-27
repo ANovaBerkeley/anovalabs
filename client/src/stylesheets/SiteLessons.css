@@ -9,6 +9,12 @@
 
   padding-bottom: 200px;
 }
+
+@media (max-width: 767px) {
+  .lessonsContainer{
+    grid-template-columns: 100%;
+  }
+}
 .plusCard {
   width: 300px;
   height: 200px;
