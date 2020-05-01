@@ -3,16 +3,13 @@ import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
-import SiteLessons from './SiteLessons';
-import Profile from './Profile';
-import LessonPool from './LessonPool';
-import Roster from './Roster';
 
 class AuthComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: undefined,
+      type: this.props.type,
       mentor: null,
       mounted: false,
     };
@@ -68,15 +65,7 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      if (this.props.type === 'lessons') {
-        return <SiteLessons ismentor={this.state.mentor} />;
-      } else if (this.props.type === 'profile') {
-        return <Profile />;
-      } else if (this.props.type === 'lessonpool') {
-        return <LessonPool ismentor={this.state.mentor} />;
-      } else if (this.props.type === 'roster') {
-        return <Roster ismentor={this.state.mentor} />;
-      }
+      return <this.props.component ismentor={this.state.mentor} />
     }
   }
 }
