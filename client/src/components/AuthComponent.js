@@ -3,13 +3,16 @@ import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import * as decode from 'jwt-decode';
 import { getJWT } from '../utils/utils';
+// eslint-disable-next-line
+import Profile from './Profile';
+// eslint-disable-next-line
+import Roster from './Roster';
 
 class AuthComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: undefined,
-      type: this.props.type,
       mentor: null,
       mounted: false,
     };
@@ -65,7 +68,7 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      return <this.props.component ismentor={this.state.mentor} />
+      return <this.props.component ismentor={this.state.mentor} />;
     }
   }
 }

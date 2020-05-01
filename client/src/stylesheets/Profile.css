@@ -3,6 +3,7 @@
 .profileContainer {
   background-color: #e6f4fc;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,6 +23,12 @@
   align-items: center;
   box-shadow: 6px -6px 10px #d2edfc, -6px 6px 10px #d2edfc;
   border-radius: 16px;
+}
+
+@media (max-width: 767px) {
+  .profileBox{
+    width: 80%;
+  }
 }
 
 .profileBox p {
