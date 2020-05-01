@@ -25,28 +25,14 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <div>
-          <NavBar />
-          <Switch>
+        <Switch>
+          <div>
+            <NavBar />
             <Route exact path="/Login" component={Login} />
             <Route exact path="/SignUp" component={SignUp} />
-            <Route exact path="/">
-              <AuthComponent type="lessons" />
-            </Route>
-            <Route path="/SiteLessons">
-              <AuthComponent type="lessons" />
-            </Route>
-            <Route path="/LessonPool">
-              <AuthComponent type="lessonpool" />
-            </Route>
-            <Route path="/Profile">
-              <AuthComponent type="profile" />
-            </Route>
-            <Route path="/Roster">
-              <AuthComponent type="roster" />
-            </Route>
-          </Switch>
-        </div>
+            <Route component={DefaultContainer} />
+          </div>
+        </Switch>
       </BrowserRouter>
     </div>
   );

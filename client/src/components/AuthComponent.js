@@ -64,19 +64,7 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-<<<<<<< HEAD
-      if (this.props.type === 'lessons') {
-        return <SiteLessons ismentor={this.state.mentor} />;
-      } else if (this.props.type === 'profile') {
-        return <Profile />;
-      } else if (this.props.type === 'lessonpool') {
-        return <LessonPool ismentor={this.state.mentor} />;
-      } else if (this.props.type === 'roster') {
-        return <Roster ismentor={this.state.mentor} />;
-      }
-=======
       return <this.props.component ismentor={this.state.mentor} />
->>>>>>> 818f6e1af95aeb887c2b5aa4383c7702b9bb457d
     }
   }
 }
