@@ -9,7 +9,6 @@ class AuthComponent extends Component {
     super(props);
     this.state = {
       message: undefined,
-      type: this.props.type,
       mentor: null,
       mounted: false,
     };
