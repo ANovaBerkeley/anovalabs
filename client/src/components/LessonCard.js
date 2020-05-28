@@ -3,6 +3,7 @@ import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
 import PropTypes from 'prop-types';
 import * as decode from 'jwt-decode';
+import { Link } from 'react-router-dom'
 
 import '../stylesheets/LessonCard.css';
 const { TextArea } = Input;
@@ -269,13 +270,11 @@ class LessonCard extends Component {
         </div>
         <div className="buttonContainer">
           <div className="viewAssignment">
-            <button
-              className="viewassignment"
-              onClick={() => this.props.history.push('/LessonPage/' + this.state.lessonId)}
-              type="button"
+            <Link
+              to={'/LessonPage/' + this.state.lessonId}
             >
               View Assignment
-            </button>
+            </Link>
           </div>
         </div>
       </div>

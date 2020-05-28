@@ -2,102 +2,155 @@ import React, { Component } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import ContentEditable from 'react-contenteditable'
 
+import '../stylesheets/LessonPage.css';
+
 export default class LessonPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editMode: false,
       title: "",
-      description: "",
-      resources: "",
-      lab: "",
-      exitTicket: "",
+      descriptionHTML: "",
+      resourcesHTML: "",
+      labHTML: "",
+      exitTicketHTML: "",
       mentor: this.props.ismentor,
     };
+    // this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleResourcesChange = this.handleResourcesChange.bind(this);
+    this.handleLabChange = this.handleLabChange.bind(this);
+    this.handleExitTicketChange = this.handleExitTicketChange.bind(this);
+    this.saveChanges = this.saveChanges.bind(this);
   }
 
 
   componentDidMount() {
-    fetch('/api/v1/lessons/?id=' + this.props.match.params.id)
+    fetch('/api/v1/lessons?id=' + this.props.matchParam)
       .then(res => res.json())
       .then(lesson => {
+        console.log(lesson);
         this.setState({
-          title: '<p>' + lesson.title + '</p>',
-          description: '<p>' + lesson.summary + '</p>',
-          resources: '<p>' + lesson.link + '</p>'
-        })
+          title: lesson[0].title,
+          descriptionHTML: lesson[0].descriptionHTML,
+          resourcesHTML: lesson[0].resourcesHTML,
+          labHTML: lesson[0].labHTML
+        }, () => {console.log(this.state.title);})
+      }).then(() => {
+        if (this.state.descriptionHTML === '') {
+          this.setState({descriptionHTML: '<p> </p>'})
+        }
+        if (this.state.resourcesHTMLL === '') {
+          this.setState({resourcesHTML: '<p> </p>'})
+        }
+        if (this.state.labHTML === '') {
+          this.setState({labHTML: '<p> </p>'})
+        }
       });
   }
 
+/*
 handleTitleChange(evt) {
   this.setState({title: evt.target.value});
-};
+}
+*/
 
 handleDescriptionChange(evt) {
-  this.setState({description: evt.target.value});
+  this.setState({descriptionHTML: evt.target.value});
 };
 
 handleResourcesChange(evt) {
-  this.setState({resources: evt.target.value});
+  this.setState({resourcesHTML: evt.target.value});
 };
 
 handleLabChange(evt) {
-  this.setState({lab: evt.target.value});
+  this.setState({labHTML: evt.target.value});
 };
 
 handleExitTicketChange(evt) {
-  this.setState({exitTicket: evt.target.value});
+  this.setState({exitTicketHTML: evt.target.value});
 };
 
+saveChanges() {
+  fetch('/api/v1/lessons/updatePage', {
+    method: 'POST',
+    body: JSON.stringify({
+      lessonId: this.props.matchParam,
+      editedDescriptionHTML: this.state.descriptionHTML,
+      editedResourcesHTML: this.state.resourcesHTML,
+      editedLabHTML: this.state.labHTML
+    }),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  })
+  .then(this.setState({editMode: false}));
+}
+
+
 render() {
+  let maybeEditButton;
+  if (this.state.mentor) {
+    maybeEditButton =
+      <button
+        className="editButton"
+        onClick={() => this.setState({ editMode: true })}
+        type="button"
+      >
+        <FiEdit size="50" />
+      </button>
+  }
+  let maybeSaveButton;
+  let editing = '';
+  if (this.state.editMode) {
+    maybeSaveButton =
+    <button
+      className="saveButton"
+      onClick={this.saveChanges}
+      type="button"
+    >
+      Save
+    </button>
+    editing = 'editing'
+  }
   return (
-    <div className="lessonPageContainer">
-      <div className="Title">
-        <h1>
-          <ContentEditable
-            className="Title"
-            html={this.state.title}
-            disabled={!this.state.editMode}
-            onChange={this.handleTitleChange} // handle innerHTML change
-            />
-        </h1>
-        if (mentor) {
-          <button
-            className="editButton"
-            onClick={() => this.setState({ editMode: true })}
-            type="button"
-          >
-            <FiEdit size="50" />
-          </button>
-        }
+    <div className="page">
+      <div className="lessonPageContainer">
+        <div className="title-container">
+          <h1 className="title">
+            {this.state.title}
+          </h1>
+          {maybeEditButton}
+        </div>
+        <ContentEditable
+          className={"textBox " + editing}
+          html={this.state.descriptionHTML}
+          disabled={!this.state.editMode}
+          onChange={this.handleDescriptionChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Lesson Resources </h2>
+        <ContentEditable
+          className={"textBox " + editing}
+          html={this.state.resourcesHTML}
+          disabled={!this.state.editMode}
+          onChange={this.handleResourcesChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Lab </h2>
+        <ContentEditable
+          className={"textBox " + editing}
+          html={this.state.labHTML}
+          disabled={!this.state.editMode}
+          onChange={this.handleLabChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Exit Ticket </h2>
+        <ContentEditable
+          className={"textBox " + editing}
+          html={this.state.exitTicketHTML}
+          disabled={!this.state.editMode}
+          onChange={this.handleExitTicketChange} // handle innerHTML change
+        />
+        {maybeSaveButton}
       </div>
-      <ContentEditable
-        className="textBox"
-        html={this.state.description}
-        disabled={!this.state.editMode}
-        onChange={this.handleDescriptionChange} // handle innerHTML change
-      />
-      <h2> Lesson Resources </h2>
-      <ContentEditable
-        className="textBox"
-        html={this.state.resources}
-        disabled={!this.state.editMode}
-        onChange={this.handleResourcesChange} // handle innerHTML change
-      />
-      <h2> Lab </h2>
-      <ContentEditable
-        className="textBox"
-        html={this.state.lab}
-        disabled={!this.state.editMode}
-        onChange={this.handleLabChange} // handle innerHTML change
-      />
-      <h2> Exit Ticket </h2>
-      <ContentEditable
-        className="textBox"
-        html={this.state.exitTicket}
-        disabled={!this.state.editMode}
-        onChange={this.handleExitTicketChange} // handle innerHTML change
-      />
     </div>
   )
 }
