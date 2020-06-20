@@ -35,40 +35,35 @@ class Feedback extends Component {
                 },
             );
     }
+
     editFeedback() {
         var get_url = '/api/v1/lessons/submit_feedback/'
     }
-    // editLessonDetails() {
-    //   const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
-    //   if (editedSummary.length >= 255) {
-    //     Modal.error({
-    //       title: 'Exceeded maximum number of characters (255).',
-    //       centered: true,
-    //     });
-    //     return;
-    //   }
-    //   fetch('/api/v1/lessons/update', {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       editedTitle,
-    //       editedSummary,
-    //       editedLink,
-    //       lessonId,
-    //     }),
-    //     headers: new Headers({
-    //       'Content-Type': 'application/json',
-    //     }),
-    //   })
-    //     .then(res => res.json())
-    //     .then(values => {
-    //       this.setState({
-    //         showEditModal: false,
-    //         title: editedTitle,
-    //         summary: editedSummary,
-    //         link: editedLink,
-    //       });
-    //     });
-    // }
+
+    updateFeedback() {
+      const { editedText, editedRating, uid, lid } = this.state;
+
+      fetch('/api/v1/feedback/update', {
+        method: 'POST',
+        body: JSON.stringify({
+          updatedText,
+          updatedRating,
+          userId,
+          lessonId,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      })
+        .then(res => res.json())
+        .then(values => {
+          this.setState({
+            showEditModal: false,
+            text: updatedText,
+            rating: updatedRating
+          });
+        });
+    }
 
     render() {
         return (
