@@ -8,7 +8,6 @@ exports.up = knex =>
     table.string('language').comment('coding language');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
-    table.string('mentor_feedback').defaultTo('mentor feedback');
   });
 
 exports.down = knex => knex.raw('DROP TABLE IF EXISTS lesson CASCADE');
