@@ -13,7 +13,7 @@ class Feedback extends Component {
             notes: null,
             lessonName: null,
             isMentor: this.props.isMentor,
-            lessonId: this.props.match.params.id
+            lessonId: this.props.matchparam
         };
     }
     componentDidMount() {

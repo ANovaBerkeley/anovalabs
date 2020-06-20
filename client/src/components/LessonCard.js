@@ -226,13 +226,10 @@ class LessonCard extends Component {
     let editButton;
     if (isMentor) {
       editButton = (
-        <div>
-          <Link to = "/Feedback/:id">
-            <button type="button">
-              Edit Feedback
-            </button>
-          </Link>
-      </div>);
+        <Link to={'/feedback/' + this.state.lessonId}>
+          <button className="lowerButton">Edit Feedback</button>
+        </Link>
+      );
     }
     return editButton;
   }
@@ -282,20 +279,11 @@ class LessonCard extends Component {
         <div className="descriptionContainer">
           <div className="description">{summary}</div>
         </div>
-        <div>
-          {maybeNotesButton}
-          {maybeEditButton}
-        </div>
         <div className="buttonContainer">
-          <div className="viewAssignment">
-            <button
-              className="viewassignment"
-              onClick={() => this.props.history.push('/LessonPage/' + this.state.lessonId)}
-              type="button"
-            >
-              View Assignment
-            </button>
-          </div>
+          {maybeEditButton}
+          <Link to={'/view/' + this.state.lessonId}>
+            <button className="lowerButton">View Assignment</button>
+          </Link>
         </div>
       </div>
     );
