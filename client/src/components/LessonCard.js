@@ -13,7 +13,6 @@ class LessonCard extends Component {
       showModal: false,
       showNotesModal: false,
       showEditModal: false,
-      isMentor: this.props.isment,
       notes: this.props.lessonDetails.notes,
       editedNotes: this.props.lessonDetails.notes,
       lessonId: this.props.lessonDetails.id,
@@ -24,13 +23,6 @@ class LessonCard extends Component {
       editedSummary: this.props.lessonDetails.summary,
       editedLink: this.props.lessonDetails.link,
     };
-    this.delete = this.delete.bind(this);
-    this.onChangeNotes = this.onChangeNotes.bind(this);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeSummary = this.onChangeSummary.bind(this);
-    this.onChangeLink = this.onChangeLink.bind(this);
-    this.editLesson = this.editLesson.bind(this);
-    this.editLessonDetails = this.editLessonDetails.bind(this);
   }
 
   delete() {
@@ -121,10 +113,9 @@ class LessonCard extends Component {
   }
 
   renderNotesButton() {
-    const { isMentor } = this.state;
     const { showNotesModal, notes } = this.state;
     let notesButton;
-    if (isMentor) {
+    if (this.props.isment) {
       notesButton = (
         <div>
           <Button type="primary" onClick={() => this.setState({ showNotesModal: true })}>
@@ -157,10 +148,9 @@ class LessonCard extends Component {
   }
 
   renderEditButton() {
-    const { isMentor } = this.state;
     const { showEditModal, title, summary, link } = this.state;
     let editButton;
-    if (isMentor) {
+    if (this.props.isment) {
       editButton = (
         <div>
           <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
@@ -219,7 +209,7 @@ class LessonCard extends Component {
   }
 
   render() {
-    const { showModal, isMentor, title, summary, link } = this.state;
+    const { showModal, title, summary, link } = this.state;
     const { lessonDetails } = this.props;
     let maybeNotesButton;
     let maybeEditButton;
@@ -233,14 +223,14 @@ class LessonCard extends Component {
       readableDate = new Date(lessonDetails.date).toLocaleDateString();
     }
     let maybeDeleteButton;
-    if (isMentor) {
+    if (this.props.isment) {
       maybeDeleteButton = (
         <Popconfirm
           className="deleteModal"
           title="Delete this Lesson?"
           centered
           visible={showModal}
-          onConfirm={() => this.delete()}
+          onConfirm={this.delete}
           onCancel={() => this.setState({ showModal: false })}
         >
           <button

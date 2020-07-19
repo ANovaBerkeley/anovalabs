@@ -11,7 +11,6 @@ class SiteLessons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isMentor: this.props.ismentor,
       showModal: false,
       siteLessons: [],
       site: '',
@@ -105,7 +104,7 @@ class SiteLessons extends Component {
         .then(res => res.json())
         .then(newLesson => {
           let newSiteLessons = [...siteLessons, { ...newLesson, date }];
-          var sorted_lessons = newSiteLessons.sort((siteLesson1, siteLesson2) => {
+          const sorted_lessons = newSiteLessons.sort((siteLesson1, siteLesson2) => {
             return (
               new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
             );
@@ -123,9 +122,8 @@ class SiteLessons extends Component {
     }
   }
 
-  renderLessons = () => {
+  render() {
     const {
-      isMentor,
       siteLessons,
       showModal,
       modalSelectedValue,
@@ -135,7 +133,7 @@ class SiteLessons extends Component {
     } = this.state;
 
     let maybeAddCard;
-    if (isMentor) {
+    if (this.props.ismentor) {
       maybeAddCard = (
         <div className="plusCard">
           <GoPlus
@@ -193,18 +191,13 @@ class SiteLessons extends Component {
                 deleteHandler={this.deleteHandler}
                 lessonDetails={lesson}
                 pool={false}
-                isment={isMentor}
+                isment={this.props.ismentor}
               />
             ))}
           {maybeAddCard}
         </div>
       </div>
     );
-  };
-
-  render() {
-    const component = this.renderLessons();
-    return <div>{component}</div>;
   }
 }
 export default SiteLessons;

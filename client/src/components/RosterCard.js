@@ -12,15 +12,9 @@ export default class RosterCard extends Component {
     this.state = {
       showEditModal: false,
       userId: this.props.person.id,
-      username: this.props.person.name,
-      email: this.props.person.email,
-      candy: this.props.person.candy,
-      hobby: this.props.person.hobby,
       notes: this.props.person.notes,
       editedNotes: this.props.person.notes,
     };
-    this.onChangeNotes = this.onChangeNotes.bind(this);
-    this.editStudentProfile = this.editStudentProfile.bind(this);
   }
 
   onChangeNotes(event) {
@@ -57,23 +51,23 @@ export default class RosterCard extends Component {
 
   renderDescription() {
     const { mentor } = this.props;
-    const { username, email, notes, candy, hobby } = this.state;
+    const { notes } = this.state;
     let description;
     if (mentor) {
       description = (
         <div>
-          <h2>Name: {username}</h2>
-          <p>Email: {email}</p>
-          <p>Favorite Candy: {candy}</p>
-          <p>Favorite Hobby: {hobby}</p>
+          <h2>Name: {this.props.person.name}</h2>
+          <p>Email: {this.props.person.email}</p>
+          <p>Favorite Candy: {this.props.person.candy}</p>
+          <p>Favorite Hobby: {this.props.person.hobby}</p>
           <p>Notes: {notes}</p>
         </div>
       );
     } else {
       description = (
         <div>
-          <h2>Name: {username}</h2>
-          <p>Email: {email}</p>
+          <h2>Name: {this.props.person.name}</h2>
+          <p>Email: {this.props.person.email}</p>
         </div>
       );
     }
@@ -117,8 +111,6 @@ export default class RosterCard extends Component {
   }
 
   render() {
-    const description = this.renderDescription();
-    const maybeEditButton = this.renderEditButton();
     return (
       <div>
         <Card
@@ -127,8 +119,8 @@ export default class RosterCard extends Component {
             <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
           }
         >
-          {description}
-          {maybeEditButton}
+          {this.renderDescription()}
+          {this.renderEditButton()}
         </Card>
       </div>
     );
