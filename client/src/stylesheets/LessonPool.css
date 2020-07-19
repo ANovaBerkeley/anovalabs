@@ -10,6 +10,12 @@
   padding-bottom: 200px;
 }
 
+@media (max-width: 767px) {
+  .lessonPoolContainer{
+    grid-template-columns: 100%;
+  }
+}
+
 .addModal {
   padding: 10px 10px;
 }

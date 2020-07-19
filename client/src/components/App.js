@@ -10,29 +10,31 @@ import Profile from './Profile';
 import Roster from './Roster';
 
 function App() {
-  const DefaultContainer = () => (
-    <div>
-      <Switch>
-        <AuthComponent exact path="/" component={SiteLessons} />
-        <AuthComponent path="/SiteLessons" component={SiteLessons} />
-        <AuthComponent path="/LessonPool" component={LessonPool} />
-        <AuthComponent path="/Profile" component={Profile} />
-        <AuthComponent path="/Roster" component={Roster} />
-      </Switch>
-    </div>
-  );
-
   return (
     <div>
       <BrowserRouter>
-        <Switch>
-          <div>
-            <NavBar />
+        <div>
+          <NavBar />
+          <Switch>
             <Route exact path="/Login" component={Login} />
             <Route exact path="/SignUp" component={SignUp} />
-            <Route component={DefaultContainer} />
-          </div>
-        </Switch>
+            <Route exact path="/">
+              <AuthComponent component={SiteLessons} />
+            </Route>
+            <Route path="/SiteLessons">
+              <AuthComponent component={SiteLessons} />
+            </Route>
+            <Route path="/LessonPool">
+              <AuthComponent component={LessonPool} />
+            </Route>
+            <Route path="/Profile">
+              <AuthComponent component={Profile} />
+            </Route>
+            <Route path="/Roster">
+              <AuthComponent component={Roster} />
+            </Route>
+          </Switch>
+        </div>
       </BrowserRouter>
     </div>
   );

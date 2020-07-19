@@ -3,7 +3,7 @@
 .container {
   background-color: #e6f4fc;
   margin: 0;
-  padding: 100px;
+  padding: 100px 10px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -16,11 +16,23 @@
   height: 80%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
+  grid-gap: 20px;
   grid-row-gap: auto;
   grid-auto-rows: auto;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .containerGrid{
+    grid-template-columns: 50% 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .containerGrid{
+    grid-template-columns: 100%;
+  }
 }
 
 .profileDescription {
@@ -29,22 +41,9 @@
 .profileDescription p {
   font-size: 12px;
 }
-.profileBox {
-  width: 700px;
-  height: 450px;
-  background-color: rgba(247, 247, 247, 0.86);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  vertical-align: middle;
-  align-items: center;
-  box-shadow: 6px -6px 10px #d2edfc, -6px 6px 10px #d2edfc;
-  border-radius: 16px;
-}
 
-.profileBox p {
-  padding-right: 20px;
-}
+
+
 
 .linktext {
   text-decoration: underline;
