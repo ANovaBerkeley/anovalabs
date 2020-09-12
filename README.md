@@ -74,6 +74,12 @@ updated: March 19th, 2020
 
 ## 🧠 Steps to Run ANova Labs
 
+### Create a .env file
+- Inside the anovalabs root directory there should be a file called .env.example
+  - most likely you won't be able to view it in your Finder or File Explorer, but you will be able to see it if you open the anovalabs folder in your code editor.
+- Create a file called .env and copy the contents of .env.example inside it
+  - assign any integer value to SALT_ROUNDS and any string value to JWT_SECRET
+
 ### Create the Database
 - make sure you ran the following command in your terminal to initalize the Postgres DB
   - createdb anovalabs-db
@@ -89,12 +95,6 @@ Now that we have communicated with our Postgres DB what tables and columns we ne
 
 - You can seed the Database with the following command after running the knex migrate:latest command
   - knex seed:run
-
-### Create a .env file
-- Inside the anovalabs root directory there should be a file called .env.example
-  - most likely you won't be able to view it in your Finder or File Explorer, but you will be able to see it if you open the anovalabs folder in your code editor.
-- Create a file called .env and copy the contents of .env.example inside it
-  - assign any integer value to SALT_ROUNDS and any string value to JWT_SECRET
 
 ### 🚀 Launch the client && the server
 For this portion I recommend opening up two seperate tabs on your terminal -- one for the client and one for the server
