@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Button, Drawer } from 'antd';
 import '../stylesheets/NavBar.css';
-import { removeJWT } from '../utils/utils';
+import { getAnovaToken, removeAnovaToken } from '../utils/utils';
 import { NavLink } from 'react-router-dom';
 
 const logo = require('../stylesheets/logo.png');
@@ -27,19 +27,19 @@ class NavBar extends Component {
   };
 
   logOut = () => {
-    removeJWT();
+    removeAnovaToken();
   };
 
   render() {
-    const tok = localStorage.getItem('anovaToken');
-    if (tok === null) {
+    if (getAnovaToken() === null) {
       return <div></div>;
     }
+
     return (
       <nav className="menuBar">
-        <div className="logo">
+        <div className="navbar-logo">
           <NavLink to="/">
-            <img src={logo} className="logo" alt={'Logo'} />
+            <img src={logo} className="navbar-logo" alt={'Logo'} />
           </NavLink>
         </div>
         <div className="menuCon">

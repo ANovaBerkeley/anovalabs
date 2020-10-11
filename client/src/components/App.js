@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AuthComponent from './AuthComponent';
 import SignUp from './SignUp';
 import Login from './Login';
-import NavBar from './NavBar';
 import SiteLessons from './SiteLessons';
 import LessonPool from './LessonPool';
 import Profile from './Profile';
@@ -14,7 +13,6 @@ function App() {
     <div>
       <BrowserRouter>
         <div>
-          <NavBar />
           <Switch>
             <Route exact path="/Login" component={Login} />
             <Route exact path="/SignUp" component={SignUp} />

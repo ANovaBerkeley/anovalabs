@@ -13,7 +13,7 @@
 
 .loginBox {
   width: 350px;
-  height: 425px;
+  height: 320px;
   background-color: rgba(247, 247, 247, 0.86);
   display: flex;
   flex-direction: column;
@@ -144,4 +144,14 @@ input[type='button'] {
 input[type='button'],
 select {
   opacity: 0.8;
+}
+
+.login-field-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.login-google {
+  line-height: 0;
 }

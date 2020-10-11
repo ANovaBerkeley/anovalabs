@@ -15,9 +15,10 @@
   height: 45px;
 }
 
-.logo {
+.logo,
+.navbar-logo {
   width: 180px;
-  height: 65px;
+  max-height: 65px;
   float: left;
   cursor: pointer;
 }
@@ -98,14 +99,16 @@
   .rightMenu {
     display: none;
   }
-  .logo a {
+  .logo a,
+  .navbar-logo a {
     margin-left: -20px;
   }
   .menuCon .ant-menu-item,
   .menuCon .ant-menu-submenu-title {
     padding: 1px 20px;
   }
-  .logo a {
+  .logo a,
+  .navbar-logo a {
     padding: 10px 20px;
   }
 }

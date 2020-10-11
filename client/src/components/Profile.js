@@ -3,7 +3,7 @@ import { Modal, Input, Row, Col, Avatar } from 'antd';
 import 'antd/dist/antd.css';
 import '../stylesheets/Profile.css';
 import * as decode from 'jwt-decode';
-import { getJWT } from '../utils/utils';
+import { getAnovaToken } from '../utils/utils';
 
 export default class Profile extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class Profile extends Component {
   componentDidMount() {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
-    var { id } = decode(getJWT());
+    var { id } = decode(getAnovaToken());
     var get_url = '/api/v1/profile/';
     var id_str = id.toString();
     fetch(get_url + id_str + '?uid=' + d_tok.id)
@@ -54,7 +54,7 @@ export default class Profile extends Component {
       body: JSON.stringify({
         candy: candyEdit.value,
         hobby: hobbyEdit.value,
-        id: decode(getJWT()).id,
+        id: decode(getAnovaToken()).id,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',

@@ -4,12 +4,15 @@ import * as decode from 'jwt-decode';
 import { GoPlus } from 'react-icons/go';
 import LessonCard from './LessonCard';
 import '../stylesheets/SiteLessons.css';
+import { getAnovaToken, removeAnovaToken } from '../utils/utils';
+import { withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 // TODO reset modal values onOk
 class SiteLessons extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       isMentor: this.props.ismentor,
       showModal: false,
@@ -19,6 +22,7 @@ class SiteLessons extends Component {
       modalSelectedValue: '',
       modalDate: '',
     };
+
     this.onDateChange = this.onDateChange.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
@@ -27,10 +31,10 @@ class SiteLessons extends Component {
   async componentDidMount() {
     let dTok;
     try {
-      const tok = await localStorage.getItem('anovaToken');
+      const tok = await getAnovaToken();
       dTok = await decode(tok);
     } catch (err) {
-      localStorage.removeItem('anovaToken');
+      removeAnovaToken();
       this.props.history.push(`/login`);
       return;
     }
@@ -67,7 +71,7 @@ class SiteLessons extends Component {
   }
 
   deleteHandler(lessonDetails) {
-    const tok = localStorage.getItem('anovaToken');
+    const tok = getAnovaToken();
     const dTok = decode(tok);
     fetch(`/api/v1/lesson_site/delete?uid=${dTok.id}`, {
       method: 'POST',
@@ -93,7 +97,7 @@ class SiteLessons extends Component {
         centered: true,
       });
     } else {
-      const tok = localStorage.getItem('anovaToken');
+      const tok = getAnovaToken();
       const dTok = decode(tok);
       fetch(`/api/v1/lesson_site/add?uid=${dTok.id}`, {
         method: 'POST',
@@ -207,4 +211,4 @@ class SiteLessons extends Component {
     return <div>{component}</div>;
   }
 }
-export default SiteLessons;
+export default withRouter(SiteLessons);
