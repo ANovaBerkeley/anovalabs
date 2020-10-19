@@ -101,20 +101,20 @@ const deleteLesson = async (req, res, next) => {
 const getFeedback = async (req, res, next) => {
 }
 
-/* Submit mentor feedback for a lesson. */
-const submitFeedback = async (req, res, next) => {
-  const { lessonId } = req.body;
-  try {
-    const data = await knex('lesson')
-      .where({ id: lessonId })
-      .update({
-        feedback: req.body.feedback,
-      });
-    return res.status(200).send({ data });
-  } catch (error) {
-    return res.status(500).json({ error });
-  }
-}
+// /* Submit mentor feedback for a lesson. */
+// const submitFeedback = async (req, res, next) => {
+//   const { lessonId } = req.body;
+//   try {
+//     const data = await knex('lesson')
+//       .where({ id: lessonId })
+//       .update({
+//         feedback: req.body.feedback,
+//       });
+//     return res.status(200).send({ data });
+//   } catch (error) {
+//     return res.status(500).json({ error });
+//   }
+// }
 
 module.exports = {
   index: index,

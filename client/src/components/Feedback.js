@@ -46,10 +46,10 @@ class Feedback extends Component {
       fetch('/api/v1/feedback/update', {
         method: 'POST',
         body: JSON.stringify({
-          editedText,
-          editedRating,
-          uid,
-          lid,
+          updatedText,
+          updatedRating,
+          userId,
+          lessonId,
         }),
         headers: new Headers({
           'Content-Type': 'application/json',
@@ -59,8 +59,8 @@ class Feedback extends Component {
         .then(values => {
           this.setState({
             showEditModal: false,
-            text: editedText,
-            rating: editedRating
+            text: updatedText,
+            rating: updatedRating
           });
         });
     }
