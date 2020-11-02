@@ -78,7 +78,7 @@ updated: March 19th, 2020
 - Inside the anovalabs root directory there should be a file called .env.example
   - most likely you won't be able to view it in your Finder or File Explorer, but you will be able to see it if you open the anovalabs folder in your code editor.
 - Create a file called .env and copy the contents of .env.example inside it
-  - assign any integer value to SALT_ROUNDS and any string value to JWT_SECRET
+  - assign a small integer value (anything less than 10 should be fine) to SALT_ROUNDS and any string value to JWT_SECRET
 
 ### Create the Database
 - make sure you ran the following command in your terminal to initalize the Postgres DB
