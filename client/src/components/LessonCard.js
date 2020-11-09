@@ -288,7 +288,15 @@ class LessonCard extends Component {
             </button>
           </Link>
         </div>
-
+        <div className="buttonContainer">
+          <div className="viewAssignment">
+            <Link
+              to={'/LessonPage/' + this.state.lessonId}
+            >
+              View Assignment
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

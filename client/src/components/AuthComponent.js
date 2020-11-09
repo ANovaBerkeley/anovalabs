@@ -16,6 +16,7 @@ class AuthComponent extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     let d_tok;
     try {
       const tok = localStorage.getItem('anovaToken');
@@ -65,7 +66,7 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      return (<this.props.component ismentor={this.state.mentor} />);
+      return <this.props.component ismentor={this.state.mentor} matchParam={this.props.computedMatch.params.id}/>
     }
   }
 }
