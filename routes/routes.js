@@ -27,6 +27,8 @@ module.exports = app => {
   app.post('/api/v1/lessons/update', LessonsController.update);
   app.post('/api/v1/lessons/updatePage', LessonsController.updatePage);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);
+  app.get('/api/v1/lessons/get_feedback', LessonsController.getFeedback);
+  app.post('/api/v1/lessons/submit_feedback', LessonsController.submitFeedback);
 
   //Lesson Site
   app.get(
@@ -51,4 +53,5 @@ module.exports = app => {
   //Roster
   app.get('/api/v1/roster', RostersController.getUsersBySite);
   app.post('/api/v1/roster/update', RostersController.update);
+
 };

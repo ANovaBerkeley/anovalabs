@@ -9,6 +9,7 @@ import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
 import LessonPage from './LessonPage';
+import Feedback from './Feedback';
 
 function App() {
   const DefaultContainer = () => (
@@ -20,6 +21,7 @@ function App() {
         <AuthComponent path="/Profile" component={Profile} />
         <AuthComponent path="/Roster" component={Roster} />
         <AuthComponent path="/LessonPage/:id" component={LessonPage} />
+        <AuthComponent path="/Feedback/:id" component={Feedback} />
       </Switch>
     </div>
   );
