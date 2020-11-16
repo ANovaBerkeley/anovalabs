@@ -13,7 +13,7 @@ class Feedback extends Component {
       text: null,
       rating: null,
       isMentor: this.props.ismentor,
-      uid: this.props.userid
+      uid: this.props.userid,
     };
   }
   componentDidMount() {
@@ -66,11 +66,22 @@ class Feedback extends Component {
   }
 
   render() {
+<<<<<<< Updated upstream
+=======
+    console.log(this.state.uid);
+    console.log(this.state.text);
+>>>>>>> Stashed changes
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
           <h3>What did you think of today's lesson?</h3>
-          <input className="feedbackInput"></input>
+          <input
+            className="feedbackInput"
+            type="text"
+            placeholder="Add feedback"
+            // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
+            onChange={event => this.setState({ text: event.target.value })}
+          ></input>
         </div>
         <div className="ratingContainer">
           <h3>Rate today's lesson on a scale from 1-5!</h3>
