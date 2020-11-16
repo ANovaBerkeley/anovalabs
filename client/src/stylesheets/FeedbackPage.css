@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+.page {
+  background-color: #e9f4fb;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.feedbackBoxContainer {
+  width: 85%;
+  border-radius: 25px;
+  /* border-style: solid; */
+  position: relative;
+  left: 100px;
+  top: 100px;
+}
+
+.submitButton {
+  width: 10%;
+  height: 5%;
+  position: relative;
+  left: 100px;
+  top: 100px;
+}
+
+.ratingContainer {
+  width: 85%;
+  border-radius: 25px;
+  /* border-style: solid; */
+  position: relative;
+  left: 100px;
+  top: 100px;
+}
+/* 
+.lessonPageContainer {
+  width: 85%;
+  position: relative;
+  left: 100px;
+  top: 100px;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+}
+
+h1,
+.title {
+  height: 100px;
+}
+
+.title {
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  font-size: 50px;
+  color: #2e64bc;
+  margin-bottom: 0;
+}
+
+.editButton {
+  background-color: inherit;
+  border: none;
+  margin: 10px;
+  height: 12px;
+  object-fit: none;
+}
+
+.editButton:hover {
+  cursor: pointer;
+}
+
+.textTitle {
+  font-family: Lato, sans-serif;
+  color: #2e64bc;
+  font-size: 30px;
+}
+
+.textBox {
+  min-height: 45px;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.editing {
+  background-color: #ffffff;
+  box-shadow: 3px 3px 3px #e5e5e5;
+}
+
+.saveButton {
+  font-family: Lato, sans-serif;
+  background-color: #2e64bc;
+  color: #ffffff;
+  margin-top: 30px;
+  position: relative;
+  left: 85%;
+  font-size: 22px;
+}
+
+.saveButton:hover {
+  cursor: pointer;
+} */
