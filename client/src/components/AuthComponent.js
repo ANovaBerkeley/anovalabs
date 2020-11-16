@@ -28,7 +28,9 @@ class AuthComponent extends Component {
       this.props.history.push(`/login`);
       return;
     }
-    this.state.uid = d_tok.id;
+    this.setState({
+      uid: d_tok.id
+    })
 
     fetch('/api/v1/profile/' + d_tok.id + '?uid=' + d_tok.id)
       .then(res => res.json())
