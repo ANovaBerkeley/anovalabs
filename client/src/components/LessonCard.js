@@ -226,11 +226,10 @@ class LessonCard extends Component {
     let editButton;
     if (isMentor) {
       editButton = (
-          <Link to = {'/feedback/' + this.state.lessonId} >
-            <button className = 'lowerButton'>
-              Edit Feedback
-            </button>
-          </Link>);
+        <Link to={'/Feedback/' + this.state.lessonId}>
+          <button className="lowerButton">Edit Feedback</button>
+        </Link>
+      );
     }
     return editButton;
   }
@@ -280,21 +279,15 @@ class LessonCard extends Component {
         <div className="descriptionContainer">
           <div className="description">{summary}</div>
         </div>
-        <div className='buttonContainer'>
+        <div className="buttonContainer">
           {maybeEditButton}
-          <Link to = {'/view/' + this.state.lessonId} >
-            <button className = 'lowerButton'>
-              View Assignment
-            </button>
+          <Link to={'/view/' + this.state.lessonId}>
+            <button className="lowerButton">View Assignment</button>
           </Link>
         </div>
         <div className="buttonContainer">
           <div className="viewAssignment">
-            <Link
-              to={'/LessonPage/' + this.state.lessonId}
-            >
-              View Assignment
-            </Link>
+            <Link to={'/LessonPage/' + this.state.lessonId}>View Assignment</Link>
           </div>
         </div>
       </div>
