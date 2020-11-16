@@ -36,7 +36,7 @@ const submitFeedback = async (req, res, next) => {
   const { feedback } = req.body;
   try {
     const data = await knex('feedback')
-      .insert(req.body)
+      .insert(feedback)
       .returning('id');
     return res.status(201).send({ title: req.body.title, id: data[0] });
   } catch (error) {

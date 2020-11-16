@@ -4,6 +4,7 @@ const LessonsController = require('../controllers/lessons_controller');
 const LessonSitesController = require('../controllers/lesson_sites_controller');
 const ProfilesController = require('../controllers/profiles_controller');
 const RostersController = require('../controllers/rosters_controller');
+const FeedbackController = require('../controllers/feedback_controller');
 const Middleware = require('../middleware/jwt');
 
 module.exports = app => {
@@ -27,6 +28,8 @@ module.exports = app => {
   app.post('/api/v1/lessons/update', LessonsController.update);
   app.post('/api/v1/lessons/updatePage', LessonsController.updatePage);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);
+  app.get('/api/v1/feedback/get_feedback', FeedbackController.getFeedback);
+  app.post('/api/v1/feedback/submit_feedback', FeedbackController.submitFeedback);
 
   //Lesson Site
   app.get('/api/v1/lesson_site/all', LessonSitesController.getAllSemAndSiteLessons);

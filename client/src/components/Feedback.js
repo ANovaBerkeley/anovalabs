@@ -37,7 +37,7 @@ class Feedback extends Component {
   }
 
   submitFeedback() {
-    var get_url = '/api/v1/lessons/submit_feedback/';
+    var get_url = '/api/v1/feedback/submit_feedback/';
   }
 
   updateFeedback() {
@@ -66,7 +66,6 @@ class Feedback extends Component {
   }
 
   render() {
-    console.log(this.state.uid);
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
