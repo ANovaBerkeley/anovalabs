@@ -12,6 +12,7 @@ class AuthComponent extends Component {
       type: this.props.type,
       mentor: null,
       mounted: false,
+      uid: null
     };
   }
 
@@ -27,6 +28,7 @@ class AuthComponent extends Component {
       this.props.history.push(`/login`);
       return;
     }
+    this.state.uid = d_tok.id;
 
     fetch('/api/v1/profile/' + d_tok.id + '?uid=' + d_tok.id)
       .then(res => res.json())
@@ -66,7 +68,7 @@ class AuthComponent extends Component {
         </div>
       );
     } else {
-      return <this.props.component ismentor={this.state.mentor} matchParam={this.props.computedMatch.params.id}/>
+      return <this.props.component userid = {this.state.uid} ismentor={this.state.mentor} matchParam={this.props.computedMatch.params.id}/>
     }
   }
 }

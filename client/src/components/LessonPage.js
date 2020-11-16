@@ -40,7 +40,7 @@ export default class LessonPage extends Component {
         if (this.state.descriptionHTML === '') {
           this.setState({descriptionHTML: '<p> </p>'})
         }
-        if (this.state.resourcesHTMLL === '') {
+        if (this.state.resourcesHTML === '') {
           this.setState({resourcesHTML: '<p> </p>'})
         }
         if (this.state.labHTML === '') {

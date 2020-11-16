@@ -104,11 +104,8 @@ const getFeedback = async (req, res, next) => {
 const submitFeedback = async (req, res, next) => {
   const { lessonId } = req.body;
   try {
-    const data = await knex('lesson')
-      .where({ id: lessonId })
-      .update({
-        feedback: req.body.feedback,
-      });
+    const data = await knex('feedback')
+      .insert(req.body)
     return res.status(200).send({ data });
   } catch (error) {
     return res.status(500).json({ error });

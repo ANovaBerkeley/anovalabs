@@ -9,11 +9,11 @@ class Feedback extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // userId: this.props.person.id,
-      lessonId: this.props.matchparam,
+      lessonId: this.props.matchParam,
       text: null,
       rating: null,
-      isMentor: this.props.isMentor,
+      isMentor: this.props.ismentor,
+      uid: this.props.userid
     };
   }
   componentDidMount() {
@@ -66,6 +66,7 @@ class Feedback extends Component {
   }
 
   render() {
+    console.log(this.state.uid);
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
