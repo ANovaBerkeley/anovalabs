@@ -21,7 +21,9 @@ const AuthComponent = props => {
       history.push(`/Login`);
       return;
     }
-    this.state.uid = d_tok.id;
+    this.setState({
+      uid: d_tok.id
+    })
 
     fetch('/api/v1/profile/' + decodedAnovaToken.id + '?uid=' + decodedAnovaToken.id)
       .then(res => res.json())

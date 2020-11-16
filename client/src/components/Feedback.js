@@ -17,27 +17,40 @@ class Feedback extends Component {
     };
   }
   componentDidMount() {
-    var get_url = '/api/v1/lessons/get_feedback/';
-    fetch(get_url + '?lessonId=' + this.lessonId)
-      .then(res => res.json())
-      .then(
-        feedback => {
-          this.setState({
-            isLoaded: true,
-            notes: feedback.mentor_feedback,
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        },
-      );
+    // const get_url = '/api/v1/lessons/get_feedback/';
+    // fetch(get_url + '?lessonId=' + this.state.lessonId)
+    //   .then(res => res.json())
+    //   .then(
+    //     feedback => {
+    //       this.setState({
+    //         isLoaded: true,
+    //         notes: feedback.mentor_feedback,
+    //       });
+    //     },
+    //     error => {
+    //       this.setState({
+    //         isLoaded: true,
+    //         error,
+    //       });
+    //     },
+    //   );
   }
 
   submitFeedback() {
-    var get_url = '/api/v1/feedback/submit_feedback/';
+    const get_url = '/api/v1/feedback/submit_feedback/';
+    fetch(get_url, {
+      method: 'POST',
+      body: JSON.stringify({
+        user_id: this.state.uid,
+        lesson_id: this.state.lessonId,
+        text: this.state.text,
+        rating: this.state.rating,
+        mentor: this.state.ismentor
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then()
   }
 
   updateFeedback() {
@@ -66,11 +79,6 @@ class Feedback extends Component {
   }
 
   render() {
-<<<<<<< Updated upstream
-=======
-    console.log(this.state.uid);
-    console.log(this.state.text);
->>>>>>> Stashed changes
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
