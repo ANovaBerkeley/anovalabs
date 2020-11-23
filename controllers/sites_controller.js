@@ -71,9 +71,28 @@ const updateAttendance = async (req, res, next) => {
   }
 };
 
+/* Gets site attendance*/
+const getAttendance = async (req, res, next) => {
+  try {
+
+    const siteid = await knex
+          .select('site_id')
+          .from('user_semester_site')
+          .where('user_semester_site.user_id', req.query.uid);
+    const attend = await knex
+          .select('site.attendance')
+          .from('site')
+          .where('site.id', siteid[0].site_id);
+    return res.send(attend)
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   index: index,
   getCurrentUserSite: getCurrentUserSite,
   addUserToSemSite: addUserToSemSite,
   updateAttendance: updateAttendance,
+  getAttendance: getAttendance,
 };
