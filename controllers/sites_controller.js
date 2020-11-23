@@ -46,8 +46,34 @@ const addUserToSemSite = async (req, res, next) => {
   }
 };
 
+/* Adds a day of attendance*/
+const updateAttendance = async (req, res, next) => {
+  try {
+    var today = new Date();
+    var date = String(today.getMonth()+1) + '-' + String(today.getDate());
+    const siteid = await knex
+          .select('site_id')
+          .from('user_semester_site')
+          .where('user_semester_site.user_id', req.query.uid);
+    const attend = await knex
+          .select('site.attendance')
+          .from('site')
+          .where('site.id', siteid[0].site_id);
+    attend[0].attendance[date] = req.query.present;
+    const data = await knex('site')
+          .where({ 'site.id': siteid[0].site_id })
+          .update({
+            attendance: attend[0].attendance,
+          });
+    return res.status(201).json({ attend });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   index: index,
   getCurrentUserSite: getCurrentUserSite,
   addUserToSemSite: addUserToSemSite,
+  updateAttendance: updateAttendance,
 };

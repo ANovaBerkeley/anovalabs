@@ -49,8 +49,12 @@ export default class Roster extends Component {
   }
 
   attendanceClick() {
+    const tok = localStorage.getItem('anovaToken');
+    const dTok = decode(tok);
     if (this.state.showAttendance) {
-      // TODO: API call
+      fetch(`/api/v1/site/updateAttendance?present=${this.state.present}&uid=${dTok.id}`,
+           {method: 'POST'})
+        .then(res => res.json())
       console.log(this.state.present);
       this.setState({ present : []});
     }

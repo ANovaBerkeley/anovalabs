@@ -6,6 +6,7 @@ exports.up = knex =>
     table.string('level');
     table.string('time').notNullable();
     table.string('contact').notNullable();
+    table.json('attendance').notNullable();
   });
 
 exports.down = knex => knex.raw('DROP TABLE IF EXISTS site CASCADE');
