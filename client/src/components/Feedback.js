@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../stylesheets/FeedbackPage.css';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 
 class Feedback extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class Feedback extends Component {
       rating: null,
       isMentor: this.props.ismentor,
       uid: this.props.userid,
-      submitted: false
+      submitted: false,
     };
   }
   componentDidMount() {
@@ -42,12 +42,12 @@ class Feedback extends Component {
         lesson_id: this.state.lessonId,
         text: this.state.text,
         rating: this.state.rating,
-        mentor: this.state.isMentor
+        mentor: this.state.isMentor,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then(this.setState({submitted: true}));
+    }).then(this.setState({ submitted: true }));
   }
 
   updateFeedback() {
@@ -77,7 +77,7 @@ class Feedback extends Component {
 
   render() {
     if (this.state.submitted) {
-      return <Redirect to='/LessonPool'/>
+      return <Redirect to="/LessonPool" />;
     }
     return (
       <div className="page">
@@ -92,22 +92,44 @@ class Feedback extends Component {
           ></input>
         </div>
         <div className="ratingContainer">
-          <h3>Rate today's lesson on a scale from 1-5!</h3>
-          <button className="rate" onClick={() => this.setState({rating: 1})} type="button">
-            1
-          </button>
-          <button className="rate" onClick={() => this.setState({rating: 2})} type="button">
-            2
-          </button>
-          <button className="rate" onClick={() => this.setState({rating: 3})} type="button">
-            3
-          </button>
-          <button className="rate" onClick={() => this.setState({rating: 4})} type="button">
-            4
-          </button>
-          <button className="rate" onClick={() => this.setState({rating: 5})} type="button">
-            5
-          </button>
+          <h3 className="rateText">Rate today's lesson on a scale from 1-5!</h3>
+          <div className="buttonContainer">
+            <button
+              className={this.state.rating === 1 ? 'rate-selected' : 'rate'}
+              onClick={() => this.setState({ rating: 1 })}
+              type="button"
+            >
+              1
+            </button>
+            <button
+              className={this.state.rating === 2 ? 'rate-selected' : 'rate'}
+              onClick={() => this.setState({ rating: 2 })}
+              type="button"
+            >
+              2
+            </button>
+            <button
+              className={this.state.rating === 3 ? 'rate-selected' : 'rate'}
+              onClick={() => this.setState({ rating: 3 })}
+              type="button"
+            >
+              3
+            </button>
+            <button
+              className={this.state.rating === 4 ? 'rate-selected' : 'rate'}
+              onClick={() => this.setState({ rating: 4 })}
+              type="button"
+            >
+              4
+            </button>
+            <button
+              className={this.state.rating === 5 ? 'rate-selected' : 'rate'}
+              onClick={() => this.setState({ rating: 5 })}
+              type="button"
+            >
+              5
+            </button>
+          </div>
         </div>
         <button
           className="submitButton"
@@ -117,7 +139,6 @@ class Feedback extends Component {
           Submit Feedback
         </button>
       </div>
-
     );
   }
 }
