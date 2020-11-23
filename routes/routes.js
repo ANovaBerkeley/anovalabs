@@ -28,6 +28,8 @@ module.exports = app => {
   app.post('/api/v1/lessons/update', LessonsController.update);
   app.post('/api/v1/lessons/updatePage', LessonsController.updatePage);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);
+
+  //Feedback
   app.get('/api/v1/feedback/get_feedback', FeedbackController.getFeedback);
   app.post('/api/v1/feedback/submit_feedback', FeedbackController.submitFeedback);
 

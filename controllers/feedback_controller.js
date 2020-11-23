@@ -33,12 +33,13 @@ const getFeedback = async (req, res, next) => {
 
 /* Submit mentor feedback for a lesson. */
 const submitFeedback = async (req, res, next) => {
+
   const { feedback } = req.body;
   try {
     const data = await knex('feedback')
-      .insert(feedback)
+      .insert(req.body)
       .returning('id');
-    return res.status(201).send({ title: req.body.title, id: data[0] });
+    return res.status(201).send({ data });
   } catch (error) {
     return res.status(500).json({ error });
   }

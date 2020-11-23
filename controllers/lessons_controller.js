@@ -86,39 +86,11 @@ const deleteLesson = async (req, res, next) => {
   }
 };
 
-/* Retrieve mentor feedback for a lesson. */
-const getFeedback = async (req, res, next) => {
-  const lessonId = req.query.lessonId;
-  try {
-    const data = await knex
-      .select('lesson.mentor_feedback')
-      .where({ id: lessonId })
-      .from('lesson');
-    return res.status(200).send({ data });
-  } catch (error) {
-    return res.status(500).json({ error});
-  }
-}
-
-/* Submit mentor feedback for a lesson. */
-const submitFeedback = async (req, res, next) => {
-  const { lessonId } = req.body;
-  try {
-    const data = await knex('feedback')
-      .insert(req.body)
-    return res.status(200).send({ data });
-  } catch (error) {
-    return res.status(500).json({ error });
-  }
-}
-
 module.exports = {
   index: index,
   getLessonById: getLessonById,
   create: create,
   update: update,
   updatePage: updatePage,
-  deleteLesson: deleteLesson,
-  getFeedback: getFeedback,
-  submitFeedback: submitFeedback
+  deleteLesson: deleteLesson
 };

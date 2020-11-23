@@ -17,7 +17,6 @@ class AuthComponent extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     let d_tok;
     try {
       const tok = localStorage.getItem('anovaToken');
