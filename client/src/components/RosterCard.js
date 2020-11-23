@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../stylesheets/Roster.css';
-import { Card, Button, Modal, Input, Row, Col } from 'antd';
+import { Card, Button, Modal, Input, Row, Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 
@@ -18,9 +18,15 @@ export default class RosterCard extends Component {
       hobby: this.props.person.hobby,
       notes: this.props.person.notes,
       editedNotes: this.props.person.notes,
+      showCheckbox: this.props.showAttendance,
+      updateAttendance: this.props.updateAttendance,
     };
     this.onChangeNotes = this.onChangeNotes.bind(this);
     this.editStudentProfile = this.editStudentProfile.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ showCheckbox: nextProps.showAttendance });  
   }
 
   onChangeNotes(event) {
@@ -116,9 +122,25 @@ export default class RosterCard extends Component {
     return editButton;
   }
 
+  renderCheckbox() {
+    let checkBox;
+    if (this.state.showCheckbox) {
+      checkBox = (
+        <div>
+          <div>
+            <Checkbox onChange={(e) => this.state.updateAttendance(e, this)}>Present</Checkbox>
+          </div>
+          <br></br>
+        </div>
+      )
+    }
+    return checkBox;
+  }1
+
   render() {
     const description = this.renderDescription();
     const maybeEditButton = this.renderEditButton();
+    const maybeCheckbox = this.renderCheckbox();
     return (
       <div>
         <Card
@@ -128,7 +150,8 @@ export default class RosterCard extends Component {
           }
         >
           {description}
-          {maybeEditButton}
+          {maybeCheckbox}
+          {maybeEditButton} 
         </Card>
       </div>
     );
