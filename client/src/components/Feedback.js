@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
-import { GoTrashcan } from 'react-icons/go';
-import PropTypes from 'prop-types';
-import * as decode from 'jwt-decode';
 import '../stylesheets/FeedbackPage.css';
+import { Redirect } from "react-router-dom";
 
 class Feedback extends Component {
   constructor(props) {
@@ -14,8 +11,8 @@ class Feedback extends Component {
       rating: null,
       isMentor: this.props.ismentor,
       uid: this.props.userid,
+      submitted: false
     };
-    this.submitFeedback = this.submitFeedback.bind(this);
   }
   componentDidMount() {
     // const get_url = '/api/v1/lessons/get_feedback/';
@@ -50,7 +47,7 @@ class Feedback extends Component {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then();
+    }).then(this.setState({submitted: true}));
   }
 
   updateFeedback() {
@@ -79,6 +76,9 @@ class Feedback extends Component {
   }
 
   render() {
+    if (this.state.submitted) {
+      return <Redirect to='/LessonPool'/>
+    }
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
@@ -111,12 +111,13 @@ class Feedback extends Component {
         </div>
         <button
           className="submitButton"
-          onClick={this.submitFeedback}
+          onClick={() => this.submitFeedback()}
           type="button"
         >
           Submit Feedback
         </button>
       </div>
+
     );
   }
 }
