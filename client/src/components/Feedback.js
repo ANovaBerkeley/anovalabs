@@ -15,6 +15,7 @@ class Feedback extends Component {
       isMentor: this.props.ismentor,
       uid: this.props.userid,
     };
+    this.submitFeedback = this.submitFeedback.bind(this);
   }
   componentDidMount() {
     // const get_url = '/api/v1/lessons/get_feedback/';
@@ -37,20 +38,19 @@ class Feedback extends Component {
   }
 
   submitFeedback() {
-    const get_url = '/api/v1/feedback/submit_feedback/';
-    fetch(get_url, {
+    fetch('/api/v1/feedback/submit_feedback', {
       method: 'POST',
       body: JSON.stringify({
         user_id: this.state.uid,
         lesson_id: this.state.lessonId,
         text: this.state.text,
         rating: this.state.rating,
-        mentor: this.state.ismentor
+        mentor: this.state.isMentor
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then()
+    }).then();
   }
 
   updateFeedback() {
@@ -93,25 +93,25 @@ class Feedback extends Component {
         </div>
         <div className="ratingContainer">
           <h3>Rate today's lesson on a scale from 1-5!</h3>
-          <button className="rate" onClick={() => (this.rating = 1)} type="button">
+          <button className="rate" onClick={() => this.setState({rating: 1})} type="button">
             1
           </button>
-          <button className="rate" onClick={() => (this.rating = 2)} type="button">
+          <button className="rate" onClick={() => this.setState({rating: 2})} type="button">
             2
           </button>
-          <button className="rate" onClick={() => (this.rating = 3)} type="button">
+          <button className="rate" onClick={() => this.setState({rating: 3})} type="button">
             3
           </button>
-          <button className="rate" onClick={() => (this.rating = 4)} type="button">
+          <button className="rate" onClick={() => this.setState({rating: 4})} type="button">
             4
           </button>
-          <button className="rate" onClick={() => (this.rating = 5)} type="button">
+          <button className="rate" onClick={() => this.setState({rating: 5})} type="button">
             5
           </button>
         </div>
         <button
           className="submitButton"
-          onClick={() => this.submitFeedback()}
+          onClick={this.submitFeedback}
           type="button"
         >
           Submit Feedback
