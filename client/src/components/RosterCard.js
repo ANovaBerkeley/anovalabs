@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../stylesheets/Roster.css';
-import { Card, Button, Modal, Input, Row, Col } from 'antd';
+import { Card, Button, Modal, Input, Row, Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 
@@ -13,6 +13,21 @@ const RosterCard = props => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
+  /*this.state = {
+      showCheckbox: this.props.showAttendance,
+      updateAttendance: this.props.updateAttendance,
+    };
+    this.onChangeNotes = this.onChangeNotes.bind(this);
+    this.editStudentProfile = this.editStudentProfile.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ showCheckbox: nextProps.showAttendance });  
+  }
+
+  onChangeNotes(event) {
+    this.setState({ editedNotes: event.target.value });
+  }*/
 
   console.log(props);
 
@@ -120,6 +135,42 @@ const RosterCard = props => {
     </div>
   );
 };
+  
+  /*renderCheckbox() {
+    let checkBox;
+    if (this.state.showCheckbox) {
+      checkBox = (
+        <div>
+          <div>
+            <Checkbox onChange={(e) => this.state.updateAttendance(e, this)}>Present</Checkbox>
+          </div>
+          <br></br>
+        </div>
+      )
+    }
+    return checkBox;
+  }
+
+  render() {
+    const description = this.renderDescription();
+    const maybeEditButton = this.renderEditButton();
+    const maybeCheckbox = this.renderCheckbox();
+    return (
+      <div>
+        <Card
+          style={{ width: 300 }}
+          cover={
+            <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
+          }
+        >
+          {description}
+          {maybeCheckbox}
+          {maybeEditButton} 
+        </Card>
+      </div>
+    );
+  }
+}*/
 
 RosterCard.propTypes = {
   mentor: PropTypes.bool,

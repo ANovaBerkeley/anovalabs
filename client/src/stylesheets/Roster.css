@@ -11,6 +11,9 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 200px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 .containerGrid {
@@ -24,6 +27,13 @@
   grid-auto-rows: auto;
   justify-content: center;
   align-items: center;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
 }
 
 @media (max-width: 1024px) {
