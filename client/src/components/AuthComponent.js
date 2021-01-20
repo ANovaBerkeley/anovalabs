@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import * as decode from 'jwt-decode';
-import { getJWT } from '../utils/utils';
+import { getAnovaToken, removeAnovaToken } from '../utils/utils';
+import NavBar from './NavBar';
 // eslint-disable-next-line
 import Profile from './Profile';
 // eslint-disable-next-line
@@ -19,18 +20,17 @@ class AuthComponent extends Component {
   }
 
   componentDidMount() {
-    let d_tok;
+    let decodedAnovaToken;
     try {
-      const tok = localStorage.getItem('anovaToken');
-      d_tok = decode(tok);
+      decodedAnovaToken = decode(getAnovaToken());
     } catch (err) {
       // if local storage doesn't have token
-      localStorage.removeItem('anovaToken');
+      removeAnovaToken();
       this.props.history.push(`/login`);
       return;
     }
 
-    fetch('/api/v1/profile/' + d_tok.id + '?uid=' + d_tok.id)
+    fetch('/api/v1/profile/' + decodedAnovaToken.id + '?uid=' + decodedAnovaToken.id)
       .then(res => res.json())
       .then(profile => {
         this.setState({
@@ -39,13 +39,14 @@ class AuthComponent extends Component {
         });
       });
 
-    const jwt = getJWT();
-    if (!jwt) {
+    const anovaToken = getAnovaToken();
+
+    if (!anovaToken) {
       this.props.history.replace('/login');
     } else {
       axios
         .post('/api/v1/auth', {
-          token: jwt,
+          anovaToken: anovaToken,
         })
         .then(res => {
           // as long as the bearer is authorized, all the children props will render
@@ -54,21 +55,26 @@ class AuthComponent extends Component {
           });
         })
         .catch(err => {
-          localStorage.removeItem('anovaToken');
+          removeAnovaToken();
           this.props.history.push('/login');
         });
     }
   }
 
   render() {
-    if (!getJWT() || !this.state.mounted) {
+    if (!getAnovaToken() || !this.state.mounted) {
       return (
         <div>
           <h1>Loading . . .</h1>
         </div>
       );
     } else {
-      return <this.props.component ismentor={this.state.mentor} />;
+      return (
+        <div>
+          <NavBar />
+          <this.props.component ismentor={this.state.mentor} />
+        </div>
+      );
     }
   }
 }

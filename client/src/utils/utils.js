@@ -1,4 +1,6 @@
 module.exports = {
-  getJWT: () => localStorage.getItem('anovaToken'),
-  removeJWT: () => localStorage.removeItem('anovaToken'),
+  getAnovaToken: () => localStorage.getItem('anovaToken'),
+  getGoogleToken: () => localStorage.getItem('googleToken'),
+  removeAnovaToken: () => localStorage.removeItem('anovaToken'),
+  removeGoogleToken: () => localStorage.removeItem('googleToken'),
 };

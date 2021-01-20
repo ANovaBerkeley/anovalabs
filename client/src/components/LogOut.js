@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { removeJWT } from '../utils/utils';
+import { removeAnovaToken, removeGoogleToken } from '../utils/utils';
+import { withRouter } from 'react-router-dom';
 
 class LogOut extends Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class LogOut extends Component {
   }
 
   _logOut() {
-    removeJWT();
+    removeAnovaToken();
+    removeGoogleToken();
     this.props.history.push('/login');
   }
 
@@ -16,4 +18,4 @@ class LogOut extends Component {
     return <div>{this._logOut()}</div>;
   }
 }
-export default LogOut;
+export default withRouter(LogOut);

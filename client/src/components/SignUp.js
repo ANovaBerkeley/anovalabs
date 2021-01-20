@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import * as Yup from 'yup';
 import { Modal, Select, Form, Input, Icon, Button } from 'antd';
 import * as decode from 'jwt-decode';
-import { getJWT } from '../utils/utils';
+import {
+  getAnovaToken,
+  getGoogleToken,
+  removeAnovaToken,
+  removeGoogleToken,
+} from '../utils/utils';
 import ANovaLogo from '../assets/img/logo-lower.png';
 import '../stylesheets/SignUp.css';
+import { GoogleLogin } from 'react-google-login';
+import { withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -13,11 +19,6 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      emailStatus: '',
-      passwordStatus: '',
       redirect: false,
       sites: [],
       role: '',
@@ -27,8 +28,19 @@ class SignUp extends Component {
     this._submit = this._submit.bind(this);
   }
 
+  clientId = ''; // TODO: Put client ID here
+
+  onSuccess = res => {
+    localStorage.setItem('googleToken', res.tokenId);
+    console.log('Login Success: currentUser:', res);
+  };
+
+  onFailure = res => {
+    console.log('Login failed: res:', res);
+  };
+
   componentDidMount() {
-    if (getJWT() !== null) {
+    if (getAnovaToken() !== null) {
       this.setState({ redirect: true });
     }
     fetch('/api/v1/site/allSites')
@@ -46,24 +58,6 @@ class SignUp extends Component {
         },
       );
   }
-
-  _changeEmail = event => {
-    this.setState({
-      email: event.target.value,
-    });
-  };
-
-  _changeName = event => {
-    this.setState({
-      name: event.target.value,
-    });
-  };
-
-  _changePassword = event => {
-    this.setState({
-      password: event.target.value,
-    });
-  };
 
   onSelectSiteChange = siteId => {
     this.setState({ siteId });
@@ -90,14 +84,14 @@ class SignUp extends Component {
     return semester;
   };
 
-  addUserSite = async decodedToken => {
+  async addUserSite(payload) {
     const { siteId } = this.state;
     const semester = this.getCurrentSemester();
     try {
       await fetch('/api/v1/site/addUserSemSite', {
         method: 'POST',
         body: JSON.stringify({
-          user_id: decodedToken.id,
+          user_id: payload.id,
           semester,
           site_id: siteId,
         }),
@@ -108,70 +102,72 @@ class SignUp extends Component {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
-  async _submit(event) {
-    const { name, email, password, role, siteId, siteCode, sites } = this.state;
-    let pass = true;
-    if (!name || !email || !password || !role || !siteId) {
+  _submit(event) {
+    const googleToken = getGoogleToken();
+
+    const { role, siteId, siteCode, sites } = this.state;
+
+    if (!googleToken) {
+      Modal.error({
+        title: 'Please register with Google.',
+        centered: true,
+      });
+      event.preventDefault();
+      return;
+    }
+
+    if (!role || !siteId) {
       Modal.error({
         title: 'Please fill out all fields.',
         centered: true,
       });
       event.preventDefault();
-      pass = false;
+      return;
     }
-    if (password && password.length < 8) {
-      Modal.error({
-        title: 'Password needs to be at least 8 characters.',
-        centered: true,
-      });
-      event.preventDefault();
-      pass = false;
-    }
+
     if (role === 'mentor' && siteCode !== 'wazoo!') {
       Modal.error({
         title: 'Wrong Mentor Access Code!',
         centered: true,
       });
       event.preventDefault();
-      pass = false;
+      return;
     }
+
     if (role === 'student' && siteCode !== sites[siteId - 1].schoolName + 'ANova') {
       Modal.error({
         title: 'Wrong Site Access Code!',
         centered: true,
       });
       event.preventDefault();
-      pass = false;
+      return;
     }
-    if (pass) {
-      event.preventDefault();
-      const isValid = await this._validateUser();
-      if (isValid) {
-        try {
-          const { data } = await axios.post('/api/v1/auth/signup', {
-            name,
-            email,
-            password,
-            role,
-          });
-          await localStorage.setItem('anovaToken', data.token);
-          const tokPayload = decode(data.token);
-          await this.addUserSite(tokPayload);
-          await this.props.history.push('/SiteLessons');
-        } catch (error) {
-          localStorage.removeItem('anovaToken');
-          Modal.error({
-            title: 'Email already in use.',
-            centered: true,
-          });
-          event.preventDefault();
-        }
-      } else {
-        console.log(this.state.errorMessage);
-      }
-    }
+
+    event.preventDefault();
+
+    axios
+      .post('/api/v1/auth/signup', {
+        googleToken,
+        role,
+      })
+      .then(data => {
+        localStorage.setItem('anovaToken', data.data.token);
+        const payload = decode(data.data.token);
+        this.addUserSite(payload);
+        this.props.history.push('/SiteLessons');
+      })
+      .catch(err => {
+        console.log(err);
+        removeAnovaToken();
+        removeGoogleToken();
+        Modal.error({
+          title: 'Email already in use.',
+          centered: true,
+        });
+        event.preventDefault();
+      });
   }
 
   loadSites = () => {
@@ -186,49 +182,6 @@ class SignUp extends Component {
     }
     return options;
   };
-
-  async _validateUser() {
-    const userSchema = Yup.object({
-      email: Yup.string()
-        .email()
-        .required('No email provided'),
-      password: Yup.string()
-        .required('No password provided.')
-        .min(4, 'Password should be 8 chars minimum.')
-        .matches(/[a-zA-Z0-9]/, 'Password must contain only numbers or letters'),
-    });
-    const { email, password } = this.state;
-    try {
-      const isValid = await userSchema.validate(
-        { email, password },
-        { abortEarly: false },
-      );
-      if (isValid) {
-        this.setState({
-          emailStatus: '',
-          passwordStatus: '',
-        });
-        return true;
-      }
-    } catch (error) {
-      if (error.name === 'ValidationError') {
-        const presentState = { passwordStatus: '', emailStatus: '' };
-        error.inner.foreach(item => {
-          if (item.path === 'password') {
-            presentState.passwordStatus = item.message;
-          } else if (item.path === 'email') {
-            presentState.emailStatus = item.message;
-          }
-        });
-        this.setState({
-          emailStatus: presentState.emailStatus,
-          passwordStatus: presentState.passwordStatus,
-        });
-        return false;
-      }
-    }
-    return false;
-  }
 
   render() {
     const { redirect, errorMsg } = this.state;
@@ -245,26 +198,15 @@ class SignUp extends Component {
             <div className="labs">Labs </div>
           </div>
           <Form onSubmit={this._submit} className="login-form">
-            <Form.Item>
-              <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Name"
-                onChange={this._changeName}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input
-                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Email"
-                onChange={this._changeEmail}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input
-                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                type="password"
-                placeholder="Password"
-                onChange={this._changePassword}
+            <Form.Item className="signup-field-container">
+              <GoogleLogin
+                className="signup-google"
+                clientId={this.clientId}
+                buttonText="Register"
+                onSuccess={this.onSuccess}
+                onFailure={this.onFailure}
+                cookiePolicy={'single_host_origin'}
+                isSignedIn={true}
               />
             </Form.Item>
             <Form.Item>
@@ -309,4 +251,4 @@ class SignUp extends Component {
     );
   }
 }
-export default SignUp;
+export default withRouter(SignUp);

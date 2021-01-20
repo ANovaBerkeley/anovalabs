@@ -1,57 +1,43 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Input, Icon, Button } from 'antd';
-import { getJWT } from '../utils/utils';
+import { Form } from 'antd';
+import { getAnovaToken } from '../utils/utils';
 import ANovaLogo from '../assets/img/logo-lower.png';
 import '../stylesheets/Login.css';
+import { GoogleLogin } from 'react-google-login';
+import { withRouter } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
       errorMsg: '',
       redirect: false,
     };
-
-    this._submit = this._submit.bind(this);
-    this._changeEmail = this._changeEmail.bind(this);
-    this._changePassword = this._changePassword.bind(this);
   }
 
-  // takes an event and creates a key,value pair
+  clientId = ''; // TODO: Put client ID here
 
-  _changeEmail(event) {
-    this.setState({
-      email: event.target.value,
-    });
-  }
-
-  _changePassword(event) {
-    this.setState({
-      password: event.target.value,
-    });
-  }
-
-  _submit(event) {
-    event.preventDefault();
+  onSuccess = res => {
     axios
       .post('/api/v1/auth/login', {
-        email: this.state.email,
-        password: this.state.password,
+        googleToken: res.tokenId,
       })
       .then(res => {
         localStorage.setItem('anovaToken', res.data.token);
         this.props.history.push('/SiteLessons');
       })
-      .catch(error => {
-        this.setState({ errorMsg: 'Invalid Login' });
+      .catch(err => {
+        this.setState({ errorMsg: 'Email not registered.' });
       });
-  }
+  };
+
+  onFailure = res => {
+    console.log('Login failed: res:', res);
+  };
 
   componentDidMount() {
-    if (getJWT() !== null) {
+    if (getAnovaToken() !== null) {
       this.setState({ redirect: true });
     }
   }
@@ -70,26 +56,19 @@ class Login extends Component {
             <div className="labs">Labs </div>
           </div>
           <Form onSubmit={this._submit} className="login-form">
-            <Form.Item>
-              <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Username"
-                onChange={this._changeEmail}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input
-                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                type="password"
-                placeholder="Password"
-                onChange={this._changePassword}
-              />
-            </Form.Item>
             <div className="error">{this.state.errorMsg}</div>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
-                Log in
-              </Button>
+            <Form.Item className="login-field-container">
+              <GoogleLogin
+                className="login-google"
+                clientId={this.clientId}
+                buttonText="Login"
+                onSuccess={this.onSuccess}
+                onFailure={this.onFailure}
+                cookiePolicy={'single_host_origin'}
+                isSignedIn={false}
+              />
+            </Form.Item>
+            <Form.Item className="login-field-container">
               <a href="./SignUp">Register here!</a>
             </Form.Item>
           </Form>
@@ -98,4 +77,4 @@ class Login extends Component {
     );
   }
 }
-export default Login;
+export default withRouter(Login);
