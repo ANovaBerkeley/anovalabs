@@ -16,7 +16,7 @@ class Login extends Component {
     };
   }
 
-  clientId = ''; // TODO: Put client ID here.
+  clientId = ''; // TODO: Put client ID here
 
   onSuccess = res => {
     axios
