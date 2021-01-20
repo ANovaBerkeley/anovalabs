@@ -79,6 +79,7 @@ updated: March 19th, 2020
   - most likely you won't be able to view it in your Finder or File Explorer, but you will be able to see it if you open the anovalabs folder in your code editor.
 - Create a file called .env and copy the contents of .env.example inside it
   - assign a small integer value (anything less than 10 should be fine) to SALT_ROUNDS and any string value to JWT_SECRET
+  - get the Google OAuth client ID and put it in as well (you'll also need to fill in the `clientId` variables in the frontend)
 
 ### Create the Database
 - make sure you ran the following command in your terminal to initalize the Postgres DB
