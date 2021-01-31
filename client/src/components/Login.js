@@ -16,7 +16,7 @@ class Login extends Component {
     };
   }
 
-  clientId = ''; // TODO: Put client ID here
+  clientId = '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com'; // TODO: Put client ID here
 
   onSuccess = res => {
     axios
