@@ -28,7 +28,7 @@ class SignUp extends Component {
     this._submit = this._submit.bind(this);
   }
 
-  clientId = ''; // TODO: Put client ID here
+  clientId = '7958921421-c8cmhbb5g7celvtoik04huenhoes0hno.apps.googleusercontent.com'; // TODO: Put client ID here
 
   onSuccess = res => {
     localStorage.setItem('googleToken', res.tokenId);
