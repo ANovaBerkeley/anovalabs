@@ -16,11 +16,22 @@ const index = async (req, res, next) => {
 /* Retrieve lesson by id. */
 const getLessonById = async (req, res, next) => {
   const lessonId = req.query.id;
+  console.log(lessonId);
   try {
     const data = await knex
-      .select('lesson.id', 'lesson.title', 'lesson.summary', 'lesson.link')
+      .select(
+        'lesson.id',
+        'lesson.title',
+        'lesson.summary',
+        'lesson.link',
+        'lesson.descriptionHTML',
+        'lesson.resourcesHTML',
+        'lesson.labHTML',
+        'lesson.exitTicketHTML',
+      )
       .from('lesson')
       .where('lesson.id', lessonId);
+    console.log(data);
     return res.status(200).send(data);
   } catch (error) {
     return res.status(500).json({ error });
@@ -37,7 +48,7 @@ const create = async (req, res, next) => {
     return res.status(500).json({ error });
   }
 };
-/* Update a lesson details */
+/* Update lesson details */
 const update = async (req, res, next) => {
   const { lessonId } = req.body;
   try {
@@ -46,13 +57,33 @@ const update = async (req, res, next) => {
       .update({
         title: req.body.editedTitle,
         summary: req.body.editedSummary,
-        link: req.body.editedLink,
       });
     return res.status(200).send({ data });
   } catch (error) {
     return res.status(500).json({ error });
   }
 };
+
+/* Update content on lesson page */
+const updatePage = async (req, res, next) => {
+  const { lessonId } = req.body;
+  console.log('IN UPDATE PAGE');
+  console.log(req.body);
+  try {
+    const data = await knex('lesson')
+      .where({ id: lessonId })
+      .update({
+        descriptionHTML: req.body.editedDescriptionHTML,
+        resourcesHTML: req.body.editedResourcesHTML,
+        labHTML: req.body.editedLabHTML,
+        exitTicketHTML: req.body.editedExitTicketHTML,
+      });
+    return res.status(200).send({ data });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 /* Delete a lesson from the lesson pool. */
 const deleteLesson = async (req, res, next) => {
   const { id } = req.body;
@@ -76,9 +107,9 @@ const getFeedback = async (req, res, next) => {
       .from('lesson');
     return res.status(200).send({ data });
   } catch (error) {
-    return res.status(500).json({ error});
+    return res.status(500).json({ error });
   }
-}
+};
 
 /* Submit mentor feedback for a lesson. */
 const submitFeedback = async (req, res, next) => {
@@ -93,12 +124,15 @@ const submitFeedback = async (req, res, next) => {
   } catch (error) {
     return res.status(500).json({ error });
   }
-}
+};
 
 module.exports = {
   index: index,
   getLessonById: getLessonById,
   create: create,
   update: update,
+  updatePage: updatePage,
   deleteLesson: deleteLesson,
+  getFeedback: getFeedback,
+  submitFeedback: submitFeedback,
 };

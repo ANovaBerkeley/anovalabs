@@ -4,12 +4,6 @@ import { withRouter } from 'react-router-dom';
 import * as decode from 'jwt-decode';
 import { getAnovaToken, removeAnovaToken } from '../utils/utils';
 import NavBar from './NavBar';
-// eslint-disable-next-line
-import Profile from './Profile';
-// eslint-disable-next-line
-import Roster from './Roster';
-import LessonPage from './LessonPage';
-import Feedback from './Feedback';
 
 class AuthComponent extends Component {
   constructor(props) {
@@ -74,7 +68,10 @@ class AuthComponent extends Component {
       return (
         <div>
           <NavBar />
-          <this.props.component ismentor={this.state.mentor} />
+          <this.props.component
+            ismentor={this.state.mentor}
+            id={this.props.match.params.id}
+          />
         </div>
       );
     }

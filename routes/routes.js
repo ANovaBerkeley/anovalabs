@@ -25,24 +25,19 @@ module.exports = app => {
   app.get('/api/v1/lessons/:id', LessonsController.getLessonById);
   app.post('/api/v1/lessons/add', LessonsController.create);
   app.post('/api/v1/lessons/update', LessonsController.update);
+  app.post('/api/v1/lessons/updatePage', LessonsController.updatePage);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);
   app.get('/api/v1/lessons/get_feedback', LessonsController.getFeedback);
   app.post('/api/v1/lessons/submit_feedback', LessonsController.submitFeedback);
 
   //Lesson Site
-  app.get(
-    '/api/v1/lesson_site/all',
-    LessonSitesController.getAllSemAndSiteLessons,
-  );
+  app.get('/api/v1/lesson_site/all', LessonSitesController.getAllSemAndSiteLessons);
   app.get(
     '/api/v1/lesson_site/all_but_current_site',
     LessonSitesController.getOtherSiteLessons,
   );
   app.post('/api/v1/lesson_site/add', LessonSitesController.addLessonToSite);
-  app.post(
-    '/api/v1/lesson_site/delete',
-    LessonSitesController.deleteLessonFromSite,
-  );
+  app.post('/api/v1/lesson_site/delete', LessonSitesController.deleteLessonFromSite);
   app.post('/api/v1/lesson_site/update', LessonSitesController.update);
 
   //Profile
@@ -52,5 +47,4 @@ module.exports = app => {
   //Roster
   app.get('/api/v1/roster', RostersController.getUsersBySite);
   app.post('/api/v1/roster/update', RostersController.update);
-
 };

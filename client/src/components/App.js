@@ -33,10 +33,10 @@ function App() {
             <Route path="/Roster">
               <AuthComponent component={Roster} />
             </Route>
-            <Route path="/LessonPage">
+            <Route path="/LessonPage/:id">
               <AuthComponent component={LessonPage} />
             </Route>
-            <Route path="/Feedback">
+            <Route path="/Feedback/:id">
               <AuthComponent component={Feedback} />
             </Route>
           </Switch>
