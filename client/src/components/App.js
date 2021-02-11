@@ -7,6 +7,8 @@ import SiteLessons from './SiteLessons';
 import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
+import LessonPage from './LessonPage';
+import Feedback from './Feedback';
 
 function App() {
   return (
@@ -30,6 +32,12 @@ function App() {
             </Route>
             <Route path="/Roster">
               <AuthComponent component={Roster} />
+            </Route>
+            <Route path="/LessonPage/:id">
+              <AuthComponent component={LessonPage} />
+            </Route>
+            <Route path="/Feedback/:id">
+              <AuthComponent component={Feedback} />
             </Route>
           </Switch>
         </div>

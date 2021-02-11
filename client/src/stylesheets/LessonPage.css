@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+.page {
+  background-color: #e9f4fb;
+  height: 100%;
+  padding-bottom: 200px;
+}
+
+.lessonPageContainer {
+  width: 85%;
+  position: relative;
+  left: 100px;
+  top: 100px;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+}
+
+h1,
+.lessonPageTitle {
+  height: 100px;
+}
+
+.lessonPageTitle {
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  font-size: 42px;
+  color: #2e64bc;
+  margin-bottom: 0;
+}
+
+.editButton {
+  background-color: inherit;
+  border: none;
+  margin: 10px;
+  height: 12px;
+  object-fit: none;
+}
+
+.editButton:hover {
+  cursor: pointer;
+}
+
+.textTitle {
+  font-family: Lato, sans-serif;
+  color: #2e64bc;
+  font-size: 30px;
+}
+
+.textBox {
+  min-height: 45px;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.editing {
+  background-color: #ffffff;
+  box-shadow: 0px -4px 0px #d2edfc;
+}
+
+.saveButton {
+  font-family: Lato, sans-serif;
+  background-color: #2e64bc;
+  color: #ffffff;
+  margin-top: 30px;
+  position: relative;
+  left: 85%;
+  font-size: 18px;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 5px;
+}
+
+.saveButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}

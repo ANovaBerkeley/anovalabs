@@ -11,7 +11,7 @@
 }
 
 @media (max-width: 767px) {
-  .lessonPoolContainer{
+  .lessonPoolContainer {
     grid-template-columns: 100%;
   }
 }
@@ -19,12 +19,14 @@
 .addModal {
   padding: 10px 10px;
 }
-.ant-modal-close-x {
-  padding: 20px 20px;
-}
 
 .addFields .ant-row {
-  padding: 20 0px;
+  margin-bottom: 12px;
+}
+
+.ant-input-group .ant-input {
+  margin-top: 0px;
+  padding: 18px;
 }
 
 .lessonPoolContainer:after {
@@ -62,6 +64,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.plusCard:hover {
+  cursor: pointer;
+}
+
 .emptyDiv {
   height: 100px;
   background: #f5f7f8;

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
 import PropTypes from 'prop-types';
-import * as decode from 'jwt-decode';
+// import * as decode from 'jwt-decode';
+import { Link } from 'react-router-dom';
 
 import '../stylesheets/LessonCard.css';
-const { TextArea } = Input;
+// const { TextArea } = Input;
 class LessonCard extends Component {
   constructor(props) {
     super(props);
@@ -19,17 +20,14 @@ class LessonCard extends Component {
       lessonId: this.props.lessonDetails.id,
       title: this.props.lessonDetails.title,
       summary: this.props.lessonDetails.summary,
-      link: this.props.lessonDetails.link,
       editedTitle: this.props.lessonDetails.title,
       editedSummary: this.props.lessonDetails.summary,
-      editedLink: this.props.lessonDetails.link,
     };
     this.delete = this.delete.bind(this);
     this.onChangeNotes = this.onChangeNotes.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeSummary = this.onChangeSummary.bind(this);
-    this.onChangeLink = this.onChangeLink.bind(this);
-    this.editLesson = this.editLesson.bind(this);
+    // this.editLesson = this.editLesson.bind(this);
     this.editLessonDetails = this.editLessonDetails.bind(this);
   }
 
@@ -51,45 +49,41 @@ class LessonCard extends Component {
     this.setState({ editedSummary: event.target.value });
   }
 
-  onChangeLink(event) {
-    this.setState({ editedLink: event.target.value });
-  }
-
-  editLesson() {
-    const tok = localStorage.getItem('anovaToken');
-    const dTok = decode(tok);
-    let userId;
-    userId = dTok.id;
-    const { editedNotes, lessonId } = this.state;
-    if (editedNotes.length >= 255) {
-      Modal.error({
-        title: 'Exceeded maximum number of characters (255).',
-        centered: true,
-      });
-      return;
-    }
-    fetch('/api/v1/lesson_site/update', {
-      method: 'POST',
-      body: JSON.stringify({
-        editedNotes,
-        userId,
-        lessonId,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    })
-      .then(res => res.json())
-      .then(values => {
-        this.setState({
-          showNotesModal: false,
-          notes: editedNotes,
-        });
-      });
-  }
+  // editLesson() {
+  //   const tok = localStorage.getItem('anovaToken');
+  //   const dTok = decode(tok);
+  //   let userId;
+  //   userId = dTok.id;
+  //   const { editedNotes, lessonId } = this.state;
+  //   if (editedNotes.length >= 255) {
+  //     Modal.error({
+  //       title: 'Exceeded maximum number of characters (255).',
+  //       centered: true,
+  //     });
+  //     return;
+  //   }
+  //   fetch('/api/v1/lesson_site/update', {
+  //     method: 'POST',
+  //     body: JSON.stringify({
+  //       editedNotes,
+  //       userId,
+  //       lessonId,
+  //     }),
+  //     headers: new Headers({
+  //       'Content-Type': 'application/json',
+  //     }),
+  //   })
+  //     .then(res => res.json())
+  //     .then(values => {
+  //       this.setState({
+  //         showNotesModal: false,
+  //         notes: editedNotes,
+  //       });
+  //     });
+  // }
 
   editLessonDetails() {
-    const { editedTitle, editedSummary, editedLink, lessonId } = this.state;
+    const { editedTitle, editedSummary, lessonId } = this.state;
     if (editedSummary.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
@@ -102,7 +96,6 @@ class LessonCard extends Component {
       body: JSON.stringify({
         editedTitle,
         editedSummary,
-        editedLink,
         lessonId,
       }),
       headers: new Headers({
@@ -115,55 +108,58 @@ class LessonCard extends Component {
           showEditModal: false,
           title: editedTitle,
           summary: editedSummary,
-          link: editedLink,
         });
       });
   }
 
-  renderNotesButton() {
-    const { isMentor } = this.state;
-    const { showNotesModal, notes } = this.state;
-    let notesButton;
-    if (isMentor) {
-      notesButton = (
-        <div>
-          <Button type="primary" onClick={() => this.setState({ showNotesModal: true })}>
-            Notes
-          </Button>
-          <Modal
-            visible={showNotesModal}
-            title="Lesson Notes:"
-            okText="Update"
-            onCancel={() => this.setState({ showNotesModal: false })}
-            onOk={this.editLesson}
-          >
-            <Row>
-              <Col>
-                <TextArea
-                  rows={4}
-                  id="notes"
-                  addonBefore="Notes:"
-                  autosize="true"
-                  defaultValue={notes}
-                  onChange={this.onChangeNotes}
-                />
-              </Col>
-            </Row>
-          </Modal>
-        </div>
-      );
-    }
-    return notesButton;
-  }
+  // renderNotesButton() {
+  //   const { isMentor } = this.state;
+  //   const { showNotesModal, notes } = this.state;
+  //   let notesButton;
+  //   if (isMentor) {
+  //     notesButton = (
+  //       <div>
+  //         <Button type="primary" onClick={() => this.setState({ showNotesModal: true })}>
+  //           Notes
+  //         </Button>
+  //         <Modal
+  //           visible={showNotesModal}
+  //           title="Lesson Notes:"
+  //           okText="Update"
+  //           onCancel={() => this.setState({ showNotesModal: false })}
+  //           onOk={this.editLesson}
+  //         >
+  //           <Row>
+  //             <Col>
+  //               <TextArea
+  //                 rows={4}
+  //                 id="notes"
+  //                 addonBefore="Notes:"
+  //                 autosize="true"
+  //                 defaultValue={notes}
+  //                 onChange={this.onChangeNotes}
+  //               />
+  //             </Col>
+  //           </Row>
+  //         </Modal>
+  //       </div>
+  //     );
+  //   }
+  //   return notesButton;
+  // }
 
   renderEditButton() {
     const { isMentor } = this.state;
-    const { showEditModal, title, summary, link } = this.state;
+    const { showEditModal, title, summary } = this.state;
     let editButton;
     if (isMentor) {
       editButton = (
-        <div>
-          <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
+        <>
+          <Button
+            type="primary"
+            className="lowerButton"
+            onClick={() => this.setState({ showEditModal: true })}
+          >
             Edit
           </Button>
           <Modal
@@ -198,33 +194,22 @@ class LessonCard extends Component {
                   />
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <Input
-                    id="linkAdd"
-                    allowClear
-                    addonBefore="Link:"
-                    autosize="true"
-                    defaultValue={link}
-                    onChange={this.onChangeLink}
-                  />
-                </Col>
-              </Row>
             </div>
           </Modal>
-        </div>
+        </>
       );
     }
     return editButton;
   }
 
   render() {
-    const { showModal, isMentor, title, summary, link } = this.state;
+    const { showModal, isMentor, title, summary } = this.state;
     const { lessonDetails } = this.props;
-    let maybeNotesButton;
+    console.log(lessonDetails);
+    // let maybeNotesButton;
     let maybeEditButton;
     if (!this.props.pool) {
-      maybeNotesButton = this.renderNotesButton();
+      // maybeNotesButton = this.renderNotesButton();
     } else {
       maybeEditButton = this.renderEditButton();
     }
@@ -254,23 +239,20 @@ class LessonCard extends Component {
       );
     }
     return (
-      <div className="card">
+      <div className={this.props.pool ? 'cardPool' : 'card'}>
         <div className="titleContainer">
           <div className="lessonTitle">{title}</div>
           {maybeDeleteButton}
         </div>
-        <div className="date">{readableDate}</div>
+        {readableDate && <div className="date">{readableDate}</div>}
         <div className="descriptionContainer">
           <div className="description">{summary}</div>
         </div>
-        <div>
-          {maybeNotesButton}
-          {maybeEditButton}
-        </div>
         <div className="buttonContainer">
-          <div className="viewAssignment">
-            <a href={link}>View Assignment</a>
-          </div>
+          {maybeEditButton}
+          <Link to={'/LessonPage/' + this.state.lessonId}>
+            <button className="lowerButton">View Assignment</button>
+          </Link>
         </div>
       </div>
     );
