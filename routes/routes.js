@@ -27,8 +27,6 @@ module.exports = app => {
   app.post('/api/v1/lessons/update', LessonsController.update);
   app.post('/api/v1/lessons/updatePage', LessonsController.updatePage);
   app.post('/api/v1/lessons/delete', LessonsController.deleteLesson);
-  app.get('/api/v1/lessons/get_feedback', LessonsController.getFeedback);
-  app.post('/api/v1/lessons/submit_feedback', LessonsController.submitFeedback);
 
   //Lesson Site
   app.get('/api/v1/lesson_site/all', LessonSitesController.getAllSemAndSiteLessons);

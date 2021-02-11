@@ -186,7 +186,7 @@ const SiteLessons = props => {
                 deleteHandler={deleteHandler}
                 lessonDetails={lesson}
                 pool={false}
-                isment={ismentor}
+                isMentor={isMentor}
               />
             ))}
           {maybeAddCard}
