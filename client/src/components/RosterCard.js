@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../stylesheets/Roster.css';
 import { Card, Button, Modal, Input, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
@@ -6,29 +6,34 @@ import 'antd/dist/antd.css';
 
 const { TextArea } = Input;
 
-export default class RosterCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showEditModal: false,
-      userId: this.props.person.id,
-      username: this.props.person.name,
-      email: this.props.person.email,
-      candy: this.props.person.candy,
-      hobby: this.props.person.hobby,
-      notes: this.props.person.notes,
-      editedNotes: this.props.person.notes,
-    };
-    this.onChangeNotes = this.onChangeNotes.bind(this);
-    this.editStudentProfile = this.editStudentProfile.bind(this);
+const RosterCard = (props) => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     showEditModal: false,
+  //     userId: this.props.person.id,
+  //     username: this.props.person.name,
+  //     email: this.props.person.email,
+  //     candy: this.props.person.candy,
+  //     hobby: this.props.person.hobby,
+  //     notes: this.props.person.notes,
+  //     editedNotes: this.props.person.notes,
+  //   };
+  //   this.onChangeNotes = this.onChangeNotes.bind(this);
+  //   this.editStudentProfile = this.editStudentProfile.bind(this);
+  // }
+  const { userId, username, email, candy, hobby} = props.person;
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editedNotes, setEditedNotes] = useState('');
+  const [notes, setNotes] = useState(props.person.notes);
+  const {mentor} = props; 
+
+
+  const onChangeNotes = (event) => {
+    setEditedNotes(event.target.value);
   }
 
-  onChangeNotes(event) {
-    this.setState({ editedNotes: event.target.value });
-  }
-
-  editStudentProfile() {
-    const { editedNotes, userId } = this.state;
+  const editStudentProfile = () => {
     if (editedNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
@@ -47,17 +52,13 @@ export default class RosterCard extends Component {
       }),
     })
       .then(res => res.json())
-      .then(values => {
-        this.setState({
-          showEditModal: false,
-          notes: editedNotes,
-        });
+      .then(() => {
+        setShowEditModal(false);
+        setNotes(editedNotes);
       });
   }
 
-  renderDescription() {
-    const { mentor } = this.props;
-    const { username, email, notes, candy, hobby } = this.state;
+  const renderDescription = () => {
     let description;
     if (mentor) {
       description = (
@@ -80,22 +81,22 @@ export default class RosterCard extends Component {
     return description;
   }
 
-  renderEditButton() {
-    const { mentor } = this.props;
-    const { showEditModal, notes } = this.state;
+  const renderEditButton = () => {
+    // const { mentor } = this.props;
+    // const { showEditModal, notes } = this.state;
     let editButton;
     if (mentor) {
       editButton = (
         <div>
-          <Button type="primary" onClick={() => this.setState({ showEditModal: true })}>
+          <Button type="primary" onClick={() => setShowEditModal(true)}>
             Edit Student Notes
           </Button>
           <Modal
             visible={showEditModal}
             title="Edit Student Notes"
             okText="Update"
-            onCancel={() => this.setState({ showEditModal: false })}
-            onOk={this.editStudentProfile}
+            onCancel={() => setShowEditModal(false)}
+            onOk={editStudentProfile()}
           >
             <Row>
               <Col>
@@ -105,7 +106,7 @@ export default class RosterCard extends Component {
                   addonBefore="Notes:"
                   autosize="true"
                   defaultValue={notes}
-                  onChange={this.onChangeNotes}
+                  onChange={onChangeNotes()}
                 />
               </Col>
             </Row>
@@ -116,24 +117,25 @@ export default class RosterCard extends Component {
     return editButton;
   }
 
-  render() {
-    const description = this.renderDescription();
-    const maybeEditButton = this.renderEditButton();
-    return (
-      <div>
-        <Card
-          style={{ width: 300 }}
-          cover={
-            <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
-          }
-        >
-          {description}
-          {maybeEditButton}
-        </Card>
-      </div>
-    );
-  }
+
+  const description = renderDescription();
+  const maybeEditButton = renderEditButton();
+  
+  return (
+    <div>
+      <Card
+        style={{ width: 300 }}
+        cover={
+          <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
+        }
+      >
+        {description}
+        {maybeEditButton}
+      </Card>
+    </div>
+  );
 }
+
 
 RosterCard.propTypes = {
   mentor: PropTypes.bool,
@@ -141,3 +143,5 @@ RosterCard.propTypes = {
 RosterCard.defaultProps = {
   mentor: false,
 };
+
+export default RosterCard;

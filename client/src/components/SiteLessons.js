@@ -1,78 +1,98 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+// import { useAsync } from "react-async"
 import { Modal, DatePicker, Select } from 'antd';
 import * as decode from 'jwt-decode';
 import { GoPlus } from 'react-icons/go';
 import LessonCard from './LessonCard';
 import '../stylesheets/SiteLessons.css';
 import { getAnovaToken, removeAnovaToken } from '../utils/utils';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 // TODO reset modal values onOk
-class SiteLessons extends Component {
-  constructor(props) {
-    super(props);
+const SiteLessons = (props) => {
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      isMentor: this.props.ismentor,
-      showModal: false,
-      siteLessons: [],
-      site: '',
-      otherLessons: [],
-      modalSelectedValue: '',
-      modalDate: '',
-    };
+  //   this.state = {
+  //     isMentor: this.props.ismentor,
+  //     showModal: false,
+  //     siteLessons: [],
+  //     site: '',
+  //     otherLessons: [],
+  //     modalSelectedValue: '',
+  //     modalDate: '',
+  //   };
 
-    this.onDateChange = this.onDateChange.bind(this);
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.deleteHandler = this.deleteHandler.bind(this);
-  }
-
-  async componentDidMount() {
-    let dTok;
-    try {
-      const tok = await getAnovaToken();
-      dTok = await decode(tok);
-    } catch (err) {
-      removeAnovaToken();
-      this.props.history.push(`/login`);
-      return;
+  //   this.onDateChange = this.onDateChange.bind(this);
+  //   this.onSelectChange = this.onSelectChange.bind(this);
+  //   this.deleteHandler = this.deleteHandler.bind(this);
+  // }
+  const { ismentor } = props; 
+  const [showModal, setShowModal] = useState(false);
+  const [siteLessons, setSiteLessons] = useState([]);
+  const [site, setSite] = useState('');
+  const [otherLessons, setOtherLessons] = useState([]);
+  const [modalSelectedValue, setModalSelectedValue] = useState('');
+  const [modalDate, setModalDate] = useState('');
+  const [error, setError] = useState('');
+  const history = useHistory();
+  const [dTok, setDTok] = useState({});
+  
+  useEffect(() => {
+    const getToken = async () =>  {
+      try {
+        const tok = getAnovaToken();
+        const decodedToken = await decode(tok);
+        setDTok(decodedToken);
+      } catch (err) {
+        removeAnovaToken();
+        history.push(`/login`);
+      }
     }
+    getToken();
+  }, []);
 
+  useEffect(() => {
+    if (Object.keys(dTok).length > 0) {
+      loadData();
+    }
+  }, [dTok])
+
+  const loadData = () => {
+    console.log("LOAD DATA DTOK")
+    console.log(dTok)
     fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
-        this.setState({
-          site,
-        });
-      });
+        setSite(site);
+      })
+      
     fetch(`/api/v1/lesson_site/all?uid=${dTok.id}`)
       .then(res => res.json())
       .then(siteLessons => {
-        this.setState({
-          siteLessons,
-        });
-      });
+        setSiteLessons(siteLessons);
+      })
+      
     fetch(`/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
       .then(res => res.json())
       .then(otherLessons => {
-        this.setState({
-          otherLessons,
-        });
-      });
+        setOtherLessons(otherLessons);
+      }
+    )
   }
 
-  onDateChange(date) {
-    this.setState({ modalDate: date });
+  const onDateChange = (date) => {
+    setModalDate(date);
   }
 
-  onSelectChange(value) {
-    this.setState({ modalSelectedValue: value });
+  const onSelectChange = (value) => {
+    // this.setState({ modalSelectedValue: value });
+    setModalSelectedValue(value);
   }
 
-  deleteHandler(lessonDetails) {
-    const tok = getAnovaToken();
-    const dTok = decode(tok);
+  const deleteHandler = (lessonDetails) => {
+
     fetch(`/api/v1/lesson_site/delete?uid=${dTok.id}`, {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
@@ -80,25 +100,21 @@ class SiteLessons extends Component {
         'Content-Type': 'application/json',
       }),
     }).then(() =>
-      this.setState(prevState => ({
-        siteLessons: prevState.siteLessons.filter(
-          lesson => lesson.id !== lessonDetails.id,
-        ),
-        otherLessons: [...prevState.otherLessons, lessonDetails],
-      })),
-    );
+      {
+        setSiteLessons(prevState => prevState.siteLessons.filter(
+          lesson => lesson.id !== lessonDetails.id));
+        setOtherLessons(prevState => [...prevState.otherLessons, lessonDetails]);
+      })
   }
 
-  addLessonToSite(lessonId, date) {
-    const { siteLessons } = this.state;
+  const addLessonToSite = (lessonId, date) => {
     if (!lessonId || !date) {
       Modal.error({
         title: 'Please fill out all fields.',
         centered: true,
       });
     } else {
-      const tok = getAnovaToken();
-      const dTok = decode(tok);
+
       fetch(`/api/v1/lesson_site/add?uid=${dTok.id}`, {
         method: 'POST',
         body: JSON.stringify({ lesson_id: lessonId, date }),
@@ -114,36 +130,24 @@ class SiteLessons extends Component {
               new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
             );
           });
-          this.setState(prevState => ({
-            siteLessons: sorted_lessons,
-            otherLessons: prevState.otherLessons.filter(
-              otherLesson => otherLesson.id !== lessonId,
-            ),
-            showModal: false,
-            modalSelectedValue: '',
-            modalDate: '',
-          }));
+          setSiteLessons(sorted_lessons);
+          setOtherLessons(prevState => prevState.otherLessons.filter(
+            otherLesson => otherLesson.id !== lessonId));
+          setShowModal(false);
+          setModalSelectedValue('');
+          setModalDate('');
+
         });
     }
   }
 
-  renderLessons = () => {
-    const {
-      isMentor,
-      siteLessons,
-      showModal,
-      modalSelectedValue,
-      modalDate,
-      otherLessons,
-      site,
-    } = this.state;
-
+  const renderLessons = () => {
     let maybeAddCard;
-    if (isMentor) {
+    if (ismentor) {
       maybeAddCard = (
         <div className="plusCard">
           <GoPlus
-            onClick={() => this.setState({ showModal: true })}
+            onClick={() => setShowModal(true)}
             size={100}
             color="grey"
           />
@@ -152,8 +156,8 @@ class SiteLessons extends Component {
             title="Add a Lesson"
             centered
             visible={showModal}
-            onOk={() => this.addLessonToSite(modalSelectedValue, modalDate)}
-            onCancel={() => this.setState({ showModal: false })}
+            onOk={() => addLessonToSite(modalSelectedValue, modalDate)}
+            onCancel={() => setShowModal(false)}
             destroyOnClose={true}
           >
             <div className="addLesson">
@@ -162,12 +166,12 @@ class SiteLessons extends Component {
                 style={{ width: 200 }}
                 placeholder="Select a lesson"
                 optionFilterProp="children"
-                onChange={this.onSelectChange}
+                onChange={onSelectChange}
                 filterOption={(input, option) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              >
-                {otherLessons &&
+              > 
+                {(otherLessons.length > 0) &&
                   otherLessons.map(lesson => (
                     <Option key={lesson.id} value={lesson.id}>
                       {lesson.title}
@@ -176,7 +180,7 @@ class SiteLessons extends Component {
               </Select>
               <br />
               <div>
-                <DatePicker onChange={this.onDateChange} />
+                <DatePicker onChange={onDateChange} />
               </div>
             </div>
           </Modal>
@@ -190,14 +194,14 @@ class SiteLessons extends Component {
           <h1>{site.schoolName} Lessons</h1>
         </div>
         <div className="lessonsContainer">
-          {siteLessons &&
+          {siteLessons.length > 0 &&
             siteLessons.map(lesson => (
               <LessonCard
                 key={lesson.id}
-                deleteHandler={this.deleteHandler}
+                deleteHandler={deleteHandler}
                 lessonDetails={lesson}
                 pool={false}
-                isment={isMentor}
+                isment={ismentor}
               />
             ))}
           {maybeAddCard}
@@ -206,9 +210,8 @@ class SiteLessons extends Component {
     );
   };
 
-  render() {
-    const component = this.renderLessons();
-    return <div>{component}</div>;
-  }
-}
+return (
+  <div>{renderLessons()}</div>
+)}
+
 export default withRouter(SiteLessons);

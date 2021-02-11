@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Select, Form, Input, Icon, Button } from 'antd';
 import * as decode from 'jwt-decode';
@@ -11,67 +11,82 @@ import {
 import ANovaLogo from '../assets/img/logo-lower.png';
 import '../stylesheets/SignUp.css';
 import { GoogleLogin } from 'react-google-login';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 
-class SignUp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      redirect: false,
-      sites: [],
-      role: '',
-      siteId: '',
-      siteCode: '',
-    };
-    this._submit = this._submit.bind(this);
-  }
+const SignUp = () => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     redirect: false,
+  //     sites: [],
+  //     role: '',
+  //     siteId: '',
+  //     siteCode: '',
+  //   };
+  //   this._submit = this._submit.bind(this);
+  // }
 
-  clientId = '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com'; // Put client ID here
+  const [redirect, setRedirect] = useState(false);
+  const [sites, setSites] = useState([]);
+  const [role, setRole] = useState('');
+  const [siteId, setSiteId] = useState('');
+  const [siteCode, setSiteCode] = useState('');
+  const [error, setError] = useState('');
+  const history = useHistory();
 
-  onSuccess = res => {
+
+  const clientId = '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com'; // Put client ID here
+
+  const onSuccess = (res) => {
     localStorage.setItem('googleToken', res.tokenId);
     console.log('Login Success: currentUser:', res);
   };
 
-  onFailure = res => {
+  const onFailure = (res) => {
     console.log('Login failed: res:', res);
   };
 
-  componentDidMount() {
+  useEffect(() => {
     if (getAnovaToken() !== null) {
-      this.setState({ redirect: true });
+      // this.setState({ redirect: true });
+      setRedirect(true);
     }
     fetch('/api/v1/site/allSites')
       .then(res => res.json())
       .then(
         sites => {
-          this.setState({
-            sites,
-          });
+          // this.setState({
+          //   sites,
+          // });
+          setSites(sites);
         },
         error => {
-          this.setState({
-            error,
-          });
+          // this.setState({
+          //   error,
+          // });
+          setError(error);
         },
       );
-  }
+  }, []);
 
-  onSelectSiteChange = siteId => {
-    this.setState({ siteId });
+  const onSelectSiteChange = (siteId) => {
+    // this.setState({ siteId });
+    setSiteId(siteId);
   };
 
-  onSelectRoleChange = role => {
-    this.setState({ role });
+  const onSelectRoleChange = (role) => {
+    // this.setState({ role });
+    setRole(role);
   };
 
-  _checkAccess = event => {
-    this.setState({ siteCode: event.target.value });
+  const _checkAccess = (event) => {
+    // this.setState({ siteCode: event.target.value });
+    setSiteCode(event.target.value);
   };
 
-  getCurrentSemester = () => {
+  const getCurrentSemester = () => {
     const currDate = new Date();
     const month = currDate.getMonth();
     const year = Number(currDate.getYear()) + 1900;
@@ -84,9 +99,8 @@ class SignUp extends Component {
     return semester;
   };
 
-  async addUserSite(payload) {
-    const { siteId } = this.state;
-    const semester = this.getCurrentSemester();
+  const addUserSite = async (payload) => {
+    const semester = getCurrentSemester();
     try {
       await fetch('/api/v1/site/addUserSemSite', {
         method: 'POST',
@@ -104,10 +118,10 @@ class SignUp extends Component {
     }
   }
 
-  _submit(event) {
+  const _submit = (event) => {
     const googleToken = getGoogleToken();
 
-    const { role, siteId, siteCode, sites } = this.state;
+    // const { role, siteId, siteCode, sites } = this.state;
 
     if (!googleToken) {
       Modal.error({
@@ -155,8 +169,8 @@ class SignUp extends Component {
       .then(data => {
         localStorage.setItem('anovaToken', data.data.token);
         const payload = decode(data.data.token);
-        this.addUserSite(payload);
-        this.props.history.push('/SiteLessons');
+        addUserSite(payload);
+        history.push('/SiteLessons');
       })
       .catch(err => {
         console.log(err);
@@ -170,8 +184,7 @@ class SignUp extends Component {
       });
   }
 
-  loadSites = () => {
-    const { sites } = this.state;
+  const loadSites = () => {
     const options = [];
     for (let i = 0; i < sites.length; i += 1) {
       options.push(
@@ -183,72 +196,69 @@ class SignUp extends Component {
     return options;
   };
 
-  render() {
-    const { redirect, errorMsg } = this.state;
-    const { history } = this.props;
-    if (redirect) {
-      history.push('/SiteLessons');
-    }
-    return (
-      <div className="signUpContainer">
-        <div className="signUpBox">
-          <img alt="anova logo" src={ANovaLogo} className="signup-logo" />
-          <div className="title">
-            <div className="anova">ANova </div>
-            <div className="labs">Labs </div>
-          </div>
-          <Form onSubmit={this._submit} className="login-form">
-            <Form.Item className="signup-field-container">
-              <GoogleLogin
-                className="signup-google"
-                clientId={this.clientId}
-                buttonText="Register"
-                onSuccess={this.onSuccess}
-                onFailure={this.onFailure}
-                cookiePolicy={'single_host_origin'}
-                isSignedIn={true}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Select
-                style={{ width: 270 }}
-                placeholder="Select a site"
-                onChange={this.onSelectSiteChange}
-              >
-                {this.loadSites()}
-              </Select>
-            </Form.Item>
-            <Form.Item>
-              <Select
-                style={{ width: 270 }}
-                placeholder="Select your role"
-                onChange={this.onSelectRoleChange}
-              >
-                <Option value="student">Student</Option>
-                <Option value="mentor">Mentor</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item>
-              <Input
-                prefix={
-                  <Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                type="access"
-                placeholder="Mentor/Site Access Code"
-                onChange={this._checkAccess}
-              />
-            </Form.Item>
-            <div className="error">{errorMsg}</div>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">
-                Sign Up
-              </Button>
-              <a href="./LogIn">Back to Log In</a>
-            </Form.Item>
-          </Form>
-        </div>
-      </div>
-    );
+  if (redirect) {
+    history.push('/SiteLessons');
   }
+  return (
+    <div className="signUpContainer">
+      <div className="signUpBox">
+        <img alt="anova logo" src={ANovaLogo} className="signup-logo" />
+        <div className="title">
+          <div className="anova">ANova </div>
+          <div className="labs">Labs </div>
+        </div>
+        <Form onSubmit={_submit} className="login-form">
+          <Form.Item className="signup-field-container">
+            <GoogleLogin
+              className="signup-google"
+              clientId={clientId}
+              buttonText="Register"
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+              cookiePolicy={'single_host_origin'}
+              isSignedIn={true}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Select
+              style={{ width: 270 }}
+              placeholder="Select a site"
+              onChange={onSelectSiteChange}
+            >
+              {loadSites()}
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Select
+              style={{ width: 270 }}
+              placeholder="Select your role"
+              onChange={onSelectRoleChange}
+            >
+              <Option value="student">Student</Option>
+              <Option value="mentor">Mentor</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              prefix={
+                <Icon type="exclamation-circle" style={{ color: 'rgba(0,0,0,.25)' }} />
+              }
+              type="access"
+              placeholder="Mentor/Site Access Code"
+              onChange={_checkAccess}
+            />
+          </Form.Item>
+          <div className="error">{error}</div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              Sign Up
+            </Button>
+            <a href="./LogIn">Back to Log In</a>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
+  );
 }
+
 export default withRouter(SignUp);
