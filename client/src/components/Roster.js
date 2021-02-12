@@ -5,17 +5,13 @@ import RosterCard from './RosterCard';
 import 'antd/dist/antd.css';
 
 const Roster = props => {
-  const [roster, setRoster] = useState([]);
   const { ismentor } = props;
-  // state = {
-  //   roster: [],
-  //   isMentor: this.props.ismentor,
-  // };
+
+  const [roster, setRoster] = useState([]);
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
-    // const { isMentor } = useState(ismentor);
 
     let rosterFetchCall = `/api/v1/roster?uid=${dTok.id}`;
     if (ismentor) {
@@ -29,7 +25,7 @@ const Roster = props => {
       .then(roster => {
         setRoster(roster);
       });
-  }, []);
+  }, [ismentor]);
 
   const rosterCards = roster.map(person => (
     <RosterCard key={person.id} person={person} mentor={ismentor} />

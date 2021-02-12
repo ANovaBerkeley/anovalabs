@@ -6,25 +6,12 @@ import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
 
 const Profile = () => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     profileimage: 'https://image.flaticon.com/icons/png/128/1141/1141771.png',
-  //     username: '',
-  //     email: '',
-  //     candy: '',
-  //     hobby: '',
-  //     showEdit: false,
-  //   };
-  const [profileimage, setProfileIMG] = useState('https://image.flaticon.com/icons/png/128/1141/1141771.png');
+  const profileimage = 'https://image.flaticon.com/icons/png/128/1141/1141771.png';
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [candy, setCandy] = useState('');
   const [hobby, setHobby] = useState('');
   const [showEdit, setShowEdit] = useState(false);
-  const [isLoaded, setIsLoaded] = useState('');
-  const [error, setError] = useState('');
-
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
@@ -36,31 +23,16 @@ const Profile = () => {
       .then(res => res.json())
       .then(
         profile => {
-          setIsLoaded(true);
           setUsername(profile[0].name);
           setEmail(profile[0].email);
           setCandy(profile[0].candy);
           setHobby(profile[0].hobby);
-          // this.setState({
-          //   isLoaded: true,
-          //   username: profile[0].name,
-          //   //TODO: picture
-          //   email: profile[0].email,
-          //   candy: profile[0].candy,
-          //   hobby: profile[0].hobby,
-          // });
         },
         error => {
-          setIsLoaded(true);
-          setError(error);
-          // this.setState({
-          //   isLoaded: true,
-          //   error,
-          // });
+          console.log(error);
         },
       );
-    }, []
-  );
+  }, []);
 
   const applyChanges = () => {
     const candyEdit = document.getElementById('candyEdit');
@@ -79,29 +51,19 @@ const Profile = () => {
       setShowEdit(false);
       setCandy(candyEdit.value);
       setHobby(hobbyEdit.value);
-      // this.setState({
-      //   showEdit: false,
-      //   candy: candyEdit.value,
-      //   hobby: hobbyEdit.value,
-      // });
     });
-  }
+  };
 
-  const showModal = (bool) => {
+  const showModal = bool => {
     setShowEdit(bool);
-    // this.setState({ showEdit: bool });
-  }
+  };
 
   return (
     <div className="profileContainer">
       <div className="profileBox">
         <Row type="flex">
           <Col>
-            <Avatar
-              style={{ marginRight: '20px' }}
-              src={profileimage}
-              size="large"
-            />
+            <Avatar style={{ marginRight: '20px' }} src={profileimage} size="large" />
           </Col>
           <Col>
             <p id="username" className="title">
@@ -174,6 +136,6 @@ const Profile = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Profile;
