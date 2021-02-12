@@ -4,9 +4,9 @@ import * as decode from 'jwt-decode';
 import RosterCard from './RosterCard';
 import 'antd/dist/antd.css';
 
-const Roster = (props) => {
+const Roster = props => {
   const [roster, setRoster] = useState([]);
-  const {ismentor} = props;
+  const { ismentor } = props;
   // state = {
   //   roster: [],
   //   isMentor: this.props.ismentor,
@@ -29,7 +29,7 @@ const Roster = (props) => {
       .then(roster => {
         setRoster(roster);
       });
-  });
+  }, []);
 
   const rosterCards = roster.map(person => (
     <RosterCard key={person.id} person={person} mentor={ismentor} />
@@ -40,7 +40,6 @@ const Roster = (props) => {
       <div className="containerGrid">{rosterCards}</div>
     </div>
   );
-
-}
+};
 
 export default Roster;

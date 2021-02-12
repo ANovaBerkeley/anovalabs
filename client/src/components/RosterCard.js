@@ -6,32 +6,19 @@ import 'antd/dist/antd.css';
 
 const { TextArea } = Input;
 
-const RosterCard = (props) => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     showEditModal: false,
-  //     userId: this.props.person.id,
-  //     username: this.props.person.name,
-  //     email: this.props.person.email,
-  //     candy: this.props.person.candy,
-  //     hobby: this.props.person.hobby,
-  //     notes: this.props.person.notes,
-  //     editedNotes: this.props.person.notes,
-  //   };
-  //   this.onChangeNotes = this.onChangeNotes.bind(this);
-  //   this.editStudentProfile = this.editStudentProfile.bind(this);
-  // }
-  const { userId, username, email, candy, hobby} = props.person;
+const RosterCard = props => {
+  const { mentor, person } = props;
+
+  const { id, username, email, candy, hobby, notes } = person;
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
-  const [notes, setNotes] = useState(props.person.notes);
-  const {mentor} = props; 
+  const [displayNotes, setDisplayNotes] = useState(notes);
 
+  console.log(props);
 
-  const onChangeNotes = (event) => {
+  const onChangeNotes = event => {
     setEditedNotes(event.target.value);
-  }
+  };
 
   const editStudentProfile = () => {
     if (editedNotes.length >= 255) {
@@ -45,7 +32,7 @@ const RosterCard = (props) => {
       method: 'POST',
       body: JSON.stringify({
         editedNotes,
-        userId,
+        id,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -54,9 +41,10 @@ const RosterCard = (props) => {
       .then(res => res.json())
       .then(() => {
         setShowEditModal(false);
-        setNotes(editedNotes);
-      });
-  }
+        setDisplayNotes(editedNotes);
+      })
+      .catch(err => console.log('unable to update roster'));
+  };
 
   const renderDescription = () => {
     let description;
@@ -67,7 +55,7 @@ const RosterCard = (props) => {
           <p>Email: {email}</p>
           <p>Favorite Candy: {candy}</p>
           <p>Favorite Hobby: {hobby}</p>
-          <p>Notes: {notes}</p>
+          <p>Notes: {displayNotes}</p>
         </div>
       );
     } else {
@@ -79,7 +67,7 @@ const RosterCard = (props) => {
       );
     }
     return description;
-  }
+  };
 
   const renderEditButton = () => {
     // const { mentor } = this.props;
@@ -96,7 +84,7 @@ const RosterCard = (props) => {
             title="Edit Student Notes"
             okText="Update"
             onCancel={() => setShowEditModal(false)}
-            onOk={editStudentProfile()}
+            onOk={editStudentProfile}
           >
             <Row>
               <Col>
@@ -106,7 +94,7 @@ const RosterCard = (props) => {
                   addonBefore="Notes:"
                   autosize="true"
                   defaultValue={notes}
-                  onChange={onChangeNotes()}
+                  onChange={onChangeNotes}
                 />
               </Col>
             </Row>
@@ -115,27 +103,23 @@ const RosterCard = (props) => {
       );
     }
     return editButton;
-  }
-
+  };
 
   const description = renderDescription();
   const maybeEditButton = renderEditButton();
-  
+
   return (
     <div>
       <Card
         style={{ width: 300 }}
-        cover={
-          <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
-        }
+        cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
       >
         {description}
         {maybeEditButton}
       </Card>
     </div>
   );
-}
-
+};
 
 RosterCard.propTypes = {
   mentor: PropTypes.bool,
