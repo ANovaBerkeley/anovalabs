@@ -36,15 +36,15 @@ const SignUp = () => {
   const [error, setError] = useState('');
   const history = useHistory();
 
+  const clientId =
+    '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com'; // Put client ID here
 
-  const clientId = '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com'; // Put client ID here
-
-  const onSuccess = (res) => {
+  const onSuccess = res => {
     localStorage.setItem('googleToken', res.tokenId);
     console.log('Login Success: currentUser:', res);
   };
 
-  const onFailure = (res) => {
+  const onFailure = res => {
     console.log('Login failed: res:', res);
   };
 
@@ -71,17 +71,17 @@ const SignUp = () => {
       );
   }, []);
 
-  const onSelectSiteChange = (siteId) => {
+  const onSelectSiteChange = siteId => {
     // this.setState({ siteId });
     setSiteId(siteId);
   };
 
-  const onSelectRoleChange = (role) => {
+  const onSelectRoleChange = role => {
     // this.setState({ role });
     setRole(role);
   };
 
-  const _checkAccess = (event) => {
+  const _checkAccess = event => {
     // this.setState({ siteCode: event.target.value });
     setSiteCode(event.target.value);
   };
@@ -99,7 +99,7 @@ const SignUp = () => {
     return semester;
   };
 
-  const addUserSite = async (payload) => {
+  const addUserSite = async payload => {
     const semester = getCurrentSemester();
     try {
       await fetch('/api/v1/site/addUserSemSite', {
@@ -116,9 +116,9 @@ const SignUp = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const _submit = (event) => {
+  const _submit = event => {
     const googleToken = getGoogleToken();
 
     // const { role, siteId, siteCode, sites } = this.state;
@@ -182,7 +182,7 @@ const SignUp = () => {
         });
         event.preventDefault();
       });
-  }
+  };
 
   const loadSites = () => {
     const options = [];
@@ -259,6 +259,6 @@ const SignUp = () => {
       </div>
     </div>
   );
-}
+};
 
 export default withRouter(SignUp);

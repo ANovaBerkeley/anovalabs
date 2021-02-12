@@ -10,25 +10,8 @@ import { useHistory, withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 // TODO reset modal values onOk
-const SiteLessons = (props) => {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     isMentor: this.props.ismentor,
-  //     showModal: false,
-  //     siteLessons: [],
-  //     site: '',
-  //     otherLessons: [],
-  //     modalSelectedValue: '',
-  //     modalDate: '',
-  //   };
-
-  //   this.onDateChange = this.onDateChange.bind(this);
-  //   this.onSelectChange = this.onSelectChange.bind(this);
-  //   this.deleteHandler = this.deleteHandler.bind(this);
-  // }
-  const { ismentor } = props; 
+const SiteLessons = props => {
+  const { ismentor } = props;
   const [showModal, setShowModal] = useState(false);
   const [siteLessons, setSiteLessons] = useState([]);
   const [site, setSite] = useState('');
@@ -38,9 +21,9 @@ const SiteLessons = (props) => {
   const [error, setError] = useState('');
   const history = useHistory();
   const [dTok, setDTok] = useState({});
-  
+
   useEffect(() => {
-    const getToken = async () =>  {
+    const getToken = async () => {
       try {
         const tok = getAnovaToken();
         const decodedToken = await decode(tok);
@@ -49,7 +32,7 @@ const SiteLessons = (props) => {
         removeAnovaToken();
         history.push(`/login`);
       }
-    }
+    };
     getToken();
   }, []);
 
@@ -57,55 +40,58 @@ const SiteLessons = (props) => {
     if (Object.keys(dTok).length > 0) {
       loadData();
     }
-  }, [dTok])
+  }, [dTok]);
 
   const loadData = () => {
-    console.log("LOAD DATA DTOK")
-    console.log(dTok)
+    console.log('LOAD DATA DTOK');
+    console.log(dTok);
     fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
         setSite(site);
-      })
-      
+      });
+
     fetch(`/api/v1/lesson_site/all?uid=${dTok.id}`)
       .then(res => res.json())
       .then(siteLessons => {
         setSiteLessons(siteLessons);
-      })
-      
+      });
+
     fetch(`/api/v1/lesson_site/all_but_current_site?uid=${dTok.id}`)
       .then(res => res.json())
       .then(otherLessons => {
         setOtherLessons(otherLessons);
-      }
-    )
-  }
+      });
+  };
 
-  const onDateChange = (date) => {
+  const onDateChange = date => {
     setModalDate(date);
-  }
+  };
 
-  const onSelectChange = (value) => {
-    // this.setState({ modalSelectedValue: value });
+  const onSelectChange = value => {
     setModalSelectedValue(value);
-  }
+  };
 
-  const deleteHandler = (lessonDetails) => {
-
+  const deleteHandler = lessonDetails => {
     fetch(`/api/v1/lesson_site/delete?uid=${dTok.id}`, {
       method: 'POST',
       body: JSON.stringify({ lesson_id: lessonDetails.id }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then(() =>
-      {
-        setSiteLessons(prevState => prevState.siteLessons.filter(
-          lesson => lesson.id !== lessonDetails.id));
-        setOtherLessons(prevState => [...prevState.otherLessons, lessonDetails]);
-      })
-  }
+    }).then(() => {
+      setSiteLessons(prevSiteLessons => {
+        if (prevSiteLessons) {
+          return prevSiteLessons.filter(lesson => lesson.id !== lessonDetails.id);
+        }
+      });
+      setOtherLessons(prevOtherLessons => {
+        if (prevOtherLessons) {
+          return [...prevOtherLessons, lessonDetails];
+        }
+      });
+    });
+  };
 
   const addLessonToSite = (lessonId, date) => {
     if (!lessonId || !date) {
@@ -114,7 +100,6 @@ const SiteLessons = (props) => {
         centered: true,
       });
     } else {
-
       fetch(`/api/v1/lesson_site/add?uid=${dTok.id}`, {
         method: 'POST',
         body: JSON.stringify({ lesson_id: lessonId, date }),
@@ -131,26 +116,24 @@ const SiteLessons = (props) => {
             );
           });
           setSiteLessons(sorted_lessons);
-          setOtherLessons(prevState => prevState.otherLessons.filter(
-            otherLesson => otherLesson.id !== lessonId));
+          setOtherLessons(prevOtherLessons => {
+            if (prevOtherLessons && otherLessons) {
+              return prevOtherLessons.filter(otherLesson => otherLesson.id !== lessonId);
+            }
+          });
           setShowModal(false);
           setModalSelectedValue('');
           setModalDate('');
-
         });
     }
-  }
+  };
 
   const renderLessons = () => {
     let maybeAddCard;
     if (ismentor) {
       maybeAddCard = (
         <div className="plusCard">
-          <GoPlus
-            onClick={() => setShowModal(true)}
-            size={100}
-            color="grey"
-          />
+          <GoPlus onClick={() => setShowModal(true)} size={100} color="grey" />
           <Modal
             className="addModal"
             title="Add a Lesson"
@@ -170,8 +153,9 @@ const SiteLessons = (props) => {
                 filterOption={(input, option) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-              > 
-                {(otherLessons.length > 0) &&
+              >
+                {otherLessons &&
+                  otherLessons.length > 0 &&
                   otherLessons.map(lesson => (
                     <Option key={lesson.id} value={lesson.id}>
                       {lesson.title}
@@ -194,7 +178,8 @@ const SiteLessons = (props) => {
           <h1>{site.schoolName} Lessons</h1>
         </div>
         <div className="lessonsContainer">
-          {siteLessons.length > 0 &&
+          {siteLessons &&
+            siteLessons.length > 0 &&
             siteLessons.map(lesson => (
               <LessonCard
                 key={lesson.id}
@@ -210,8 +195,7 @@ const SiteLessons = (props) => {
     );
   };
 
-return (
-  <div>{renderLessons()}</div>
-)}
+  return <div>{renderLessons()}</div>;
+};
 
 export default withRouter(SiteLessons);
