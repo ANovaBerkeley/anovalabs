@@ -24,7 +24,7 @@ const getUsersBySite = async (req, res) => {
 const update = async (req, res) => {
   try {
     const data = await knex('user')
-      .where({ id: req.body.userId })
+      .where({ id: req.body.id })
       .update({ notes: req.body.editedNotes });
     return res.status(200).send({ data });
   } catch (error) {

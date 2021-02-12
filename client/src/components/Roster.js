@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../stylesheets/Roster.css';
 import * as decode from 'jwt-decode';
 import RosterCard from './RosterCard';
 import 'antd/dist/antd.css';
 
-export default class Roster extends Component {
-  state = {
-    roster: [],
-    isMentor: this.props.ismentor,
-  };
+const Roster = props => {
+  const [roster, setRoster] = useState([]);
+  const { ismentor } = props;
+  // state = {
+  //   roster: [],
+  //   isMentor: this.props.ismentor,
+  // };
 
-  componentDidMount() {
+  useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
-    const { isMentor } = this.state;
+    // const { isMentor } = useState(ismentor);
 
     let rosterFetchCall = `/api/v1/roster?uid=${dTok.id}`;
-    if (isMentor) {
+    if (ismentor) {
       rosterFetchCall += '&roleToRetrieve=student';
     } else {
       rosterFetchCall += '&roleToRetrieve=mentor';
@@ -25,20 +27,19 @@ export default class Roster extends Component {
     fetch(rosterFetchCall)
       .then(res => res.json())
       .then(roster => {
-        this.setState({ roster });
+        setRoster(roster);
       });
-  }
+  }, []);
 
-  render() {
-    const { isMentor, roster } = this.state;
-    const rosterCards = roster.map(person => (
-      <RosterCard key={person.id} person={person} mentor={isMentor} />
-    ));
+  const rosterCards = roster.map(person => (
+    <RosterCard key={person.id} person={person} mentor={ismentor} />
+  ));
 
-    return (
-      <div className="container">
-        <div className="containerGrid">{rosterCards}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="container">
+      <div className="containerGrid">{rosterCards}</div>
+    </div>
+  );
+};
+
+export default Roster;

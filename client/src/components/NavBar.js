@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Menu, Button, Drawer } from 'antd';
 import '../stylesheets/NavBar.css';
 import { getAnovaToken, removeAnovaToken } from '../utils/utils';
@@ -6,35 +6,30 @@ import { NavLink } from 'react-router-dom';
 
 const logo = require('../stylesheets/logo.png');
 
-class NavBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      drawerVisible: false,
-    };
-  }
+const NavBar = () => {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     drawerVisible: false,
+  //   };
+  // }
 
-  showDrawer = () => {
-    this.setState({
-      drawerVisible: true,
-    });
+  const showDrawer = () => {
+   setDrawerVisible(true);
   };
 
-  hideDrawer = () => {
-    this.setState({
-      drawerVisible: false,
-    });
+  const hideDrawer = () => {
+    setDrawerVisible(false);
   };
 
-  logOut = () => {
+  const logOut = () => {
     removeAnovaToken();
   };
 
-  render() {
-    if (getAnovaToken() === null) {
-      return <div></div>;
-    }
-
+  if (getAnovaToken() === null) {
+    return <div></div>;
+  } else {
     return (
       <nav className="menuBar">
         <div className="navbar-logo">
@@ -72,46 +67,46 @@ class NavBar extends Component {
                   <NavLink to="/Profile">Profile</NavLink>
                 </Menu.Item>
                 <Menu.Item className="menuItem" key="logout">
-                  <NavLink onClick={this.logOut} to="/Login">
+                  <NavLink onClick={logOut} to="/Login">
                     Logout
                   </NavLink>
                 </Menu.Item>
               </Menu.SubMenu>
             </Menu>
           </div>
-          <Button className="barsMenu" type="primary" onClick={this.showDrawer}>
+          <Button className="barsMenu" type="primary" onClick={showDrawer}>
             <span className="barsBtn" />
           </Button>
           <Drawer
             title="Menu"
             placement="right"
             closable={false}
-            onClose={this.hideDrawer}
-            visible={this.state.drawerVisible}
+            onClose={hideDrawer}
+            visible={drawerVisible}
           >
             <Menu mode="vertical">
               <Menu.Item className="menuItem" key="lessons">
-                <NavLink onClick={this.hideDrawer} to="/SiteLessons">
+                <NavLink onClick={hideDrawer} to="/SiteLessons">
                   Site Material
                 </NavLink>
               </Menu.Item>
               <Menu.Item className="menuItem" key="lessonpool">
-                <NavLink onClick={this.hideDrawer} to="/LessonPool">
+                <NavLink onClick={hideDrawer} to="/LessonPool">
                   Lesson Pool
                 </NavLink>
               </Menu.Item>
               <Menu.Item className="menuItem" key="roster">
-                <NavLink onClick={this.hideDrawer} to="/Roster">
+                <NavLink onClick={hideDrawer} to="/Roster">
                   Roster
                 </NavLink>
               </Menu.Item>
               <Menu.Item className="menuItem" key="edit">
-                <NavLink onClick={this.hideDrawer} to="/Profile">
+                <NavLink onClick={hideDrawer} to="/Profile">
                   Profile
                 </NavLink>
               </Menu.Item>
               <Menu.Item className="menuItem" key="logout">
-                <NavLink onClick={this.logOut} to="/Login">
+                <NavLink onClick={logOut} to="/Login">
                   Logout
                 </NavLink>
               </Menu.Item>
