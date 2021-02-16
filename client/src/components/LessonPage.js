@@ -1,159 +1,119 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import ContentEditable from 'react-contenteditable';
 
 import '../stylesheets/LessonPage.css';
 
-export default class LessonPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editMode: false,
-      title: '',
-      descriptionHTML: '',
-      resourcesHTML: '',
-      labHTML: '',
-      exitTicketHTML: '',
-      mentor: this.props.ismentor,
-    };
-    // this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleResourcesChange = this.handleResourcesChange.bind(this);
-    this.handleLabChange = this.handleLabChange.bind(this);
-    this.handleExitTicketChange = this.handleExitTicketChange.bind(this);
-    this.saveChanges = this.saveChanges.bind(this);
-  }
+const LessonPage = props => {
+  const { id, ismentor } = props;
 
-  componentDidMount() {
-    fetch('/api/v1/lessons/' + this.props.id + '?id=' + this.props.id)
+  const [editMode, setEditMode] = useState(false);
+  const [title, setTitle] = useState('');
+  const [descriptionHTML, setDescriptionHTML] = useState('');
+  const [resourcesHTML, setResourcesHTML] = useState('');
+  const [labHTML, setLabHTML] = useState('');
+  const [exitTicketHTML, setExitTicketHTML] = useState('');
+
+  useEffect(() => {
+    fetch('/api/v1/lessons/' + id + '?id=' + id)
       .then(res => res.json())
       .then(lesson => {
-        console.log('LESSON');
-        console.log(lesson);
-        this.setState(
-          {
-            title: lesson[0].title,
-            descriptionHTML: lesson[0].descriptionHTML,
-            resourcesHTML: lesson[0].resourcesHTML,
-            labHTML: lesson[0].labHTML,
-            exitTicketHTML: lesson[0].exitTicketHTML,
-          },
-          () => {
-            console.log(this.state.title);
-          },
-        );
-      })
-      .then(() => {
-        if (this.state.descriptionHTML === '') {
-          this.setState({ descriptionHTML: '<p> </p>' });
-        }
-        if (this.state.resourcesHTMLL === '') {
-          this.setState({ resourcesHTML: '<p> </p>' });
-        }
-        if (this.state.labHTML === '') {
-          this.setState({ labHTML: '<p> </p>' });
-        }
+        setTitle(lesson[0].title);
+        setDescriptionHTML(lesson[0].descriptionHTML);
+        setResourcesHTML(lesson[0].resourcesHTML);
+        setLabHTML(lesson[0].labHTML);
+        setExitTicketHTML(lesson[0].exitTicketHTML);
       });
-  }
+  }, [id]);
 
-  /*
-handleTitleChange(evt) {
-  this.setState({title: evt.target.value});
-}
-*/
+  const handleDescriptionChange = evt => {
+    setDescriptionHTML(evt.target.value);
+  };
 
-  handleDescriptionChange(evt) {
-    this.setState({ descriptionHTML: evt.target.value });
-  }
+  const handleResourcesChange = evt => {
+    setResourcesHTML(evt.target.value);
+  };
 
-  handleResourcesChange(evt) {
-    this.setState({ resourcesHTML: evt.target.value });
-  }
+  const handleLabChange = evt => {
+    setLabHTML(evt.target.value);
+  };
 
-  handleLabChange(evt) {
-    this.setState({ labHTML: evt.target.value });
-  }
+  const handleExitTicketChange = evt => {
+    setExitTicketHTML(evt.target.value);
+  };
 
-  handleExitTicketChange(evt) {
-    this.setState({ exitTicketHTML: evt.target.value });
-  }
-
-  saveChanges() {
+  const saveChanges = () => {
     fetch('/api/v1/lessons/updatePage', {
       method: 'POST',
       body: JSON.stringify({
-        lessonId: this.props.id,
-        editedDescriptionHTML: this.state.descriptionHTML,
-        editedResourcesHTML: this.state.resourcesHTML,
-        editedLabHTML: this.state.labHTML,
-        editedExitTicketHTML: this.state.exitTicketHTML,
+        lessonId: id,
+        editedDescriptionHTML: descriptionHTML,
+        editedResourcesHTML: resourcesHTML,
+        editedLabHTML: labHTML,
+        editedExitTicketHTML: exitTicketHTML,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then(this.setState({ editMode: false }));
-  }
+    }).then(setEditMode(false));
+  };
 
-  render() {
-    let maybeEditButton;
-    if (this.state.mentor) {
-      maybeEditButton = (
-        <button
-          className="editButton"
-          onClick={() => this.setState({ editMode: true })}
-          type="button"
-        >
-          <FiEdit size="42" />
-        </button>
-      );
-    }
-    let maybeSaveButton;
-    let editing = '';
-    if (this.state.editMode) {
-      maybeSaveButton = (
-        <button className="saveButton" onClick={this.saveChanges} type="button">
-          Save
-        </button>
-      );
-      editing = 'editing';
-    }
-    return (
-      <div className="page">
-        <div className="lessonPageContainer">
-          <div className="title-container">
-            <h1 className="lessonPageTitle">{this.state.title}</h1>
-            {maybeEditButton}
-          </div>
-          <ContentEditable
-            className={'textBox ' + editing}
-            html={this.state.descriptionHTML}
-            disabled={!this.state.editMode}
-            onChange={this.handleDescriptionChange} // handle innerHTML change
-          />
-          <h2 className="textTitle"> Lesson Resources </h2>
-          <ContentEditable
-            className={'textBox ' + editing}
-            html={this.state.resourcesHTML}
-            disabled={!this.state.editMode}
-            onChange={this.handleResourcesChange} // handle innerHTML change
-          />
-          <h2 className="textTitle"> Lab </h2>
-          <ContentEditable
-            className={'textBox ' + editing}
-            html={this.state.labHTML}
-            disabled={!this.state.editMode}
-            onChange={this.handleLabChange} // handle innerHTML change
-          />
-          <h2 className="textTitle"> Exit Ticket </h2>
-          <ContentEditable
-            className={'textBox ' + editing}
-            html={this.state.exitTicketHTML}
-            disabled={!this.state.editMode}
-            onChange={this.handleExitTicketChange} // handle innerHTML change
-          />
-          {maybeSaveButton}
-        </div>
-      </div>
+  let maybeEditButton;
+  if (ismentor) {
+    maybeEditButton = (
+      <button className="editButton" onClick={() => setEditMode(true)} type="button">
+        <FiEdit size="42" />
+      </button>
     );
   }
-}
+  let maybeSaveButton;
+  let editing = '';
+  if (editMode) {
+    maybeSaveButton = (
+      <button className="saveButton" onClick={saveChanges} type="button">
+        Save
+      </button>
+    );
+    editing = 'editing';
+  }
+  return (
+    <div className="page">
+      <div className="lessonPageContainer">
+        <div className="title-container">
+          <h1 className="lessonPageTitle">{title}</h1>
+          {maybeEditButton}
+        </div>
+        <ContentEditable
+          className={'textBox ' + editing}
+          html={descriptionHTML}
+          disabled={!editMode}
+          onChange={handleDescriptionChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Lesson Resources </h2>
+        <ContentEditable
+          className={'textBox ' + editing}
+          html={resourcesHTML}
+          disabled={!editMode}
+          onChange={handleResourcesChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Lab </h2>
+        <ContentEditable
+          className={'textBox ' + editing}
+          html={labHTML}
+          disabled={!editMode}
+          onChange={handleLabChange} // handle innerHTML change
+        />
+        <h2 className="textTitle"> Exit Ticket </h2>
+        <ContentEditable
+          className={'textBox ' + editing}
+          html={exitTicketHTML}
+          disabled={!editMode}
+          onChange={handleExitTicketChange} // handle innerHTML change
+        />
+        {maybeSaveButton}
+      </div>
+    </div>
+  );
+};
+
+export default LessonPage;

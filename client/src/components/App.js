@@ -8,9 +8,8 @@ import LessonPool from './LessonPool';
 import Profile from './Profile';
 import Roster from './Roster';
 import LessonPage from './LessonPage';
-import Feedback from './Feedback';
 
-function App() {
+const App = () => {
   return (
     <div>
       <BrowserRouter>
@@ -19,30 +18,28 @@ function App() {
             <Route exact path="/Login" component={Login} />
             <Route exact path="/SignUp" component={SignUp} />
             <Route exact path="/">
-              <AuthComponent component={SiteLessons} />
+              <AuthComponent Component={SiteLessons} />
             </Route>
             <Route path="/SiteLessons">
-              <AuthComponent component={SiteLessons} />
+              <AuthComponent Component={SiteLessons} />
             </Route>
             <Route path="/LessonPool">
-              <AuthComponent component={LessonPool} />
+              <AuthComponent Component={LessonPool} />
             </Route>
             <Route path="/Profile">
-              <AuthComponent component={Profile} />
+              <AuthComponent Component={Profile} />
             </Route>
             <Route path="/Roster">
-              <AuthComponent component={Roster} />
+              <AuthComponent Component={Roster} />
             </Route>
             <Route path="/LessonPage/:id">
-              <AuthComponent component={LessonPage} />
-            </Route>
-            <Route path="/Feedback/:id">
-              <AuthComponent component={Feedback} />
+              <AuthComponent Component={LessonPage} />
             </Route>
           </Switch>
         </div>
       </BrowserRouter>
     </div>
   );
-}
+};
+
 export default App;

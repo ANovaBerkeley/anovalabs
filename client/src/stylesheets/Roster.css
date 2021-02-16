@@ -9,7 +9,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 200px;
 }
+
 .containerGrid {
   background-color: #e6f4fc;
   width: 80%;
@@ -24,13 +26,13 @@
 }
 
 @media (max-width: 1024px) {
-  .containerGrid{
+  .containerGrid {
     grid-template-columns: 50% 50%;
   }
 }
 
 @media (max-width: 767px) {
-  .containerGrid{
+  .containerGrid {
     grid-template-columns: 100%;
   }
 }
@@ -41,9 +43,6 @@
 .profileDescription p {
   font-size: 12px;
 }
-
-
-
 
 .linktext {
   text-decoration: underline;

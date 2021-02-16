@@ -1,81 +1,64 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import * as decode from 'jwt-decode';
 import { getAnovaToken, removeAnovaToken } from '../utils/utils';
 import NavBar from './NavBar';
 
-class AuthComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: undefined,
-      mentor: null,
-      mounted: false,
-    };
-  }
+const AuthComponent = props => {
+  const { history, match, Component } = props;
 
-  componentDidMount() {
+  const [mentor, setMentor] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
     let decodedAnovaToken;
     try {
       decodedAnovaToken = decode(getAnovaToken());
     } catch (err) {
       // if local storage doesn't have token
       removeAnovaToken();
-      this.props.history.push(`/login`);
+      history.push(`/Login`);
       return;
     }
 
     fetch('/api/v1/profile/' + decodedAnovaToken.id + '?uid=' + decodedAnovaToken.id)
       .then(res => res.json())
       .then(profile => {
-        this.setState({
-          mentor: profile[0].role === 'mentor',
-          mounted: true,
-        });
+        setMentor(profile[0].role === 'mentor');
+        setMounted(true);
       });
 
     const anovaToken = getAnovaToken();
 
     if (!anovaToken) {
-      this.props.history.replace('/login');
+      history.replace('/Login');
     } else {
       axios
         .post('/api/v1/auth', {
           anovaToken: anovaToken,
         })
-        .then(res => {
-          // as long as the bearer is authorized, all the children props will render
-          this.setState({
-            message: res.data.message,
-          });
-        })
         .catch(err => {
           removeAnovaToken();
-          this.props.history.push('/login');
+          history.push('/Login');
         });
     }
-  }
+  }, [history]);
 
-  render() {
-    if (!getAnovaToken() || !this.state.mounted) {
-      return (
-        <div>
-          <h1>Loading . . .</h1>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <NavBar />
-          <this.props.component
-            ismentor={this.state.mentor}
-            id={this.props.match.params.id}
-          />
-        </div>
-      );
-    }
+  if (!getAnovaToken() || !mounted) {
+    return (
+      <div>
+        <h1>Loading . . .</h1>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <NavBar />
+        <Component ismentor={mentor} id={match.params.id} />
+      </div>
+    );
   }
-}
+};
 
 export default withRouter(AuthComponent);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../stylesheets/Roster.css';
 import { Card, Button, Modal, Input, Row, Col } from 'antd';
 import PropTypes from 'prop-types';

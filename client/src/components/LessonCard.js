@@ -1,53 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
-import PropTypes from 'prop-types';
 // import * as decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
 
 import '../stylesheets/LessonCard.css';
 // const { TextArea } = Input;
-class LessonCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false,
-      showNotesModal: false,
-      showEditModal: false,
-      isMentor: this.props.isment,
-      notes: this.props.lessonDetails.notes,
-      editedNotes: this.props.lessonDetails.notes,
-      lessonId: this.props.lessonDetails.id,
-      title: this.props.lessonDetails.title,
-      summary: this.props.lessonDetails.summary,
-      editedTitle: this.props.lessonDetails.title,
-      editedSummary: this.props.lessonDetails.summary,
-    };
-    this.delete = this.delete.bind(this);
-    this.onChangeNotes = this.onChangeNotes.bind(this);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeSummary = this.onChangeSummary.bind(this);
-    // this.editLesson = this.editLesson.bind(this);
-    this.editLessonDetails = this.editLessonDetails.bind(this);
-  }
+const LessonCard = props => {
+  const { isMentor, lessonDetails, deleteHandler, pool } = props;
+  const { id, title, summary, date } = lessonDetails; // get notes here
 
-  delete() {
-    const { lessonDetails, deleteHandler } = this.props;
-    this.setState({ showModal: false });
+  const [showModal, setShowModal] = useState(false);
+  // const [showNotesModal, setShowNotesModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  // const [editedNotes, setEditedNotes] = useState(notes);
+  const [shownTitle, setShownTitle] = useState(title);
+  const [shownSummary, setShownSummary] = useState(summary);
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedSummary, setEditedSummary] = useState(summary);
+
+  const deleteLesson = () => {
+    setShowModal(false);
     deleteHandler(lessonDetails);
-  }
+  };
 
-  onChangeNotes(event) {
-    this.setState({ editedNotes: event.target.value });
-  }
+  // const onChangeNotes = event => {
+  //   setEditedNotes(event.target.value);
+  // };
 
-  onChangeTitle(event) {
-    this.setState({ editedTitle: event.target.value });
-  }
+  const onChangeTitle = event => {
+    setEditedTitle(event.target.value);
+  };
 
-  onChangeSummary(event) {
-    this.setState({ editedSummary: event.target.value });
-  }
+  const onChangeSummary = event => {
+    setEditedSummary(event.target.value);
+  };
 
   // editLesson() {
   //   const tok = localStorage.getItem('anovaToken');
@@ -82,8 +69,7 @@ class LessonCard extends Component {
   //     });
   // }
 
-  editLessonDetails() {
-    const { editedTitle, editedSummary, lessonId } = this.state;
+  const editLessonDetails = () => {
     if (editedSummary.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
@@ -96,21 +82,24 @@ class LessonCard extends Component {
       body: JSON.stringify({
         editedTitle,
         editedSummary,
-        lessonId,
+        id,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     })
-      .then(res => res.json())
-      .then(values => {
-        this.setState({
-          showEditModal: false,
-          title: editedTitle,
-          summary: editedSummary,
+      .then(() => {
+        setShowEditModal(false);
+        setShownTitle(editedTitle);
+        setShownSummary(editedSummary);
+      })
+      .catch(err => {
+        Modal.error({
+          title: 'Unable to update lesson.',
+          centered: true,
         });
       });
-  }
+  };
 
   // renderNotesButton() {
   //   const { isMentor } = this.state;
@@ -148,9 +137,7 @@ class LessonCard extends Component {
   //   return notesButton;
   // }
 
-  renderEditButton() {
-    const { isMentor } = this.state;
-    const { showEditModal, title, summary } = this.state;
+  const renderEditButton = () => {
     let editButton;
     if (isMentor) {
       editButton = (
@@ -158,7 +145,7 @@ class LessonCard extends Component {
           <Button
             type="primary"
             className="lowerButton"
-            onClick={() => this.setState({ showEditModal: true })}
+            onClick={() => setShowEditModal(true)}
           >
             Edit
           </Button>
@@ -166,8 +153,8 @@ class LessonCard extends Component {
             visible={showEditModal}
             title="Update Lesson Details:"
             okText="Update"
-            onCancel={() => this.setState({ showEditModal: false })}
-            onOk={this.editLessonDetails}
+            onCancel={() => setShowEditModal(false)}
+            onOk={editLessonDetails}
           >
             <div className="addFields">
               <Row>
@@ -178,7 +165,7 @@ class LessonCard extends Component {
                     addonBefore="Title:"
                     autosize="true"
                     defaultValue={title}
-                    onChange={this.onChangeTitle}
+                    onChange={onChangeTitle}
                   />
                 </Col>
               </Row>
@@ -190,7 +177,7 @@ class LessonCard extends Component {
                     addonBefore="Summary:"
                     autosize="true"
                     defaultValue={summary}
-                    onChange={this.onChangeSummary}
+                    onChange={onChangeSummary}
                   />
                 </Col>
               </Row>
@@ -200,66 +187,54 @@ class LessonCard extends Component {
       );
     }
     return editButton;
-  }
+  };
 
-  render() {
-    const { showModal, isMentor, title, summary } = this.state;
-    const { lessonDetails } = this.props;
-    console.log(lessonDetails);
-    // let maybeNotesButton;
-    let maybeEditButton;
-    if (!this.props.pool) {
-      // maybeNotesButton = this.renderNotesButton();
-    } else {
-      maybeEditButton = this.renderEditButton();
-    }
-    let readableDate = '';
-    if (lessonDetails.date && !this.props.pool) {
-      readableDate = new Date(lessonDetails.date).toLocaleDateString();
-    }
-    let maybeDeleteButton;
-    if (isMentor) {
-      maybeDeleteButton = (
-        <Popconfirm
-          className="deleteModal"
-          title="Delete this Lesson?"
-          centered
-          visible={showModal}
-          onConfirm={() => this.delete()}
-          onCancel={() => this.setState({ showModal: false })}
-        >
-          <button
-            className="deleteButton"
-            onClick={() => this.setState({ showModal: true })}
-            type="button"
-          >
-            <GoTrashcan size="20" />
-          </button>
-        </Popconfirm>
-      );
-    }
-    return (
-      <div className={this.props.pool ? 'cardPool' : 'card'}>
-        <div className="titleContainer">
-          <div className="lessonTitle">{title}</div>
-          {maybeDeleteButton}
-        </div>
-        {readableDate && <div className="date">{readableDate}</div>}
-        <div className="descriptionContainer">
-          <div className="description">{summary}</div>
-        </div>
-        <div className="buttonContainer">
-          {maybeEditButton}
-          <Link to={'/LessonPage/' + this.state.lessonId}>
-            <button className="lowerButton">View Assignment</button>
-          </Link>
-        </div>
-      </div>
+  // let maybeNotesButton;
+  let maybeEditButton;
+  if (!pool) {
+    // maybeNotesButton = this.renderNotesButton();
+  } else {
+    maybeEditButton = renderEditButton();
+  }
+  let readableDate = '';
+  if (date && !pool) {
+    readableDate = new Date(date).toLocaleDateString();
+  }
+  let maybeDeleteButton;
+  if (isMentor) {
+    maybeDeleteButton = (
+      <Popconfirm
+        className="deleteModal"
+        title="Delete this Lesson?"
+        centered
+        visible={showModal}
+        onConfirm={deleteLesson}
+        onCancel={() => setShowModal(false)}
+      >
+        <button className="deleteButton" onClick={() => setShowModal(true)} type="button">
+          <GoTrashcan size="20" />
+        </button>
+      </Popconfirm>
     );
   }
-}
-LessonCard.propTypes = {
-  deleteHandler: PropTypes.func,
+  return (
+    <div className={pool ? 'cardPool' : 'card'}>
+      <div className="titleContainer">
+        <div className="lessonTitle">{shownTitle}</div>
+        {maybeDeleteButton}
+      </div>
+      {readableDate && <div className="date">{readableDate}</div>}
+      <div className="descriptionContainer">
+        <div className="description">{shownSummary}</div>
+      </div>
+      <div className="buttonContainer">
+        {maybeEditButton}
+        <Link to={'/LessonPage/' + id}>
+          <button className="lowerButton">View Assignment</button>
+        </Link>
+      </div>
+    </div>
+  );
 };
-LessonCard.defaultProps = {};
+
 export default LessonCard;

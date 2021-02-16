@@ -18,7 +18,6 @@ const SiteLessons = props => {
   const [otherLessons, setOtherLessons] = useState([]);
   const [modalSelectedValue, setModalSelectedValue] = useState('');
   const [modalDate, setModalDate] = useState('');
-  const [error, setError] = useState('');
   const history = useHistory();
   const [dTok, setDTok] = useState({});
 
@@ -34,7 +33,7 @@ const SiteLessons = props => {
       }
     };
     getToken();
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     if (Object.keys(dTok).length > 0) {
@@ -43,8 +42,6 @@ const SiteLessons = props => {
   }, [dTok]);
 
   const loadData = () => {
-    console.log('LOAD DATA DTOK');
-    console.log(dTok);
     fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
       .then(site => {
@@ -186,7 +183,7 @@ const SiteLessons = props => {
                 deleteHandler={deleteHandler}
                 lessonDetails={lesson}
                 pool={false}
-                isment={ismentor}
+                isMentor={ismentor}
               />
             ))}
           {maybeAddCard}
