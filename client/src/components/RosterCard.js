@@ -9,7 +9,7 @@ const { TextArea } = Input;
 const RosterCard = props => {
   const { mentor, person } = props;
 
-  const { id, username, email, candy, hobby, notes } = person;
+  const { id, username, email, candy, hobby, notes } = person; // TODO: fetch candy and hobby to display here!
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
@@ -53,8 +53,8 @@ const RosterCard = props => {
         <div>
           <h2>Name: {username}</h2>
           <p>Email: {email}</p>
-          <p>Favorite Candy: {candy}</p>
-          <p>Favorite Hobby: {hobby}</p>
+          {/* <p>Favorite Candy: {candy}</p>
+          <p>Favorite Hobby: {hobby}</p> */}
           <p>Notes: {displayNotes}</p>
         </div>
       );

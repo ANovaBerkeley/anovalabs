@@ -90,10 +90,16 @@
   width: 100%;
 }
 
+.ant-btn-primary {
+  border-color: #e6f4fc;
+}
+
 @media (max-width: 767px) {
   .barsMenu {
-    display: inline-block;
-    top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
   }
   .leftMenu,
   .rightMenu {

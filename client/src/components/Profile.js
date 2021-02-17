@@ -97,7 +97,12 @@ const Profile = () => {
         </Row>
         <Row>
           <Col>
-            <Avatar size={64} onClick={() => showModal(true)} icon="edit" />
+            <Avatar
+              className="editIcon"
+              size={64}
+              onClick={() => showModal(true)}
+              icon="edit"
+            />
             <Modal
               className="editModal"
               title="Edit Your Profile"

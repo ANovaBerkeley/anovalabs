@@ -26,7 +26,7 @@
 }
 
 @media (max-width: 767px) {
-  .profileBox{
+  .profileBox {
     width: 80%;
   }
 }
@@ -158,6 +158,16 @@ input[type='submit'] {
 
 input[type='submit']:hover {
   opacity: 0.8;
+}
+
+.editIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-avatar.ant-avatar-icon {
+  padding-top: 0px;
 }
 
 .editModal {
