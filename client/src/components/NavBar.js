@@ -6,17 +6,13 @@ import { NavLink } from 'react-router-dom';
 
 const logo = require('../stylesheets/logo.png');
 
-const NavBar = () => {
+const NavBar = props => {
+  const { isMentor } = props;
+
   const [drawerVisible, setDrawerVisible] = useState(false);
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     drawerVisible: false,
-  //   };
-  // }
 
   const showDrawer = () => {
-   setDrawerVisible(true);
+    setDrawerVisible(true);
   };
 
   const hideDrawer = () => {
@@ -43,9 +39,11 @@ const NavBar = () => {
               <Menu.Item className="menuItem" key="lessons">
                 <NavLink to="/SiteLessons">Site Material</NavLink>
               </Menu.Item>
-              <Menu.Item className="menuItem" key="lessonpool">
-                <NavLink to="/LessonPool">Lesson Pool</NavLink>
-              </Menu.Item>
+              {isMentor && (
+                <Menu.Item className="menuItem" key="lessonpool">
+                  <NavLink to="/LessonPool">Lesson Pool</NavLink>
+                </Menu.Item>
+              )}
               <Menu.Item className="menuItem" key="roster">
                 <NavLink to="/Roster">Roster</NavLink>
               </Menu.Item>
@@ -90,11 +88,13 @@ const NavBar = () => {
                   Site Material
                 </NavLink>
               </Menu.Item>
-              <Menu.Item className="menuItem" key="lessonpool">
-                <NavLink onClick={hideDrawer} to="/LessonPool">
-                  Lesson Pool
-                </NavLink>
-              </Menu.Item>
+              {isMentor && (
+                <Menu.Item className="menuItem" key="lessonpool">
+                  <NavLink onClick={hideDrawer} to="/LessonPool">
+                    Lesson Pool
+                  </NavLink>
+                </Menu.Item>
+              )}
               <Menu.Item className="menuItem" key="roster">
                 <NavLink onClick={hideDrawer} to="/Roster">
                   Roster
@@ -116,6 +116,6 @@ const NavBar = () => {
       </nav>
     );
   }
-}
+};
 
 export default NavBar;
