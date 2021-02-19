@@ -42,7 +42,7 @@
     "google-auth-library": "^6.1.6",
     "joi": "^14.3.0",
     "jsonwebtoken": "^8.4.0",
-    "knex": "^0.21.5",
+    "knex": "^0.21.17",
     "morgan": "~1.9.0",
     "node-gyp": "^6.1.0",
     "pg": "^8.3.3",
