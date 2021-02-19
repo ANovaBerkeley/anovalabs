@@ -1,6 +1,7 @@
 {
   "name": "anovalabs",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
