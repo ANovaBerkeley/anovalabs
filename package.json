@@ -40,21 +40,21 @@
     "dotenv": "^6.2.0",
     "express": "~4.16.0",
     "google-auth-library": "^6.1.6",
-    "joi": "^14.3.0",
-    "jsonwebtoken": "^8.4.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.17",
     "morgan": "~1.9.0",
     "node-gyp": "^6.1.0",
-    "pg": "^8.3.3",
-    "react-contenteditable": "^3.3.4",
-    "request": "^2.88.0",
+    "pg": "^8.5.1",
+    "react-contenteditable": "^3.3.5",
+    "request": "^2.88.2",
     "style-loader": "^0.23.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.2.2",
-    "nodemon": "^2.0.2",
+    "chai": "^4.3.0",
+    "mocha": "^6.2.3",
+    "nodemon": "^2.0.7",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"
   }
