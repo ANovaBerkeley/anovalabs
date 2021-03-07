@@ -7,12 +7,10 @@ import 'antd/dist/antd.css';
 
 const Roster = props => {
   const { ismentor } = props;
-  //this.attendanceClick = this.attendanceClick.bind(this);
   //this.updateAttendance = this.updateAttendance.bind(this);
 
   const [roster, setRoster] = useState([]);
-  const [isMentor, setIsMentor] = useState(this.props.ismentor);
-  const [showAttendance, setShowAttendance] = useState(false);
+  const [takeAttendance, setTakeAttendance] = useState(false);
   const [present, setPresent] = useState([]);
 
   useEffect(() => {
@@ -33,20 +31,53 @@ const Roster = props => {
       });
   }, [ismentor]);
 
+  const clickAttendance = () => {
+    if (takeAttendance) {
+      // TODO: API call
+      console.log("attendance taken!!!!! present: ", present);
+      setPresent([]);
+    }
+    setTakeAttendance(!takeAttendance);
+  }
+
+  const updateAttendance = (e, studentId) => {
+    if (e.target.checked && !present.includes(studentId)) {
+      present.push(studentId);
+    } else if (!e.target.checked && present.includes(studentId)) {
+      present.splice(present.indexOf(studentId), 1);
+    }
+    console.log(present);
+  }
+
+  const renderAttendanceButton = () => {
+    let maybeAttendanceButton;
+    if (ismentor) {
+      maybeAttendanceButton = (<div className = "innerContainer">
+        <Button type='primary' size="large" onClick={clickAttendance}>
+        {takeAttendance ? "Submit" : "Take Attendance"}</Button>
+      </div>);
+    }
+    return maybeAttendanceButton;
+  }
+
+  const maybeAttendanceButton = renderAttendanceButton();
+
   const rosterCards = roster.map(person => (
-    <RosterCard key={person.id} person={person} mentor={ismentor} />
+    <RosterCard key={person.id} person={person} mentor={ismentor} showCheckbox={takeAttendance} updateAttendance={updateAttendance}/>
   ));
 
   return (
     <div className="container">
-      <div className="containerGrid">{rosterCards}</div>
+      {maybeAttendanceButton}
+      <div className="innerContainer">
+        <div className="containerGrid">{rosterCards}</div>
+      </div>
     </div>
   );
 };
 
 export default Roster;
 /*  }
-
   updateAttendance(e, student) {
     const { present } = this.state;
     const studentId = student.state.userId;
@@ -55,26 +86,6 @@ export default Roster;
     } else if (!e.target.checked && present.includes(studentId)) {
       present.splice(present.indexOf(studentId), 1);
     }
-  }
-
-  attendanceClick() {
-    if (this.state.showAttendance) {
-      // TODO: API call
-      console.log(this.state.present);
-      this.setState({ present : []});
-    }
-    this.setState({ showAttendance: !this.state.showAttendance });
-  }
-
-  renderAttendanceButton() {
-    let maybeAttendanceButton;
-    if (this.state.isMentor) {
-      maybeAttendanceButton = (<div className = "innerContainer">
-        <Button type='primary' size="large" onClick={this.attendanceClick}>
-        {this.state.showAttendance ? "Submit" : "Track Attendance"}</Button>
-      </div>);
-    }
-    return maybeAttendanceButton;
   }
 
   render() {

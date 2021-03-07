@@ -7,7 +7,7 @@ import 'antd/dist/antd.css';
 const { TextArea } = Input;
 
 const RosterCard = props => {
-  const { mentor, person } = props;
+  const { mentor, person, showCheckbox, updateAttendance } = props;
 
   const { id, username, email, candy, hobby, notes } = person; // TODO: fetch candy and hobby to display here!
   const [showEditModal, setShowEditModal] = useState(false);
@@ -24,12 +24,7 @@ const RosterCard = props => {
   componentWillReceiveProps(nextProps) {
     this.setState({ showCheckbox: nextProps.showAttendance });  
   }
-
-  onChangeNotes(event) {
-    this.setState({ editedNotes: event.target.value });
   }*/
-
-  console.log(props);
 
   const onChangeNotes = event => {
     setEditedNotes(event.target.value);
@@ -120,29 +115,13 @@ const RosterCard = props => {
     return editButton;
   };
 
-  const description = renderDescription();
-  const maybeEditButton = renderEditButton();
-
-  return (
-    <div>
-      <Card
-        style={{ width: 300 }}
-        cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
-      >
-        {description}
-        {maybeEditButton}
-      </Card>
-    </div>
-  );
-};
-  
-  /*renderCheckbox() {
+  const renderCheckbox = () => {
     let checkBox;
-    if (this.state.showCheckbox) {
+    if (showCheckbox) {
       checkBox = (
         <div>
           <div>
-            <Checkbox onChange={(e) => this.state.updateAttendance(e, this)}>Present</Checkbox>
+            <Checkbox onChange={(e) => updateAttendance(e, id)}>Present</Checkbox>
           </div>
           <br></br>
         </div>
@@ -151,26 +130,23 @@ const RosterCard = props => {
     return checkBox;
   }
 
-  render() {
-    const description = this.renderDescription();
-    const maybeEditButton = this.renderEditButton();
-    const maybeCheckbox = this.renderCheckbox();
-    return (
-      <div>
-        <Card
-          style={{ width: 300 }}
-          cover={
-            <img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />
-          }
-        >
-          {description}
-          {maybeCheckbox}
-          {maybeEditButton} 
-        </Card>
-      </div>
-    );
-  }
-}*/
+  const description = renderDescription();
+  const maybeEditButton = renderEditButton();
+  const maybeCheckbox = renderCheckbox();
+
+  return (
+    <div>
+      <Card
+        style={{ width: 300 }}
+        cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
+      >
+        {description}
+        {maybeCheckbox}
+        {maybeEditButton}
+      </Card>
+    </div>
+  );
+};
 
 RosterCard.propTypes = {
   mentor: PropTypes.bool,
