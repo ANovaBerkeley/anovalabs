@@ -19,6 +19,9 @@ module.exports = app => {
   app.get('/api/v1/site/allSites', SitesController.index);
   app.get('/api/v1/site/current', SitesController.getCurrentUserSite);
   app.post('/api/v1/site/addUserSemSite', SitesController.addUserToSemSite);
+  app.post('/api/v1/site/updateAttendance', SitesController.updateAttendance);
+  app.get('/api/v1/site/getAttendance', SitesController.getAttendance);
+
 
   //Lessons
   app.get('/api/v1/lessons/all', LessonsController.index);

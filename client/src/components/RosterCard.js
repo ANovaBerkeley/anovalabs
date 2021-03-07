@@ -13,18 +13,6 @@ const RosterCard = props => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
-  /*this.state = {
-      showCheckbox: this.props.showAttendance,
-      updateAttendance: this.props.updateAttendance,
-    };
-    this.onChangeNotes = this.onChangeNotes.bind(this);
-    this.editStudentProfile = this.editStudentProfile.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ showCheckbox: nextProps.showAttendance });  
-  }
-  }*/
 
   const onChangeNotes = event => {
     setEditedNotes(event.target.value);

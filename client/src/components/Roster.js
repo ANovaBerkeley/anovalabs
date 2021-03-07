@@ -32,9 +32,14 @@ const Roster = props => {
   }, [ismentor]);
 
   const clickAttendance = () => {
+    const tok = localStorage.getItem('anovaToken');
+    const dTok = decode(tok);
     if (takeAttendance) {
-      // TODO: API call
-      console.log("attendance taken!!!!! present: ", present);
+      // API call
+      fetch(`/api/v1/site/updateAttendance?present=${present}&uid=${dTok.id}`,
+           {method: 'POST'})
+        .then(res => res.json())
+      console.log("attendance taken: ", present);
       setPresent([]);
     }
     setTakeAttendance(!takeAttendance);
@@ -77,31 +82,3 @@ const Roster = props => {
 };
 
 export default Roster;
-/*  }
-  updateAttendance(e, student) {
-    const { present } = this.state;
-    const studentId = student.state.userId;
-    if (e.target.checked && !present.includes(studentId)) {
-      present.push(studentId);
-    } else if (!e.target.checked && present.includes(studentId)) {
-      present.splice(present.indexOf(studentId), 1);
-    }
-  }
-
-  render() {
-    const { isMentor, roster, showAttendance, } = this.state;
-    const maybeAttendanceButton = this.renderAttendanceButton();
-    const rosterCards = roster.map(person => (
-      <RosterCard key={person.id} person={person} mentor={isMentor} showAttendance={showAttendance} updateAttendance={this.updateAttendance}/>));
-
-    return (
-      <div className="container">
-        {maybeAttendanceButton}
-        <div className="innerContainer">
-           <div className="containerGrid">{rosterCards}</div>
-        </div>
-      </div>
-    );
-  }
-}
-*/
