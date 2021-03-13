@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 // import { useAsync } from "react-async"
-import { Modal, DatePicker, Select } from 'antd';
+import { Modal, DatePicker, Row, Input } from 'antd';
 import * as decode from 'jwt-decode';
 import { GoPlus } from 'react-icons/go';
 import LessonCard from './LessonCard';
 import '../stylesheets/SiteLessons.css';
 import { getAnovaToken, removeAnovaToken } from '../utils/utils';
 import { useHistory, withRouter } from 'react-router-dom';
+import { handleErrors } from '../utils/helpers';
 
-const { Option } = Select;
 // TODO reset modal values onOk
 const SiteLessons = props => {
   const { ismentor } = props;
@@ -16,10 +16,10 @@ const SiteLessons = props => {
   const [siteLessons, setSiteLessons] = useState([]);
   const [site, setSite] = useState('');
   const [otherLessons, setOtherLessons] = useState([]);
-  const [modalSelectedValue, setModalSelectedValue] = useState('');
   const [modalDate, setModalDate] = useState('');
   const history = useHistory();
   const [dTok, setDTok] = useState({});
+  const [newLessonId, setNewLessonId] = useState('');
 
   useEffect(() => {
     const getToken = async () => {
@@ -41,6 +41,12 @@ const SiteLessons = props => {
     }
   }, [dTok]);
 
+  useEffect(() => {
+    if (newLessonId) {
+      addLessonToSite();
+    }
+  }, [newLessonId]);
+
   const loadData = () => {
     fetch(`/api/v1/site/current?uid=${dTok.id}`)
       .then(res => res.json())
@@ -61,37 +67,8 @@ const SiteLessons = props => {
       });
   };
 
-  const onDateChange = date => {
-    setModalDate(date);
-  };
-
-  const onSelectChange = value => {
-    setModalSelectedValue(value);
-  };
-
-  const deleteHandler = lessonDetails => {
-    fetch(`/api/v1/lesson_site/delete?uid=${dTok.id}`, {
-      method: 'POST',
-      body: JSON.stringify({ lesson_id: lessonDetails.id }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then(() => {
-      setSiteLessons(prevSiteLessons => {
-        if (prevSiteLessons) {
-          return prevSiteLessons.filter(lesson => lesson.id !== lessonDetails.id);
-        }
-      });
-      setOtherLessons(prevOtherLessons => {
-        if (prevOtherLessons) {
-          return [...prevOtherLessons, lessonDetails];
-        }
-      });
-    });
-  };
-
-  const addLessonToSite = (lessonId, date) => {
-    if (!lessonId || !date) {
+  const addLessonToSite = () => {
+    if (!newLessonId || !modalDate) {
       Modal.error({
         title: 'Please fill out all fields.',
         centered: true,
@@ -99,14 +76,14 @@ const SiteLessons = props => {
     } else {
       fetch(`/api/v1/lesson_site/add?uid=${dTok.id}`, {
         method: 'POST',
-        body: JSON.stringify({ lesson_id: lessonId, date }),
+        body: JSON.stringify({ lesson_id: newLessonId, modalDate }),
         headers: new Headers({
           'Content-Type': 'application/json',
         }),
       })
-        .then(res => res.json())
+        .then(handleErrors)
         .then(newLesson => {
-          let newSiteLessons = [...siteLessons, { ...newLesson, date }];
+          let newSiteLessons = [...siteLessons, { ...newLesson, date: modalDate }];
           var sorted_lessons = newSiteLessons.sort((siteLesson1, siteLesson2) => {
             return (
               new Date(siteLesson1.date).getTime() - new Date(siteLesson2.date).getTime()
@@ -115,13 +92,89 @@ const SiteLessons = props => {
           setSiteLessons(sorted_lessons);
           setOtherLessons(prevOtherLessons => {
             if (prevOtherLessons && otherLessons) {
-              return prevOtherLessons.filter(otherLesson => otherLesson.id !== lessonId);
+              return prevOtherLessons.filter(
+                otherLesson => otherLesson.id !== newLessonId,
+              );
             }
           });
           setShowModal(false);
-          setModalSelectedValue('');
           setModalDate('');
+          setNewLessonId('');
+        })
+        .catch(() =>
+          Modal.error({
+            title: 'Error adding lesson to site. Please try again.',
+            centered: true,
+          }),
+        );
+    }
+  };
+
+  const onDateChange = date => {
+    setModalDate(date);
+  };
+
+  const deleteHandler = lessonDetails => {
+    fetch('/api/v1/lessons/delete', {
+      method: 'POST',
+      body: JSON.stringify({ id: lessonDetails.id }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .then(handleErrors)
+      .then(() => {
+        setSiteLessons(prevSiteLessons => {
+          if (prevSiteLessons) {
+            return prevSiteLessons.filter(lesson => lesson.id !== lessonDetails.id);
+          }
         });
+        setOtherLessons(prevOtherLessons => {
+          if (prevOtherLessons) {
+            return [...prevOtherLessons, lessonDetails];
+          }
+        });
+      })
+      .catch(() =>
+        Modal.error({
+          title: 'Error deleting lesson. Please try again.',
+          centered: true,
+        }),
+      );
+  };
+
+  const addLessonToPool = () => {
+    const titleAdd = document.getElementById('titleAdd');
+    const summaryAdd = document.getElementById('summaryAdd');
+
+    if (!titleAdd.value || !summaryAdd.value) {
+      Modal.error({
+        title: 'Please fill out all fields.',
+        centered: true,
+      });
+    } else {
+      const item = {
+        title: titleAdd.value,
+        summary: summaryAdd.value,
+      };
+      fetch('/api/v1/lessons/add', {
+        method: 'POST',
+        body: JSON.stringify(item),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      })
+        .then(handleErrors)
+        .then(newLessonInfo => {
+          setNewLessonId(newLessonInfo.id);
+          setShowModal(false);
+        })
+        .catch(() =>
+          Modal.error({
+            title: 'Error adding lesson. Please try again.',
+            centered: true,
+          }),
+        );
     }
   };
 
@@ -129,43 +182,44 @@ const SiteLessons = props => {
     let maybeAddCard;
     if (ismentor) {
       maybeAddCard = (
-        <div className="plusCard">
-          <GoPlus onClick={() => setShowModal(true)} size={100} color="grey" />
+        <>
+          <div className="plusCard" onClick={() => setShowModal(true)}>
+            <GoPlus size={100} color="grey" />
+          </div>
           <Modal
             className="addModal"
             title="Add a Lesson"
             centered
             visible={showModal}
-            onOk={() => addLessonToSite(modalSelectedValue, modalDate)}
+            onOk={addLessonToPool}
             onCancel={() => setShowModal(false)}
             destroyOnClose={true}
           >
             <div className="addLesson">
-              <Select
-                showSearch
-                style={{ width: 200 }}
-                placeholder="Select a lesson"
-                optionFilterProp="children"
-                onChange={onSelectChange}
-                filterOption={(input, option) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-              >
-                {otherLessons &&
-                  otherLessons.length > 0 &&
-                  otherLessons.map(lesson => (
-                    <Option key={lesson.id} value={lesson.id}>
-                      {lesson.title}
-                    </Option>
-                  ))}
-              </Select>
-              <br />
-              <div>
+              <Row>
+                <Input
+                  id="titleAdd"
+                  allowClear
+                  addonBefore="Title:"
+                  autosize="true"
+                  defaultValue=""
+                />
+              </Row>
+              <Row>
+                <Input
+                  id="summaryAdd"
+                  allowClear
+                  addonBefore="Summary:"
+                  autosize="true"
+                  defaultValue=""
+                />
+              </Row>
+              <Row>
                 <DatePicker onChange={onDateChange} />
-              </div>
+              </Row>
             </div>
           </Modal>
-        </div>
+        </>
       );
     }
 

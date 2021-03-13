@@ -69,7 +69,7 @@ const addLessonToSite = async (req, res, next) => {
     await knex('lesson_site').insert({
       lesson_id: req.body.lesson_id,
       site_id: siteid[0].site_id,
-      date: req.body.date,
+      date: req.body.modalDate,
     });
 
     const data = await knex
@@ -102,7 +102,7 @@ const deleteLessonFromSite = async (req, res, next) => {
     return res.status(500).json({ error });
   }
 };
-/* Update notes on a site_lesson */
+/* Update date on a site_lesson */
 const update = async (req, res, next) => {
   const userid = req.body.userId;
 
@@ -114,8 +114,8 @@ const update = async (req, res, next) => {
 
     const data = await knex('lesson_site')
       .where('site_id', siteid[0].site_id)
-      .where('lesson_id', req.body.lessonId)
-      .update({ notes: req.body.editedNotes });
+      .where('lesson_id', req.body.id)
+      .update({ date: req.body.editedDate });
     return res.status(200).json({ data });
   } catch (error) {
     return res.status(500).json({ error });

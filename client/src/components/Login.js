@@ -31,6 +31,10 @@ const Login = props => {
       });
   };
 
+  useEffect(() => {
+    console.log(localStorage);
+  }, []);
+
   const onFailure = res => {
     console.log('Login failed: res:', res);
   };

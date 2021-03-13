@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import '../stylesheets/Profile.css';
 import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
+import { handleErrors } from '../utils/helpers';
 
 const Profile = () => {
   const profileimage = 'https://image.flaticon.com/icons/png/128/1141/1141771.png';
@@ -20,17 +21,18 @@ const Profile = () => {
     var get_url = '/api/v1/profile/';
     var id_str = id.toString();
     fetch(get_url + id_str + '?uid=' + d_tok.id)
-      .then(res => res.json())
-      .then(
-        profile => {
-          setUsername(profile[0].name);
-          setEmail(profile[0].email);
-          setCandy(profile[0].candy);
-          setHobby(profile[0].hobby);
-        },
-        error => {
-          console.log(error);
-        },
+      .then(handleErrors)
+      .then(profile => {
+        setUsername(profile[0].name);
+        setEmail(profile[0].email);
+        setCandy(profile[0].candy);
+        setHobby(profile[0].hobby);
+      })
+      .catch(() =>
+        Modal.error({
+          title: 'Unable to get profile.',
+          centered: true,
+        }),
       );
   }, []);
 

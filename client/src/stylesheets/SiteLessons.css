@@ -44,6 +44,7 @@
 .ant-avatar.ant-avatar-icon {
   padding-top: 20%;
 }
+
 .lessonsContainer:after {
   content: '';
   display: block;
@@ -67,4 +68,8 @@
 .emptyDiv {
   height: 100px;
   background: #f5f7f8;
+}
+
+.addLesson .ant-row {
+  margin-bottom: 12px;
 }
