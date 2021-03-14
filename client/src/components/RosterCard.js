@@ -10,7 +10,7 @@ const { TextArea } = Input;
 const RosterCard = props => {
   const { mentor, person } = props;
 
-  const { id, name, email, candy, hobby, notes } = person; // TODO: fetch candy and hobby to display here!
+  const { id, username, email, candy, hobby, fact, notes } = person; // TODO: fetch candy and hobby to display here!
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
@@ -55,11 +55,12 @@ const RosterCard = props => {
     if (mentor) {
       description = (
         <div>
-          <h2>Name: {name}</h2>
-          <p>Email: {email}</p>
-          {/* <p>Favorite Candy: {candy}</p>
-          <p>Favorite Hobby: {hobby}</p> */}
-          <p>Notes: {displayNotes}</p>
+          <h2>Name: {username}</h2>
+          <p><span className="rosterCardItem" id="email">Email</span> {email}</p>
+          <p><span className="rosterCardItem" id="candy">Favorite Candy</span> {candy}</p>
+          <p><span className="rosterCardItem" id="hobby">Favorite Hobby</span> {hobby}</p>
+          <p><span className="rosterCardItem" id="fact">Fun Fact</span> {fact}</p>
+          <p><span className="rosterCardItem" id="notes">Notes</span> {displayNotes}</p>
         </div>
       );
     } else {
@@ -119,7 +120,7 @@ const RosterCard = props => {
   return (
     <div>
       <Card
-        style={{ width: 300 }}
+        style={{ borderRadius: '20px'}}
         cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
       >
         {description}
