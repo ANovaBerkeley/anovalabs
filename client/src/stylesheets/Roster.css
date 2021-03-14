@@ -71,11 +71,11 @@ img {
 
 .ant-card-cover {
   display: block;
-  width: 50%;
+  width: 40%;
   align-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 
 .error {
@@ -196,4 +196,32 @@ input[type='submit']:hover {
 
 .editFields .ant-row {
   padding: 20 0px;
+}
+
+/* might want to move below to its own rosterCard.css file */
+
+.rosterCardItem {
+  border-radius: 15px;
+  padding: 5px;
+  font-size: 12px;
+}
+
+#email {
+  background-color: #EAC5C5;
+}
+
+#candy {
+  background-color: #EADBC5;
+}
+
+#hobby {
+  background-color: #B9D8B2;
+}
+
+#fact {
+  background-color: #C1D4E5;
+}
+
+#notes {
+  background-color: #DEDEDE;
 }
