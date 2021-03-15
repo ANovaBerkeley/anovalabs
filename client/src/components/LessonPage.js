@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FiEdit } from 'react-icons/fi';
-import ContentEditable from 'react-contenteditable';
-
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import TextEditor from './TextEditor';
+import 'draft-js/dist/Draft.css';
 import '../stylesheets/LessonPage.css';
 
 const LessonPage = props => {
@@ -9,37 +10,68 @@ const LessonPage = props => {
 
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
-  const [descriptionHTML, setDescriptionHTML] = useState('');
-  const [resourcesHTML, setResourcesHTML] = useState('');
-  const [labHTML, setLabHTML] = useState('');
-  const [exitTicketHTML, setExitTicketHTML] = useState('');
+  const [descriptionState, setDescriptionState] = useState(EditorState.createEmpty());
+  const [resourcesState, setResourcesState] = useState(EditorState.createEmpty());
+  const [labState, setLabState] = useState(EditorState.createEmpty());
+  const [exitTicketState, setExitTicketState] = useState(EditorState.createEmpty());
+  const [oldDescriptionState, setOldDescriptionState] = useState(
+    EditorState.createEmpty(),
+  );
+  const [oldResourcesState, setOldResourcesState] = useState(EditorState.createEmpty());
+  const [oldLabState, setOldLabState] = useState(EditorState.createEmpty());
+  const [oldExitTicketState, setOldExitTicketState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
     fetch('/api/v1/lessons/' + id + '?id=' + id)
       .then(res => res.json())
       .then(lesson => {
         setTitle(lesson[0].title);
-        setDescriptionHTML(lesson[0].descriptionHTML);
-        setResourcesHTML(lesson[0].resourcesHTML);
-        setLabHTML(lesson[0].labHTML);
-        setExitTicketHTML(lesson[0].exitTicketHTML);
+        if (lesson[0].description_state) {
+          const content = convertFromRaw(lesson[0].description_state);
+          setDescriptionState(EditorState.createWithContent(content));
+          setOldDescriptionState(EditorState.createWithContent(content));
+        }
+        if (lesson[0].resources_state) {
+          const content = convertFromRaw(lesson[0].resources_state);
+          setResourcesState(EditorState.createWithContent(content));
+          setOldResourcesState(EditorState.createWithContent(content));
+        }
+        if (lesson[0].lab_state) {
+          const content = convertFromRaw(lesson[0].lab_state);
+          setLabState(EditorState.createWithContent(content));
+          setOldLabState(EditorState.createWithContent(content));
+        }
+        if (lesson[0].exit_ticket_state) {
+          const content = convertFromRaw(lesson[0].exit_ticket_state);
+          setExitTicketState(EditorState.createWithContent(content));
+          setOldExitTicketState(EditorState.createWithContent(content));
+        }
       });
   }, [id]);
 
-  const handleDescriptionChange = evt => {
-    setDescriptionHTML(evt.target.value);
+  const handleDescriptionChange = newState => {
+    setDescriptionState(newState);
+    console.log(newState);
   };
 
-  const handleResourcesChange = evt => {
-    setResourcesHTML(evt.target.value);
+  const handleResourcesChange = newState => {
+    setResourcesState(newState);
   };
 
-  const handleLabChange = evt => {
-    setLabHTML(evt.target.value);
+  const handleLabChange = newState => {
+    setLabState(newState);
   };
 
-  const handleExitTicketChange = evt => {
-    setExitTicketHTML(evt.target.value);
+  const handleExitTicketChange = newState => {
+    setExitTicketState(newState);
+  };
+
+  const cancelChanges = () => {
+    setDescriptionState(oldDescriptionState);
+    setResourcesState(oldResourcesState);
+    setLabState(oldLabState);
+    setExitTicketState(oldExitTicketState);
+    setEditMode(false);
   };
 
   const saveChanges = () => {
@@ -47,10 +79,10 @@ const LessonPage = props => {
       method: 'POST',
       body: JSON.stringify({
         lessonId: id,
-        editedDescriptionHTML: descriptionHTML,
-        editedResourcesHTML: resourcesHTML,
-        editedLabHTML: labHTML,
-        editedExitTicketHTML: exitTicketHTML,
+        editedDescriptionState: convertToRaw(descriptionState.getCurrentContent()),
+        editedResourcesState: convertToRaw(resourcesState.getCurrentContent()),
+        editedLabState: convertToRaw(labState.getCurrentContent()),
+        editedExitTicketState: convertToRaw(exitTicketState.getCurrentContent()),
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -58,59 +90,54 @@ const LessonPage = props => {
     }).then(setEditMode(false));
   };
 
-  let maybeEditButton;
-  if (ismentor) {
-    maybeEditButton = (
-      <button className="editButton" onClick={() => setEditMode(true)} type="button">
-        <FiEdit size="42" />
-      </button>
-    );
-  }
-  let maybeSaveButton;
-  let editing = '';
-  if (editMode) {
-    maybeSaveButton = (
-      <button className="saveButton" onClick={saveChanges} type="button">
-        Save
-      </button>
-    );
-    editing = 'editing';
-  }
   return (
     <div className="page">
       <div className="lessonPageContainer">
         <div className="title-container">
           <h1 className="lessonPageTitle">{title}</h1>
-          {maybeEditButton}
+          {ismentor && (
+            <button
+              className="editButton"
+              onClick={() => setEditMode(true)}
+              type="button"
+            >
+              <FiEdit size="42" />
+            </button>
+          )}
         </div>
-        <ContentEditable
-          className={'textBox ' + editing}
-          html={descriptionHTML}
-          disabled={!editMode}
-          onChange={handleDescriptionChange} // handle innerHTML change
+        <TextEditor
+          editorState={descriptionState}
+          editMode={editMode}
+          onChange={handleDescriptionChange}
         />
         <h2 className="textTitle"> Lesson Resources </h2>
-        <ContentEditable
-          className={'textBox ' + editing}
-          html={resourcesHTML}
-          disabled={!editMode}
-          onChange={handleResourcesChange} // handle innerHTML change
+        <TextEditor
+          editorState={resourcesState}
+          editMode={editMode}
+          onChange={handleResourcesChange}
         />
         <h2 className="textTitle"> Lab </h2>
-        <ContentEditable
-          className={'textBox ' + editing}
-          html={labHTML}
-          disabled={!editMode}
-          onChange={handleLabChange} // handle innerHTML change
+        <TextEditor
+          editorState={labState}
+          editMode={editMode}
+          onChange={handleLabChange}
         />
         <h2 className="textTitle"> Exit Ticket </h2>
-        <ContentEditable
-          className={'textBox ' + editing}
-          html={exitTicketHTML}
-          disabled={!editMode}
-          onChange={handleExitTicketChange} // handle innerHTML change
+        <TextEditor
+          editorState={exitTicketState}
+          editMode={editMode}
+          onChange={handleExitTicketChange}
         />
-        {maybeSaveButton}
+        {editMode && (
+          <div className="buttonsContainer">
+            <button className="cancelButton" onClick={cancelChanges} type="button">
+              Cancel
+            </button>
+            <button className="saveButton" onClick={saveChanges} type="button">
+              Save
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

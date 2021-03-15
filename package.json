@@ -38,6 +38,7 @@
     "css-loader": "^2.1.1",
     "debug": "~2.6.9",
     "dotenv": "^6.2.0",
+    "draft-js": "^0.11.7",
     "express": "~4.16.0",
     "google-auth-library": "^6.1.6",
     "joi": "^14.3.0",
