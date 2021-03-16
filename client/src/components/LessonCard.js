@@ -192,51 +192,10 @@ const LessonCard = props => {
   const renderFeedbackButton = () => {
     let editButton;
     editButton = (
-    <> 
-      <Button
-            type="primary"
-            className="lowerButton"
-            onClick={() => setShowEditModal(true)}
-          >
-            Edit Feedback
-      </Button>
-
-      <Modal
-        visible={showEditModal}
-        title="Update Lesson Details:"
-        okText="Update"
-        onCancel={() => setShowEditModal(false)}
-        onOk={editLessonDetails}
-      >
-
-        <div className="addFields">
-          <Row>
-            <Col>
-              <Input
-                id="titleAdd"
-                allowClear
-                addonBefore="Title:"
-                autosize="true"
-                defaultValue={title}
-                onChange={onChangeTitle}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Input
-                id="summaryAdd"
-                allowClear
-                addonBefore="Summary:"
-                autosize="true"
-                defaultValue={summary}
-                onChange={onChangeSummary}
-              />
-            </Col>
-          </Row>
-        </div>
-
-      </Modal>
+    <>
+      <Link to={'/LessonFeedback/' + id}>
+          <button className="lowerButton">Edit Feedback</button>
+      </Link>
     </>
     );
     return editButton;

@@ -36,6 +36,9 @@ const App = () => {
             <Route path="/LessonPage/:id">
               <AuthComponent Component={LessonPage} />
             </Route>
+            <Route path="/LessonFeedback/:id">
+              <AuthComponent Component={Feedback} />
+            </Route>
           </Switch>
         </div>
       </BrowserRouter>

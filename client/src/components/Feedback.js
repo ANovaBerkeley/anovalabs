@@ -91,6 +91,16 @@ class Feedback extends Component {
             onChange={event => this.setState({ text: event.target.value })}
           ></input>
         </div>
+        <div className="feedbackBoxContainer">
+          <h3>General Feedback/Thoughts?</h3>
+          <input
+            className="feedbackInput"
+            type="text"
+            placeholder="Add feedback"
+            // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
+            onChange={event => this.setState({ text: event.target.value })}
+          ></input>
+        </div>
         <div className="ratingContainer">
           <h3 className="rateText">Rate today's lesson on a scale from 1-5!</h3>
           <div className="buttonContainer">
