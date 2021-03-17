@@ -54,7 +54,7 @@ const AuthComponent = props => {
   } else {
     return (
       <div>
-        <NavBar isMentor={mentor} />
+        <NavBar isMentor={mentor} match={match} />
         <Component ismentor={mentor} id={match.params.id} />
       </div>
     );

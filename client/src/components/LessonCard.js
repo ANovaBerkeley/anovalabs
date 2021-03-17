@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
-import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
+import { Popconfirm, Button, Modal, Row, DatePicker, Input } from 'antd';
 import { GoTrashcan } from 'react-icons/go';
-// import * as decode from 'jwt-decode';
+import * as decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
-
+import moment from 'moment';
+import { handleErrors } from '../utils/helpers';
 import '../stylesheets/LessonCard.css';
+
 // const { TextArea } = Input;
 const LessonCard = props => {
   const { isMentor, lessonDetails, deleteHandler, pool } = props;
   const { id, title, summary, date } = lessonDetails; // get notes here
 
   const [showModal, setShowModal] = useState(false);
-  // const [showNotesModal, setShowNotesModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  // const [editedNotes, setEditedNotes] = useState(notes);
   const [shownTitle, setShownTitle] = useState(title);
   const [shownSummary, setShownSummary] = useState(summary);
+  const [shownDate, setShownDate] = useState(date);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedSummary, setEditedSummary] = useState(summary);
+  const [editedDate, setEditedDate] = useState(date);
 
   const deleteLesson = () => {
     setShowModal(false);
     deleteHandler(lessonDetails);
   };
-
-  // const onChangeNotes = event => {
-  //   setEditedNotes(event.target.value);
-  // };
 
   const onChangeTitle = event => {
     setEditedTitle(event.target.value);
@@ -36,38 +34,9 @@ const LessonCard = props => {
     setEditedSummary(event.target.value);
   };
 
-  // editLesson() {
-  //   const tok = localStorage.getItem('anovaToken');
-  //   const dTok = decode(tok);
-  //   let userId;
-  //   userId = dTok.id;
-  //   const { editedNotes, lessonId } = this.state;
-  //   if (editedNotes.length >= 255) {
-  //     Modal.error({
-  //       title: 'Exceeded maximum number of characters (255).',
-  //       centered: true,
-  //     });
-  //     return;
-  //   }
-  //   fetch('/api/v1/lesson_site/update', {
-  //     method: 'POST',
-  //     body: JSON.stringify({
-  //       editedNotes,
-  //       userId,
-  //       lessonId,
-  //     }),
-  //     headers: new Headers({
-  //       'Content-Type': 'application/json',
-  //     }),
-  //   })
-  //     .then(res => res.json())
-  //     .then(values => {
-  //       this.setState({
-  //         showNotesModal: false,
-  //         notes: editedNotes,
-  //       });
-  //     });
-  // }
+  const onChangeDate = date => {
+    setEditedDate(date);
+  };
 
   const editLessonDetails = () => {
     if (editedSummary.length >= 255) {
@@ -88,54 +57,48 @@ const LessonCard = props => {
         'Content-Type': 'application/json',
       }),
     })
+      .then(handleErrors)
       .then(() => {
-        setShowEditModal(false);
         setShownTitle(editedTitle);
         setShownSummary(editedSummary);
       })
-      .catch(err => {
+      .catch(() => {
         Modal.error({
-          title: 'Unable to update lesson.',
+          title: 'Unable to update lesson details.',
           centered: true,
         });
       });
-  };
 
-  // renderNotesButton() {
-  //   const { isMentor } = this.state;
-  //   const { showNotesModal, notes } = this.state;
-  //   let notesButton;
-  //   if (isMentor) {
-  //     notesButton = (
-  //       <div>
-  //         <Button type="primary" onClick={() => this.setState({ showNotesModal: true })}>
-  //           Notes
-  //         </Button>
-  //         <Modal
-  //           visible={showNotesModal}
-  //           title="Lesson Notes:"
-  //           okText="Update"
-  //           onCancel={() => this.setState({ showNotesModal: false })}
-  //           onOk={this.editLesson}
-  //         >
-  //           <Row>
-  //             <Col>
-  //               <TextArea
-  //                 rows={4}
-  //                 id="notes"
-  //                 addonBefore="Notes:"
-  //                 autosize="true"
-  //                 defaultValue={notes}
-  //                 onChange={this.onChangeNotes}
-  //               />
-  //             </Col>
-  //           </Row>
-  //         </Modal>
-  //       </div>
-  //     );
-  //   }
-  //   return notesButton;
-  // }
+    if (!pool) {
+      const tok = localStorage.getItem('anovaToken');
+      const dTok = decode(tok);
+      let userId;
+      userId = dTok.id;
+
+      fetch('/api/v1/lesson_site/update', {
+        method: 'POST',
+        body: JSON.stringify({
+          editedDate,
+          userId,
+          id,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      })
+        .then(handleErrors)
+        .then(() => {
+          setShowEditModal(false);
+          setShownDate(editedDate);
+        })
+        .catch(() => {
+          Modal.error({
+            title: 'Unable to update lesson date.',
+            centered: true,
+          });
+        });
+    }
+  };
 
   const renderEditButton = () => {
     let editButton;
@@ -158,29 +121,30 @@ const LessonCard = props => {
           >
             <div className="addFields">
               <Row>
-                <Col>
-                  <Input
-                    id="titleAdd"
-                    allowClear
-                    addonBefore="Title:"
-                    autosize="true"
-                    defaultValue={title}
-                    onChange={onChangeTitle}
-                  />
-                </Col>
+                <Input
+                  id="titleAdd"
+                  allowClear
+                  addonBefore="Title:"
+                  autosize="true"
+                  defaultValue={title}
+                  onChange={onChangeTitle}
+                />
               </Row>
               <Row>
-                <Col>
-                  <Input
-                    id="summaryAdd"
-                    allowClear
-                    addonBefore="Summary:"
-                    autosize="true"
-                    defaultValue={summary}
-                    onChange={onChangeSummary}
-                  />
-                </Col>
+                <Input
+                  id="summaryAdd"
+                  allowClear
+                  addonBefore="Summary:"
+                  autosize="true"
+                  defaultValue={summary}
+                  onChange={onChangeSummary}
+                />
               </Row>
+              {!pool && (
+                <Row>
+                  <DatePicker defaultValue={moment(date)} onChange={onChangeDate} />
+                </Row>
+              )}
             </div>
           </Modal>
         </>
@@ -189,16 +153,9 @@ const LessonCard = props => {
     return editButton;
   };
 
-  // let maybeNotesButton;
-  let maybeEditButton;
-  if (!pool) {
-    // maybeNotesButton = this.renderNotesButton();
-  } else {
-    maybeEditButton = renderEditButton();
-  }
   let readableDate = '';
-  if (date && !pool) {
-    readableDate = new Date(date).toLocaleDateString();
+  if (shownDate && !pool) {
+    readableDate = new Date(shownDate).toLocaleDateString();
   }
   let maybeDeleteButton;
   if (isMentor) {
@@ -228,7 +185,7 @@ const LessonCard = props => {
         <div className="description">{shownSummary}</div>
       </div>
       <div className="buttonContainer">
-        {maybeEditButton}
+        {renderEditButton()}
         <Link to={'/LessonPage/' + id}>
           <button className="lowerButton">View Assignment</button>
         </Link>

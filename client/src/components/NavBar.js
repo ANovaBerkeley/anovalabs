@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, Button, Drawer } from 'antd';
 import '../stylesheets/NavBar.css';
-import { getAnovaToken, removeAnovaToken } from '../utils/utils';
+import { getAnovaToken, removeAnovaToken, removeGoogleToken } from '../utils/utils';
 import { NavLink } from 'react-router-dom';
+import { GoogleLogout } from 'react-google-login';
 
 const logo = require('../stylesheets/logo.png');
 
 const NavBar = props => {
-  const { isMentor } = props;
+  const { match } = props;
 
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+
+  const clientId =
+    '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com';
+
+  useEffect(() => {
+    if (match.path === '/SiteLessons' || match.path === '/') {
+      setSelectedKeys('lessons');
+    } else if (match.path === '/Roster') {
+      setSelectedKeys('roster');
+    } else if (match.path === '/Profile') {
+      setSelectedKeys('profile');
+    }
+  }, [match.path]);
 
   const showDrawer = () => {
     setDrawerVisible(true);
@@ -21,6 +36,7 @@ const NavBar = props => {
 
   const logOut = () => {
     removeAnovaToken();
+    removeGoogleToken();
   };
 
   if (getAnovaToken() === null) {
@@ -35,22 +51,22 @@ const NavBar = props => {
         </div>
         <div className="menuCon">
           <div className="leftMenu">
-            <Menu mode="horizontal">
+            <Menu mode="horizontal" selectedKeys={selectedKeys}>
               <Menu.Item className="menuItem" key="lessons">
                 <NavLink to="/SiteLessons">Site Material</NavLink>
               </Menu.Item>
-              {isMentor && (
+              {/* {isMentor && (
                 <Menu.Item className="menuItem" key="lessonpool">
                   <NavLink to="/LessonPool">Lesson Pool</NavLink>
                 </Menu.Item>
-              )}
+              )} */}
               <Menu.Item className="menuItem" key="roster">
                 <NavLink to="/Roster">Roster</NavLink>
               </Menu.Item>
             </Menu>
           </div>
           <div className="rightMenu">
-            <Menu mode="horizontal">
+            <Menu mode="horizontal" selectedKeys={selectedKeys}>
               <Menu.SubMenu
                 className="menuItem"
                 title={
@@ -61,7 +77,7 @@ const NavBar = props => {
                   />
                 }
               >
-                <Menu.Item className="menuItem" key="edit">
+                <Menu.Item className="menuItem" key="profile">
                   <NavLink to="/Profile">Profile</NavLink>
                 </Menu.Item>
                 <Menu.Item className="menuItem" key="logout">
@@ -82,33 +98,36 @@ const NavBar = props => {
             onClose={hideDrawer}
             visible={drawerVisible}
           >
-            <Menu mode="vertical">
+            <Menu mode="vertical" selectedKeys={selectedKeys}>
               <Menu.Item className="menuItem" key="lessons">
                 <NavLink onClick={hideDrawer} to="/SiteLessons">
                   Site Material
                 </NavLink>
               </Menu.Item>
-              {isMentor && (
+              {/* {isMentor && (
                 <Menu.Item className="menuItem" key="lessonpool">
                   <NavLink onClick={hideDrawer} to="/LessonPool">
                     Lesson Pool
                   </NavLink>
                 </Menu.Item>
-              )}
+              )} */}
               <Menu.Item className="menuItem" key="roster">
                 <NavLink onClick={hideDrawer} to="/Roster">
                   Roster
                 </NavLink>
               </Menu.Item>
-              <Menu.Item className="menuItem" key="edit">
+              <Menu.Item className="menuItem" key="profile">
                 <NavLink onClick={hideDrawer} to="/Profile">
                   Profile
                 </NavLink>
               </Menu.Item>
               <Menu.Item className="menuItem" key="logout">
-                <NavLink onClick={logOut} to="/Login">
-                  Logout
-                </NavLink>
+                <GoogleLogout
+                  clientId={clientId}
+                  render={() => <NavLink to="/Login">Logout</NavLink>}
+                  buttonText="Logout"
+                  onLogoutSuccess={logOut}
+                />
               </Menu.Item>
             </Menu>
           </Drawer>

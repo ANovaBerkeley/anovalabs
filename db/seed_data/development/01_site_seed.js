@@ -1,52 +1,47 @@
 module.exports = [
   {
     schoolName: 'DCA',
-    time: 'M,TH 3:30-5:30PM',
-    contact: 'Pranav Vachaspati'
+    time: 'M 3:50-4:35PM, W 4:40-5:25PM',
+    contact: 'Pranav Vachaspati',
   },
   {
     schoolName: 'Montera',
-    time: 'T,TH,F 3:20-5:35PM',
-    contact: 'Emily Wang'
+    time: 'M,W 3:00-4:00PM',
+    contact: 'Wailea Siler',
   },
   {
     schoolName: 'Willard',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Caroline Liu'
+    time: 'M,T 1:30-2:30PM',
+    contact: 'Kevin Chai',
   },
   {
-    schoolName: 'Fremont High',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Steven Dai'
+    schoolName: 'Longfellow Middle School',
+    time: 'M,TH 1:45-3:00PM',
+    contact: 'Ethan Wong',
+  },
+  {
+    schoolName: 'King Middle School',
+    time: 'T,TH 3:00-4:00PM',
+    contact: 'Andy Flury',
   },
   {
     schoolName: 'Rudsdale',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'David Ly'
-  },
-  {
-    schoolName: 'Roosevelt',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Joey Nguyen'
-  },
-  {
-    schoolName: 'Lighthouse Charter',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Amanuel Yitbarek'
+    time: 'M,F 11:30-12:30PM',
+    contact: 'Susan Zhang, Jimmy Lee',
   },
   {
     schoolName: 'College Track',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Cody Yu'
+    time: 'W 4:00-4:55PM',
+    contact: 'Kevin Lin',
   },
   {
     schoolName: 'Squash Drive',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Calvin Chen'
+    time: 'W 3:30-5:00PM',
+    contact: 'Ana Tudor',
   },
   {
-    schoolName: 'Oakland Tech',
-    time: 'T,TH,F 3:00-4:30PM',
-    contact: 'Iris Chow'
-  }
+    schoolName: 'John Henry HS',
+    time: 'M 2:00-3:00PM',
+    contact: 'Shauna Hannani',
+  },
 ];

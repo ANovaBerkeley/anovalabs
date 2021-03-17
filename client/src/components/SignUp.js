@@ -34,6 +34,7 @@ const SignUp = () => {
   const [siteId, setSiteId] = useState('');
   const [siteCode, setSiteCode] = useState('');
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
   const history = useHistory();
 
   const clientId =
@@ -42,6 +43,7 @@ const SignUp = () => {
   const onSuccess = res => {
     localStorage.setItem('googleToken', res.tokenId);
     console.log('Login Success: currentUser:', res);
+    setEmail(res.profileObj.email + ' ✓');
   };
 
   const onFailure = res => {
@@ -203,7 +205,7 @@ const SignUp = () => {
     <div className="signUpContainer">
       <div className="signUpBox">
         <img alt="anova logo" src={ANovaLogo} className="signup-logo" />
-        <div className="title">
+        <div className="signup-title">
           <div className="anova">ANova </div>
           <div className="labs">Labs </div>
         </div>
@@ -212,11 +214,11 @@ const SignUp = () => {
             <GoogleLogin
               className="signup-google"
               clientId={clientId}
-              buttonText="Register"
+              buttonText={email || 'Register'}
               onSuccess={onSuccess}
               onFailure={onFailure}
               cookiePolicy={'single_host_origin'}
-              isSignedIn={true}
+              isSignedIn={false}
             />
           </Form.Item>
           <Form.Item>

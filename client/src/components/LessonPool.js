@@ -3,25 +3,28 @@ import { Modal, Input, Row, Col } from 'antd';
 import { GoPlus } from 'react-icons/go';
 import '../stylesheets/LessonPool.css';
 import LessonCard from './LessonCard';
+import { handleErrors } from '../utils/helpers';
 
 const LessonPool = props => {
   const { ismentor } = props;
 
-  const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [allLessons, setAllLessons] = useState([]);
 
   useEffect(() => {
     fetch('/api/v1/lessons/all')
-      .then(res => res.json())
+      .then(handleErrors)
       .then(allLessons => {
         setAllLessons(allLessons);
         setIsLoaded(true);
       })
-      .catch(err => {
-        setError('Unable to fetch lessons.');
-      });
+      .catch(() =>
+        Modal.error({
+          title: 'Unable to fetch lessons.',
+          centered: true,
+        }),
+      );
   }, []);
 
   const deleteHandler = lessonDetails => {
@@ -32,11 +35,17 @@ const LessonPool = props => {
         'Content-Type': 'application/json',
       }),
     })
+      .then(handleErrors)
       .then(() => {
         const newAllLessons = allLessons.filter(item => item.id !== lessonDetails.id);
         setAllLessons(newAllLessons);
       })
-      .catch(err => setError('Unable to delete lesson.'));
+      .catch(() =>
+        Modal.error({
+          title: 'Unable to delete lesson.',
+          centered: true,
+        }),
+      );
   };
 
   const addLessonToPool = () => {
@@ -60,19 +69,21 @@ const LessonPool = props => {
           'Content-Type': 'application/json',
         }),
       })
-        .then(res => res.json())
+        .then(handleErrors)
         .then(newLessonInfo => {
           item['id'] = newLessonInfo.id;
           setAllLessons([...allLessons, item]);
           setShowModal(false);
         })
-        .catch(err => setError('Unable to add lesson.'));
+        .catch(() =>
+          Modal.error({
+            title: 'Unable to add lesson.',
+            centered: true,
+          }),
+        );
     }
   };
 
-  if (error) {
-    return <div>Error:{error.message}</div>;
-  }
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
