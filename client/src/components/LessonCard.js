@@ -194,7 +194,7 @@ const LessonCard = props => {
     editButton = (
     <>
       <Link to={'/LessonFeedback/' + id}>
-          <button className="lowerButton">Edit Feedback</button>
+          <button className="lowerButton siteMaterialButton" >Edit Feedback</button>
       </Link>
     </>
     );
@@ -243,7 +243,7 @@ const LessonCard = props => {
       <div className="buttonContainer">
         {maybeEditButton}
         <Link to={'/LessonPage/' + id}>
-          <button className="lowerButton">View Assignment</button>
+          <button className="lowerButton siteMaterialButton" >View Assignment</button>
         </Link>
       </div>
     </div>

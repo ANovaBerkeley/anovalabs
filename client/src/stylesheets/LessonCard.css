@@ -93,3 +93,9 @@
 .lowerButton:hover {
   opacity: 0.8;
 }
+
+.siteMaterialButton {
+  line-height: 1.5vh;
+  padding: 1vw 1vw;
+}
+
