@@ -14,6 +14,9 @@ const Profile = () => {
   const [hobby, setHobby] = useState('');
   const [showEdit, setShowEdit] = useState(false);
 
+  const [pronouns, setPronouns] = useState('');
+  const [replitEmail, setReplitEmail] = useState('');
+
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
@@ -27,6 +30,8 @@ const Profile = () => {
         setEmail(profile[0].email);
         setCandy(profile[0].candy);
         setHobby(profile[0].hobby);
+        setPronouns(profile[0].pronouns);
+        setReplitEmail(profile[0].replitEmail);
       })
       .catch(() =>
         Modal.error({
@@ -39,11 +44,17 @@ const Profile = () => {
   const applyChanges = () => {
     const candyEdit = document.getElementById('candyEdit');
     const hobbyEdit = document.getElementById('hobbyEdit');
+
+    const pronounsEdit = document.getElementById('pronounsEdit');
+    const replitEmailEdit = document.getElementById('replitEmailEdit');
+
     fetch('/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
         candy: candyEdit.value,
         hobby: hobbyEdit.value,
+        pronouns: pronounsEdit.value,
+        replitEmail: replitEmailEdit.value,
         id: decode(getAnovaToken()).id,
       }),
       headers: new Headers({
@@ -53,6 +64,8 @@ const Profile = () => {
       setShowEdit(false);
       setCandy(candyEdit.value);
       setHobby(hobbyEdit.value);
+      setPronouns(pronounsEdit.value);
+      setReplitEmail(replitEmailEdit.value);
     });
   };
 
@@ -79,6 +92,25 @@ const Profile = () => {
           </Col>
           <Col>
             <p id="email">{email}</p>
+          </Col>
+        </Row>
+
+        <Row type="flex">
+          <Col>
+            <p>Replit Email:</p>
+          </Col>
+          <Col>
+            <p id="replitEmail">{replitEmail}</p>
+          </Col>
+        </Row>
+
+
+        <Row type="flex">
+          <Col>
+            <p>Pronouns:</p>
+          </Col>
+          <Col>
+            <p id="pronouns">{pronouns}</p>
           </Col>
         </Row>
         <Row type="flex">
@@ -122,6 +154,30 @@ const Profile = () => {
                       addonBefore="Favorite Candy:"
                       autosize="true"
                       defaultValue={candy}
+                    ></Input>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col>
+                    <Input
+                      id="replitEmailEdit"
+                      allowClear={true}
+                      addonBefore="Replit Email:"
+                      autosize="true"
+                      defaultValue={replitEmail}
+                    ></Input>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col>
+                    <Input
+                      id="pronounsEdit"
+                      allowClear={true}
+                      addonBefore="Preferred Pronouns:"
+                      autosize="true"
+                      defaultValue={pronouns}
                     ></Input>
                   </Col>
                 </Row>
