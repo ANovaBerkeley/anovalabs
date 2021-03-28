@@ -1,5 +1,5 @@
 import React from 'react';
-import { RichUtils, KeyBindingUtil, EditorState, CompositeDecorator } from 'draft-js';
+import { RichUtils, KeyBindingUtil, EditorState } from 'draft-js';
 
 export const linkStrategy = (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges(character => {

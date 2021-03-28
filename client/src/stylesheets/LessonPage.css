@@ -97,9 +97,11 @@ h1,
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   color: grey;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .editorButton:hover {

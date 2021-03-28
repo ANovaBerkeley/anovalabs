@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Modal } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import TextEditor from './TextEditor';
 import 'draft-js/dist/Draft.css';
 import '../stylesheets/LessonPage.css';
+import { handleErrors } from '../utils/helpers';
 
 const LessonPage = props => {
   const { id, ismentor } = props;
@@ -87,7 +89,21 @@ const LessonPage = props => {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }).then(setEditMode(false));
+    })
+      .then(handleErrors)
+      .then(() => {
+        setOldDescriptionState(descriptionState);
+        setOldResourcesState(resourcesState);
+        setOldLabState(labState);
+        setOldExitTicketState(exitTicketState);
+        setEditMode(false);
+      })
+      .catch(() =>
+        Modal.error({
+          title: 'Unable to save changes.',
+          centered: true,
+        }),
+      );
   };
 
   return (
