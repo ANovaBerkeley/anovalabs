@@ -7,10 +7,9 @@ import moment from 'moment';
 import { handleErrors } from '../utils/helpers';
 import '../stylesheets/LessonCard.css';
 
-// const { TextArea } = Input;
 const LessonCard = props => {
   const { isMentor, lessonDetails, deleteHandler, pool } = props;
-  const { id, title, summary, date } = lessonDetails; // get notes here
+  const { id, title, summary, date } = lessonDetails;
 
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);

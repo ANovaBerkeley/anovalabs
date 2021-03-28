@@ -7,33 +7,40 @@ import 'antd/dist/antd.css';
 const Roster = props => {
   const { ismentor } = props;
 
-  const [roster, setRoster] = useState([]);
+  const [mentorRoster, setMentorRoster] = useState([]);
+  const [studentRoster, setStudentRoster] = useState([]);
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
     const dTok = decode(tok);
 
-    let rosterFetchCall = `/api/v1/roster?uid=${dTok.id}`;
-    if (ismentor) {
-      rosterFetchCall += '&roleToRetrieve=student';
-    } else {
-      rosterFetchCall += '&roleToRetrieve=mentor';
-    }
-
-    fetch(rosterFetchCall)
+    fetch(`/api/v1/roster?uid=${dTok.id}&roleToRetrieve=mentor`)
       .then(res => res.json())
       .then(roster => {
-        setRoster(roster);
+        setMentorRoster(roster);
+      });
+
+    fetch(`/api/v1/roster?uid=${dTok.id}&roleToRetrieve=student`)
+      .then(res => res.json())
+      .then(roster => {
+        setStudentRoster(roster);
       });
   }, [ismentor]);
 
-  const rosterCards = roster.map(person => (
+  const mentorRosterCards = mentorRoster.map(person => (
+    <RosterCard key={person.id} person={person} mentor={ismentor} />
+  ));
+
+  const studentRosterCards = studentRoster.map(person => (
     <RosterCard key={person.id} person={person} mentor={ismentor} />
   ));
 
   return (
     <div className="container">
-      <div className="containerGrid">{rosterCards}</div>
+      <h1 style={{ height: 'inherit' }}>Mentors</h1>
+      <div className="containerGrid">{mentorRosterCards}</div>
+      <h1 style={{ marginTop: '30px', height: 'inherit' }}>Students</h1>
+      <div className="containerGrid">{studentRosterCards}</div>
     </div>
   );
 };

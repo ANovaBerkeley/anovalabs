@@ -16,18 +16,6 @@ import { useHistory, withRouter } from 'react-router-dom';
 const { Option } = Select;
 
 const SignUp = () => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     redirect: false,
-  //     sites: [],
-  //     role: '',
-  //     siteId: '',
-  //     siteCode: '',
-  //   };
-  //   this._submit = this._submit.bind(this);
-  // }
-
   const [redirect, setRedirect] = useState(false);
   const [sites, setSites] = useState([]);
   const [role, setRole] = useState('');
@@ -52,39 +40,29 @@ const SignUp = () => {
 
   useEffect(() => {
     if (getAnovaToken() !== null) {
-      // this.setState({ redirect: true });
       setRedirect(true);
     }
     fetch('/api/v1/site/allSites')
       .then(res => res.json())
       .then(
         sites => {
-          // this.setState({
-          //   sites,
-          // });
           setSites(sites);
         },
         error => {
-          // this.setState({
-          //   error,
-          // });
           setError(error);
         },
       );
   }, []);
 
   const onSelectSiteChange = siteId => {
-    // this.setState({ siteId });
     setSiteId(siteId);
   };
 
   const onSelectRoleChange = role => {
-    // this.setState({ role });
     setRole(role);
   };
 
   const _checkAccess = event => {
-    // this.setState({ siteCode: event.target.value });
     setSiteCode(event.target.value);
   };
 
@@ -122,8 +100,6 @@ const SignUp = () => {
 
   const _submit = event => {
     const googleToken = getGoogleToken();
-
-    // const { role, siteId, siteCode, sites } = this.state;
 
     if (!googleToken) {
       Modal.error({
