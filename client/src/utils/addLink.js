@@ -47,7 +47,6 @@ const addLink = {
       setEditorState(RichUtils.toggleLink(editorState, selection, null));
       return 'handled';
     }
-    console.log(link);
 
     const content = editorState.getCurrentContent();
     const contentWithEntity = content.createEntity('LINK', 'MUTABLE', {
