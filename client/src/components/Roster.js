@@ -28,7 +28,7 @@ const Roster = props => {
   }, [ismentor]);
 
   const mentorRosterCards = mentorRoster.map(person => (
-    <RosterCard key={person.id} person={person} mentor={ismentor} />
+    <RosterCard key={person.id} person={person} mentor={false} />
   ));
 
   const studentRosterCards = studentRoster.map(person => (

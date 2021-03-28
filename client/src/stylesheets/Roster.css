@@ -15,8 +15,6 @@
 
 .containerGrid {
   background-color: #e6f4fc;
-  width: 80%;
-  height: 80%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
@@ -27,6 +25,10 @@
 }
 
 @media (max-width: 1024px) {
+  .container {
+    align-items: center;
+  }
+
   .containerGrid {
     grid-template-columns: 50% 50%;
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { Form } from 'antd';
 import { getAnovaToken } from '../utils/utils';
@@ -46,7 +46,7 @@ const Login = props => {
   }, []);
 
   if (redirect) {
-    return <Redirect to="/Profile" />;
+    return <Redirect to="/SiteLessons" />;
   }
   return (
     <div className="loginContainer">
