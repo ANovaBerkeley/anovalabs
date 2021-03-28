@@ -24,10 +24,10 @@ const getLessonById = async (req, res, next) => {
         'lesson.title',
         'lesson.summary',
         'lesson.link',
-        'lesson.descriptionHTML',
-        'lesson.resourcesHTML',
-        'lesson.labHTML',
-        'lesson.exitTicketHTML',
+        'lesson.description_state',
+        'lesson.resources_state',
+        'lesson.lab_state',
+        'lesson.exit_ticket_state',
       )
       .from('lesson')
       .where('lesson.id', lessonId);
@@ -73,10 +73,10 @@ const updatePage = async (req, res, next) => {
     const data = await knex('lesson')
       .where({ id: lessonId })
       .update({
-        descriptionHTML: req.body.editedDescriptionHTML,
-        resourcesHTML: req.body.editedResourcesHTML,
-        labHTML: req.body.editedLabHTML,
-        exitTicketHTML: req.body.editedExitTicketHTML,
+        description_state: req.body.editedDescriptionState,
+        resources_state: req.body.editedResourcesState,
+        lab_state: req.body.editedLabState,
+        exit_ticket_state: req.body.editedExitTicketState,
       });
     return res.status(200).send({ data });
   } catch (error) {
