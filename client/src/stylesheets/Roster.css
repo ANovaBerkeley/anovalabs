@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
+html,
 body {
   background-color: #e6f4fc;
 }
@@ -18,6 +19,7 @@ body {
 }
 
 .containerGrid {
+  max-width: calc(100vw - 200px);
   background-color: #e6f4fc;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -77,11 +79,15 @@ img {
 
 .ant-card-cover {
   display: block;
-  width: 50%;
+  width: 40%;
   align-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 10px;
+  padding-top: 40px;
+}
+
+.ant-card-body p {
+  overflow-wrap: anywhere;
 }
 
 .error {
