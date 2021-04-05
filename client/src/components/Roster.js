@@ -36,12 +36,14 @@ const Roster = props => {
   ));
 
   return (
-    <div className="container">
-      <h1 style={{ height: 'inherit' }}>Mentors</h1>
-      <div className="containerGrid">{mentorRosterCards}</div>
-      <h1 style={{ marginTop: '30px', height: 'inherit' }}>Students</h1>
-      <div className="containerGrid">{studentRosterCards}</div>
-    </div>
+    <body>
+      <div className="container">
+        <h1 style={{ height: 'inherit' }}>Mentors</h1>
+        <div className="containerGrid">{mentorRosterCards}</div>
+        <h1 style={{ marginTop: '30px', height: 'inherit' }}>Students</h1>
+        <div className="containerGrid">{studentRosterCards}</div>
+      </div>
+    </body>
   );
 };
 
