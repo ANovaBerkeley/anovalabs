@@ -71,8 +71,8 @@ h3 {
   outline: none;
 }
 .submitButton {
-  width: 10%;
-  height: 7%;
+  width: 12%;
+  height: 9%;
   color: white;
   font-weight: bold;
   background-color: #03A9F4;
@@ -82,6 +82,10 @@ h3 {
   /*left: 100px; */
   top: 100px;
   margin-top: 25px;
+}
+
+.submitButton:hover {
+  cursor: pointer;
 }
 /* 
 .lessonPageContainer {
