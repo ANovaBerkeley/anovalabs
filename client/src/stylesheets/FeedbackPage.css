@@ -30,11 +30,12 @@ h3 {
 }
 
 .ratingContainer {
-  width: 30%;
+  min-width: 30%;
   border-radius: 25px;
   background-color: white;
   padding: 30px;
-  
+  display: flex;
+  flex-direction: column;
   position: relative;
   /*left: 100px; */
   top: 100px;
@@ -71,16 +72,17 @@ h3 {
   outline: none;
 }
 .submitButton {
-  width: 12%;
-  height: 9%;
+  min-width: 12%;
   color: white;
   font-weight: bold;
   background-color: #03A9F4;
   border-color: transparent;
   border-radius: 2vw;
+  display: flex;
   position: relative;
   /*left: 100px; */
   top: 100px;
+  padding: 1.25% 1.25% 1.25% 1.25%;
   margin-top: 25px;
 }
 
