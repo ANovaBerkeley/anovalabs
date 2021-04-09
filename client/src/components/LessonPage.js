@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Input } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import TextEditor from './TextEditor';
@@ -12,6 +12,8 @@ const LessonPage = props => {
 
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
+  const [replit, setReplit] = useState('');
+  const [editedReplit, setEditedReplit] = useState();
   const [descriptionState, setDescriptionState] = useState(EditorState.createEmpty());
   const [resourcesState, setResourcesState] = useState(EditorState.createEmpty());
   const [labState, setLabState] = useState(EditorState.createEmpty());
@@ -48,13 +50,22 @@ const LessonPage = props => {
           setExitTicketState(EditorState.createWithContent(content));
           setOldExitTicketState(EditorState.createWithContent(content));
         }
+        if (lesson[0].replitLink) {
+          const content = lesson[0].replitLink
+          setReplit(content);
+          setEditedReplit(content);
+        }
       });
   }, [id]);
 
   const handleDescriptionChange = newState => {
     setDescriptionState(newState);
-    console.log(newState);
+    // console.log(newState);
   };
+
+  const onChangeReplit = event => {
+    setEditedReplit(event.target.value);
+  }
 
   const handleResourcesChange = newState => {
     setResourcesState(newState);
@@ -85,6 +96,7 @@ const LessonPage = props => {
         editedResourcesState: convertToRaw(resourcesState.getCurrentContent()),
         editedLabState: convertToRaw(labState.getCurrentContent()),
         editedExitTicketState: convertToRaw(exitTicketState.getCurrentContent()),
+        editedReplitLink: editedReplit,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -96,6 +108,7 @@ const LessonPage = props => {
         setOldResourcesState(resourcesState);
         setOldLabState(labState);
         setOldExitTicketState(exitTicketState);
+        setReplit(editedReplit);
         setEditMode(false);
       })
       .catch(() =>
@@ -105,6 +118,38 @@ const LessonPage = props => {
         }),
       );
   };
+
+  let maybeReplit;
+  if (editMode) {
+    maybeReplit = (
+      <div>
+        <h2 className="textTitle"> Examples </h2>
+        <div className="textBox">
+          <Input
+            id="replitAdd"
+            allowClear
+            addonBefore="Replit link:"
+            autosize="true"
+            defaultValue={ replit || "https://replit.com/@anova/..." }
+            onChange={onChangeReplit}
+          />
+        </div>
+      </div>
+    );
+  } else if (replit) {
+    maybeReplit = (
+      <div>
+        <h2 className="textTitle"> Examples </h2>
+        <iframe 
+          title="Replit example"
+          className="textBox" 
+          width="100%" 
+          height="500px" 
+          src={replit.concat("?lite=true")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="page">
@@ -126,6 +171,7 @@ const LessonPage = props => {
           editMode={editMode}
           onChange={handleDescriptionChange}
         />
+        { maybeReplit }
         <h2 className="textTitle"> Lesson Resources </h2>
         <TextEditor
           editorState={resourcesState}
