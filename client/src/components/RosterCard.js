@@ -58,8 +58,12 @@ const RosterCard = props => {
     if (mentorCard) {
       description = (
         <div>
-          <h2>Name: {name}</h2>
-          <p>Email: {email}</p>
+          <h2>Name: {username}</h2>
+          <p><span className="rosterCardItem" id="email">Email</span> {email}</p>
+          <p><span className="rosterCardItem" id="candy">Favorite Candy</span> {candy}</p>
+          <p><span className="rosterCardItem" id="hobby">Favorite Hobby</span> {hobby}</p>
+          <p><span className="rosterCardItem" id="fact">Fun Fact</span> {fact}</p>
+          <p><span className="rosterCardItem" id="notes">Notes</span> {displayNotes}</p>
         </div>
       );
     } else if (isMentor)  {
