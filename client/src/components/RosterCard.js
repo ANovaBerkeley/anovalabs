@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../stylesheets/Roster.css';
+import '../stylesheets/RosterCard.css';
 import { Card, Button, Modal, Input, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
@@ -8,9 +8,9 @@ import { handleErrors } from '../utils/helpers';
 const { TextArea } = Input;
 
 const RosterCard = props => {
-  const { mentor, person } = props;
+  const { isMentor, person, mentorCard} = props;
 
-  const { id, username, email, candy, hobby, fact, notes } = person; // TODO: fetch candy and hobby to display here!
+  const { id, name, email, candy, hobby, fact, semestersAttended, notes } = person; // TODO: fetch candy and hobby to display here!
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
@@ -32,6 +32,9 @@ const RosterCard = props => {
       body: JSON.stringify({
         editedNotes,
         id,
+        name,
+        candy,
+        hobby,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -52,33 +55,43 @@ const RosterCard = props => {
 
   const renderDescription = () => {
     let description;
-    if (mentor) {
-      description = (
-        <div>
-          <h2>Name: {username}</h2>
-          <p><span className="rosterCardItem" id="email">Email</span> {email}</p>
-          <p><span className="rosterCardItem" id="candy">Favorite Candy</span> {candy}</p>
-          <p><span className="rosterCardItem" id="hobby">Favorite Hobby</span> {hobby}</p>
-          <p><span className="rosterCardItem" id="fact">Fun Fact</span> {fact}</p>
-          <p><span className="rosterCardItem" id="notes">Notes</span> {displayNotes}</p>
-        </div>
-      );
-    } else {
+    if (mentorCard) {
       description = (
         <div>
           <h2>Name: {name}</h2>
           <p>Email: {email}</p>
         </div>
       );
-    }
+    } else if (isMentor)  {
+        description = (
+          <div>
+            <h2>{name}</h2>
+            <p><span className="rosterCardItem" id="emailBubble">Email</span> {email}</p>
+            <p><span className="rosterCardItem" id="candyBubble">Favorite Candy</span> {candy}</p>
+            <p><span className="rosterCardItem" id="hobbyBubble">Favorite Hobby</span> {hobby}</p>
+            <p><span className="rosterCardItem" id="factBubble">Fun Fact</span> {fact}</p>
+            <p><span className="rosterCardItem" id="semestersAttendedBubble">Semesters Attended</span> {semestersAttended}</p>
+            <p><span className="rosterCardItem" id="notesBubble">Notes</span> {displayNotes}</p>
+          </div>
+        );    
+   } else {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p><span className="rosterCardItem" id="emailBubble">Email</span> {email}</p>
+          <p><span className="rosterCardItem" id="candyBubble">Favorite Candy</span> {candy}</p>
+          <p><span className="rosterCardItem" id="hobbyBubble">Favorite Hobby</span> {hobby}</p>
+          <p><span className="rosterCardItem" id="factBubble">Fun Fact</span> {fact}</p>
+          <p><span className="rosterCardItem" id="semestersAttendedBubble">Semesters Attended</span> {semestersAttended}</p>
+        </div>
+      );    
+   }
     return description;
   };
 
   const renderEditButton = () => {
-    // const { mentor } = this.props;
-    // const { showEditModal, notes } = this.state;
     let editButton;
-    if (mentor) {
+    if (!mentorCard && isMentor) {
       editButton = (
         <div className="buttonContainer">
           <Button
@@ -131,10 +144,11 @@ const RosterCard = props => {
 };
 
 RosterCard.propTypes = {
-  mentor: PropTypes.bool,
+  isMentor: PropTypes.bool,
 };
+
 RosterCard.defaultProps = {
-  mentor: false,
+  isMentor: false,
 };
 
 export default RosterCard;

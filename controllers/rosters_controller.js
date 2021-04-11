@@ -10,7 +10,7 @@ const getUsersBySite = async (req, res) => {
       .from('user_semester_site')
       .where('user_semester_site.user_id', userid);
     const data = await knex
-      .select('user.id', 'name', 'email', 'picture', 'notes')
+      .select('user.id', 'name', 'email', 'picture', 'candy', 'hobby', 'notes')
       .from('user_semester_site')
       .rightJoin('user', 'user.id', 'user_semester_site.user_id')
       .where('site_id', siteid[0].site_id)

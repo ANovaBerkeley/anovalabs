@@ -5,7 +5,7 @@ import RosterCard from './RosterCard';
 import 'antd/dist/antd.css';
 
 const Roster = props => {
-  const { ismentor } = props;
+  const { isMentor } = props;
 
   const [mentorRoster, setMentorRoster] = useState([]);
   const [studentRoster, setStudentRoster] = useState([]);
@@ -25,14 +25,14 @@ const Roster = props => {
       .then(roster => {
         setStudentRoster(roster);
       });
-  }, [ismentor]);
+  }, [isMentor]);
 
   const mentorRosterCards = mentorRoster.map(person => (
-    <RosterCard key={person.id} person={person} mentor={false} />
+    <RosterCard key={person.id} person={person} mentorCard={true} isMentor={isMentor}/>
   ));
 
   const studentRosterCards = studentRoster.map(person => (
-    <RosterCard key={person.id} person={person} mentor={ismentor} />
+    <RosterCard key={person.id} person={person} mentorCard={false} isMentor={isMentor}/>
   ));
 
   return (

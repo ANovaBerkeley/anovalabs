@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+/* @import url('https://fonts.googleapis.com/css?family=Lato'); */
 
 .container {
   background-color: #e6f4fc;
@@ -18,7 +18,7 @@
   background-color: #e6f4fc;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
+  grid-gap: 30px;
   grid-row-gap: auto;
   grid-auto-rows: auto;
   justify-content: center;
@@ -41,14 +41,14 @@
   }
 }
 
-.profileDescription {
+/* .profileDescription {
   padding: 0 0 0 0;
 }
 .profileDescription p {
   font-size: 12px;
-}
+} */
 
-.linktext {
+/* .linktext {
   text-decoration: underline;
   padding-bottom: 5px;
   color: black;
@@ -63,9 +63,9 @@
 
   text-decoration: none;
   padding-bottom: 8px;
-}
+} */
 
-img {
+/* img {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -79,7 +79,7 @@ img {
   margin-left: auto;
   margin-right: auto;
   padding-top: 15px;
-}
+} */
 
 .ant-card-body p {
   overflow-wrap: anywhere;
@@ -92,7 +92,7 @@ img {
   padding-bottom: 5px;
 }
 
-.anova {
+/* .anova {
   color: #155fc2;
 }
 .labs {
@@ -143,9 +143,9 @@ select {
   border-radius: 4px;
   box-sizing: border-box;
   border-color: #d2edfc;
-}
+} */
 
-input {
+/* input {
   width: 100%;
   padding: 20px 10px;
   display: inline-block;
@@ -191,44 +191,17 @@ input[type='submit'] {
 
 input[type='submit']:hover {
   opacity: 0.8;
-}
+} */
 
-.editModal {
+/* .editModal {
   padding: 10px 10px;
-}
+} */
 /* button {
      border-style: solid;
      border-radius: 10px 10px;
 } */
 
-.editFields .ant-row {
+/* .editFields .ant-row {
   padding: 20 0px;
-}
+} */
 
-/* might want to move below to its own rosterCard.css file */
-
-.rosterCardItem {
-  border-radius: 15px;
-  padding: 5px;
-  font-size: 12px;
-}
-
-#email {
-  background-color: #EAC5C5;
-}
-
-#candy {
-  background-color: #EADBC5;
-}
-
-#hobby {
-  background-color: #B9D8B2;
-}
-
-#fact {
-  background-color: #C1D4E5;
-}
-
-#notes {
-  background-color: #DEDEDE;
-}
