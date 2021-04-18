@@ -17,6 +17,7 @@ const getUsersBySite = async (req, res) => {
         'picture',
         'candy',
         'hobby',
+        'fact',
         'notes',
         'studentSemesters',
       )

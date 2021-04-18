@@ -10,44 +10,53 @@ img {
 
 .ant-card-cover {
   display: block;
-  width: 40%;
+  width: 35%;
   align-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 15px;
+  padding-top: 20px;
+}
+
+.ant-card-body {
+  padding-top: 5px;
 }
 
 .rosterCardItem {
   border-radius: 10px;
-  width: 130px;
-  height: 35px;
-  font-family: Lato;
-  font-size: 13px;
+  width: 65px;
+  height: 30px;
+  font-family: Poppins;
+  font-size: 9px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 16px;
   letter-spacing: 0em;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #000000;
 }
 
 p {
   font-family: Lato;
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
   letter-spacing: 0em;
-  text-align: center;
+  align-items: center;
 }
 
 h2 {
   font-family: Lato;
-  font-size: 20px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 800;
-  line-height: 45px;
+  line-height: 40px;
   letter-spacing: 0em;
   text-align: center;
+  padding-bottom: 10px;
 }
 
 #emailBubble {
@@ -72,4 +81,12 @@ h2 {
 
 #notesBubble {
   background-color: #dedede;
+}
+
+.ant-btn-primary {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 10px;
+  border-radius: 10px;
 }

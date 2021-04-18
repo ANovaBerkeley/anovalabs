@@ -96,8 +96,55 @@ const RosterCard = props => {
     if (mentorCard) {
       description = (
         <div>
-          <h2>Name: {name}</h2>
-          <h2>Email: {email}l</h2>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+        </div>
+      );
+    } else if (isMentor) {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="semestersAttendedBubble">
+              SEMESTERS
+            </span>{' '}
+            {displayStudentSemesters}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="notesBubble">
+              NOTES
+            </span>{' '}
+            {displayNotes}
+          </p>
         </div>
       );
     } else if (
@@ -113,25 +160,25 @@ const RosterCard = props => {
           <h2>{name}</h2>
           <p>
             <span className="rosterCardItem" id="emailBubble">
-              Email
+              EMAIL
             </span>{' '}
             {email}
           </p>
           <p>
             <span className="rosterCardItem" id="candyBubble">
-              Favorite Candy
+              FAV CANDY
             </span>{' '}
             {candy}
           </p>
           <p>
             <span className="rosterCardItem" id="hobbyBubble">
-              Favorite Hobby
+              FAV HOBBY
             </span>{' '}
             {hobby}
           </p>
           <p>
             <span className="rosterCardItem" id="factBubble">
-              Fun Fact
+              FUN FACT
             </span>{' '}
             {fact}
           </p>
