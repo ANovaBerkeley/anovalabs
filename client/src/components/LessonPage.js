@@ -6,6 +6,7 @@ import TextEditor from './TextEditor';
 import 'draft-js/dist/Draft.css';
 import '../stylesheets/LessonPage.css';
 import { handleErrors } from '../utils/helpers';
+import ReplitiFrame from './ReplitiFrame';
 
 const LessonPage = props => {
   const { id, ismentor } = props;
@@ -119,37 +120,6 @@ const LessonPage = props => {
       );
   };
 
-  let maybeReplit;
-  if (editMode) {
-    maybeReplit = (
-      <div>
-        <h2 className="textTitle"> Examples </h2>
-        <div className="textBox">
-          <Input
-            id="replitAdd"
-            allowClear
-            addonBefore="Replit link:"
-            autosize="true"
-            defaultValue={ replit || "https://replit.com/@anova/..." }
-            onChange={onChangeReplit}
-          />
-        </div>
-      </div>
-    );
-  } else if (replit) {
-    maybeReplit = (
-      <div>
-        <h2 className="textTitle"> Examples </h2>
-        <iframe 
-          title="Replit example"
-          className="textBox" 
-          width="100%" 
-          height="500px" 
-          src={replit.concat("?lite=true")}
-        />
-      </div>
-    );
-  }
 
   return (
     <div className="page">
@@ -171,7 +141,14 @@ const LessonPage = props => {
           editMode={editMode}
           onChange={handleDescriptionChange}
         />
-        { maybeReplit }
+
+        // Where we are at 
+        <ReplitiFrame
+          editMode={editMode}
+          replit={replit}
+          onChangeReplit={onChangeReplit}
+        />
+
         <h2 className="textTitle"> Lesson Resources </h2>
         <TextEditor
           editorState={resourcesState}
