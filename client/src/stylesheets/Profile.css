@@ -9,14 +9,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 200px;
-  padding-bottom: 150px;
+  padding: 80px;
 }
 
 .profileBox {
   width: 700px;
   height: 450px;
-  background-color: rgba(247, 247, 247, 0.86);
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,17 +25,58 @@
   border-radius: 16px;
 }
 
+.profileBody {
+  display: flex;
+  flex-direction: row;
+}
+
+.profileLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: middle;
+  align-items: center;
+  padding: 20px;
+}
+
+.profileRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: middle;
+  align-items: center;
+  padding: 20px;
+}
+
 @media (max-width: 767px) {
   .profileBox {
     width: 80%;
   }
+
+  .profileBox {
+    width: 450px;
+    height: 600px;
+  }
+  
+  .profileBody {
+    flex-direction: column;
+  }
+
+  .profileLeft {
+    padding: 0;
+  }
+
+  .profileRight {
+    padding-top: 0;
+    
+  }
 }
 
-.profileBox p {
+/* .profileBox p {
   padding-right: 20px;
-}
+} */
 
-.linktext {
+/* .linktext {
   text-decoration: underline;
   padding-bottom: 5px;
   color: black;
@@ -159,12 +199,13 @@ input[type='submit'] {
 
 input[type='submit']:hover {
   opacity: 0.8;
-}
+} */
 
 .editIcon {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 5px;
 }
 
 .ant-avatar.ant-avatar-icon {
@@ -182,3 +223,46 @@ input[type='submit']:hover {
 .editFields .ant-row {
   margin-bottom: 12px;
 }
+
+#profileImage {
+  width: 130px;
+  height: 130px;
+  margin: 10px;
+}
+
+.profileName {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 25px;
+  line-height: 45px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #000000;
+  padding: 5px;
+}
+
+.profileItem {
+  border-radius: 10px;
+  width: 100px;
+  height: 30px;
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 16px;
+  letter-spacing: 0em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #000000;
+}
+
+.editIcon:hover {
+  color: #000000;
+}
+
+
+

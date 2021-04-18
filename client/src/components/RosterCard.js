@@ -8,12 +8,14 @@ import { handleErrors } from '../utils/helpers';
 const { TextArea } = Input;
 
 const RosterCard = props => {
-  const { isMentor, person, mentorCard} = props;
+  const { isMentor, person, mentorCard } = props;
 
-  const { id, name, email, candy, hobby, fact, semestersAttended, notes } = person; // TODO: fetch candy and hobby to display here!
+  const { id, name, email, candy, hobby, fact, studentSemesters, notes } = person; // TODO: fetch candy and hobby to display here!
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
+  const [editedStudentSemesters, setEditedSemesters] = useState('');
+  const [displayStudentSemesters, setDisplaySemesters] = useState(studentSemesters);
 
   const onChangeNotes = event => {
     setEditedNotes(event.target.value);
@@ -58,34 +60,94 @@ const RosterCard = props => {
     if (mentorCard) {
       description = (
         <div>
-          <h2>Name: {name}</h2>
-          <h2>Email: {email}l</h2>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
         </div>
       );
-    } else if (isMentor)  {
-        description = (
-          <div>
-            <h2>{name}</h2>
-            <p><span className="rosterCardItem" id="emailBubble">Email</span> {email}</p>
-            <p><span className="rosterCardItem" id="candyBubble">Favorite Candy</span> {candy}</p>
-            <p><span className="rosterCardItem" id="hobbyBubble">Favorite Hobby</span> {hobby}</p>
-            <p><span className="rosterCardItem" id="factBubble">Fun Fact</span> {fact}</p>
-            <p><span className="rosterCardItem" id="semestersAttendedBubble">Semesters Attended</span> {semestersAttended}</p>
-            <p><span className="rosterCardItem" id="notesBubble">Notes</span> {displayNotes}</p>
-          </div>
-        );    
-   } else {
+    } else if (isMentor) {
       description = (
         <div>
           <h2>{name}</h2>
-          <p><span className="rosterCardItem" id="emailBubble">Email</span> {email}</p>
-          <p><span className="rosterCardItem" id="candyBubble">Favorite Candy</span> {candy}</p>
-          <p><span className="rosterCardItem" id="hobbyBubble">Favorite Hobby</span> {hobby}</p>
-          <p><span className="rosterCardItem" id="factBubble">Fun Fact</span> {fact}</p>
-          <p><span className="rosterCardItem" id="semestersAttendedBubble">Semesters Attended</span> {semestersAttended}</p>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="semestersAttendedBubble">
+              SEMESTERS
+            </span>{' '}
+            {displayStudentSemesters}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="notesBubble">
+              NOTES
+            </span>{' '}
+            {displayNotes}
+          </p>
         </div>
-      );    
-   }
+      );
+    } else {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="semestersAttendedBubble">
+              SEMESTERS
+            </span>{' '}
+            {displayStudentSemesters}
+          </p>
+        </div>
+      );
+    }
     return description;
   };
 
@@ -103,7 +165,7 @@ const RosterCard = props => {
           </Button>
           <Modal
             visible={showEditModal}
-            title="Edit Student Notes"
+            title="Edit Student Info"
             okText="Update"
             onCancel={() => setShowEditModal(false)}
             onOk={editStudentProfile}
@@ -133,7 +195,7 @@ const RosterCard = props => {
   return (
     <div>
       <Card
-        style={{ borderRadius: '20px'}}
+        style={{ borderRadius: '20px' }}
         cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
       >
         {description}
