@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input } from 'antd';
+import { Modal } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import TextEditor from './TextEditor';
@@ -142,7 +142,6 @@ const LessonPage = props => {
           onChange={handleDescriptionChange}
         />
 
-        // Where we are at 
         <ReplitiFrame
           editMode={editMode}
           replit={replit}
