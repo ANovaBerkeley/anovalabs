@@ -8,7 +8,6 @@ import { getAnovaToken } from '../utils/utils';
 class Feedback extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       lessonId: this.props.id,
       text: "",
@@ -27,14 +26,14 @@ class Feedback extends Component {
     console.log(id_str);
     const get_url = '/api/v1/feedback/get_feedback';
     fetch(get_url)
-      .then(res => res.json())
-      .then(
-        result => {
-          console.log(result.data)
-          this.setState({text: result.data[0].text, rating: result.data[0].rating})
+    .then(res => res.json())
+    .then(  
+      result => {
+        console.log(result)
+        this.setState({text: result.data[0].text, rating: result.data[0].rating})
+      }
+    )
 
-        }
-      )
     // const get_url = '/api/v1/lessons/get_feedback/';
     // fetch(get_url + '?lessonId=' + this.state.lessonId)
     //   .then(res => res.json())
@@ -69,7 +68,7 @@ class Feedback extends Component {
       }),
     }).then(this.setState({ submitted: true }));
   }
-
+ 
   updateFeedback() {
     const { text, rating, uid, lid } = this.state;
     console.log(text);
@@ -87,7 +86,7 @@ class Feedback extends Component {
       }),
     })
   }
-
+ 
   render() {
     if (this.state.submitted) {
       return <Redirect to="/SiteLessons" />;
@@ -158,7 +157,7 @@ class Feedback extends Component {
         </div>
         <button
           className="submitButton"
-          onClick={() => this.submitFeedback()}
+          onClick={() => this.updateFeedback()}
           type="button"
         >
           Submit Feedback
@@ -167,6 +166,6 @@ class Feedback extends Component {
     );
   }
 }
-
+ 
 Feedback.defaultProps = {};
 export default Feedback;

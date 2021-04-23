@@ -28,7 +28,7 @@ const getFeedback = async (req, res, next) => {
     const data = await knex
       .select(
         'feedback.id',
-        'feedback.uid',
+        'feedback.user_id',
         'feedback.text',
         'feedback.rating',
         'feedback.mentor'
