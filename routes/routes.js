@@ -32,6 +32,7 @@ module.exports = app => {
   //Feedback
   app.get('/api/v1/feedback/get_feedback', FeedbackController.getFeedback);
   app.post('/api/v1/feedback/submit_feedback', FeedbackController.submitFeedback);
+  app.post('/api/v1/feedback/update', FeedbackController.updateFeedback);
 
   //Lesson Site
   app.get('/api/v1/lesson_site/all', LessonSitesController.getAllSemAndSiteLessons);

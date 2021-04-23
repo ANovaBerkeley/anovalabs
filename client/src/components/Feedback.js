@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import '../stylesheets/FeedbackPage.css';
 import { Redirect } from 'react-router-dom';
+import { text } from 'body-parser';
+import * as decode from 'jwt-decode';
+import { getAnovaToken } from '../utils/utils';
 
 class Feedback extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      lessonId: this.props.matchParam,
-      text: null,
+      lessonId: this.props.id,
+      text: "",
       rating: null,
       isMentor: this.props.ismentor,
       uid: this.props.userid,
@@ -15,6 +19,22 @@ class Feedback extends Component {
     };
   }
   componentDidMount() {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    var {id} = decode(getAnovaToken());
+    var id_str = id.toString();
+    this.setState({uid: id_str});
+    console.log(id_str);
+    const get_url = '/api/v1/feedback/get_feedback';
+    fetch(get_url)
+      .then(res => res.json())
+      .then(
+        result => {
+          console.log(result.data)
+          this.setState({text: result.data[0].text, rating: result.data[0].rating})
+
+        }
+      )
     // const get_url = '/api/v1/lessons/get_feedback/';
     // fetch(get_url + '?lessonId=' + this.state.lessonId)
     //   .then(res => res.json())
@@ -51,33 +71,26 @@ class Feedback extends Component {
   }
 
   updateFeedback() {
-    const { editedText, editedRating, uid, lid } = this.state;
-
+    const { text, rating, uid, lid } = this.state;
+    console.log(text);
+    console.log("UID"+uid);
+    console.log(this.state);
     fetch('/api/v1/feedback/update', {
       method: 'POST',
       body: JSON.stringify({
-        editedText,
-        editedRating,
-        uid,
-        lid,
+        text: text,
+        uid: uid,
+        rating: rating
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     })
-      .then(res => res.json())
-      .then(values => {
-        this.setState({
-          showEditModal: false,
-          text: editedText,
-          rating: editedRating,
-        });
-      });
   }
 
   render() {
     if (this.state.submitted) {
-      return <Redirect to="/LessonPool" />;
+      return <Redirect to="/SiteLessons" />;
     }
     return (
       <div className="page">
@@ -87,6 +100,7 @@ class Feedback extends Component {
             className="feedbackInput"
             type="text"
             placeholder="Add feedback"
+            defaultValue={this.state.text}
             // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
             onChange={event => this.setState({ text: event.target.value })}
           ></input>
@@ -97,6 +111,7 @@ class Feedback extends Component {
             className="feedbackInput"
             type="text"
             placeholder="Add feedback"
+            defaultValue={this.state.text}
             // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
             onChange={event => this.setState({ text: event.target.value })}
           ></input>
