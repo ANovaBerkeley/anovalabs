@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../stylesheets/RosterCard.css';
-import { Card, Button, Modal, Input, Row, Col } from 'antd';
+import { Card, Button, Modal, Input, Row, Col, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { handleErrors } from '../utils/helpers';
@@ -105,7 +105,14 @@ const RosterCard = props => {
           </p>
         </div>
       );
-    } else if (isMentor) {
+    } else if (
+      isMentor &&
+      !mentorCard &&
+      studentSemesters &&
+      (showAll ||
+        (showActive && !showAll && studentSemesters.includes(currSemester)) ||
+        (!showActive && !showAll && !studentSemesters.includes(currSemester)))
+    ) {
       description = (
         <div>
           <h2>{name}</h2>
@@ -148,12 +155,10 @@ const RosterCard = props => {
         </div>
       );
     } else if (
-      isMentor &&
+      !isMentor &&
       !mentorCard &&
       studentSemesters &&
-      (showAll ||
-        (showActive && !showAll && studentSemesters.includes(currSemester)) ||
-        (!showActive && !showAll && !studentSemesters.includes(currSemester)))
+      studentSemesters.includes(currSemester)
     ) {
       description = (
         <div>
@@ -184,54 +189,7 @@ const RosterCard = props => {
           </p>
           <p>
             <span className="rosterCardItem" id="semestersAttendedBubble">
-              Semesters Attended
-            </span>{' '}
-            {displayStudentSemesters}
-          </p>
-          <p>
-            <span className="rosterCardItem" id="notesBubble">
-              Notes
-            </span>{' '}
-            {displayNotes}
-          </p>
-        </div>
-      );
-    } else if (
-      !isMentor &&
-      !mentorCard &&
-      studentSemesters &&
-      studentSemesters.includes(currSemester)
-    ) {
-      description = (
-        <div>
-          <h2>{name}</h2>
-          <p>
-            <span className="rosterCardItem" id="emailBubble">
-              Email
-            </span>{' '}
-            {email}
-          </p>
-          <p>
-            <span className="rosterCardItem" id="candyBubble">
-              Favorite Candy
-            </span>{' '}
-            {candy}
-          </p>
-          <p>
-            <span className="rosterCardItem" id="hobbyBubble">
-              Favorite Hobby
-            </span>{' '}
-            {hobby}
-          </p>
-          <p>
-            <span className="rosterCardItem" id="factBubble">
-              Fun Fact
-            </span>{' '}
-            {fact}
-          </p>
-          <p>
-            <span className="rosterCardItem" id="semestersAttendedBubble">
-              Semesters Attended
+              SEMESTERS
             </span>{' '}
             {displayStudentSemesters}
           </p>
@@ -320,10 +278,14 @@ const RosterCard = props => {
 
 RosterCard.propTypes = {
   isMentor: PropTypes.bool,
+  showActive: PropTypes.bool,
+  showAll: PropTypes.bool,
 };
 
 RosterCard.defaultProps = {
   isMentor: false,
+  showActive: true,
+  showAll: false,
 };
 
 export default RosterCard;
