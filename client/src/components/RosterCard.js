@@ -137,7 +137,7 @@ const RosterCard = props => {
                   checkedChildren="Active Student"
                   unCheckedChildren="Inactive Student"
                   defaultChecked={studentSemesters && studentSemesters.includes(currSemester)}
-                  checked={editedStudentSemesters && studentSemesters && studentSemesters.includes(currSemester)}
+                  checked={(editedStudentSemesters && editedStudentSemesters.includes(currSemester)) || studentSemesters && studentSemesters.includes(currSemester)}
                   onChange={onChangeStudentSemesters}
                 />
               </Col>
