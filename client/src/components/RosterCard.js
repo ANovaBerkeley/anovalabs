@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../stylesheets/RosterCard.css';
-import { Card, Button, Modal, Input, Row, Col, Checkbox } from 'antd';
+import { Card, Button, Modal, Input, Row, Col, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { handleErrors } from '../utils/helpers';
@@ -9,7 +9,7 @@ const { TextArea } = Input;
 
 const RosterCard = props => {
   const { isMentor, person, mentorCard, showActive, showAll } = props;
-  const { id, name, email, candy, hobby, fact, notes } = person; // TODO: fetch candy and hobby to display here!
+  const { id, name, email, candy, hobby, fact, notes } = person;
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
@@ -32,25 +32,30 @@ const RosterCard = props => {
     return semester;
   };
 
+  const isStudentActive = () => {
+     return studentSemesters && studentSemesters.includes(currSemester);
+  };
+
   const onChangeNotes = event => {
     setEditedNotes(event.target.value);
   };
 
-  const onChangeStudentSemesters = event => {
-    setEditedStudentSemesters(event.target.value);
+  const onChangeStudentSemesters = checked => {
+    let edited;
+    if (checked && !isStudentActive()) {
+      edited = studentSemesters + ", " + currSemester;
+    } else { 
+      edited = studentSemesters.replace(", " + currSemester, "");
+    }
+    setEditedStudentSemesters(edited);
+    // setStudentSemesters(edited);
+    // setDisplayStudentSemesters(edited);
   };
 
   const editStudentProfile = () => {
     if (editedNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255) for Notes.',
-        centered: true,
-      });
-      return;
-    }
-    if (editedStudentSemesters.length >= 255) {
-      Modal.error({
-        title: 'Exceeded maximum number of characters (255) for Semesters.',
         centered: true,
       });
       return;
@@ -75,12 +80,76 @@ const RosterCard = props => {
         setDisplayNotes(editedNotes);
         setDisplayStudentSemesters(editedStudentSemesters);
       })
-      .catch(() =>
+      .catch((error) => {
         Modal.error({
           title: 'Unable to update student info.',
           centered: true,
-        }),
+        })
+      }
+      )
+  };
+
+  const renderEditButton = () => {
+    let editButton;
+    if (!mentorCard && isMentor) {
+      editButton = (
+        <div className="buttonContainer">
+          <Button
+            type="primary"
+            className="lowerButton"
+            onClick={() => setShowEditModal(true)}
+          >
+            Edit Student Info
+          </Button>
+          <Modal
+            visible={showEditModal}
+            title="Edit Student Info"
+            okText="Update"
+            onCancel={() => {setShowEditModal(false); setEditedStudentSemesters("")}}
+            onOk={editStudentProfile}
+            bodyStyle={{ paddingTop: '10px' }}
+          >
+            <Row>
+              <Col style={{ marginBottom: '10px' }}>
+                {' '}
+                <span className="rosterCardItem" id="notesBubble">
+                  NOTES
+                </span>{' '}
+              </Col>
+              <Col>
+                <TextArea
+                  rows={4}
+                  id="notes"
+                  autosize="true"
+                  defaultValue={notes}
+                  onChange={onChangeNotes}
+                  style={{ marginBottom: '15px' }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ marginBottom: '10px' }}>
+                {' '}
+                <span className="rosterCardItem" id="semestersAttendedBubble">
+                  SEMESTERS
+                </span>{' '}
+                <Switch
+                  checkedChildren="Active Student"
+                  unCheckedChildren="Inactive Student"
+                  defaultChecked={studentSemesters && studentSemesters.includes(currSemester)}
+                  checked={editedStudentSemesters && studentSemesters && studentSemesters.includes(currSemester)}
+                  onChange={onChangeStudentSemesters}
+                />
+              </Col>
+              <Col>
+                {editedStudentSemesters ? editedStudentSemesters : displayStudentSemesters}
+              </Col>
+            </Row>
+          </Modal>
+        </div>
       );
+    }
+    return editButton;
   };
 
   const renderDescription = () => {
@@ -102,6 +171,18 @@ const RosterCard = props => {
               EMAIL
             </span>{' '}
             {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
           </p>
         </div>
       );
@@ -199,58 +280,6 @@ const RosterCard = props => {
       description = null;
     }
     return description;
-  };
-
-  const renderEditButton = () => {
-    let editButton;
-    if (!mentorCard && isMentor) {
-      editButton = (
-        <div className="buttonContainer">
-          <Button
-            type="primary"
-            className="lowerButton"
-            onClick={() => setShowEditModal(true)}
-          >
-            Edit Student Info
-          </Button>
-          <Modal
-            visible={showEditModal}
-            title="Edit Student Info"
-            okText="Update"
-            onCancel={() => setShowEditModal(false)}
-            onOk={editStudentProfile}
-            bodyStyle={{ paddingTop: '10px' }}
-          >
-            <Row>
-              <Col style={{ marginBottom: '4px' }}> Notes:</Col>
-              <Col>
-                <TextArea
-                  rows={4}
-                  id="notes"
-                  autosize="true"
-                  defaultValue={notes}
-                  onChange={onChangeNotes}
-                  style={{ marginBottom: '12px' }}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col style={{ marginBottom: '4px' }}> Semesters Attended:</Col>
-              <Col>
-                <TextArea
-                  rows={4}
-                  id="studentSemesters"
-                  autosize="true"
-                  defaultValue={studentSemesters}
-                  onChange={onChangeStudentSemesters}
-                />
-              </Col>
-            </Row>
-          </Modal>
-        </div>
-      );
-    }
-    return editButton;
   };
 
   const currSemester = getCurrentSemester();
