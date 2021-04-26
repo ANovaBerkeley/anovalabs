@@ -8,10 +8,12 @@ const updateFeedback = async (req, res, next) => {
   try {
     const data = await knex('feedback')
       //.where({ lessonId: lessonId,  userId: userId})
-      .where({user_id: uid})
+      .where({uid: uid})
       .update({
         text: req.body.text,
+        gtext: req.body.gtext,
         rating: req.body.rating
+
         //rating: req.body.updatedRating
       });
     return res.status(200).send({ data });
@@ -23,19 +25,23 @@ const updateFeedback = async (req, res, next) => {
 
 /* Retrieve all feedback for a lesson. */
 const getFeedback = async (req, res, next) => {
-  const lessonId = req.query.lessonId;
+  const lessonId = req.query.lesson_id;
+  console.log("QUERY")
+  console.log(req.query.lesson_id);
   try {
     const data = await knex
       .select(
         'feedback.id',
-        'feedback.user_id',
+        'feedback.uid',
+        'feedback.lesson_id',
         'feedback.text',
+        'feedback.gtext',
         'feedback.rating',
         'feedback.mentor'
       )
       
-      .from('feedback');
-      //.where({ id: lessonId })
+      .from('feedback')
+      .where('feedback.lesson_id', lessonId );
     console.log(data);
     return res.status(200).send({ data });
   } catch (error) {
@@ -47,6 +53,7 @@ const getFeedback = async (req, res, next) => {
 const submitFeedback = async (req, res, next) => {
 
   const { feedback } = req.body;
+  console.log("REQUEST INFO")
   console.log(req.body)
   try {
     const data = await knex('feedback')

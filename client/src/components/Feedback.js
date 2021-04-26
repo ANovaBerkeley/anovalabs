@@ -11,10 +11,12 @@ class Feedback extends Component {
     this.state = {
       lessonId: this.props.id,
       text: "",
+      gtext: "",
       rating: null,
       isMentor: this.props.ismentor,
       uid: this.props.userid,
       submitted: false,
+      exists: false
     };
   }
   componentDidMount() {
@@ -24,14 +26,22 @@ class Feedback extends Component {
     var id_str = id.toString();
     this.setState({uid: id_str});
     console.log(id_str);
-    const get_url = '/api/v1/feedback/get_feedback';
-    fetch(get_url)
+    const get_url = '/api/v1/feedback/get_feedback/';
+    console.log(get_url + id_str+ "?lesson_id="   +this.state.lessonId)
+    fetch(get_url + id_str+ "?lesson_id=" + this.state.lessonId)
     .then(res => res.json())
     .then(  
       result => {
-        console.log(result)
-        this.setState({text: result.data[0].text, rating: result.data[0].rating})
-      }
+        if (result.data.length > 0) {
+          console.log(result)
+          this.setState({text: result.data[0].text, gtext: result.data[0].gtext, rating: result.data[0].rating, exists: true})
+        }
+        
+    
+      },
+      error => {
+        console.log("no match found");
+      },
     )
 
     // const get_url = '/api/v1/lessons/get_feedback/';
@@ -57,11 +67,12 @@ class Feedback extends Component {
     fetch('/api/v1/feedback/submit_feedback', {
       method: 'POST',
       body: JSON.stringify({
-        user_id: this.state.uid,
+        uid: this.state.uid,
         lesson_id: this.state.lessonId,
         text: this.state.text,
         rating: this.state.rating,
         mentor: this.state.isMentor,
+        gtext: this.state.gtext
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -70,21 +81,19 @@ class Feedback extends Component {
   }
  
   updateFeedback() {
-    const { text, rating, uid, lid } = this.state;
-    console.log(text);
-    console.log("UID"+uid);
-    console.log(this.state);
+    const { text, gtext, rating, uid, lid } = this.state;
     fetch('/api/v1/feedback/update', {
       method: 'POST',
       body: JSON.stringify({
         text: text,
+        gtext: gtext,
         uid: uid,
         rating: rating
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    })
+    }).then(this.setState({ submitted: true }));
   }
  
   render() {
@@ -110,9 +119,9 @@ class Feedback extends Component {
             className="feedbackInput"
             type="text"
             placeholder="Add feedback"
-            defaultValue={this.state.text}
+            defaultValue={this.state.gtext}
             // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
-            onChange={event => this.setState({ text: event.target.value })}
+            onChange={event => this.setState({ gtext: event.target.value })}
           ></input>
         </div>
         <div className="ratingContainer">
@@ -152,15 +161,15 @@ class Feedback extends Component {
               type="button"
             >
               5
-            </button>
+            </button>  
           </div>
         </div>
         <button
           className="submitButton"
-          onClick={() => this.updateFeedback()}
+          onClick={() => {this.state.exists ? this.updateFeedback() : this.submitFeedback()}}
           type="button"
         >
-          Submit Feedback
+          {this.state.exists ? 'Save Feedback Changes' : 'Submit Feedback'}
         </button>
       </div>
     );
