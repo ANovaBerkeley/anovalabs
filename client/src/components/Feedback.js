@@ -4,12 +4,15 @@ import { Redirect } from 'react-router-dom';
 import { text } from 'body-parser';
 import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
+import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+
 
 class Feedback extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lessonId: this.props.id,
+      showModal: false,
       text: "",
       gtext: "",
       rating: null,
@@ -62,6 +65,32 @@ class Feedback extends Component {
     //     },
     //   );
   }
+  summaryFeedback() {
+
+  return (
+    <Modal
+      closeIcon
+      open={this.state.showModal}
+      trigger={<Button>summaryButton</Button>}
+      onClose={() => this.setState({showModal: false})}
+      onOpen={() => this.setState({showModal: true})}
+    >
+      <Header icon='archive' content='Feedback' />
+      <Modal.Content>
+        <p>
+          Your inbox is getting full, would you like us to enable automatic
+          archiving of old messages?
+        </p>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='blue' onClick={() => this.setState({showModal: false})}>
+          <Icon name='checkmark' /> Return Home
+        </Button>
+      </Modal.Actions>
+    </Modal>
+  )
+  }
+
 
   submitFeedback() {
     fetch('/api/v1/feedback/submit_feedback', {
@@ -103,6 +132,7 @@ class Feedback extends Component {
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
+          {console.log(this.state.isMentor)}
           <h3>What did you think of today's lesson?</h3>
           <input
             className="feedbackInput"
@@ -164,6 +194,35 @@ class Feedback extends Component {
             </button>  
           </div>
         </div>
+        {this.state.isMentor? 
+            <div>
+              <button
+                className="summaryButton"
+                onClick={() => this.summaryFeedback()}
+                type="button"
+        >
+              Summary
+              </button>
+
+            <button
+                className="submitButton"
+                onClick={() => this.updateFeedback()}
+                type="button"
+        >
+              Submit Feedback
+          </button></div> :
+          <button
+          className="submitButton"
+          onClick={() => this.updateFeedback()}
+          type="button"
+        >
+          Submit Feedback
+
+        </button>
+        }
+
+          
+
         <button
           className="submitButton"
           onClick={() => {this.state.exists ? this.updateFeedback() : this.submitFeedback()}}
