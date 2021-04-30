@@ -195,41 +195,46 @@ class Feedback extends Component {
           </div>
         </div>
         {this.state.isMentor? 
+            <div className = "feedbackButtons">
+              <div>
+                <button
+                  className="summaryButton"
+                  onClick={() => this.summaryFeedback()}
+                  type="button"
+          >
+                Summary
+                </button>
+              </div>
             <div>
               <button
-                className="summaryButton"
-                onClick={() => this.summaryFeedback()}
-                type="button"
-        >
-              Summary
-              </button>
-
-            <button
-                className="submitButton"
-                onClick={() => this.updateFeedback()}
-                type="button"
-        >
+                  className="submitButton"
+                  onClick={() => this.updateFeedback()}
+                  type="button"
+          >
+                Submit Feedback
+            </button>
+            </div>
+          </div> :
+              <button
+              className="submitButton"
+              onClick={() => this.updateFeedback()}
+              type="button"
+            >
               Submit Feedback
-          </button></div> :
-          <button
-          className="submitButton"
-          onClick={() => this.updateFeedback()}
-          type="button"
-        >
-          Submit Feedback
 
-        </button>
+            </button>
         }
 
           
 
-        <button
+        {/* <button
           className="submitButton"
           onClick={() => {this.state.exists ? this.updateFeedback() : this.submitFeedback()}}
           type="button"
         >
           {this.state.exists ? 'Save Feedback Changes' : 'Submit Feedback'}
-        </button>
+        </button> */}
+        
       </div>
     );
   }

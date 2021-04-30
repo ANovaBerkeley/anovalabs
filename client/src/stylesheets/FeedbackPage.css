@@ -88,7 +88,12 @@ h3 {
 :focus {
   outline: none;
 }
-.submitButton {
+.feedbackButtons {
+  display:flex;
+  flex-direction: row;
+}
+
+.summaryButton {
   color: white;
   font-weight: bold;
   background-color: #03A9F4;
@@ -98,8 +103,27 @@ h3 {
   position: relative;
   /*left: 100px; */
   top: 100px;
-  padding: 1.25% 1.25% 1.25% 1.25%;
+  padding: 9.5% 9.5% 9.5% 9.5%;
   margin-top: 25px;
+}
+
+.summaryButton:hover {
+  cursor: pointer;
+}
+.submitButton {
+  white-space: nowrap;
+  color: white;
+  font-weight: bold;
+  background-color: #03A9F4;
+  border-color: transparent;
+  border-radius: 2vw;
+  display: flex;
+  position: relative;
+  /*left: 100px; */
+  top: 100px;
+  padding: 4.25% 4.25% 4.25% 4.25%;
+  margin-top: 25px;
+  margin-left: 40px;
 }
 
 .submitButton:hover {
