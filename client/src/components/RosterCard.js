@@ -32,8 +32,12 @@ const RosterCard = props => {
     return semester;
   };
 
-  const isStudentActive = () => {
-     return studentSemesters && studentSemesters.includes(currSemester);
+  const isToggleActive = () => { 
+    if (editedStudentSemesters) {
+      return editedStudentSemesters && editedStudentSemesters.includes(currSemester);
+    } else {
+      return studentSemesters && studentSemesters.includes(currSemester);
+    }
   };
 
   const onChangeNotes = event => {
@@ -41,15 +45,27 @@ const RosterCard = props => {
   };
 
   const onChangeStudentSemesters = checked => {
-    let edited;
-    if (checked && !isStudentActive()) {
-      edited = studentSemesters + ", " + currSemester;
+    let edited = editedStudentSemesters ? editedStudentSemesters : studentSemesters
+    edited = edited.trim()
+    if (checked && !isToggleActive()) {
+      if (edited) {
+        edited = edited + ", " + currSemester;
+      } else {
+        edited = edited + currSemester;
+      }
+      
     } else { 
-      edited = studentSemesters.replace(", " + currSemester, "");
+      if (edited.includes(",")) {
+        edited = edited.replace(", " + currSemester, "");
+      } else {
+        console.log("enter");
+        edited = edited.replace(currSemester, " ");
+        console.log(edited);
+        //edited becomes an empty string --> equal to null 
+      }
     }
+    
     setEditedStudentSemesters(edited);
-    // setStudentSemesters(edited);
-    // setDisplayStudentSemesters(edited);
   };
 
   const editStudentProfile = () => {
@@ -137,7 +153,7 @@ const RosterCard = props => {
                   checkedChildren="Active Student"
                   unCheckedChildren="Inactive Student"
                   defaultChecked={studentSemesters && studentSemesters.includes(currSemester)}
-                  checked={(editedStudentSemesters && editedStudentSemesters.includes(currSemester)) || studentSemesters && studentSemesters.includes(currSemester)}
+                  checked={editedStudentSemesters ? editedStudentSemesters.includes(currSemester) : studentSemesters && studentSemesters.includes(currSemester)}
                   onChange={onChangeStudentSemesters}
                 />
               </Col>
