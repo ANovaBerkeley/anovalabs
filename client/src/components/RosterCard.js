@@ -14,10 +14,10 @@ const RosterCard = props => {
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
   const [studentSemesters, setStudentSemesters] = useState(person.studentSemesters);
-  const [editedStudentSemesters, setEditedStudentSemesters] = useState('');
-  const [displayStudentSemesters, setDisplayStudentSemesters] = useState(
-    studentSemesters,
-  );
+  const [editedStudentSemesters, setEditedStudentSemesters] = useState(studentSemesters);
+  // const [displayStudentSemesters, setDisplayStudentSemesters] = useState(
+  //   studentSemesters,
+  // );
 
   const getCurrentSemester = () => {
     const currDate = new Date();
@@ -32,12 +32,8 @@ const RosterCard = props => {
     return semester;
   };
 
-  const isToggleActive = () => { 
-    if (editedStudentSemesters) {
-      return editedStudentSemesters && editedStudentSemesters.includes(currSemester);
-    } else {
-      return studentSemesters && studentSemesters.includes(currSemester);
-    }
+  const isToggleActive = () => {
+    return editedStudentSemesters && editedStudentSemesters.includes(currSemester);
   };
 
   const onChangeNotes = event => {
@@ -45,27 +41,34 @@ const RosterCard = props => {
   };
 
   const onChangeStudentSemesters = checked => {
-    let edited = editedStudentSemesters ? editedStudentSemesters : studentSemesters
-    edited = edited.trim()
+    console.log('checked: ', checked);
+    console.log('is Toggle Active: ', isToggleActive());
+    let edited = editedStudentSemesters ? editedStudentSemesters : [];
+
+    console.log('edited prev: ', edited);
+
     if (checked && !isToggleActive()) {
-      if (edited) {
-        edited = edited + ", " + currSemester;
-      } else {
-        edited = edited + currSemester;
-      }
-      
-    } else { 
-      if (edited.includes(",")) {
-        edited = edited.replace(", " + currSemester, "");
-      } else {
-        console.log("enter");
-        edited = edited.replace(currSemester, " ");
-        console.log(edited);
-        //edited becomes an empty string --> equal to null 
-      }
+      // const newKey = '' + edited.keys.length() + 1;
+
+      // edited = [...edited, { newKey: currSemester }];
+      edited.push(currSemester);
+      // if (edited) {
+      //   edited = edited.push(currSemester);
+      // } else {
+      //   edited = edited + currSemester;
+      // }
+    } else {
+      // edited.delete(edited.keys.length());
+      edited.pop();
+      // if (edited.includes(',')) {
+      //   edited = edited.replace(', ' + currSemester, '');
+      // } else {
+      //   edited = edited.replace(currSemester, ' ');
+      // }
     }
-    
+    console.log('edited: ', edited);
     setEditedStudentSemesters(edited);
+    console.log('editedSemesters after: ', editedStudentSemesters);
   };
 
   const editStudentProfile = () => {
@@ -94,15 +97,17 @@ const RosterCard = props => {
       .then(() => {
         setShowEditModal(false);
         setDisplayNotes(editedNotes);
-        setDisplayStudentSemesters(editedStudentSemesters);
+        setEditedStudentSemesters(editedStudentSemesters);
+        // setDisplayStudentSemesters(editedStudentSemesters);
+        setStudentSemesters(editedStudentSemesters);
       })
-      .catch((error) => {
+      .catch(error => {
+        console.log(error);
         Modal.error({
           title: 'Unable to update student info.',
           centered: true,
-        })
-      }
-      )
+        });
+      });
   };
 
   const renderEditButton = () => {
@@ -121,7 +126,10 @@ const RosterCard = props => {
             visible={showEditModal}
             title="Edit Student Info"
             okText="Update"
-            onCancel={() => {setShowEditModal(false); setEditedStudentSemesters("")}}
+            onCancel={() => {
+              setShowEditModal(false);
+              setEditedStudentSemesters(studentSemesters);
+            }}
             onOk={editStudentProfile}
             bodyStyle={{ paddingTop: '10px' }}
           >
@@ -152,13 +160,24 @@ const RosterCard = props => {
                 <Switch
                   checkedChildren="Active Student"
                   unCheckedChildren="Inactive Student"
-                  defaultChecked={studentSemesters && studentSemesters.includes(currSemester)}
-                  checked={editedStudentSemesters ? editedStudentSemesters.includes(currSemester) : studentSemesters && studentSemesters.includes(currSemester)}
+                  defaultChecked={
+                    // studentSemesters && studentSemesters.includes(currSemester)
+                    editedStudentSemesters &&
+                    editedStudentSemesters.includes(currSemester)
+                  }
+                  checked={
+                    editedStudentSemesters &&
+                    editedStudentSemesters.includes(currSemester)
+                    //   // : studentSemesters && studentSemesters.includes(currSemester)
+                  }
                   onChange={onChangeStudentSemesters}
                 />
               </Col>
               <Col>
-                {editedStudentSemesters ? editedStudentSemesters : displayStudentSemesters}
+                {
+                  editedStudentSemesters
+                  // : displayStudentSemesters
+                }
               </Col>
             </Row>
           </Modal>
@@ -171,11 +190,12 @@ const RosterCard = props => {
   const renderDescription = () => {
     let description;
     if (!mentorCard && !studentSemesters) {
-      fetch(`/api/v1/roster/getSite?uid=${id}`)
+      fetch(`/api/v1/roster/getUserSemester?uid=${id}`)
         .then(res => res.json())
         .then(userSemester => {
-          setDisplayStudentSemesters(userSemester[0].semester);
-          setStudentSemesters(userSemester[0].semester);
+          // setDisplayStudentSemesters([userSemester[0].semester]);
+          setEditedStudentSemesters([userSemester[0].semester]);
+          setStudentSemesters([userSemester[0].semester]);
         });
     }
     if (mentorCard) {
@@ -241,7 +261,8 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {displayStudentSemesters}
+            {/* {displayStudentSemesters} */}
+            {studentSemesters}
           </p>
           <p>
             <span className="rosterCardItem" id="notesBubble">
@@ -288,7 +309,8 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {displayStudentSemesters}
+            {/* {displayStudentSemesters} */}
+            {studentSemesters}
           </p>
         </div>
       );
@@ -334,3 +356,7 @@ RosterCard.defaultProps = {
 };
 
 export default RosterCard;
+
+//Problem:
+// state is not being reflected in html..weird
+// storing json arrays in postgres

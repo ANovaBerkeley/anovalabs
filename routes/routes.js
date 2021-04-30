@@ -44,6 +44,6 @@ module.exports = app => {
 
   //Roster
   app.get('/api/v1/roster', RostersController.getUsersBySite);
-  app.get('/api/v1/roster/getSite', RostersController.getUserSemester);
+  app.get('/api/v1/roster/getUserSemester', RostersController.getUserSemester);
   app.post('/api/v1/roster/update', RostersController.update);
 };
