@@ -52,7 +52,7 @@ const update = async (req, res) => {
       .where({ id: req.body.id })
       .update({
         notes: req.body.editedNotes,
-        studentSemesters: req.body.editedStudentSemesters,
+        studentSemesters: knex.raw(req.body.editedStudentSemesters),
       });
     return res.status(200).send({ data });
   } catch (error) {

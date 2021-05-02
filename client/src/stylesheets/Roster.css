@@ -204,3 +204,12 @@ input[type='submit']:hover {
 /* .editFields .ant-row {
   padding: 20 0px;
 } */
+
+.studentFilterButtons {
+  border-radius: 15px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 600;
+}

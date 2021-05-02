@@ -15,9 +15,6 @@ const RosterCard = props => {
   const [displayNotes, setDisplayNotes] = useState(notes);
   const [studentSemesters, setStudentSemesters] = useState(person.studentSemesters);
   const [editedStudentSemesters, setEditedStudentSemesters] = useState(studentSemesters);
-  // const [displayStudentSemesters, setDisplayStudentSemesters] = useState(
-  //   studentSemesters,
-  // );
 
   const getCurrentSemester = () => {
     const currDate = new Date();
@@ -43,28 +40,14 @@ const RosterCard = props => {
   const onChangeStudentSemesters = checked => {
     console.log('checked: ', checked);
     console.log('is Toggle Active: ', isToggleActive());
-    let edited = editedStudentSemesters ? editedStudentSemesters : [];
+    let edited = [...editedStudentSemesters] ? [...editedStudentSemesters] : [];
 
     console.log('edited prev: ', edited);
 
     if (checked && !isToggleActive()) {
-      // const newKey = '' + edited.keys.length() + 1;
-
-      // edited = [...edited, { newKey: currSemester }];
       edited.push(currSemester);
-      // if (edited) {
-      //   edited = edited.push(currSemester);
-      // } else {
-      //   edited = edited + currSemester;
-      // }
     } else {
-      // edited.delete(edited.keys.length());
       edited.pop();
-      // if (edited.includes(',')) {
-      //   edited = edited.replace(', ' + currSemester, '');
-      // } else {
-      //   edited = edited.replace(currSemester, ' ');
-      // }
     }
     console.log('edited: ', edited);
     setEditedStudentSemesters(edited);
@@ -98,7 +81,6 @@ const RosterCard = props => {
         setShowEditModal(false);
         setDisplayNotes(editedNotes);
         setEditedStudentSemesters(editedStudentSemesters);
-        // setDisplayStudentSemesters(editedStudentSemesters);
         setStudentSemesters(editedStudentSemesters);
       })
       .catch(error => {
@@ -161,23 +143,20 @@ const RosterCard = props => {
                   checkedChildren="Active Student"
                   unCheckedChildren="Inactive Student"
                   defaultChecked={
-                    // studentSemesters && studentSemesters.includes(currSemester)
                     editedStudentSemesters &&
                     editedStudentSemesters.includes(currSemester)
                   }
                   checked={
                     editedStudentSemesters &&
                     editedStudentSemesters.includes(currSemester)
-                    //   // : studentSemesters && studentSemesters.includes(currSemester)
                   }
                   onChange={onChangeStudentSemesters}
                 />
               </Col>
               <Col>
-                {
-                  editedStudentSemesters
-                  // : displayStudentSemesters
-                }
+                {editedStudentSemesters
+                  ? editedStudentSemesters.join(', ')
+                  : editedStudentSemesters}
               </Col>
             </Row>
           </Modal>
@@ -193,7 +172,6 @@ const RosterCard = props => {
       fetch(`/api/v1/roster/getUserSemester?uid=${id}`)
         .then(res => res.json())
         .then(userSemester => {
-          // setDisplayStudentSemesters([userSemester[0].semester]);
           setEditedStudentSemesters([userSemester[0].semester]);
           setStudentSemesters([userSemester[0].semester]);
         });
@@ -261,8 +239,7 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {/* {displayStudentSemesters} */}
-            {studentSemesters}
+            {studentSemesters ? studentSemesters.join(', ') : null}
           </p>
           <p>
             <span className="rosterCardItem" id="notesBubble">
@@ -309,8 +286,7 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {/* {displayStudentSemesters} */}
-            {studentSemesters}
+            {studentSemesters ? studentSemesters.join(', ') : null}
           </p>
         </div>
       );

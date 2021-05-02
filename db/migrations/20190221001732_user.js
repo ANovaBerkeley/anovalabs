@@ -11,6 +11,7 @@ exports.up = knex =>
     table.string('notes');
     table.string('candy');
     table.string('hobby');
+    table.string('fact');
   });
 
 exports.down = knex => knex.raw(`DROP TABLE IF EXISTS "user" CASCADE`);
