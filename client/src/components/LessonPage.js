@@ -51,8 +51,8 @@ const LessonPage = props => {
           setExitTicketState(EditorState.createWithContent(content));
           setOldExitTicketState(EditorState.createWithContent(content));
         }
-        if (lesson[0].replitLink) {
-          const content = lesson[0].replitLink
+        if (lesson[0].replit_link) {
+          const content = lesson[0].replit_link
           setReplit(content);
           setEditedReplit(content);
         }

@@ -29,7 +29,7 @@ const getLessonById = async (req, res, next) => {
         'lesson.resources_state',
         'lesson.lab_state',
         'lesson.exit_ticket_state',
-        'lesson.replitLink',
+        'lesson.replit_link',
       )
       .from('lesson')
       .where('lesson.id', lessonId);
