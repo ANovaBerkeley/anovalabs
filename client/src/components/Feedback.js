@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { text } from 'body-parser';
 import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import FeedbackModal from "./FeedbackModal";
 
 
 class Feedback extends Component {
@@ -46,51 +46,8 @@ class Feedback extends Component {
         console.log("no match found");
       },
     )
-
-    // const get_url = '/api/v1/lessons/get_feedback/';
-    // fetch(get_url + '?lessonId=' + this.state.lessonId)
-    //   .then(res => res.json())
-    //   .then(
-    //     feedback => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         notes: feedback.mentor_feedback,
-    //       });
-    //     },
-    //     error => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         error,
-    //       });
-    //     },
-    //   );
   }
-  summaryFeedback() {
-
-  return (
-    <Modal
-      closeIcon
-      open={this.state.showModal}
-      trigger={<Button>summaryButton</Button>}
-      onClose={() => this.setState({showModal: false})}
-      onOpen={() => this.setState({showModal: true})}
-    >
-      <Header icon='archive' content='Feedback' />
-      <Modal.Content>
-        <p>
-          Your inbox is getting full, would you like us to enable automatic
-          archiving of old messages?
-        </p>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button color='blue' onClick={() => this.setState({showModal: false})}>
-          <Icon name='checkmark' /> Return Home
-        </Button>
-      </Modal.Actions>
-    </Modal>
-  )
-  }
-
+  
 
   submitFeedback() {
     fetch('/api/v1/feedback/submit_feedback', {
