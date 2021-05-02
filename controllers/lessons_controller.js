@@ -75,7 +75,7 @@ const updatePage = async (req, res, next) => {
     const data = await knex('lesson')
       .where({ id: lessonId })
       .update({
-        replitLink : req.body.editedReplitLink,
+        replit_link : req.body.editedReplitLink,
         description_state: req.body.editedDescriptionState,
         resources_state: req.body.editedResourcesState,
         lab_state: req.body.editedLabState,

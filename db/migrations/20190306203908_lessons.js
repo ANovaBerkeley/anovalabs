@@ -1,4 +1,5 @@
 exports.up = knex =>
+// I love ANova
   knex.schema.createTable('lesson', table => {
     table.increments();
     table.string('title').comment('title of lesson');
