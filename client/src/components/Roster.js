@@ -8,7 +8,6 @@ import { UserRefreshClient } from 'google-auth-library';
 
 const Roster = props => {
   const { isMentor } = props;
-
   const [mentorRoster, setMentorRoster] = useState([]);
   const [studentRoster, setStudentRoster] = useState([]);
   const [showActive, setShowActive] = useState(true);

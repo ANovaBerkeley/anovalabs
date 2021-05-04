@@ -55,6 +55,10 @@ const RosterCard = props => {
   };
 
   const editStudentProfile = () => {
+    let updateNotes = editedNotes;
+    if (!updateNotes) {
+      updateNotes = notes;
+    }
     if (editedNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255) for Notes.',
@@ -66,7 +70,7 @@ const RosterCard = props => {
       method: 'POST',
       body: JSON.stringify({
         editedStudentSemesters,
-        editedNotes,
+        updateNotes,
         id,
         name,
         candy,
@@ -239,7 +243,9 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {studentSemesters ? studentSemesters.join(', ') : null}
+            {editedStudentSemesters
+              ? editedStudentSemesters.join(', ')
+              : editedStudentSemesters}{' '}
           </p>
           <p>
             <span className="rosterCardItem" id="notesBubble">
@@ -286,7 +292,9 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {studentSemesters ? studentSemesters.join(', ') : null}
+            {editedStudentSemesters
+              ? editedStudentSemesters.join(', ')
+              : editedStudentSemesters}{' '}
           </p>
         </div>
       );
@@ -332,7 +340,3 @@ RosterCard.defaultProps = {
 };
 
 export default RosterCard;
-
-//Problem:
-// state is not being reflected in html..weird
-// storing json arrays in postgres
