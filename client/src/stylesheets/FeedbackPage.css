@@ -89,8 +89,10 @@ h3 {
   outline: none;
 }
 .feedbackButtons {
-  display:flex;
+  display: flex;
   flex-direction: row;
+  margin-top: 130px;
+  position: relative;
 }
 
 .summaryButton {
@@ -119,10 +121,7 @@ h3 {
   border-radius: 2vw;
   display: flex;
   position: relative;
-  /*left: 100px; */
-  top: 100px;
-  padding: 4.25% 4.25% 4.25% 4.25%;
-  margin-top: 25px;
+  padding: 0.65vw 0.65vw 0.65vw 0.65vw;
   margin-left: 40px;
 }
 

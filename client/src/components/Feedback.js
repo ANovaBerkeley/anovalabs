@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../stylesheets/FeedbackPage.css';
 import { Redirect } from 'react-router-dom';
-import { text } from 'body-parser';
 import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
 import FeedbackModal from "./FeedbackModal";
@@ -27,11 +26,12 @@ class Feedback extends Component {
     const d_tok = decode(tok);
     var {id} = decode(getAnovaToken());
     var id_str = id.toString();
-    this.setState({uid: id_str});
     console.log(id_str);
+    this.setState({uid: id_str});
+    //console.log(id_str);
     const get_url = '/api/v1/feedback/get_feedback/';
-    console.log(get_url + id_str+ "?lesson_id="   +this.state.lessonId)
-    fetch(get_url + id_str+ "?lesson_id=" + this.state.lessonId)
+    //console.log(get_url + id_str+ "?lesson_id="   +this.state.lessonId)
+    fetch(get_url + id_str+ "?lesson_id=" + this.state.lessonId + "&uid=" + id_str)
     .then(res => res.json())
     .then(  
       result => {
@@ -39,8 +39,6 @@ class Feedback extends Component {
           console.log(result)
           this.setState({text: result.data[0].text, gtext: result.data[0].gtext, rating: result.data[0].rating, exists: true})
         }
-        
-    
       },
       error => {
         console.log("no match found");
@@ -67,14 +65,15 @@ class Feedback extends Component {
   }
  
   updateFeedback() {
-    const { text, gtext, rating, uid, lid } = this.state;
+    const { text, gtext, rating, uid, lessonId } = this.state;
     fetch('/api/v1/feedback/update', {
       method: 'POST',
       body: JSON.stringify({
         text: text,
         gtext: gtext,
         uid: uid,
-        rating: rating
+        rating: rating,
+        lessonId: lessonId
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -89,14 +88,12 @@ class Feedback extends Component {
     return (
       <div className="page">
         <div className="feedbackBoxContainer">
-          {console.log(this.state.isMentor)}
           <h3>What did you think of today's lesson?</h3>
           <input
             className="feedbackInput"
             type="text"
             placeholder="Add feedback"
             defaultValue={this.state.text}
-            // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
             onChange={event => this.setState({ text: event.target.value })}
           ></input>
         </div>
@@ -107,7 +104,6 @@ class Feedback extends Component {
             type="text"
             placeholder="Add feedback"
             defaultValue={this.state.gtext}
-            // TODO: create API call to fetch previous feedback if it exists and set value=prevfeedback
             onChange={event => this.setState({ gtext: event.target.value })}
           ></input>
         </div>
@@ -151,47 +147,19 @@ class Feedback extends Component {
             </button>  
           </div>
         </div>
-        {this.state.isMentor? 
-            <div className = "feedbackButtons">
-              <div>
-                <button
-                  className="summaryButton"
-                  onClick={() => this.summaryFeedback()}
-                  type="button"
-          >
-                Summary
-                </button>
-              </div>
-            <div>
-              <button
-                  className="submitButton"
-                  onClick={() => this.updateFeedback()}
-                  type="button"
-          >
-                Submit Feedback
-            </button>
-            </div>
-          </div> :
-              <button
-              className="submitButton"
-              onClick={() => this.updateFeedback()}
-              type="button"
-            >
-              Submit Feedback
-
-            </button>
-        }
-
-          
-
-        {/* <button
-          className="submitButton"
-          onClick={() => {this.state.exists ? this.updateFeedback() : this.submitFeedback()}}
-          type="button"
-        >
-          {this.state.exists ? 'Save Feedback Changes' : 'Submit Feedback'}
-        </button> */}
         
+        <div className = "feedbackButtons">
+          {this.state.isMentor ?
+            <FeedbackModal/> : null
+          }
+          <button
+            className="submitButton"
+            onClick={() => {this.state.exists ? this.updateFeedback() : this.submitFeedback()}}
+            type="button"
+          >
+            {this.state.exists ? 'Save Changes' : 'Submit Feedback'}
+          </button>
+        </div> 
       </div>
     );
   }

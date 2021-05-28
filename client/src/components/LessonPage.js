@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 
 import '../stylesheets/LessonPage.css';
 
+
 const LessonPage = props => {
   const { id, ismentor } = props;
 

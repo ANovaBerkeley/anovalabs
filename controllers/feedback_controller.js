@@ -2,13 +2,15 @@ const knex = require('../db/knex');
 
 /* Update feedback text and rating */
 const updateFeedback = async (req, res, next) => {
-  const { uid} = req.body;
+  const { uid, lessonId} = req.body;
   console.log(req.body);
   console.log(uid);
+  console.log(lessonId);
   try {
     const data = await knex('feedback')
       //.where({ lessonId: lessonId,  userId: userId})
       .where({uid: uid})
+      .where({lesson_id: lessonId})
       .update({
         text: req.body.text,
         gtext: req.body.gtext,
@@ -26,8 +28,7 @@ const updateFeedback = async (req, res, next) => {
 /* Retrieve all feedback for a lesson. */
 const getFeedback = async (req, res, next) => {
   const lessonId = req.query.lesson_id;
-  console.log("QUERY")
-  console.log(req.query.lesson_id);
+  const uid = req.query.uid;
   try {
     const data = await knex
       .select(
@@ -41,7 +42,9 @@ const getFeedback = async (req, res, next) => {
       )
       
       .from('feedback')
+      .where('feedback.uid', uid)
       .where('feedback.lesson_id', lessonId );
+    console.log("RESULT");
     console.log(data);
     return res.status(200).send({ data });
   } catch (error) {

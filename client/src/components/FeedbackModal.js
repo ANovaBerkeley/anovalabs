@@ -6,11 +6,12 @@ function FeedbackModal() {
 
     return (
         <div>
-        <button onClick={() => setShowModal(true)}>test</button>
+        <button className="submitButton" onClick={() => setShowModal(true)}>Summary</button>
         
         <Modal 
             isOpen={showModal}
             onRequestClose={() => setShowModal(false)}
+            ariaHideApp={false}
         >
         <div>   
             <h2>Title</h2>

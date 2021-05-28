@@ -11,4 +11,4 @@ exports.up = knex =>
     table.string('gtext').comment('general feedback');
   });
 
-exports.down = knex => knex.raw('DROP TABLE IF EXISTS lesson CASCADE');
+exports.down = knex => knex.raw('DROP TABLE IF EXISTS feedback CASCADE');
