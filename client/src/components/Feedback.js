@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../stylesheets/FeedbackPage.css';
+import { Popconfirm, Button, Modal, Row, Col, Input } from 'antd';
 import { Redirect } from 'react-router-dom';
 import * as decode from 'jwt-decode';
 import { getAnovaToken } from '../utils/utils';
@@ -17,6 +18,8 @@ class Feedback extends Component {
       rating: null,
       isMentor: this.props.ismentor,
       uid: this.props.userid,
+      title: "",
+      site: "",
       submitted: false,
       exists: false
     };
@@ -25,18 +28,28 @@ class Feedback extends Component {
     const tok = localStorage.getItem('anovaToken');
     const d_tok = decode(tok);
     var {id} = decode(getAnovaToken());
+
+    fetch(`/api/v1/site/current?uid=${d_tok.id}`)
+      .then(res => res.json())
+      .then(siteFound => {
+        this.setState({site: siteFound.schoolName})
+      });
+
+    fetch('/api/v1/lessons/' + this.state.lessonId + '?id=' + this.state.lessonId)
+    .then(res => res.json())
+    .then(lesson => {
+        console.log(lesson[0].title);
+        this.setState({title: lesson[0].title});
+    })
+
     var id_str = id.toString();
-    console.log(id_str);
     this.setState({uid: id_str});
-    //console.log(id_str);
     const get_url = '/api/v1/feedback/get_feedback/';
-    //console.log(get_url + id_str+ "?lesson_id="   +this.state.lessonId)
     fetch(get_url + id_str+ "?lesson_id=" + this.state.lessonId + "&uid=" + id_str)
     .then(res => res.json())
     .then(  
       result => {
         if (result.data.length > 0) {
-          console.log(result)
           this.setState({text: result.data[0].text, gtext: result.data[0].gtext, rating: result.data[0].rating, exists: true})
         }
       },
@@ -45,6 +58,17 @@ class Feedback extends Component {
       },
     )
   }
+
+  getClassFeedback() {
+    fetch('/api/v1/feedback/get_class_feedback/' + "?class=" + this.state.site + "&lesson_id=" + this.state.lessonId)
+    .then(res => res.json())
+    .then(
+      result => {
+        console.log(result)
+      }
+    )
+  }
+  
   
 
   submitFeedback() {
@@ -56,7 +80,8 @@ class Feedback extends Component {
         text: this.state.text,
         rating: this.state.rating,
         mentor: this.state.isMentor,
-        gtext: this.state.gtext
+        gtext: this.state.gtext,
+        site_name: this.state.site
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -87,25 +112,24 @@ class Feedback extends Component {
     }
     return (
       <div className="page">
+        <h1 id="lessonTitle">{this.state.title}</h1>
         <div className="feedbackBoxContainer">
           <h3>What did you think of today's lesson?</h3>
-          <input
-            className="feedbackInput"
-            type="text"
+          <textarea
+            className="feedbackTextarea"
             placeholder="Add feedback"
             defaultValue={this.state.text}
             onChange={event => this.setState({ text: event.target.value })}
-          ></input>
+          ></textarea>
         </div>
         <div className="feedbackBoxContainer">
           <h3>General Feedback/Thoughts?</h3>
-          <input
-            className="feedbackInput"
-            type="text"
+          <textarea
+            className="feedbackTextarea"
             placeholder="Add feedback"
             defaultValue={this.state.gtext}
             onChange={event => this.setState({ gtext: event.target.value })}
-          ></input>
+          ></textarea>
         </div>
         <div className="ratingContainer">
           <h3 className="rateText">Rate today's lesson on a scale from 1-5!</h3>
@@ -150,7 +174,13 @@ class Feedback extends Component {
         
         <div className = "feedbackButtons">
           {this.state.isMentor ?
-            <FeedbackModal/> : null
+            <FeedbackModal 
+              lesson_id={this.state.lessonId} 
+              title={this.state.title}
+              getClassFeedback={this.getClassFeedback}
+              site={this.state.site}
+            /> : 
+            null
           }
           <button
             className="submitButton"
@@ -159,6 +189,7 @@ class Feedback extends Component {
           >
             {this.state.exists ? 'Save Changes' : 'Submit Feedback'}
           </button>
+          {/*<button onClick= {() => this.getClassFeedback()}>Get all feedback</button>*/}
         </div> 
       </div>
     );

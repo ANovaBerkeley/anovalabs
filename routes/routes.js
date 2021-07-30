@@ -31,6 +31,7 @@ module.exports = app => {
 
   //Feedback
   app.get('/api/v1/feedback/get_feedback/:id', FeedbackController.getFeedback);
+  app.get('/api/v1/feedback/get_class_feedback', FeedbackController.getClassFeedback);
   app.post('/api/v1/feedback/submit_feedback', FeedbackController.submitFeedback);
   app.post('/api/v1/feedback/update', FeedbackController.updateFeedback);
 

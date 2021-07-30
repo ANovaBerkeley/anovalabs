@@ -8,15 +8,12 @@ const updateFeedback = async (req, res, next) => {
   console.log(lessonId);
   try {
     const data = await knex('feedback')
-      //.where({ lessonId: lessonId,  userId: userId})
       .where({uid: uid})
       .where({lesson_id: lessonId})
       .update({
         text: req.body.text,
         gtext: req.body.gtext,
         rating: req.body.rating
-
-        //rating: req.body.updatedRating
       });
     return res.status(200).send({ data });
   } catch (error) {
@@ -25,8 +22,9 @@ const updateFeedback = async (req, res, next) => {
 };
 
 
-/* Retrieve all feedback for a lesson. */
+/* Retrieve individual feedback for a lesson. */
 const getFeedback = async (req, res, next) => {
+  
   const lessonId = req.query.lesson_id;
   const uid = req.query.uid;
   try {
@@ -52,6 +50,31 @@ const getFeedback = async (req, res, next) => {
   }
 }
 
+/* Retrieve all feedback for mentor summary view. */
+const getClassFeedback = async (req, res, next) => {
+  console.log(req.query.class)
+  const lessonId = req.query.lesson_id;
+  const siteName = req.query.class;
+  try {
+    const data = await knex
+      .select(
+        'feedback.text',
+        'feedback.gtext',
+        'feedback.rating',
+        'feedback.mentor',
+      )
+      
+      .from('feedback')
+      .where('feedback.lesson_id', lessonId )
+      .where('feedback.site_name', siteName);
+    console.log("RESULT OF ALL");
+    console.log(data);
+    return res.status(200).send({ data });
+  } catch (error) {
+    return res.status(500).json({ error});
+  }
+
+}
 /* Submit mentor feedback for a lesson. */
 const submitFeedback = async (req, res, next) => {
 
@@ -71,5 +94,6 @@ const submitFeedback = async (req, res, next) => {
 module.exports = {
   updateFeedback: updateFeedback,
   getFeedback: getFeedback,
+  getClassFeedback: getClassFeedback,
   submitFeedback: submitFeedback
 };
