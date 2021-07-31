@@ -7,16 +7,18 @@ module.exports = [
         mentor: true,
         created_at: null,
         updated_at: null,
-        gtext: "man"
+        gtext: "man", 
+        site_name: "Rudsdale"
     },
     {
-        uid: 21,
+        uid: 11,
         lesson_id: 2,
         text: "no",
         rating: 5,
-        mentor: true,
+        mentor: false,
         created_at: null,
         updated_at: null,
-        gtext: "dude"
+        gtext: "dude",
+        site_name: "Rudsdale"
     }
 ];

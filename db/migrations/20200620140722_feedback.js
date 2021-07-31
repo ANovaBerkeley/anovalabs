@@ -9,6 +9,7 @@ exports.up = knex =>
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
     table.string('gtext').comment('general feedback');
+    table.string('site_name').comment('site of user');
   });
 
 exports.down = knex => knex.raw('DROP TABLE IF EXISTS feedback CASCADE');

@@ -30,23 +30,25 @@ const FeedbackModal = (props) => {
                 studentCount++;
             }
         }
-        setStudentAverage(studentSum/studentCount);
-        setMentorAverage(mentorSum/mentorCount);
+        if (studentSum > 0) {
+            setStudentAverage(studentSum/studentCount);
+        }
+        if (mentorSum > 0) {
+            setMentorAverage(mentorSum/mentorCount);
+        }
+        
     }
-
-    useEffect(() => {
+    getClassFeedback()
+    /*useEffect(() => {
         getClassFeedback()
-    }, [title])
+    }, [])*/
 
     const reviewComps = classFeedback.map((feedback) => {
         return(
             <div style={{width: "95%"}}>
                 <p><strong>{feedback.mentor ? "Mentor:" : "Student:"}</strong></p>
                 <p>What did you think of today's lesson? <br></br>{feedback.text}</p>
-                <p>General Feedback? <br></br>{feedback.gtext} Here is extra text to check if the paragraph still wraps to the next line when overflown here is a little more because i did not type enough</p>
-                <p><strong>{feedback.mentor ? "Mentor:" : "Student:"}</strong></p>
-                <p>What did you think of today's lesson? <br></br>{feedback.text}</p>
-                <p>General Feedback? <br></br>{feedback.gtext} </p>
+                <p>General Feedback? <br></br>{feedback.gtext}</p>
             </div> 
         )
     })
