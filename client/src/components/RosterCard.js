@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../stylesheets/Roster.css';
-import { Card, Button, Modal, Input, Row, Col } from 'antd';
+import '../stylesheets/RosterCard.css';
+import { Card, Button, Modal, Input, Row, Col, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { handleErrors } from '../utils/helpers';
@@ -8,21 +8,60 @@ import { handleErrors } from '../utils/helpers';
 const { TextArea } = Input;
 
 const RosterCard = props => {
-  const { mentor, person } = props;
-
-  const { id, name, email, candy, hobby, notes } = person; // TODO: fetch candy and hobby to display here!
+  const { isMentor, person, mentorCard, showActive, showAll } = props;
+  const { id, name, email, candy, hobby, fact, notes } = person;
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
+  const [studentSemesters, setStudentSemesters] = useState(person.studentSemesters);
+  const [editedStudentSemesters, setEditedStudentSemesters] = useState(studentSemesters);
+
+  const getCurrentSemester = () => {
+    const currDate = new Date();
+    const month = currDate.getMonth();
+    const year = Number(currDate.getYear()) + 1900;
+    let semester;
+    if (month < 7) {
+      semester = `Spring ${year}`;
+    } else {
+      semester = `Fall ${year}`;
+    }
+    return semester;
+  };
+
+  const isToggleActive = () => {
+    return editedStudentSemesters && editedStudentSemesters.includes(currSemester);
+  };
 
   const onChangeNotes = event => {
     setEditedNotes(event.target.value);
   };
 
+  const onChangeStudentSemesters = checked => {
+    console.log('checked: ', checked);
+    console.log('is Toggle Active: ', isToggleActive());
+    let edited = [...editedStudentSemesters] ? [...editedStudentSemesters] : [];
+
+    console.log('edited prev: ', edited);
+
+    if (checked && !isToggleActive()) {
+      edited.push(currSemester);
+    } else {
+      edited.pop();
+    }
+    console.log('edited: ', edited);
+    setEditedStudentSemesters(edited);
+    console.log('editedSemesters after: ', editedStudentSemesters);
+  };
+
   const editStudentProfile = () => {
+    let updateNotes = editedNotes;
+    if (!updateNotes) {
+      updateNotes = notes;
+    }
     if (editedNotes.length >= 255) {
       Modal.error({
-        title: 'Exceeded maximum number of characters (255).',
+        title: 'Exceeded maximum number of characters (255) for Notes.',
         centered: true,
       });
       return;
@@ -30,8 +69,12 @@ const RosterCard = props => {
     fetch('/api/v1/roster/update', {
       method: 'POST',
       body: JSON.stringify({
-        editedNotes,
+        editedStudentSemesters,
+        updateNotes,
         id,
+        name,
+        candy,
+        hobby,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -41,43 +84,21 @@ const RosterCard = props => {
       .then(() => {
         setShowEditModal(false);
         setDisplayNotes(editedNotes);
+        setEditedStudentSemesters(editedStudentSemesters);
+        setStudentSemesters(editedStudentSemesters);
       })
-      .catch(() =>
+      .catch(error => {
+        console.log(error);
         Modal.error({
-          title: 'Unable to update student notes.',
+          title: 'Unable to update student info.',
           centered: true,
-        }),
-      );
-  };
-
-  const renderDescription = () => {
-    let description;
-    if (mentor) {
-      description = (
-        <div>
-          <h2>Name: {name}</h2>
-          <p>Email: {email}</p>
-          {/* <p>Favorite Candy: {candy}</p>
-          <p>Favorite Hobby: {hobby}</p> */}
-          <p>Notes: {displayNotes}</p>
-        </div>
-      );
-    } else {
-      description = (
-        <div>
-          <h2>Name: {name}</h2>
-          <p>Email: {email}</p>
-        </div>
-      );
-    }
-    return description;
+        });
+      });
   };
 
   const renderEditButton = () => {
-    // const { mentor } = this.props;
-    // const { showEditModal, notes } = this.state;
     let editButton;
-    if (mentor) {
+    if (!mentorCard && isMentor) {
       editButton = (
         <div className="buttonContainer">
           <Button
@@ -85,25 +106,61 @@ const RosterCard = props => {
             className="lowerButton"
             onClick={() => setShowEditModal(true)}
           >
-            Edit Student Notes
+            Edit Student Info
           </Button>
           <Modal
             visible={showEditModal}
-            title="Edit Student Notes"
+            title="Edit Student Info"
             okText="Update"
-            onCancel={() => setShowEditModal(false)}
+            onCancel={() => {
+              setShowEditModal(false);
+              setEditedStudentSemesters(studentSemesters);
+            }}
             onOk={editStudentProfile}
+            bodyStyle={{ paddingTop: '10px' }}
           >
             <Row>
+              <Col style={{ marginBottom: '10px' }}>
+                {' '}
+                <span className="rosterCardItem" id="notesBubble">
+                  NOTES
+                </span>{' '}
+              </Col>
               <Col>
                 <TextArea
                   rows={4}
                   id="notes"
-                  addonBefore="Notes:"
                   autosize="true"
                   defaultValue={notes}
                   onChange={onChangeNotes}
+                  style={{ marginBottom: '15px' }}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ marginBottom: '10px' }}>
+                {' '}
+                <span className="rosterCardItem" id="semestersAttendedBubble">
+                  SEMESTERS
+                </span>{' '}
+                <Switch
+                  checkedChildren="Active Student"
+                  unCheckedChildren="Inactive Student"
+                  defaultChecked={
+                    editedStudentSemesters &&
+                    editedStudentSemesters.includes(currSemester)
+                  }
+                  checked={
+                    editedStudentSemesters &&
+                    editedStudentSemesters.includes(currSemester)
+                  }
+                  onChange={onChangeStudentSemesters}
+                />
+              </Col>
+              <Col>
+                {editedStudentSemesters
+                  ? editedStudentSemesters.join(', ')
+                  : editedStudentSemesters}
               </Col>
             </Row>
           </Modal>
@@ -113,13 +170,148 @@ const RosterCard = props => {
     return editButton;
   };
 
+  const renderDescription = () => {
+    let description;
+    if (!mentorCard && !studentSemesters) {
+      fetch(`/api/v1/roster/getUserSemester?uid=${id}`)
+        .then(res => res.json())
+        .then(userSemester => {
+          setEditedStudentSemesters([userSemester[0].semester]);
+          setStudentSemesters([userSemester[0].semester]);
+        });
+    }
+    if (mentorCard) {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+        </div>
+      );
+    } else if (
+      isMentor &&
+      !mentorCard &&
+      studentSemesters &&
+      (showAll ||
+        (showActive && !showAll && studentSemesters.includes(currSemester)) ||
+        (!showActive && !showAll && !studentSemesters.includes(currSemester)))
+    ) {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="semestersAttendedBubble">
+              SEMESTERS
+            </span>{' '}
+            {editedStudentSemesters
+              ? editedStudentSemesters.join(', ')
+              : editedStudentSemesters}{' '}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="notesBubble">
+              NOTES
+            </span>{' '}
+            {displayNotes}
+          </p>
+        </div>
+      );
+    } else if (
+      !isMentor &&
+      !mentorCard &&
+      studentSemesters &&
+      studentSemesters.includes(currSemester)
+    ) {
+      description = (
+        <div>
+          <h2>{name}</h2>
+          <p>
+            <span className="rosterCardItem" id="emailBubble">
+              EMAIL
+            </span>{' '}
+            {email}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="hobbyBubble">
+              FAV HOBBY
+            </span>{' '}
+            {hobby}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="factBubble">
+              FUN FACT
+            </span>{' '}
+            {fact}
+          </p>
+          <p>
+            <span className="rosterCardItem" id="semestersAttendedBubble">
+              SEMESTERS
+            </span>{' '}
+            {editedStudentSemesters
+              ? editedStudentSemesters.join(', ')
+              : editedStudentSemesters}{' '}
+          </p>
+        </div>
+      );
+    } else {
+      description = null;
+    }
+    return description;
+  };
+
+  const currSemester = getCurrentSemester();
   const description = renderDescription();
   const maybeEditButton = renderEditButton();
 
-  return (
+  const maybeCard = (
     <div>
       <Card
-        style={{ width: 300 }}
+        style={{ borderRadius: '20px' }}
         cover={<img alt="" src="https://image.flaticon.com/icons/svg/1141/1141771.svg" />}
       >
         {description}
@@ -127,13 +319,24 @@ const RosterCard = props => {
       </Card>
     </div>
   );
+
+  if (description) {
+    return maybeCard;
+  } else {
+    return null;
+  }
 };
 
 RosterCard.propTypes = {
-  mentor: PropTypes.bool,
+  isMentor: PropTypes.bool,
+  showActive: PropTypes.bool,
+  showAll: PropTypes.bool,
 };
+
 RosterCard.defaultProps = {
-  mentor: false,
+  isMentor: false,
+  showActive: true,
+  showAll: false,
 };
 
 export default RosterCard;

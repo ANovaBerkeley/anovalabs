@@ -55,7 +55,7 @@ const AuthComponent = props => {
     return (
       <div>
         <NavBar isMentor={mentor} match={match} />
-        <Component ismentor={mentor} id={match.params.id} />
+        <Component isMentor={mentor} id={match.params.id} />
       </div>
     );
   }

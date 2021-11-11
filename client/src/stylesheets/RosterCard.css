@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10px;
+}
+
+.ant-card-cover {
+  display: block;
+  width: 35%;
+  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+}
+
+.ant-card-body {
+  padding-top: 5px;
+}
+
+.rosterCardItem {
+  border-radius: 10px;
+  width: 65px;
+  height: 30px;
+  font-family: Poppins;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #000000;
+}
+
+p {
+  font-family: Lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0em;
+  align-items: center;
+}
+
+h2 {
+  font-family: Lato;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 40px;
+  letter-spacing: 0em;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+#emailBubble {
+  background-color: #eac5c5;
+}
+
+#candyBubble {
+  background-color: #eadbc5;
+}
+
+#hobbyBubble {
+  background-color: #b9d8b2;
+}
+
+#factBubble {
+  background-color: #c1d4e5;
+}
+
+#semestersAttendedBubble {
+  background-color: #e4d3f5;
+}
+
+#notesBubble {
+  background-color: #dedede;
+}
+
+.ant-btn-primary {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 10px;
+  border-radius: 10px;
+}
