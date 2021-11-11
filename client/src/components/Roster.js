@@ -63,15 +63,24 @@ const Roster = props => {
     let filterButtons;
     if (isMentor) {
       filterButtons = (
-        <div>
+        <div style={{padding: '0px 0px 20px 0px'}}>
           <Radio.Group value={filter} onChange={handleFilterChange}>
-            <Radio.Button value="active" className="studentFilterButtons">
+            <Radio.Button
+              value="active"
+              className="studentFilterButtons"
+            >
               Active
             </Radio.Button>
-            <Radio.Button value="inactive" className="studentFilterButtons">
+            <Radio.Button
+              value="inactive"
+              className="studentFilterButtons"
+            >
               Inactive
             </Radio.Button>
-            <Radio.Button value="all" className="studentFilterButtons">
+            <Radio.Button
+              value="all"
+              className="studentFilterButtons"
+            >
               All
             </Radio.Button>
           </Radio.Group>

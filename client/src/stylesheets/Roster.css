@@ -206,9 +206,9 @@ input[type='submit']:hover {
 } */
 
 .studentFilterButtons {
-  border-radius: 15px;
+  /* margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 20px; */
   font-family: Poppins;
   font-size: 13px;
   font-weight: 600;
