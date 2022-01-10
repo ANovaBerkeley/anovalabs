@@ -2,16 +2,20 @@
 
 .page {
   background-color: #e9f4fb;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-evenly; */
+  padding: 100px 10px;
+  justify-content: space-evenly;
 }
 
 .ant-modal-body {
   background: #e9f4fb;
-  border-radius: 5px;
+  border-radius: 20px;
+}
+
+.ant-modal-content {
+  border-radius: 20px;
 }
 
 h3 {
@@ -23,11 +27,8 @@ h3 {
   border-radius: 25px;
   background-color: white;
   padding: 30px;
-  position: relative;
   margin-bottom: 3vh;
-  /*left: 100px; */
   top: 100px;
-  /* margin: 25px 25px 25px 25px; */
 }
 
 ::placeholder {
@@ -47,6 +48,16 @@ h3 {
   border-radius: 28px;
 }
 
+.feedbackModalRight {
+  align-self: center;
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left:20px;
+
+}
+
 .feedbackScroll {
   position: relative;
   width: 90%;
@@ -59,16 +70,14 @@ h3 {
 .modalRightRect {
   background: white;
   width: 20vw;
-  height: 10vh;
-  margin: 3vh 0vw 0vh 3vw;
+  padding: 2vh 1vw 2vh 1vw;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 28px;
 }
 
-.modalRightText {
-  position: relative;
-  top: 17%;
-  right: 10%;
+.modalRightRect h2 {
+  color: #0489C5;
+  font-size: 1.2vw;
 }
 
 
@@ -79,30 +88,9 @@ h3 {
   padding: 10px 30px 10px 30px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  /*left: 100px; */
-  align-self: flex-start;
   left: 8vw;
   top: 75px;
   justify-content: space-between;
-  margin-top: 25px;
-}
-
-.summaryButton{
-  color: white;
-  font-weight: bold;
-  background-color: #03A9F4;
-  border-color: transparent;
-  border-radius: 2vw;
-  display: flex;
-  position: relative;
-  /*left: 100px; */
-  top: 100px;
-  padding: 1.25% 1.25% 1.25% 1.25%;
-  margin-top: 25px;
-}
-.summaryButton:hover {
-  cursor:pointer;
 }
 
 .rateText {
@@ -118,7 +106,6 @@ h3 {
 .rate,
 .rate-selected {
   background-color: #e7e7e7;
-  /**background-color: #03A9F4;**/
   border: none;
   padding: 13px 26px;
   margin-right: 10px;
@@ -136,33 +123,16 @@ h3 {
 .feedbackButtons {
   display: flex;
   flex-direction: row;
-  margin-top: 100px;
-  position: relative;
-  align-self: flex-start;
-  left: 7.2vw;
+  margin-top: 30px;
 }
 
 #lessonTitle {
-  position: relative;
-  top: 100px;
+  display: flex;  
   align-self: flex-start;
+  margin: 0px 0px 0px 75px;
   left: 8vw;
   color: #0489c5;
-
-}
-
-.summaryButton {
-  color: white;
-  font-weight: bold;
-  background-color: #03A9F4;
-  border-color: transparent;
-  border-radius: 2vw;
-  display: flex;
-  position: relative;
-  /*left: 100px; */
-  top: 100px;
-  padding: 9.5% 9.5% 9.5% 9.5%;
-  margin-top: 25px;
+  line-height: 3em;
 }
 
 .feedbackTextarea {
@@ -173,20 +143,16 @@ h3 {
   border-radius: 4px;
 }
 
-.summaryButton:hover {
-  cursor: pointer;
-}
 .submitButton {
   white-space: nowrap;
   color: white;
   font-weight: bold;
   background-color: #03A9F4;
-  border-color: transparent;
+  border-color: transparent;  
   border-radius: 15px;
   display: flex;
-  position: relative;
   padding: 0.75vw 3vw 0.75vw 3vw;
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .submitButton:hover {
@@ -206,10 +172,6 @@ h3 {
   border-radius: 5px;
 }
 
-h2 {
-  color: #0489C5;
-  font-size: 1.80em;
-}
 
 #homeButton {
   background: #039AF4; 

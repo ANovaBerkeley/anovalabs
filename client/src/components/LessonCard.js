@@ -194,7 +194,7 @@ const LessonCard = props => {
     editButton = (
     <>
       <Link to={'/LessonFeedback/' + id}>
-          <button className="lowerButton siteMaterialButton" >Edit Feedback</button>
+          <button className="lowerButton siteMaterialButton" >Feedback</button>
       </Link>
     </>
     );

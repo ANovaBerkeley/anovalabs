@@ -96,86 +96,85 @@ const Feedback = (props) => {
     })
 
     return (
-        (submitted ? <Redirect to="/SiteLessons" /> :
-        
+        (submitted ? <Redirect to="/SiteLessons" /> :   
         <div className="page">
-        <h1 id="lessonTitle">{title}</h1>
-        <div className="feedbackBoxContainer">
-          <h3>What did you think of today's lesson?</h3>
-          <textarea
-            className="feedbackTextarea"
-            placeholder="Add feedback"
-            defaultValue={lessonText}
-            onChange={event => setLessonText(event.target.value)}
-          ></textarea>
-        </div>
-        <div className="feedbackBoxContainer">
-          <h3>General Feedback/Thoughts?</h3>
-          <textarea
-            className="feedbackTextarea"
-            placeholder="Add feedback"
-            defaultValue={generalText}
-            onChange={event => setGeneralText(event.target.value)}
-          ></textarea>
-        </div>
-        <div className="ratingContainer">
-          <h3 className="rateText">Rate today's lesson on a scale from 1-5!</h3>
-          <div className="buttonContainer">
-            <button
-              className={rating === 1 ? 'rate-selected' : 'rate'}
-              onClick={() => setRating(1)}
-              type="button"
-            >
-              1
-            </button>
-            <button
-              className={rating === 2 ? 'rate-selected' : 'rate'}
-              onClick={() => setRating(2)}
-              type="button"
-            >
-              2
-            </button>
-            <button
-              className={rating === 3 ? 'rate-selected' : 'rate'}
-              onClick={() => setRating(3)}
-              type="button"
-            >
-              3
-            </button>
-            <button
-              className={rating === 4 ? 'rate-selected' : 'rate'}
-              onClick={() => setRating(4)}
-              type="button"
-            >
-              4
-            </button>
-            <button
-              className={rating === 5 ? 'rate-selected' : 'rate'}
-              onClick={() => setRating(5)}
-              type="button"
-            >
-              5
-            </button>  
+          <h1 id="lessonTitle">{title}</h1>
+          <div className="feedbackBoxContainer">
+            <h3>What did you think of today's lesson?</h3>
+            <textarea
+              className="feedbackTextarea"
+              placeholder="Add feedback"
+              defaultValue={lessonText}
+              onChange={event => setLessonText(event.target.value)}
+            ></textarea>
           </div>
-        </div>
-        
-        <div className = "feedbackButtons">
-          {isMentor ?
-            <FeedbackModal 
-              lesson_id={lessonId} 
-              title={title}
-              site={site}
-            /> : 
-            null
-          }
-          <button
-            className="submitButton"
-            onClick={() => {exists ? updateFeedback() : submitFeedback()}}
-            type="button"
-          >
-            {exists ? 'Save Changes' : 'Submit Feedback'}
-          </button>
-        </div> 
+          <div className="feedbackBoxContainer">
+            <h3>General Feedback/Thoughts?</h3>
+            <textarea
+              className="feedbackTextarea"
+              placeholder="Add feedback"
+              defaultValue={generalText}
+              onChange={event => setGeneralText(event.target.value)}
+            ></textarea>
+          </div>
+          <div className="ratingContainer">
+            <h3 className="rateText">Rate today's lesson on a scale from 1-5!</h3>
+            <div className="buttonContainer">
+              <button
+                className={rating === 1 ? 'rate-selected' : 'rate'}
+                onClick={() => setRating(1)}
+                type="button"
+              >
+                1
+              </button>
+              <button
+                className={rating === 2 ? 'rate-selected' : 'rate'}
+                onClick={() => setRating(2)}
+                type="button"
+              >
+                2
+              </button>
+              <button
+                className={rating === 3 ? 'rate-selected' : 'rate'}
+                onClick={() => setRating(3)}
+                type="button"
+              >
+                3
+              </button>
+              <button
+                className={rating === 4 ? 'rate-selected' : 'rate'}
+                onClick={() => setRating(4)}
+                type="button"
+              >
+                4
+              </button>
+              <button
+                className={rating === 5 ? 'rate-selected' : 'rate'}
+                onClick={() => setRating(5)}
+                type="button"
+              >
+                5
+              </button>  
+            </div>
+          </div>
+          
+          <div className = "feedbackButtons">
+            {isMentor ?
+              <FeedbackModal 
+                lesson_id={lessonId} 
+                title={title}
+                site={site}
+              /> : 
+              null
+            }
+            <button
+              className="submitButton"
+              onClick={() => {exists ? updateFeedback() : submitFeedback()}}
+              type="button"
+            >
+              {exists ? 'Save Changes' : 'Submit Feedback'}
+            </button>
+          </div> 
       </div>
       )
     )

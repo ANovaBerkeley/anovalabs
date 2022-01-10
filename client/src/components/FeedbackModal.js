@@ -38,24 +38,38 @@ const FeedbackModal = (props) => {
         }
         
     }
-    getClassFeedback()
-    /*useEffect(() => {
-        getClassFeedback()
-    }, [])*/
 
-    const reviewComps = classFeedback.map((feedback) => {
+    useEffect(() => {
+        getClassFeedback()
+    }, [ showModal ])
+
+    const mentorFeedback = classFeedback.filter(feedback => feedback.mentor);
+    const studentFeedback = classFeedback.filter(feedback => !feedback.mentor);
+
+    const mentorComps = mentorFeedback.map((feedback, index) => {
         return(
-            <div style={{width: "95%"}}>
-                <p><strong>{feedback.mentor ? "Mentor:" : "Student:"}</strong></p>
-                <p>What did you think of today's lesson? <br></br>{feedback.text}</p>
-                <p>General Feedback? <br></br>{feedback.gtext}</p>
-            </div> 
+        <div style={{width: "95%"}}>
+            <p><strong>Mentor {index + 1}</strong></p>
+            <p>What did you think of today's lesson? <br></br>{feedback.text}</p>
+            <p>General Feedback? <br></br>{feedback.gtext}</p>
+        </div> 
+        )
+    })
+
+    const studentComps = studentFeedback.map((feedback, index) => {
+        return(
+        <div style={{width: "95%"}}>
+            <p><strong>Student {index + 1}</strong></p>
+            <p>What did you think of today's lesson? <br></br>{feedback.text}</p>
+            <p>General Feedback? <br></br>{feedback.gtext}</p>
+        </div> 
         )
     })
     
     return (
         <div>
-        <button className="submitButton" onClick={() => setShowModal(true)}>Summary</button>
+
+        <button className="submitButton" onClick={() => setShowModal(true)}> View All Feedbacks</button>
 
         <Modal 
             visible={showModal}
@@ -63,18 +77,21 @@ const FeedbackModal = (props) => {
             onCancel={() => setShowModal(false)}
             footer={null}
             width={"80vw"}
-        >
+            >
             <div className="feedbackModalSurround">
                 <div className="feedbackModalLeft">  
                     <div className="feedbackScroll">
                         <h1 style={{color: "#0489c5", fontSize:"2em", height: "5vh"}}>Feedback</h1>
-                        {reviewComps}
+                        <h3>Mentors</h3>
+                        {mentorComps}
+                        <h3>Students</h3>
+                        {studentComps}
                     </div> 
                 </div>
 
                 <div align="right" className="feedbackModalRight">
                     <div className="modalRightRect">
-                        <div className="modalRightText">
+                        <div>
                             Lesson
                             <h2>{title}</h2>
                         </div>
@@ -82,21 +99,17 @@ const FeedbackModal = (props) => {
                     </div>
 
                     <div className="modalRightRect">
-                        <div className="modalRightText">
+                        <div>
                             Student Lesson Rating
                             <h2>{studentAverage == 0 ? "No data" : studentAverage + "/5"}</h2>
                         </div>
                     </div>
 
                     <div className="modalRightRect">
-                        <div className="modalRightText">
+                        <div>
                             Mentor Lesson Rating
                             <h2>{mentorAverage == 0 ? "No data" : mentorAverage + "/5"}</h2>
                         </div>
-                    </div>
-
-                    <div id="homeButton" className="modalRightRect" onClick={() => {setShowModal(false)}}>
-                        <h2 style={{ color:"white"}}>Return Home</h2>
                     </div>
                 </div>
             </div>
