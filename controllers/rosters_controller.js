@@ -51,7 +51,7 @@ const update = async (req, res) => {
     const data = await knex('user')
       .where({ id: req.body.id })
       .update({
-        notes: req.body.editedNotes,
+        notes: req.body.updateNotes,
         studentSemesters: JSON.stringify(req.body.editedStudentSemesters),
       });
     return res.status(200).send({ data });

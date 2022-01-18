@@ -13,9 +13,9 @@ const RosterCard = props => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [displayNotes, setDisplayNotes] = useState(notes);
-  const [studentSemesters, setStudentSemesters] = useState(person.studentSemesters);
+  const [studentSemesters, setStudentSemesters] = useState(JSON.parse(person.studentSemesters));
   const [editedStudentSemesters, setEditedStudentSemesters] = useState(studentSemesters);
-
+  
   const getCurrentSemester = () => {
     const currDate = new Date();
     const month = currDate.getMonth();
@@ -38,20 +38,14 @@ const RosterCard = props => {
   };
 
   const onChangeStudentSemesters = checked => {
-    console.log('checked: ', checked);
-    console.log('is Toggle Active: ', isToggleActive());
     let edited = [...editedStudentSemesters] ? [...editedStudentSemesters] : [];
-
-    console.log('edited prev: ', edited);
-
     if (checked && !isToggleActive()) {
       edited.push(currSemester);
     } else {
       edited.pop();
     }
-    console.log('edited: ', edited);
+
     setEditedStudentSemesters(edited);
-    console.log('editedSemesters after: ', editedStudentSemesters);
   };
 
   const editStudentProfile = () => {
@@ -59,7 +53,7 @@ const RosterCard = props => {
     if (!updateNotes) {
       updateNotes = notes;
     }
-    if (editedNotes.length >= 255) {
+    if (updateNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255) for Notes.',
         centered: true,
@@ -158,8 +152,8 @@ const RosterCard = props => {
                 />
               </Col>
               <Col>
-                {editedStudentSemesters
-                  ? editedStudentSemesters.join(', ')
+                { editedStudentSemesters && editedStudentSemesters.length
+                  ? editedStudentSemesters.join(", ")
                   : editedStudentSemesters}
               </Col>
             </Row>
@@ -176,10 +170,12 @@ const RosterCard = props => {
       fetch(`/api/v1/roster/getUserSemester?uid=${id}`)
         .then(res => res.json())
         .then(userSemester => {
-          setEditedStudentSemesters([userSemester[0].semester]);
-          setStudentSemesters([userSemester[0].semester]);
+          const semesters = userSemester[0].semester ? userSemester[0].semester.split(',') : userSemester[0].semester;
+          setEditedStudentSemesters(semesters);
+          setStudentSemesters(semesters);
         });
     }
+
     if (mentorCard) {
       description = (
         <div>
@@ -243,9 +239,9 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {editedStudentSemesters
-              ? editedStudentSemesters.join(', ')
-              : editedStudentSemesters}{' '}
+            { editedStudentSemesters && editedStudentSemesters.length
+              ? editedStudentSemesters.join(", ")
+              : editedStudentSemesters }{' '}
           </p>
           <p>
             <span className="rosterCardItem" id="notesBubble">
@@ -292,8 +288,8 @@ const RosterCard = props => {
             <span className="rosterCardItem" id="semestersAttendedBubble">
               SEMESTERS
             </span>{' '}
-            {editedStudentSemesters
-              ? editedStudentSemesters.join(', ')
+            { editedStudentSemesters && editedStudentSemesters.length
+              ? editedStudentSemesters.join(", ")
               : editedStudentSemesters}{' '}
           </p>
         </div>

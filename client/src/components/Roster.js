@@ -12,6 +12,7 @@ const Roster = props => {
   const [studentRoster, setStudentRoster] = useState([]);
   const [showActive, setShowActive] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const [filter, setFilter] = useState('active');
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
@@ -30,11 +31,12 @@ const Roster = props => {
       });
   }, [isMentor]);
 
-  const mentorRosterCards = mentorRoster.map(person => (
+  const mentorRosterCards = mentorRoster.length ? mentorRoster.map(person => (
     <RosterCard key={person.id} person={person} mentorCard={true} isMentor={isMentor} />
-  ));
+  )) : mentorRoster;
 
-  const studentRosterCards = studentRoster.map(person => (
+
+  const studentRosterCards = studentRoster.length ? studentRoster.map(person => (
     <RosterCard
       key={person.id}
       person={person}
@@ -43,39 +45,46 @@ const Roster = props => {
       showActive={showActive}
       showAll={showAll}
     />
-  ));
+  )) : studentRoster;
+
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
+    if (e.target.value === 'active') {
+      setShowActive(true);
+      setShowAll(false);
+    } else if (e.target.value === 'inactive') {
+      setShowActive(false);
+      setShowAll(false);
+    } else {
+      setShowAll(true);
+    }
+  };
 
   const renderFilterButtons = () => {
     let filterButtons;
     if (isMentor) {
       filterButtons = (
-        <div>
-          <Button
-            className="studentFilterButtons"
-            onClick={() => {
-              setShowActive(true);
-              setShowAll(false);
-            }}
-          >
-            Active
-          </Button>
-          <Button
-            className="studentFilterButtons"
-            onClick={() => {
-              setShowActive(false);
-              setShowAll(false);
-            }}
-          >
-            Inactive
-          </Button>
-          <Button
-            className="studentFilterButtons"
-            onClick={() => {
-              setShowAll(true);
-            }}
-          >
-            All
-          </Button>
+        <div style={{padding: '0px 0px 20px 0px'}}>
+          <Radio.Group value={filter} onChange={handleFilterChange}>
+            <Radio.Button
+              value="active"
+              className="studentFilterButtons"
+            >
+              Active
+            </Radio.Button>
+            <Radio.Button
+              value="inactive"
+              className="studentFilterButtons"
+            >
+              Inactive
+            </Radio.Button>
+            <Radio.Button
+              value="all"
+              className="studentFilterButtons"
+            >
+              All
+            </Radio.Button>
+          </Radio.Group>
         </div>
       );
     }
