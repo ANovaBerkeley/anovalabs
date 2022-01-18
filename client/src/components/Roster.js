@@ -31,11 +31,12 @@ const Roster = props => {
       });
   }, [isMentor]);
 
-  const mentorRosterCards = mentorRoster.map(person => (
+  const mentorRosterCards = mentorRoster.length ? mentorRoster.map(person => (
     <RosterCard key={person.id} person={person} mentorCard={true} isMentor={isMentor} />
-  ));
+  )) : mentorRoster;
 
-  const studentRosterCards = studentRoster.map(person => (
+
+  const studentRosterCards = studentRoster.length ? studentRoster.map(person => (
     <RosterCard
       key={person.id}
       person={person}
@@ -44,7 +45,7 @@ const Roster = props => {
       showActive={showActive}
       showAll={showAll}
     />
-  ));
+  )) : studentRoster;
 
   const handleFilterChange = e => {
     setFilter(e.target.value);
