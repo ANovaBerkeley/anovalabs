@@ -32,19 +32,6 @@ const getUsersBySite = async (req, res) => {
   }
 };
 
-const getUserSemester = async (req, res) => {
-  const userid = req.query.uid;
-  try {
-    const data = await knex
-      .select('semester')
-      .from('user_semester_site')
-      .where('user_id', userid);
-    res.status(200).send(data);
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
-
 /* Update a specific student profile */
 const update = async (req, res) => {
   try {
@@ -63,6 +50,5 @@ const update = async (req, res) => {
 
 module.exports = {
   getUsersBySite: getUsersBySite,
-  getUserSemester: getUserSemester,
   update: update,
 };

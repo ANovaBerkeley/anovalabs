@@ -18,7 +18,7 @@ module.exports = app => {
   //Site
   app.get('/api/v1/site/allSites', SitesController.index);
   app.get('/api/v1/site/current', SitesController.getCurrentUserSite);
-  app.post('/api/v1/site/addUserSemSite', SitesController.addUserToSemSite);
+  app.post('/api/v1/site/addUserSite', SitesController.addUserToSite);
 
   //Lessons
   app.get('/api/v1/lessons/all', LessonsController.index);
@@ -44,6 +44,5 @@ module.exports = app => {
 
   //Roster
   app.get('/api/v1/roster', RostersController.getUsersBySite);
-  app.get('/api/v1/roster/getUserSemester', RostersController.getUserSemester);
   app.post('/api/v1/roster/update', RostersController.update);
 };

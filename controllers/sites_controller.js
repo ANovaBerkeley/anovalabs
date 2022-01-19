@@ -25,20 +25,21 @@ const getCurrentUserSite = async (req, res, next) => {
       .first();
     return res.send(data);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error });
   }
 };
-/* Add user to a site + semester. */
-const addUserToSemSite = async (req, res, next) => {
+/* Add user to a site. */
+const addUserToSite = async (req, res, next) => {
   try {
     await knex('user_semester_site').insert({
       user_id: req.body.user_id,
-      semester: req.body.semester,
+      // semester: req.body.semester,
       site_id: req.body.site_id,
     });
     return res.status(201).json({
       user_id: req.body.user_id,
-      semester: req.body.semester,
+      // semester: req.body.semester,
       site_id: req.body.site_id,
     });
   } catch (error) {
@@ -49,5 +50,5 @@ const addUserToSemSite = async (req, res, next) => {
 module.exports = {
   index: index,
   getCurrentUserSite: getCurrentUserSite,
-  addUserToSemSite: addUserToSemSite,
+  addUserToSite: addUserToSite,
 };

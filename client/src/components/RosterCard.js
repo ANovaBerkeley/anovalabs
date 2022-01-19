@@ -149,6 +149,7 @@ const RosterCard = props => {
                     editedStudentSemesters.includes(currSemester)
                   }
                   onChange={onChangeStudentSemesters}
+                  disabled={isToggleActive() && studentSemesters.length == 1}
                 />
               </Col>
               <Col>
@@ -166,16 +167,6 @@ const RosterCard = props => {
 
   const renderDescription = () => {
     let description;
-    if (!mentorCard && !studentSemesters) {
-      fetch(`/api/v1/roster/getUserSemester?uid=${id}`)
-        .then(res => res.json())
-        .then(userSemester => {
-          const semesters = userSemester[0].semester ? userSemester[0].semester.split(',') : userSemester[0].semester;
-          setEditedStudentSemesters(semesters);
-          setStudentSemesters(semesters);
-        });
-    }
-
     if (mentorCard) {
       description = (
         <div>
@@ -304,7 +295,7 @@ const RosterCard = props => {
   const description = renderDescription();
   const maybeEditButton = renderEditButton();
 
-  const maybeCard = (
+  const userCard = (
     <div>
       <Card
         style={{ borderRadius: '20px' }}
@@ -317,7 +308,7 @@ const RosterCard = props => {
   );
 
   if (description) {
-    return maybeCard;
+    return userCard;
   } else {
     return null;
   }

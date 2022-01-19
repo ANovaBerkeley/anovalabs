@@ -80,13 +80,13 @@ const SignUp = () => {
   };
 
   const addUserSite = async payload => {
-    const semester = getCurrentSemester();
+    // const semester = getCurrentSemester();
     try {
-      await fetch('/api/v1/site/addUserSemSite', {
+      await fetch('/api/v1/site/addUserSite', {
         method: 'POST',
         body: JSON.stringify({
           user_id: payload.id,
-          semester,
+          // semester,
           site_id: siteId,
         }),
         headers: new Headers({
@@ -98,7 +98,7 @@ const SignUp = () => {
     }
   };
 
-  const _submit = event => {
+  const _submit = async event => {
     const googleToken = getGoogleToken();
 
     if (!googleToken) {
@@ -139,10 +139,14 @@ const SignUp = () => {
 
     event.preventDefault();
 
+    const semesters = [];
+    semesters.push(await getCurrentSemester());
+
     axios
       .post('/api/v1/auth/signup', {
         googleToken,
         role,
+        semesters,
       })
       .then(data => {
         localStorage.setItem('anovaToken', data.data.token);
