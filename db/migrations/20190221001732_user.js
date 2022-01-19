@@ -12,7 +12,7 @@ exports.up = knex =>
     table.string('candy');
     table.string('hobby');
     table.string('fact');
-    table.string('studentSemesters')
+    table.string('studentSemesters').notNullable();
   });
 
 exports.down = knex => knex.raw(`DROP TABLE IF EXISTS "user" CASCADE`);

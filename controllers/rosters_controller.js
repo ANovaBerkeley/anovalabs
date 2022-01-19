@@ -7,8 +7,8 @@ const getUsersBySite = async (req, res) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
     const data = await knex
       .select(
         'user.id',
@@ -21,8 +21,8 @@ const getUsersBySite = async (req, res) => {
         'notes',
         'studentSemesters',
       )
-      .from('user_semester_site')
-      .rightJoin('user', 'user.id', 'user_semester_site.user_id')
+      .from('user_site')
+      .rightJoin('user', 'user.id', 'user_site.user_id')
       .where('site_id', siteid[0].site_id)
       .where('role', roleType);
     res.status(200).send(data);

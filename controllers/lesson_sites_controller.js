@@ -6,8 +6,8 @@ const getAllSemAndSiteLessons = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
     let data = await knex
       .select(
         'lesson.id',
@@ -33,8 +33,8 @@ const getOtherSiteLessons = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
 
     const currentSiteLessonIds = await knex
       .select('lesson.id')
@@ -63,8 +63,8 @@ const addLessonToSite = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
 
     await knex('lesson_site').insert({
       lesson_id: req.body.lesson_id,
@@ -90,8 +90,8 @@ const deleteLessonFromSite = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
 
     const data = await knex('lesson_site')
       .where('site_id', siteid[0].site_id)
@@ -109,8 +109,8 @@ const update = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
 
     const data = await knex('lesson_site')
       .where('site_id', siteid[0].site_id)

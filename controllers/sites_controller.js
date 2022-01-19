@@ -15,8 +15,8 @@ const getCurrentUserSite = async (req, res, next) => {
   try {
     const siteid = await knex
       .select('site_id')
-      .from('user_semester_site')
-      .where('user_semester_site.user_id', userid);
+      .from('user_site')
+      .where('user_site.user_id', userid);
 
     const data = await knex
       .select('site.schoolName')
@@ -32,14 +32,12 @@ const getCurrentUserSite = async (req, res, next) => {
 /* Add user to a site. */
 const addUserToSite = async (req, res, next) => {
   try {
-    await knex('user_semester_site').insert({
+    await knex('user_site').insert({
       user_id: req.body.user_id,
-      // semester: req.body.semester,
       site_id: req.body.site_id,
     });
     return res.status(201).json({
       user_id: req.body.user_id,
-      // semester: req.body.semester,
       site_id: req.body.site_id,
     });
   } catch (error) {
