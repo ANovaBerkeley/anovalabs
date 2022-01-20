@@ -6,7 +6,7 @@ import LessonCard from './LessonCard';
 import { handleErrors } from '../utils/helpers';
 
 const LessonPool = props => {
-  const { ismentor } = props;
+  const { isMentor } = props;
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -89,7 +89,7 @@ const LessonPool = props => {
   }
 
   let maybeAddCard;
-  if (ismentor) {
+  if (isMentor) {
     maybeAddCard = (
       <div>
         <button type="button" className="plusCard" onClick={() => setShowModal(true)}>
@@ -146,7 +146,7 @@ const LessonPool = props => {
               deleteHandler={deleteHandler}
               lessonDetails={item}
               pool
-              isMentor={ismentor}
+              isMentor={isMentor}
             />
           ))}
         {maybeAddCard}

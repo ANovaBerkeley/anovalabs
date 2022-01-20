@@ -8,7 +8,7 @@ import '../stylesheets/LessonPage.css';
 import { handleErrors } from '../utils/helpers';
 
 const LessonPage = props => {
-  const { id, ismentor } = props;
+  const { id, isMentor } = props;
 
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
@@ -111,7 +111,7 @@ const LessonPage = props => {
       <div className="lessonPageContainer">
         <div className="title-container">
           <h1 className="lessonPageTitle">{title}</h1>
-          {ismentor && (
+          {isMentor && (
             <button
               className="editButton"
               onClick={() => setEditMode(true)}
