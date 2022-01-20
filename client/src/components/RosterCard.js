@@ -178,6 +178,12 @@ const RosterCard = props => {
             {email}
           </p>
           <p>
+            <span className="rosterCardItem" id="candyBubble">
+              FAV CANDY
+            </span>{' '}
+            {candy}
+          </p>
+          <p>
             <span className="rosterCardItem" id="hobbyBubble">
               FAV HOBBY
             </span>{' '}

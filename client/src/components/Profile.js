@@ -117,16 +117,6 @@ const Profile = () => {
                   </p>
                 </Col>
               </Row>{' '}
-              <Row type="flex">
-              <Col>
-                <p>
-                  <span className="profileItem" id="semestersAttendedBubble">
-                    SEMESTERS
-                  </span>{' '}
-                  {/* {displayStudentSemesters} */}
-                </p>
-              </Col>
-            </Row>
             </Col>
           </div>
         </div>
