@@ -1,11 +1,10 @@
 exports.up = knex =>
-  knex.schema.createTable('user_semester_site', table => {
+  knex.schema.createTable('user_site', table => {
     table.increments();
     table
       .integer('user_id')
       .notNullable()
       .unsigned();
-    table.string('semester').notNullable();
     table
       .integer('site_id')
       .notNullable()
@@ -21,4 +20,4 @@ exports.up = knex =>
       .onDelete('CASCADE');
   });
 
-exports.down = knex => knex.schema.dropTableIfExists('user_semester_site');
+exports.down = knex => knex.schema.dropTableIfExists('user_site');
