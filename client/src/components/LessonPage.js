@@ -6,15 +6,12 @@ import TextEditor from './TextEditor';
 import 'draft-js/dist/Draft.css';
 import '../stylesheets/LessonPage.css';
 import { handleErrors } from '../utils/helpers';
-import ReplitiFrame from './ReplitiFrame';
 
 const LessonPage = props => {
   const { id, ismentor } = props;
 
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
-  const [replit, setReplit] = useState('');
-  const [editedReplit, setEditedReplit] = useState();
   const [descriptionState, setDescriptionState] = useState(EditorState.createEmpty());
   const [resourcesState, setResourcesState] = useState(EditorState.createEmpty());
   const [labState, setLabState] = useState(EditorState.createEmpty());
@@ -51,22 +48,13 @@ const LessonPage = props => {
           setExitTicketState(EditorState.createWithContent(content));
           setOldExitTicketState(EditorState.createWithContent(content));
         }
-        if (lesson[0].replit_link) {
-          const content = lesson[0].replit_link
-          setReplit(content);
-          setEditedReplit(content);
-        }
       });
   }, [id]);
 
   const handleDescriptionChange = newState => {
     setDescriptionState(newState);
-    // console.log(newState);
+    console.log(newState);
   };
-
-  const onChangeReplit = event => {
-    setEditedReplit(event.target.value);
-  }
 
   const handleResourcesChange = newState => {
     setResourcesState(newState);
@@ -97,7 +85,6 @@ const LessonPage = props => {
         editedResourcesState: convertToRaw(resourcesState.getCurrentContent()),
         editedLabState: convertToRaw(labState.getCurrentContent()),
         editedExitTicketState: convertToRaw(exitTicketState.getCurrentContent()),
-        editedReplitLink: editedReplit,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -109,7 +96,6 @@ const LessonPage = props => {
         setOldResourcesState(resourcesState);
         setOldLabState(labState);
         setOldExitTicketState(exitTicketState);
-        setReplit(editedReplit);
         setEditMode(false);
       })
       .catch(() =>
@@ -119,7 +105,6 @@ const LessonPage = props => {
         }),
       );
   };
-
 
   return (
     <div className="page">
@@ -141,13 +126,6 @@ const LessonPage = props => {
           editMode={editMode}
           onChange={handleDescriptionChange}
         />
-
-        <ReplitiFrame
-          editMode={editMode}
-          replit={replit}
-          onChangeReplit={onChangeReplit}
-        />
-
         <h2 className="textTitle"> Lesson Resources </h2>
         <TextEditor
           editorState={resourcesState}
