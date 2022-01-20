@@ -11,7 +11,7 @@ const RosterCard = props => {
   const { isMentor, person, mentorCard, showActive, showAll } = props;
   const { id, name, email, candy, hobby, fact, notes } = person;
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editedNotes, setEditedNotes] = useState('');
+  const [editedNotes, setEditedNotes] = useState(notes);
   const [displayNotes, setDisplayNotes] = useState(notes);
   const [studentSemesters, setStudentSemesters] = useState(JSON.parse(person.studentSemesters));
   const [editedStudentSemesters, setEditedStudentSemesters] = useState(studentSemesters);
@@ -50,10 +50,7 @@ const RosterCard = props => {
 
   const editStudentProfile = () => {
     let updateNotes = editedNotes;
-    if (!updateNotes) {
-      updateNotes = notes;
-    }
-    if (updateNotes.length >= 255) {
+    if (updateNotes && updateNotes.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255) for Notes.',
         centered: true,
@@ -125,7 +122,7 @@ const RosterCard = props => {
                   rows={4}
                   id="notes"
                   autosize="true"
-                  defaultValue={notes}
+                  defaultValue={displayNotes}
                   onChange={onChangeNotes}
                   style={{ marginBottom: '15px' }}
                 />
