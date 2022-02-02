@@ -12,8 +12,8 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [candy, setCandy] = useState('');
   const [hobby, setHobby] = useState('');
-  const [showEdit, setShowEdit] = useState(false);
   const [replitEmail, setReplitEmail] = useState('');
+  const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
@@ -41,14 +41,14 @@ const Profile = () => {
   const applyChanges = () => {
     const candyEdit = document.getElementById('candyEdit');
     const hobbyEdit = document.getElementById('hobbyEdit');
-    const replitEmailEdit = document.getElementById('replitEmail');
+    const replitEmailEdit = document.getElementById('replitEmailEdit');
     fetch('/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
         candy: candyEdit.value,
         hobby: hobbyEdit.value,
-        id: decode(getAnovaToken()).id,
         replitEmail: replitEmailEdit.value,
+        id: decode(getAnovaToken()).id,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
