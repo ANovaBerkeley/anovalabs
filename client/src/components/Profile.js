@@ -13,6 +13,7 @@ const Profile = () => {
   const [candy, setCandy] = useState('');
   const [hobby, setHobby] = useState('');
   const [showEdit, setShowEdit] = useState(false);
+  const [replitEmail, setReplitEmail] = useState('');
 
   useEffect(() => {
     const tok = localStorage.getItem('anovaToken');
@@ -27,6 +28,7 @@ const Profile = () => {
         setEmail(profile[0].email);
         setCandy(profile[0].candy);
         setHobby(profile[0].hobby);
+        setReplitEmail(profile[0].replitEmail);
       })
       .catch(() =>
         Modal.error({
@@ -39,12 +41,14 @@ const Profile = () => {
   const applyChanges = () => {
     const candyEdit = document.getElementById('candyEdit');
     const hobbyEdit = document.getElementById('hobbyEdit');
+    const replitEmailEdit = document.getElementById('replitEmail');
     fetch('/api/v1/profile/update', {
       method: 'POST',
       body: JSON.stringify({
         candy: candyEdit.value,
         hobby: hobbyEdit.value,
         id: decode(getAnovaToken()).id,
+        replitEmail: replitEmailEdit.value,
       }),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -53,6 +57,7 @@ const Profile = () => {
       setShowEdit(false);
       setCandy(candyEdit.value);
       setHobby(hobbyEdit.value);
+      setReplitEmail(replitEmailEdit.value);
     });
   };
 
@@ -97,6 +102,14 @@ const Profile = () => {
             <p id="hobby">{hobby}</p>
           </Col>
         </Row>
+        <Row type="flex">
+          <Col>
+            <p>Replit Email:</p>
+          </Col>
+          <Col>
+            <p id="replitEmail">{replitEmail}</p>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <Avatar
@@ -133,6 +146,17 @@ const Profile = () => {
                       addonBefore="Hobbies:"
                       autosize="true"
                       defaultValue={hobby}
+                    ></Input>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Input
+                      id="replitEmailEdit"
+                      allowClear={true}
+                      addonBefore="Replit Email:"
+                      autosize="true"
+                      defaultValue={replitEmail}
                     ></Input>
                   </Col>
                 </Row>
