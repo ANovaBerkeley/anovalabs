@@ -94,8 +94,9 @@ const RosterCard = props => {
         <div className="buttonContainer">
           <Button
             type="primary"
-            className="lowerButton"
+            className='lowerButton'
             onClick={() => setShowEditModal(true)}
+            style= {{marginTop:'10px'}}
           >
             Edit Student Info
           </Button>
@@ -146,7 +147,7 @@ const RosterCard = props => {
                     editedStudentSemesters.includes(currSemester)
                   }
                   onChange={onChangeStudentSemesters}
-                  disabled={isToggleActive() && studentSemesters.length == 1}
+                  disabled={isToggleActive() && editedStudentSemesters.length == 1}
                 />
               </Col>
               <Col>
