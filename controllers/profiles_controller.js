@@ -13,6 +13,7 @@ const getProfileById = async (req, res, next) => {
         'user.hobby',
         'user.notes',
         'user.role',
+        'user.replit_email'
       )
       .from('user')
       .where('user.id', userid);
@@ -24,12 +25,15 @@ const getProfileById = async (req, res, next) => {
 /* Update a user's profile. */
 const update = async (req, res, next) => {
   try {
+    console.log("data")
+    console.log(req.body)
     const data = await knex('user')
       .where({ id: req.body.id })
       .update({
         hobby: req.body.hobby,
         candy: req.body.candy,
         notes: req.body.notes,
+        replit_email: req.body.replit
       });
     return res.status(200).send({ data });
   } catch (error) {
