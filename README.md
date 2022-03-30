@@ -1,6 +1,6 @@
 # 🚀 ANova Labs
 
-updated: March 19th, 2020
+updated: March 30, 2022
 ## ANova's Computer Science Education and Mentorship Platform
 
 - Purpose of ANova Labs is to provide the necessary tools for our mentors carrying out ANova's mission statement of improving computer science education in under-resourced communinities across the Bay Area by combining technology and mentorsip. And to make resources and mentorship more accessible to ANova mentees.
@@ -46,7 +46,6 @@ updated: March 19th, 2020
   - This file will describe the tasks that are still work in progress and need to be done
 
 
-
 ## 📝 Requirements to Run ANova Labs
 
 - node 8.12.0 and npm 6.4.1
@@ -56,16 +55,16 @@ updated: March 19th, 2020
     - brew install postgres
     - brew services start postgres
   - Windows
-    - TBD
+    - https://www.postgresql.org/download/windows/
   - Linux
     - TBD
 - Knex.js
   - npm install -g knex
+- PG Open Source Client (strongly recommended)
+  - Postbird https://github.com/Paxa/postbird
 
-## 📝 Mac Commands to Install ANova Labs
+## 📝 Commands to Install Dependencies
 
-- Run the following command in your terminal to initalize the Postgres DB
-  - createdb anovalabs-db
 - Inside the root directory
   - you can type `pwd` in your terminal and if you see that the path ends with `anovalabs` you're in the right place to execute the following command
   - npm i
@@ -91,14 +90,14 @@ We need to tell the anovalabs-db what tables and columns we need to have, for AN
 - Running the following command to apply all the latest migrations to the DB
   - knex migrate:latest
 
-### ✨ Seeding the Database
+### Seed the Database
 Now that we have communicated with our Postgres DB what tables and columns we need through our migration files and the knex migration command, it's now time to populate our local db with seed data.
 
 - You can seed the Database with the following command after running the knex migrate:latest command
   - knex seed:run
 
-### 🚀 Launch the client && the server
-For this portion I recommend opening up two seperate tabs on your terminal -- one for the client and one for the server
+### Launch the client && the server
+For this portion I recommend opening up two separate tabs on your terminal -- one for the client and one for the server
 
 - Go to the root directory of the anovalabs repository
   - run the following command to start ANova Labs server
@@ -111,7 +110,34 @@ For this portion I recommend opening up two seperate tabs on your terminal -- on
     - Go to http://localhost:3000/
       - And you will see the main page and be able to register/login
 
-# 😲ANova Labs Reseting The Database
+## 🤕 Windows Troubleshooting
+
+If `createdb anovalabs-db` is not working (saying 'command not found', hanging, etc.) you may need to:
+- open pgAdmin and set a password
+  - possibly need to click 'servers' then 'PostgresSQL' on the left side
+- run `createdb -U postgres anovalabs-db` in Command Prompt
+- enter the password you just set when prompted
+
+If `knex` commands are not working:
+- cd into the anovalabs folder
+- modify `knexfile.js` to have:
+  ```
+  connection: {
+    host: process.env.DB_HOSTNAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  },
+  ```
+- add the following to the `.env` file:
+  ```
+  DB_HOSTNAME=localhost
+  DB_USER=postgres
+  DB_PASSWORD=*YOUR PASSWORD*
+  DB_NAME=anovalabs-db
+  ```
+
+## 😲 ANova Labs Resetting The Database
 If you want to reset your database you can do the following in the root directory
 - dropdb anovalabs-db // this will drop your current database
 - createdb anovalabs-db // this will re-create your current database
@@ -120,31 +146,27 @@ If you want to reset your database you can do the following in the root director
 
 for helpful commands, look at package.json in the root directory for migrating, rolling back and seeding the Database
 
-# 🧪 ANova Labs Running Tests
+## 🧪 ANova Labs Running Tests
 - in the root directory of the ANovaLabs directory type the following command
 - `npm run test` and you will run a series of tests
 
-# 🚀 ANova Labs: Testing Production Build Locally
+## 🚀 ANova Labs: Testing Production Build Locally
 - You will need to first make the build version of the client
 - cd into `/client` and run `npm run build` and the react scripts will produce a build folder
 - cd back into the root directory and type `npm run dev`
 - go to localhost:5000 and you will be able to access the same pages and routing as before
 
-# 💻 ANova Labs Reference Material
+## 💻 ANova Labs Reference Material
 The following is for reference to help you in your journey in developing on ANova Labs
 
-## PG Open Source Client
-
-- Postbird https://github.com/Paxa/postbird
-
-## ✨ Making Migrations (Making Changes to the Database)
+### ✨ Making Migrations (Making Changes to the Database)
 
 - Running the following command creates a migration file which describes changes to the DB that we wish to make
   - knex migrate:make create-lesson
 - Running the following command applies the migration to the DB
   - knex migrate:latest
 
-## ✨ Accessing Postgres through your Terminal via psql
+### ✨ Accessing Postgres through your Terminal via psql
 
 - Running the following command in your terminal will have you access your Postgres Database
   - psql anovalabs-db
@@ -157,7 +179,7 @@ The following is for reference to help you in your journey in developing on ANov
 - Running the following command inside psql will allow you to format the columns if they wrap around your screen
   - \x
 
-## ✨ Seeding the Database
+### ✨ Seeding the Database
 
 - Seeding the Database with the following command after running the knex migrate:latest command
 
