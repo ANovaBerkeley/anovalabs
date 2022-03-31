@@ -11,6 +11,7 @@ const getProfileById = async (req, res, next) => {
         'user.candy',
         'user.name',
         'user.hobby',
+        'user.replit_email',
         'user.notes',
         'user.role',
       )
@@ -29,6 +30,7 @@ const update = async (req, res, next) => {
       .update({
         hobby: req.body.hobby,
         candy: req.body.candy,
+        replit_email: req.body.replit_email,
         notes: req.body.notes,
       });
     return res.status(200).send({ data });
