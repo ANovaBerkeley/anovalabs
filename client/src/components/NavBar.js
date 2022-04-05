@@ -23,6 +23,10 @@ const NavBar = props => {
       setSelectedKeys('roster');
     } else if (match.path === '/Profile') {
       setSelectedKeys('profile');
+    } 
+    // changes 
+    else if (match.path === '/LessonPool') {
+      setSelectedKeys('lessonpool');
     }
   }, [match.path]);
 
@@ -63,6 +67,12 @@ const NavBar = props => {
               <Menu.Item className="menuItem" key="roster">
                 <NavLink to="/Roster">Roster</NavLink>
               </Menu.Item>
+              
+              {/* changes */}
+              <Menu.Item className="menuItem" key="lessonpool">
+                <NavLink to="/LessonPool">Lesson Pool</NavLink>
+              </Menu.Item>
+
             </Menu>
           </div>
           <div className="rightMenu">

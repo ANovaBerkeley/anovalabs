@@ -178,6 +178,7 @@ const SiteLessons = props => {
   };
 
   const renderLessons = () => {
+
     let maybeAddCard;
     if (ismentor) {
       maybeAddCard = (
