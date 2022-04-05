@@ -22,13 +22,37 @@ const TextEditor = props => {
     onChange(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'));
   };
 
+  const onItalicClick = () => {
+    onChange(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
+  };
+
   const onBoldClick = () => {
     onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
   };
 
-  const onItalicClick = () => {
-    onChange(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
-  };
+  const onBulletClick = () => {
+    onChange(RichUtils.toggleBlockType(editorState, 'unordered-list-item'))
+  }
+
+  const onHeaderClick = () => {
+    onChange(RichUtils.toggleBlockType(editorState, 'header-one'))
+  }
+
+  const onHeader2Click = () => {
+    onChange(RichUtils.toggleBlockType(editorState, 'header-two'))
+  }
+
+  const onHeader3Click = () => {
+    onChange(RichUtils.toggleBlockType(editorState, 'header-three'))
+  }
+
+  const onCodeClick = () => {
+    onChange(RichUtils.toggleBlockType(editorState, 'code-block'))
+  }
+
+  const handleTab = (e) => {
+    onChange(RichUtils.onTab(e, editorState, 4))
+  }
 
   const onAddLinkClick = () => {
     const selection = editorState.getSelection();
@@ -57,17 +81,35 @@ const TextEditor = props => {
       {editMode && (
         <>
           <div>
-            <button className="editorButton" onClick={onUnderlineClick}>
-              U
-            </button>
-            <button className="editorButton" onClick={onBoldClick}>
+          <button className="editorButton" onClick={onBoldClick}>
               <b>B</b>
             </button>
+
             <button className="editorButton" onClick={onItalicClick}>
               <em>I</em>
             </button>
+            
+            <button className="editorButton" onClick={onUnderlineClick}>
+              U
+            </button>
+            
             <button className="editorButton" onClick={onAddLinkClick}>
               Link
+            </button>
+            <button className="editorButton" onClick={onBulletClick}>
+              Bullet
+            </button>
+            <button className="editorButton" onClick={onHeaderClick}>
+              H1
+            </button>
+            <button className="editorButton" onClick={onHeader2Click}>
+              H2
+            </button>
+            <button className="editorButton" onClick={onHeader3Click}>
+              H3
+            </button>
+            <button className="editorButton" onClick={onCodeClick}>
+              Code
             </button>
           </div>
         </>
@@ -78,6 +120,7 @@ const TextEditor = props => {
         onChange={onChange}
         plugins={plugins}
         readOnly={!editMode}
+        onTab={handleTab}
       />
     </div>
   );
