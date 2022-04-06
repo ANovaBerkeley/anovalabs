@@ -94,7 +94,7 @@ const login = (req, res, next) => {
 };
 
 const signup = (req, res, next) => {
-  const { googleToken, role } = req.body;
+  const { googleToken, role, semesters } = req.body;
 
   const client = new OAuth2Client(process.env.CLIENT_ID);
 
@@ -113,6 +113,7 @@ const signup = (req, res, next) => {
             name: name.trim(),
             email: email.trim(),
             role: role,
+            studentSemesters: JSON.stringify(semesters),
           };
           User.create(newUser).then(retUser => {
             const payload = {

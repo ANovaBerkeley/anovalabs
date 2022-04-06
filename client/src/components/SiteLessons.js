@@ -10,7 +10,7 @@ import { handleErrors } from '../utils/helpers';
 
 // TODO reset modal values onOk
 const SiteLessons = props => {
-  const { ismentor } = props;
+  const { isMentor } = props;
   const [showModal, setShowModal] = useState(false);
   const [siteLessons, setSiteLessons] = useState([]);
   const [site, setSite] = useState('');
@@ -179,7 +179,7 @@ const SiteLessons = props => {
 
   const renderLessons = () => {
     let maybeAddCard;
-    if (ismentor) {
+    if (isMentor) {
       maybeAddCard = (
         <>
           <div className="plusCard" onClick={() => setShowModal(true)}>
@@ -236,7 +236,7 @@ const SiteLessons = props => {
                 deleteHandler={deleteHandler}
                 lessonDetails={lesson}
                 pool={false}
-                isMentor={ismentor}
+                isMentor={isMentor}
               />
             ))}
           {maybeAddCard}
