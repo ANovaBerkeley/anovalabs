@@ -16,8 +16,7 @@
   flex-direction: row;
 }
 
-h1,
-.lessonPageTitle {
+h1.lessonPageTitle {
   height: 100px;
 }
 
