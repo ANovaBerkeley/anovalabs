@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Input, Row, Col } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import TextEditor from './TextEditor';
@@ -7,8 +7,14 @@ import 'draft-js/dist/Draft.css';
 import '../stylesheets/LessonPage.css';
 import { handleErrors } from '../utils/helpers';
 
+// added 4/12
+import { GoPlus } from 'react-icons/go';
+
 const LessonPage = props => {
   const { id, ismentor } = props;
+
+  const [showModal, setShowModal] = useState(false); // added 4/12
+  const [modalDate, setModalDate] = useState(''); // added 4/12
 
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
@@ -105,6 +111,93 @@ const LessonPage = props => {
         }),
       );
   };
+  
+  const onDateChange = date => {
+    setModalDate(date);
+  };
+
+  const addLessonToPool = () => {
+    const titleAdd = document.getElementById('titleAdd');
+    const summaryAdd = document.getElementById('summaryAdd');
+
+    if (!titleAdd.value || !summaryAdd.value) {
+      Modal.error({
+        title: 'Please fill out all fields.',
+        centered: true,
+      });
+    } else {
+      const item = {
+        title: titleAdd.value,
+        summary: summaryAdd.value,
+      };
+      fetch('/api/v1/lessons/add', {
+        method: 'POST',
+        body: JSON.stringify(item),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      })
+        .then(handleErrors)
+        .then(newLessonInfo => {
+          item['id'] = newLessonInfo.id;
+          setShowModal(false);
+        })
+        .catch(() =>
+          Modal.error({
+            title: 'Unable to add lesson.',
+            centered: true,
+          }),
+        );
+    }
+  };
+
+  let makeCopy;
+  if (ismentor) {
+    makeCopy = (
+      <div>
+        <button type="button" onClick={() => setShowModal(true)}>
+          Copy
+        </button>
+
+        <Modal
+          className="addModal"
+          title="Add a New Lesson"
+          centered
+          visible={showModal}
+          onOk={addLessonToPool}
+          onCancel={() => setShowModal(false)}
+        >
+          <div className="addFields">
+            <Row>
+              <Col>
+                <Input
+                  id="titleAdd"
+                  allowClear
+                  addonBefore="Title:"
+                  autosize="true"
+                  defaultValue={title}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  id="summaryAdd"
+                  allowClear
+                  addonBefore="Summary:"
+                  autosize="true"
+                  defaultValue={descriptionState}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <DatePicker onChange={onDateChange} />
+            </Row>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
 
   return (
     <div className="page">
@@ -112,13 +205,17 @@ const LessonPage = props => {
         <div className="title-container">
           <h1 className="lessonPageTitle">{title}</h1>
           {ismentor && (
-            <button
-              className="editButton"
-              onClick={() => setEditMode(true)}
-              type="button"
-            >
-              <FiEdit size="42" />
-            </button>
+            <div>
+              <button
+                className="editButton"
+                onClick={() => setEditMode(true)}
+                type="button"
+              >
+                <FiEdit size="42" />
+              </button>
+              {/* change made 4/12 */}
+              {makeCopy} 
+            </div>
           )}
         </div>
         <TextEditor

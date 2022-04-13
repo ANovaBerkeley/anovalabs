@@ -188,6 +188,7 @@ const LessonCard = props => {
         <Link to={'/LessonPage/' + id}>
           <button className="lowerButton">View Assignment</button>
         </Link>
+        {/* <button className="lowerButton">Copy</button> */}
       </div>
     </div>
   );
