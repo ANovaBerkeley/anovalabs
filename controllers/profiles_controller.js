@@ -13,6 +13,7 @@ const getProfileById = async (req, res, next) => {
         'user.hobby',
         'user.notes',
         'user.role',
+        'user.replitEmail'
       )
       .from('user')
       .where('user.id', userid);
@@ -30,6 +31,7 @@ const update = async (req, res, next) => {
         hobby: req.body.hobby,
         candy: req.body.candy,
         notes: req.body.notes,
+        replitEmail: req.body.replitEmail,
       });
     return res.status(200).send({ data });
   } catch (error) {
