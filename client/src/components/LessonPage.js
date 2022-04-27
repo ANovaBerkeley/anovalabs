@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Row, Col } from 'antd';
+import { Modal, Input, Row, Col, DatePicker } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import TextEditor from './TextEditor';
@@ -28,14 +28,18 @@ const LessonPage = props => {
   const [oldResourcesState, setOldResourcesState] = useState(EditorState.createEmpty());
   const [oldLabState, setOldLabState] = useState(EditorState.createEmpty());
   const [oldExitTicketState, setOldExitTicketState] = useState(EditorState.createEmpty());
+  const [summary, setSummary] = useState('');
 
   useEffect(() => {
     fetch('/api/v1/lessons/' + id + '?id=' + id)
       .then(res => res.json())
       .then(lesson => {
         setTitle(lesson[0].title);
+        setSummary(lesson[0].summary);
+        console.log(lesson[0]);
         if (lesson[0].description_state) {
           const content = convertFromRaw(lesson[0].description_state);
+          console.log(content);
           setDescriptionState(EditorState.createWithContent(content));
           setOldDescriptionState(EditorState.createWithContent(content));
         }
@@ -54,6 +58,7 @@ const LessonPage = props => {
           setExitTicketState(EditorState.createWithContent(content));
           setOldExitTicketState(EditorState.createWithContent(content));
         }
+
       });
   }, [id]);
 
@@ -175,7 +180,7 @@ const LessonPage = props => {
                   allowClear
                   addonBefore="Title:"
                   autosize="true"
-                  defaultValue={title}
+                  defaultValue={"Copy of " + title}
                 />
               </Col>
             </Row>
@@ -186,7 +191,7 @@ const LessonPage = props => {
                   allowClear
                   addonBefore="Summary:"
                   autosize="true"
-                  defaultValue={descriptionState}
+                  defaultValue={summary}
                 />
               </Col>
             </Row>
