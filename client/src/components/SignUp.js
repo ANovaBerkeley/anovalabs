@@ -31,7 +31,7 @@ const SignUp = () => {
   const onSuccess = res => {
     localStorage.setItem('googleToken', res.tokenId);
     console.log('Login Success: currentUser:', res);
-    setEmail(res.profileObj.email + ' ✓');
+    setEmail(res.profileObj.email);
   };
 
   const onFailure = res => {

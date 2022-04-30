@@ -26,6 +26,14 @@ const LessonCard = props => {
   };
 
   const onChangeTitle = event => {
+    // if (event.target.value.length == 0) {
+    //   Modal.error({
+    //     title: 'Lesson must have > 0 characters.',
+    //     centered: true,
+    //   })
+    //   //deleteLesson();
+    //   return;
+    // }
     setEditedTitle(event.target.value);
   };
 
@@ -37,7 +45,24 @@ const LessonCard = props => {
     setEditedDate(date);
   };
 
+  // const editTitle = () => {
+  //   if (editedTitle.length == 0) {
+  //     Modal.error({
+  //       title: 'Exceeded maximum number of characters (255).',
+  //       centered: true,
+  //     });
+  //     return;
+  //   }
+  // }
+
   const editLessonDetails = () => {
+    if (editedTitle.length == 0) {
+      Modal.error({
+        title: 'Title must have > 0 characters.',
+        centered: true,
+      });
+      return;
+    }
     if (editedSummary.length >= 255) {
       Modal.error({
         title: 'Exceeded maximum number of characters (255).',
@@ -96,6 +121,8 @@ const LessonCard = props => {
             centered: true,
           });
         });
+
+        
     }
   };
 
