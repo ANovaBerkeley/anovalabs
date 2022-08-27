@@ -57,14 +57,14 @@ const TextEditor = props => {
       {editMode && (
         <>
           <div>
-            <button className="editorButton" onClick={onUnderlineClick}>
-              U
-            </button>
             <button className="editorButton" onClick={onBoldClick}>
               <b>B</b>
             </button>
             <button className="editorButton" onClick={onItalicClick}>
               <em>I</em>
+            </button>
+            <button className="editorButton" onClick={onUnderlineClick}>
+              U
             </button>
             <button className="editorButton" onClick={onAddLinkClick}>
               Link
