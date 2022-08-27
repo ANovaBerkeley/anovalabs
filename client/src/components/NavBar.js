@@ -4,19 +4,41 @@ import '../stylesheets/NavBar.css';
 import { getAnovaToken, removeAnovaToken, removeGoogleToken } from '../utils/utils';
 import { NavLink } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
+import { handleErrors } from '../utils/helpers';
+import { Modal, Input, Row, Col, Avatar } from 'antd';
+import * as decode from 'jwt-decode';
 
 const logo = require('../stylesheets/logo.png');
 
 const NavBar = props => {
+
   const { match } = props;
 
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([]);
 
+  const [username, setUsername] = useState('');
+
   const clientId =
     '128601698558-80ae6kq3v7p8iuknfpkqu6bsfg05vgra.apps.googleusercontent.com';
 
   useEffect(() => {
+    const tok = localStorage.getItem('anovaToken');
+    const d_tok = decode(tok);
+    var { id } = decode(getAnovaToken());
+    var get_url = '/api/v1/profile/';
+    var id_str = id.toString();
+    fetch(get_url + id_str + '?uid=' + d_tok.id)
+      .then(handleErrors)
+      .then(profile => {
+        setUsername(profile[0].name);
+      })
+      .catch(() =>
+        Modal.error({
+          title: 'Unable to get profile.',
+          centered: true,
+        }),
+      );
     if (match.path === '/SiteLessons' || match.path === '/') {
       setSelectedKeys('lessons');
     } else if (match.path === '/Roster') {
@@ -38,7 +60,10 @@ const NavBar = props => {
     removeAnovaToken();
     removeGoogleToken();
   };
-
+  const getInitials = () => {
+    const nameArray = username.split(" ");
+    return (username)? nameArray[0][0] + nameArray[1][0] : "Student"
+  }
   if (getAnovaToken() === null) {
     return <div></div>;
   } else {
@@ -69,14 +94,17 @@ const NavBar = props => {
             <Menu mode="horizontal" selectedKeys={selectedKeys}>
               <Menu.SubMenu
                 className="menuItem"
-                title={
-                  <img
-                    src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
-                    className="profile-logo"
-                    alt={'Profile'}
-                  />
-                }
-              >
+                  title={
+                    // <img
+                    //   src={'https://image.flaticon.com/icons/png/128/1141/1141771.png'}
+                    //   className="profile-logo"
+                    //   alt={'Profile'}
+                    // />
+                    <div className = "circleNav">  
+                      <p className = "circletextNav"> {getInitials()} </p>
+                    </div>
+                  }
+                >
                 <Menu.Item className="menuItem" key="profile">
                   <NavLink to="/Profile">Profile</NavLink>
                 </Menu.Item>

@@ -118,3 +118,18 @@
     padding: 10px 20px;
   }
 }
+
+.circleNav {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  background-color: rgb(144, 211, 200);
+  border-radius: 50%;
+}
+
+.circletextNav {
+  margin: auto;
+  font-style: normal;
+  font-size: 15px;
+  color: white;
+}

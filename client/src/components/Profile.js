@@ -64,13 +64,23 @@ const Profile = () => {
   const showModal = bool => {
     setShowEdit(bool);
   };
+  
+  const getInitials = () => {
+    const nameArray = username.split(" ");
+    return (username)? nameArray[0][0] + nameArray[1][0] : "Student"
+  }
 
   return (
     <div className="profileContainer">
       <div className="profileBox">
         <div className="profileBody">
           <div className="profileLeft">
-            <Avatar id="profileImage" src={profileimage} />
+            {/* <Avatar id="profileImage" src={} /> */}
+            <div className="circle"> 
+              <p className="circletext">
+                {getInitials()} 
+              </p>
+            </div>
             <p id="username" className="profileName">
               {username}
             </p>

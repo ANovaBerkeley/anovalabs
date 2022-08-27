@@ -131,5 +131,20 @@
   color: #000000;
 }
 
+.circle {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  background-color: rgb(144, 211, 200);
+  border-radius: 50%;
+}
+
+.circletext {
+  margin: auto;
+  font-style: normal;
+  font-size: 30px;
+  color: white;
+}
+
 
 
