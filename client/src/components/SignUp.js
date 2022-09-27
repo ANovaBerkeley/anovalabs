@@ -46,6 +46,13 @@ const SignUp = () => {
       .then(res => res.json())
       .then(
         sites => {
+          sites.sort((a, b) => {
+            if (a.id < b.id) {
+              return -1
+            }
+            return 1
+          })
+          console.log(sites)
           setSites(sites);
         },
         error => {
@@ -127,7 +134,7 @@ const SignUp = () => {
       event.preventDefault();
       return;
     }
-
+    console.log(sites[siteId-1].schoolName)
     if (role === 'student' && siteCode !== sites[siteId - 1].schoolName + 'ANova') {
       Modal.error({
         title: 'Wrong Site Access Code!',
