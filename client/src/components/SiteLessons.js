@@ -203,7 +203,6 @@ const SiteLessons = props => {
                   autosize="true"
                   defaultValue=""
                   maxLength={30}
-                  showCount={true}
                 />
               </Row>
               <Row>
@@ -214,7 +213,6 @@ const SiteLessons = props => {
                   autosize="true"
                   defaultValue=""
                   maxLength={200}
-                  showCount={true}
                 />
               </Row>
               <Row>
