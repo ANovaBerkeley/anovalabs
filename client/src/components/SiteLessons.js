@@ -202,6 +202,8 @@ const SiteLessons = props => {
                   addonBefore="Title:"
                   autosize="true"
                   defaultValue=""
+                  maxLength={30}
+                  showCount={true}
                 />
               </Row>
               <Row>
@@ -211,6 +213,8 @@ const SiteLessons = props => {
                   addonBefore="Summary:"
                   autosize="true"
                   defaultValue=""
+                  maxLength={200}
+                  showCount={true}
                 />
               </Row>
               <Row>

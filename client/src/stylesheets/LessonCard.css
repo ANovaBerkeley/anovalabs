@@ -3,7 +3,8 @@
 .card {
   width: 300px;
   height: 200px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-template-columns: 100%;
   grid-template-rows: 20% 15% 35% 40%;
   /*align-items: center;*/
@@ -75,6 +76,7 @@
 .buttonContainer {
   display: flex;
   justify-content: space-around;
+  margin-top: auto;
 }
 
 .lowerButton {

@@ -29,7 +29,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "antd": "^3.26.18",
+    "antd": "^4.23.3",
     "axios": "^0.21.1",
     "jwt-decode": "^2.2.0",
     "prop-types": "^15.7.2",

@@ -154,6 +154,8 @@ const LessonCard = props => {
                   autosize="true"
                   defaultValue={title}
                   onChange={onChangeTitle}
+                  maxLength={30}
+                  showCount={true}
                 />
               </Row>
               <Row>
@@ -164,6 +166,8 @@ const LessonCard = props => {
                   autosize="true"
                   defaultValue={summary}
                   onChange={onChangeSummary}
+                  maxLength={200}
+                  showCount={true}
                 />
               </Row>
               {!pool && (
