@@ -30,7 +30,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^3.26.18",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "jwt-decode": "^2.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
